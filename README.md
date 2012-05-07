@@ -1,4 +1,4 @@
 ornidroid
 =========
 
-A bird guide for android devices
+A bird guide for android devices.

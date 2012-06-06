@@ -1,5 +1,6 @@
 ornidroid
 =========
 
-A bird guide for android devices...
+[[Wiki Ornidroid]] (https://github.com/giletvin/ornidroid/wiki)
+
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:weightSum="1"
+	android:id="@+id/credits_layout">
+	<TextView android:id="@+id/about_title"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:textSize="25sp" android:gravity="center_horizontal"
+		android:text="@string/about" />
+	<TextView android:id="@+id/about_ornidroid_version"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:textSize="15sp" 
+		android:padding="25sp" android:text="@string/about_ornidroid" />
+
+	<TextView android:id="@+id/credits_title"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:textSize="25sp" android:gravity="center_horizontal"
+		android:paddingBottom="25sp" android:text="@string/credits" />
+
+
+
+
+</LinearLayout>
+
+

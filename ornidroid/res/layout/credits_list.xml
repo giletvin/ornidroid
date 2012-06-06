@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!-- Layout for list of audio files -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:padding="5dp">
+	<TextView android:id="@+id/credit_title" style="@android:style/TextAppearance.Medium"
+		android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	<TextView android:id="@+id/credit_author" style="@android:style/TextAppearance.Small"
+		android:singleLine="false" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+	<TextView android:id="@+id/credit_url" style="@android:style/TextAppearance.Small"
+		android:singleLine="false" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+	<TextView android:id="@+id/credit_license" style="@android:style/TextAppearance.Small"
+		android:singleLine="false" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+</LinearLayout>

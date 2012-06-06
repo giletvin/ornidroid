@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="wrap_content" android:gravity="center_horizontal">
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:paddingBottom="10dp"
+		android:paddingLeft="10dp" android:paddingRight="10dp">
+		<TextView android:id="@+id/dialog_picture_description"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:textColor="#FFF" android:paddingBottom="5dp"
+			android:textAppearance="@android:style/TextAppearance.Small"
+			android:text="@string/dialog_picture_description" />
+		<TextView android:id="@+id/dialog_picture_author"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:textColor="#FFF" android:paddingBottom="5dp"
+			android:textAppearance="@android:style/TextAppearance.Small"
+			android:text="@string/dialog_picture_author" />
+		<TextView android:id="@+id/dialog_picture_source"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:textColor="#FFF" android:paddingBottom="5dp"
+			android:textAppearance="@android:style/TextAppearance.Small"
+			android:text="@string/dialog_picture_source" />
+		<TextView android:id="@+id/dialog_picture_licence"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:textAppearance="@android:style/TextAppearance.Small"
+			android:textColor="#FFF" android:text="@string/dialog_picture_licence" />
+	</LinearLayout>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:paddingLeft="10dp"
+		android:paddingRight="10dp"  android:gravity="center_horizontal">
+		<Button android:id="@+id/dialog_ok_button" android:text="@string/ok"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:textColor="#FFF" />
+	</LinearLayout>
+
+</LinearLayout>

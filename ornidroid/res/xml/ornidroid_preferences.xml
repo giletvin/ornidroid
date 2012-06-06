@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+	android:title="@string/preferences">
+
+	<EditTextPreference android:title="@string/preferences_home_key"
+		android:inputType="text" android:summary="@string/preferences_home_label"
+		android:key="@string/preferences_home_key" android:persistent="true"
+		android:defaultValue="/mnt/storage/ornidroid/"></EditTextPreference>
+	<ListPreference android:title="@string/preferences_lang_key"
+		android:summary="@string/preferences_lang_label" android:key="@string/preferences_lang_key"
+		android:defaultValue="fr" android:entries="@array/lang_labels"
+		android:entryValues="@array/lang_values" android:persistent="true" />
+</PreferenceScreen>

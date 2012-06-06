@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /* ** Copyright 2010, The Android Open Source Project ** ** Licensed 
+	under the Apache License, Version 2.0 (the "License"); ** you may not use 
+	this file except in compliance with the License. ** You may obtain a copy 
+	of the License at ** ** http://www.apache.org/licenses/LICENSE-2.0 ** ** 
+	Unless required by applicable law or agreed to in writing, software ** distributed 
+	under the License is distributed on an "AS IS" BASIS, ** WITHOUT WARRANTIES 
+	OR CONDITIONS OF ANY KIND, either express or implied. ** See the License 
+	for the specific language governing permissions and ** limitations under 
+	the License. */ -->
+<resources>
+
+	<!-- The name of the application. -->
+	<string name="app_name">Ornidroid</string>
+
+	<!-- The label for use as a searchable item -->
+	<string name="search_label">Dictionary</string>
+
+	<!-- The hint text that appears in the search box. -->
+	<string name="search_hint">Recherche dans la base</string>
+
+	<!-- The menu entry that invokes search. -->
+	<string name="menu_search">Recherche par nom</string>
+
+	<string name="menu_search_multi">Recherche multicritères</string>
+
+	<string name="menu_about">A propos</string>
+
+	<!-- The description that will show up in the search settings for this source. -->
+	<string name="settings_description">Definitions of words</string>
+
+	<!-- Shown above search results when we receive a search request. -->
+	<plurals name="search_results">
+		<item quantity="one">d résultat pour \"s\":</item>
+		<item quantity="other">d
+			résultats pour \"s\":
+		</item>
+	</plurals>
+
+	<!-- Search failure message. -->
+	<string name="no_results">Pas de résultat trouvé pour \"%s\"</string>
+	<string name="ok">OK</string>
+
+	<!-- activity titles -->
+	<string name="preferences">Préférences</string>
+	<string name="about">A propos</string>
+	<string name="sounds">Sons</string>
+	<string name="bird_info">Fiche oiseau</string>
+	<string name="bird_image">Images</string>
+	<string name="bird_image_big">Photo zoomée</string>
+	<string name="bird_names">Taxonomie</string>
+
+	<!-- labes used in preferences -->
+	<string name="preferences_home_key">OrnidroidHome</string>
+	<string name="preferences_home_label">Répertoire d\'installation de la base de données
+		ornidroid
+	</string>
+	<string name="preferences_lang_key">OrnidroidLang</string>
+	<string name="preferences_lang_label">Langue par défaut</string>
+
+
+	<!-- pictures info dialog box -->
+	<string name="dialog_picture_title">Informations sur l\'image</string>
+	<string name="dialog_picture_description">Description</string>
+	<string name="dialog_picture_author">Auteur</string>
+	<string name="dialog_picture_source">Source</string>
+	<string name="dialog_picture_licence">Licence</string>
+
+	<!-- alert dialogs from the home activity -->
+	<string name="dialog_alert_ornidroid_home_not_found">Le répertoire d\'installation des données
+		d\'ornidroid est
+		inexistant ou incohérent ! Veuillez le renseigner dans
+		les préférences de
+		l\'application
+	</string>
+	<string name="dialog_alert_ornidroid_database_not_found">La base de données d\'ornidroid est introuvable
+		dans le répertoire d\'installation. Ornidroid ne peut pas fonctionner.
+	</string>
+	<string name="dialog_alert_download_error">La base de données d\'ornidroid est introuvable
+		dans le répertoire d\'installation et le téléchargement depuis
+		Internet a échoué. Ornidroid ne peut pas fonctionner.
+	</string>
+
+	<!-- autres labels -->
+	<string name="scientific_name">Nom scientifique</string>
+	<string name="scientific_order">Ordre</string>
+	<string name="scientific_family">Famille</string>
+
+	<string name="credits">Crédits</string>
+
+	<string name="no_records">Pas d\'enregistrement. Vérifier et télécharger depuis
+		Internet ?</string>
+	<string name="no_pictures">Pas de photo. Vérifier et télécharger depuis
+		Internet ?
+	</string>
+	<string name="about_ornidroid">Ornidroid version 1.0.\nCette application est sous
+		licence Creative Commons BY
+		NC\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.fr
+	</string>
+	<string name="download_in_progress">Téléchargement en cours ...</string>
+	<string name="download_please_wait">Veuillez patienter pendant le téléchargement.
+		L\'écran va se rafraîchir automatiquement.</string>
+
+
+</resources>

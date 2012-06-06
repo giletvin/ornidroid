@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /* ** Copyright 2010, The Android Open Source Project ** ** Licensed 
+	under the Apache License, Version 2.0 (the "License"); ** you may not use 
+	this file except in compliance with the License. ** You may obtain a copy 
+	of the License at ** ** http://www.apache.org/licenses/LICENSE-2.0 ** ** 
+	Unless required by applicable law or agreed to in writing, software ** distributed 
+	under the License is distributed on an "AS IS" BASIS, ** WITHOUT WARRANTIES 
+	OR CONDITIONS OF ANY KIND, either express or implied. ** See the License 
+	for the specific language governing permissions and ** limitations under 
+	the License. */ -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="fr.giletvin.ornidroid" android:versionCode="1"
+	android:versionName="1.0.0">
+
+	<uses-sdk android:minSdkVersion="8" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.INTERNET" />
+
+	<application android:label="@string/app_name" android:icon="@drawable/ic_ornidroid">
+
+		<activity android:name=".ui.HomeActivity" android:theme="@android:style/Theme.Light">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+
+		<!-- The default activity of the app; displays search results. -->
+		<activity android:name=".ui.MainActivity" android:theme="@android:style/Theme.NoTitleBar">
+
+			<!-- Receives the search request. -->
+			<intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+				<!-- No category needed, because the Intent will specify this class component -->
+			</intent-filter>
+
+			<!-- Points to searchable meta data. -->
+			<meta-data android:name="android.app.searchable"
+				android:resource="@xml/searchable" />
+		</activity>
+
+		<!-- Tabbed screen to display bird info. -->
+		<activity android:name=".ui.BirdInfoActivity" android:theme="@android:style/Theme.NoTitleBar" />
+
+		<!-- Preferences activity -->
+		<activity android:label="@string/preferences" android:name=".ui.OrnidroidPreferenceActivity"></activity>
+		<!-- about activity -->
+		<activity android:label="@string/about" android:name=".ui.AboutActivity"></activity>
+		<!-- SoundActivtity -->
+		<activity android:label="@string/sounds" android:name=".ui.SoundActivity"></activity>
+
+		<!-- picture activity -->
+		<activity android:name=".ui.PictureActivity" android:label="@string/bird_image" />
+
+		<!-- full size image activity -->
+		<activity android:name=".ui.FullSizeImageActivity"
+			android:label="@string/bird_image_big" android:noHistory="true"/>
+
+		<!-- bird detail activity -->
+		<activity android:name=".ui.BirdDetailActivity"
+			android:label="@string/bird_info" />
+
+		<!-- bird names activity -->
+		<activity android:name=".ui.BirdNamesActivity" android:label="@string/bird_names" />
+
+		<!-- Provides search suggestions for words and their definitions. -->
+		<provider android:name=".data.DictionaryProvider"
+			android:authorities="fr.giletvin.ornidroid.data.DictionaryProvider" />
+
+		<!-- Points to searchable activity so the whole app can invoke search. -->
+		<meta-data android:name="android.app.default_searchable"
+			android:value=".ui.MainActivity" />
+
+	</application>
+</manifest>

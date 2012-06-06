@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources>
+
+	<string-array name="lang_labels">
+		<item>cz - Čeština</item>
+		<item>de - Deutsch</item>
+		<item>dk - Dansk</item>
+		<item>en - English</item>
+		<item>es - Español</item>
+		<item>fi - Suomi</item>
+		<item>fr - Français</item>
+		<item>is - Íslenska</item>
+		<item>it - Italiano</item>
+		<item>jp - 日本語</item>
+		<item>la - Latin</item>
+		<item>nl - Nederlands</item>
+		<item>no - Norsk</item>
+		<item>po - Polski</item>
+		<item>pt - Português</item>
+		<item>ru - Русский язык</item>
+		<item>se - Svenska</item>
+		<item>sk - Slovenčina</item>
+		<item>zh - 普通话</item>
+	</string-array>
+
+	<string-array name="lang_values">
+		<item>cz</item>
+		<item>de</item>
+		<item>dk</item>
+		<item>en</item>
+		<item>es</item>
+		<item>fi</item>
+		<item>fr</item>
+		<item>is</item>
+		<item>it</item>
+		<item>jp</item>
+		<item>la</item>
+		<item>nl</item>
+		<item>no</item>
+		<item>po</item>
+		<item>pt</item>
+		<item>ru</item>
+		<item>se</item>
+		<item>sk</item>
+		<item>zh</item>
+	</string-array>
+
+
+</resources>

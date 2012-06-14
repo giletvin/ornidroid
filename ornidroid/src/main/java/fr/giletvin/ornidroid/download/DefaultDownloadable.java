@@ -55,6 +55,9 @@ public class DefaultDownloadable extends Downloadable {
 	/** The proxied url. */
 	public final URL proxiedUrl;
 
+	/** The expected mime type. */
+	private final MimeType expectedMimeType;
+
 	/* package *//** The cached file. */
 	File cachedFile;
 
@@ -64,106 +67,107 @@ public class DefaultDownloadable extends Downloadable {
 	/* package *//** The timestamp file. */
 	File timestampFile;
 
-	// /* package */final Provider<MasterFileSystem> masterFileSystem = Locator
-	// .createProviderFor(MasterFileSystem.class);
-
-	/* package *//** The content length. */
+	/** The content length. */
 	int contentLength = 0;
 
 	/**
-	 * *************************************************************************
-	 * ****************************************
-	 * 
-	 * 
-	 * *************************************************************************
-	 * ***************************************.
+	 * Constructor.
 	 * 
 	 * @param url
 	 *            the url
 	 * @param destinationPath
 	 *            the destination path
+	 * @param pExpectedMimeType
+	 *            the expected mime type
 	 * @throws MalformedURLException
 	 *             the malformed url exception
 	 */
-	public DefaultDownloadable(final URL url, String destinationPath)
-			throws MalformedURLException {
+	public DefaultDownloadable(final URL url, String destinationPath,
+			MimeType pExpectedMimeType) throws MalformedURLException {
 		String x = url.toExternalForm().replaceAll(" ", "%20");
 		this.destinationPath = destinationPath;
 		this.url = new URL(x);
 		this.proxiedUrl = new URL(x); // FIXME: can be eventually different,
 										// inject a proxy configurator
 
+		expectedMimeType = pExpectedMimeType;
 		computeCachedFile();
 	}
 
-	/*******************************************************************************************************************
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * {@inheritDoc}
-	 * 
-	 ******************************************************************************************************************/
+	 * @see fr.giletvin.ornidroid.download.Downloadable#download()
+	 */
 	@Override
 	public void download() {
 		download(false);
 	}
 
-	/*******************************************************************************************************************
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * {@inheritDoc}
-	 * 
-	 ******************************************************************************************************************/
+	 * @see fr.giletvin.ornidroid.download.Downloadable#refresh()
+	 */
 	@Override
 	public void refresh() {
 		download(true);
 	}
 
-	/*******************************************************************************************************************
+	/**
+	 * Removes the.
 	 * 
-	 * {@inheritDoc}
-	 * 
-	 ******************************************************************************************************************/
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
 	public void remove() throws IOException {
 		safeDelete(cachedFile);
 
 		setStatus(Status.NOT_DOWNLOADED);
 	}
 
-	/*******************************************************************************************************************
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * {@inheritDoc}
-	 * 
-	 ******************************************************************************************************************/
+	 * @see fr.giletvin.ornidroid.download.Downloadable#getFile()
+	 */
 	@Override
 	public File getFile() {
 		return cachedFile;
 	}
 
 	/**
-	 * *************************************************************************
-	 * ****************************************
+	 * 
 	 * 
 	 * Can be overridden for testing (URLs are not mockable).
 	 * 
-	 * *************************************************************************
-	 * ***************************************
 	 * 
-	 * @return the input stream
+	 * @return the input stream, null if the mime type doesn't match the
+	 *         expected mime type
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	protected InputStream createInputStream() throws IOException {
+	private InputStream createInputStream() throws IOException {
 		final URLConnection connection = proxiedUrl.openConnection();
 		connection.connect();
 		contentLength = connection.getContentLength(); // TODO: handle the case
 														// in which it's unknown
 														// size
-		return connection.getInputStream();
+		if (null == expectedMimeType
+				|| StringUtils.contains(connection.getContentType(),
+						expectedMimeType.getContentType())) {
+			return connection.getInputStream();
+		} else {
+			return null;
+		}
 	}
 
-	/*******************************************************************************************************************
+	/**
+	 * Download.
 	 * 
-	 * {@inheritDoc}
-	 * 
-	 ******************************************************************************************************************/
+	 * @param always
+	 *            the always
+	 */
 	private synchronized void download(final boolean always) {
 		computeCachedFile();
 
@@ -174,18 +178,7 @@ public class DefaultDownloadable extends Downloadable {
 			} catch (IOException e) {
 				setStatus(Status.BROKEN);
 			}
-			// new Thread() // TODO: use a pool, with QUEUED state
-			// {
-			// @Override
-			// public void run() {
-			// try {
-			// load();
-			// } catch (Exception e) {
-			// setStatus(Status.BROKEN);
-			//
-			// }
-			// }
-			// }.start();
+
 		}
 	}
 
@@ -209,67 +202,56 @@ public class DefaultDownloadable extends Downloadable {
 		}
 
 		final InputStream is = createInputStream();
+		if (null != is) {
 
-		final OutputStream os = new FileOutputStream(downloadFile);
-		// final OutputStream os =
-		// fileSystem.get().openFileOutput(getCachedFile());
-		// FIXME: first download in cache, at the end copy to the real resource.
-		int loaded = 0;
+			final OutputStream os = new FileOutputStream(downloadFile);
+			// final OutputStream os =
+			// fileSystem.get().openFileOutput(getCachedFile());
+			// FIXME: first download in cache, at the end copy to the real
+			// resource.
+			int loaded = 0;
 
-		for (;;) {
-			final int n = is.read(buffer);
+			for (;;) {
+				final int n = is.read(buffer);
 
-			if (n < 0) {
-				break;
+				if (n < 0) {
+					break;
+				}
+
+				os.write(buffer, 0, n);
+				loaded += n;
+
+				if (contentLength > 0) {
+					setDownloadProgress((1.0f * loaded) / contentLength);
+
+				}
 			}
 
-			os.write(buffer, 0, n);
-			loaded += n;
-
-			if (contentLength > 0) {
-				setDownloadProgress((1.0f * loaded) / contentLength);
-
+			if (cachedFile.exists()) {
+				safeDelete(cachedFile);
 			}
+
+			downloadFile.renameTo(cachedFile);
+			FileWriter w = new FileWriter(timestampFile);
+			w.write("downloaded: " + System.currentTimeMillis() + "\n");
 		}
-
-		if (cachedFile.exists()) {
-			safeDelete(cachedFile);
-		}
-
-		downloadFile.renameTo(cachedFile);
-		FileWriter w = new FileWriter(timestampFile);
-		w.write("downloaded: " + System.currentTimeMillis() + "\n");
-
 		setStatus(Status.DOWNLOADED);
 	}
 
 	/**
-	 * *************************************************************************
-	 * ****************************************
-	 * 
-	 * 
-	 * *************************************************************************
-	 * ***************************************.
+	 * Normalized.
 	 * 
 	 * @param url
 	 *            the url
 	 * @return the string
 	 */
-
-	/* package */static String normalized(final URL url) {
+	static String normalized(final URL url) {
 		return url.toExternalForm().replaceAll("://", "/")
 				.replaceAll("[:;#$?&=]", "_");
-		// return url.toExternalForm().replaceAll("[:/;#@\\$\\?\\&]",
-		// "_").replaceAll("_*", "_");
 	}
 
 	/**
-	 * *************************************************************************
-	 * ****************************************
-	 * 
-	 * 
-	 * *************************************************************************
-	 * ***************************************.
+	 * Compute cached file.
 	 */
 	private void computeCachedFile() {
 		Status newStatus = null;
@@ -306,12 +288,7 @@ public class DefaultDownloadable extends Downloadable {
 	}
 
 	/**
-	 * *************************************************************************
-	 * ****************************************
-	 * 
-	 * 
-	 * *************************************************************************
-	 * ***************************************.
+	 * safe delete.
 	 * 
 	 * @param file
 	 *            the file

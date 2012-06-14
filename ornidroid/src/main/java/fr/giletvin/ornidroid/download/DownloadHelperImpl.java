@@ -44,18 +44,21 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 			throws OrnidroidException {
 		String baseUrl = null;
 		String destinationPath = null;
+		MimeType expectedMimeType = null;
 		switch (fileType) {
 		case PICTURE:
 			baseUrl = DownloadConstants.getOrnidroidWebSiteImages()
 					+ File.separator + directoryName;
 			destinationPath = ornidroidMediaHome + File.separator
 					+ directoryName;
+			expectedMimeType = MimeType.jpg;
 			break;
 		case AUDIO:
 			baseUrl = DownloadConstants.getOrnidroidWebSiteAudio()
 					+ File.separator + directoryName;
 			destinationPath = ornidroidMediaHome + File.separator
 					+ directoryName;
+			expectedMimeType = MimeType.mp3;
 			break;
 		default:
 			break;
@@ -66,7 +69,7 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 		if (null != filesToDownload) {
 			for (String fileName : filesToDownload) {
 				File downloadedFile = downloadFile(baseUrl, fileName,
-						destinationPath);
+						destinationPath, expectedMimeType);
 				if (null != downloadedFile && downloadedFile.exists()) {
 					downloadedFiles.add(downloadedFile);
 				}
@@ -81,16 +84,18 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 	 * 
 	 * @see
 	 * fr.giletvin.ornidroid.download.DownloadHelperInterface#downloadFile(java
-	 * .lang.String, java.lang.String, java.lang.String)
+	 * .lang.String, java.lang.String, java.lang.String,
+	 * fr.giletvin.ornidroid.download.MimeType)
 	 */
 	public File downloadFile(String baseUrl, String fileName,
-			String destinationPath) throws OrnidroidException {
+			String destinationPath, MimeType expectedMimeType)
+			throws OrnidroidException {
 		URL url;
 		File downloadedFile = null;
 		try {
 			url = new URL(baseUrl + File.separator + fileName);
 			DefaultDownloadable mediaFileDownloadable = new DefaultDownloadable(
-					url, destinationPath);
+					url, destinationPath, expectedMimeType);
 			mediaFileDownloadable.download();
 			// it is important to download the properties file AFTER the media
 			// since its presence is used to control the validity of the
@@ -98,7 +103,7 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 			url = new URL(baseUrl + File.separator + fileName
 					+ AbstractOrnidroidFile.PROPERTIES_SUFFIX);
 			DefaultDownloadable propertiesFileDownloadable = new DefaultDownloadable(
-					url, destinationPath);
+					url, destinationPath, MimeType.text);
 			propertiesFileDownloadable.download();
 
 			// if the mediaFile exists, return it. Otherwise, we return null
@@ -128,7 +133,7 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 		try {
 			url = new URL(baseUrl + File.separator + CONTENTS_PROPERTIES);
 			DefaultDownloadable contentFileDownloadable = new DefaultDownloadable(
-					url, destinationPath);
+					url, destinationPath, MimeType.text);
 			contentFileDownloadable.download();
 			if (contentFileDownloadable.getFile().exists()) {
 				// contentFileDownloadable.getFile();

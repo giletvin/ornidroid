@@ -13,8 +13,12 @@ public class AbstractTest {
 	/** The Constant TEST_DIRECTORY. */
 	public static final String TEST_DIRECTORY = System
 			.getProperty("java.io.tmpdir") + "/ornidroid_tests";
+
+	/** The Constant ORNIDROID_TEST_WEB_BASE. */
+	public static final String ORNIDROID_TEST_WEB_BASE = "https://github.com/giletvin/ornidroid/wiki/tests";
 	/** The Constant ORNIDROID_TEST_WEB_BASE_RUL. */
-	public static final String ORNIDROID_TEST_WEB_BASE_IMAGE_URL = "http://ornidroid.free.fr/tests/images";
+	public static final String ORNIDROID_TEST_WEB_BASE_IMAGE_URL = ORNIDROID_TEST_WEB_BASE
+			+ "/images";
 
 	/**
 	 * Sets the up.

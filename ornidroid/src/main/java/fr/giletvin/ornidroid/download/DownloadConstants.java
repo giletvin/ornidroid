@@ -19,10 +19,10 @@ public class DownloadConstants {
 	private static final String DOWNLOAD_SITE_PROPERTY_KEY = "ornidroid_download_site";
 
 	/** The Constant DEFAULT_DOWNLOAD_SITE. */
-	private static final String DEFAULT_DOWNLOAD_SITE = "http://ornidroid.free.fr/ornidroid";
+	private static final String DEFAULT_DOWNLOAD_SITE = "https://github.com/giletvin/ornidroid/wiki";
 
 	/** The Constant JUNIT_DOWNLOAD_SITE. */
-	private static final String JUNIT_DOWNLOAD_SITE = "http://ornidroid.free.fr/tests";
+	private static final String JUNIT_DOWNLOAD_SITE = "https://github.com/giletvin/ornidroid/wiki/tests";
 	/** The Constant ORNIDROID_WEB_SITE_ROOT. */
 	private static String ORNIDROID_WEB_SITE_ROOT;
 

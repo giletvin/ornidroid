@@ -19,6 +19,7 @@ import fr.giletvin.ornidroid.bo.OrnidroidFileType;
 import fr.giletvin.ornidroid.download.DownloadConstants;
 import fr.giletvin.ornidroid.download.DownloadHelperImpl;
 import fr.giletvin.ornidroid.download.DownloadHelperInterface;
+import fr.giletvin.ornidroid.download.MimeType;
 import fr.giletvin.ornidroid.helper.BasicConstants;
 import fr.giletvin.ornidroid.helper.Constants;
 import fr.giletvin.ornidroid.helper.OrnidroidError;
@@ -57,11 +58,11 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 			// try to download it if it doesnt not exist
 			File dbFile = downloadHelper.downloadFile(
 					DownloadConstants.getOrnidroidWebSite(), dbName,
-					localDatabaseDirectory);
+					localDatabaseDirectory, MimeType.text);
 			// try to download the top file
 			topFile = downloadHelper.downloadFile(
 					DownloadConstants.getOrnidroidWebSite(), topFileName,
-					localDatabaseDirectory);
+					localDatabaseDirectory, MimeType.text);
 			if (null == topFile || null == dbFile) {
 				if (null != dbFile) {
 					dbFile.delete();

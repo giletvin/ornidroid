@@ -48,18 +48,21 @@ public interface DownloadHelperInterface {
 			throws OrnidroidException;
 
 	/**
-	 * Download a media file (picture or sound).
+	 * Download a file (whatever : sound, picture, database).
 	 * 
 	 * @param baseUrl
 	 *            the base url containing the file
 	 * @param fileName
-	 *            the media file name
+	 *            the file name
 	 * @param destinationPath
 	 *            : local directory where the file is to be put.
+	 * @param expectedMimeType
+	 *            : expected mime type of the downloaded file. If null, no check
+	 *            is performed
 	 * @return the file, can be null if the file doesnt not exist
 	 * @throws OrnidroidException
 	 *             if an exception occurs
 	 */
-	File downloadFile(String baseUrl, String fileName, String destinationPath)
-			throws OrnidroidException;
+	File downloadFile(String baseUrl, String fileName, String destinationPath,
+			MimeType expectedMimeType) throws OrnidroidException;
 }

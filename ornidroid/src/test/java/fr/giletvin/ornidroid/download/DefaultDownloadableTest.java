@@ -27,7 +27,36 @@ public class DefaultDownloadableTest extends AbstractTest {
 				+ "/barge_a_queue_noire/barge_a_queue_noire_1.jpg");
 
 		final Downloadable fixture = new DefaultDownloadable(url,
-				TEST_DIRECTORY);
+				TEST_DIRECTORY, MimeType.jpg);
+		fixture.download();
+		Assert.assertTrue(fixture.getFile().exists());
+
+	}
+
+	/**
+	 * Test real download of the sqlite db.
+	 * 
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testRealDownloadRawFiles() throws Exception {
+
+		URL url = new URL(ORNIDROID_TEST_WEB_BASE_IMAGE_URL
+				+ "/barge_a_queue_noire/contents.properties");
+
+		Downloadable fixture = new DefaultDownloadable(url, TEST_DIRECTORY,
+				MimeType.text);
+		fixture.download();
+		Assert.assertTrue(fixture.getFile().exists());
+
+		url = new URL(ORNIDROID_TEST_WEB_BASE + "/ornidroid.sqlite");
+		fixture = new DefaultDownloadable(url, TEST_DIRECTORY, MimeType.text);
+		fixture.download();
+		Assert.assertTrue(fixture.getFile().exists());
+
+		url = new URL(ORNIDROID_TEST_WEB_BASE + "/ornidroid.sqlite.top");
+		fixture = new DefaultDownloadable(url, TEST_DIRECTORY, MimeType.text);
 		fixture.download();
 		Assert.assertTrue(fixture.getFile().exists());
 
@@ -42,10 +71,10 @@ public class DefaultDownloadableTest extends AbstractTest {
 	@Test
 	public void testNotFoundDownload() throws Exception {
 		final URL url = new URL(ORNIDROID_TEST_WEB_BASE_IMAGE_URL
-				+ "/not_found_file.txt");
+				+ "/not_found_file.jpg");
 
 		final Downloadable fixture = new DefaultDownloadable(url,
-				TEST_DIRECTORY);
+				TEST_DIRECTORY, MimeType.jpg);
 		fixture.download();
 		Assert.assertFalse(fixture.getFile().exists());
 	}
@@ -59,10 +88,10 @@ public class DefaultDownloadableTest extends AbstractTest {
 	@Test
 	public void testErrorWebSiteDownload() throws Exception {
 		final URL url = new URL(
-				"http://unknownwebsite.free.fr/tmp/not_found_file.txt");
+				"http://unknownwebsite.free.fr/tmp/not_found_file.jpg");
 
 		final Downloadable fixture = new DefaultDownloadable(url,
-				TEST_DIRECTORY);
+				TEST_DIRECTORY, MimeType.jpg);
 		fixture.download();
 		Assert.assertFalse(fixture.getFile().exists());
 	}

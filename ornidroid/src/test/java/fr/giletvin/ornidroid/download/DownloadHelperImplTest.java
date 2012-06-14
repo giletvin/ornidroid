@@ -76,7 +76,8 @@ public class DownloadHelperImplTest extends AbstractTest {
 	public void testReadContentsFromUnknownDirectory()
 			throws OrnidroidException {
 		String[] filesToDownload = downloadHelper.readContentFile(
-				ORNIDROID_TEST_WEB_BASE_IMAGE_URL + "/unknown_bird", TEST_DIRECTORY);
+				ORNIDROID_TEST_WEB_BASE_IMAGE_URL + "/unknown_bird",
+				TEST_DIRECTORY);
 		Assert.assertNull(filesToDownload);
 
 	}
@@ -91,7 +92,7 @@ public class DownloadHelperImplTest extends AbstractTest {
 	public void testDownloadFile() throws OrnidroidException {
 		File downloadedFile = downloadHelper.downloadFile(
 				ORNIDROID_TEST_WEB_BASE_IMAGE_URL + "/barge_a_queue_noire",
-				"barge_a_queue_noire_1.jpg", TEST_DIRECTORY);
+				"barge_a_queue_noire_1.jpg", TEST_DIRECTORY, MimeType.jpg);
 
 		Assert.assertNotNull(downloadedFile);
 		Assert.assertTrue(downloadedFile.exists());
@@ -106,7 +107,7 @@ public class DownloadHelperImplTest extends AbstractTest {
 	public void testDownloadUnknownFile() throws OrnidroidException {
 		File downloadedFile = downloadHelper.downloadFile(
 				ORNIDROID_TEST_WEB_BASE_IMAGE_URL + "/barge_a_queue_noire",
-				"unknownFile.jpg", TEST_DIRECTORY);
+				"unknownFile.jpg", TEST_DIRECTORY, MimeType.jpg);
 		Assert.assertNull(downloadedFile);
 	}
 

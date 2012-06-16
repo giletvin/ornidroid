@@ -13,93 +13,68 @@
 	<!-- The name of the application. -->
 	<string name="app_name">Ornidroid</string>
 
-	<!-- The label for use as a searchable item -->
-	<string name="search_label">Dictionary</string>
-
 	<!-- The hint text that appears in the search box. -->
-	<string name="search_hint">Recherche dans la base</string>
+	<string name="search_hint">Search</string>
 
 	<!-- The menu entry that invokes search. -->
-	<string name="menu_search">Recherche par nom</string>
+	<string name="menu_search">Search by name</string>
 
-	<string name="menu_search_multi">Recherche multicritères</string>
+	<string name="menu_search_multi">Multi-criteria search</string>
 
-	<string name="menu_about">A propos</string>
+	<string name="menu_about">About</string>
 
-	<!-- The description that will show up in the search settings for this source. -->
-	<string name="settings_description">Definitions of words</string>
-
-	<!-- Shown above search results when we receive a search request. -->
-	<plurals name="search_results">
-		<item quantity="one">d résultat pour \"s\":</item>
-		<item quantity="other">d
-			résultats pour \"s\":
-		</item>
-	</plurals>
-
-	<!-- Search failure message. -->
-	<string name="no_results">Pas de résultat trouvé pour \"%s\"</string>
 	<string name="ok">OK</string>
 
 	<!-- activity titles -->
-	<string name="preferences">Préférences</string>
-	<string name="about">A propos</string>
-	<string name="sounds">Sons</string>
-	<string name="bird_info">Fiche oiseau</string>
-	<string name="bird_image">Images</string>
-	<string name="bird_image_big">Photo zoomée</string>
-	<string name="bird_names">Taxonomie</string>
+	<string name="preferences">Preferences</string>
+	<string name="about">About</string>
+	<string name="sounds">Sounds</string>
+	<string name="bird_info">Bird info</string>
+	<string name="bird_image">Pictures</string>
+	<string name="bird_image_big">Zoomed picture</string>
+	<string name="bird_names">Taxonomy</string>
 
 	<!-- labes used in preferences -->
 	<string name="preferences_home_key">OrnidroidHome</string>
-	<string name="preferences_home_label">Répertoire d\'installation de la base de données
-		ornidroid
+	<string name="preferences_home_label">Installation directory of the database
 	</string>
-	<string name="preferences_lang_key">OrnidroidLang</string>
-	<string name="preferences_lang_label">Langue par défaut</string>
+	<string name="preferences_lang_key">OrnidroidSearchLang</string>
+	<string name="preferences_lang_label">Language of the search engine</string>
 
 
 	<!-- pictures info dialog box -->
-	<string name="dialog_picture_title">Informations sur l\'image</string>
+	<string name="dialog_picture_title">Picture info</string>
 	<string name="dialog_picture_description">Description</string>
-	<string name="dialog_picture_author">Auteur</string>
+	<string name="dialog_picture_author">Author</string>
 	<string name="dialog_picture_source">Source</string>
 	<string name="dialog_picture_licence">Licence</string>
 
 	<!-- alert dialogs from the home activity -->
-	<string name="dialog_alert_ornidroid_home_not_found">Le répertoire d\'installation des données
-		d\'ornidroid est
-		inexistant ou incohérent ! Veuillez le renseigner dans
-		les préférences de
-		l\'application
+	<string name="dialog_alert_ornidroid_home_not_found">The installation directory of Ornidroid is deleted
+		or corrupt! Please set it in the application preferences.
 	</string>
-	<string name="dialog_alert_ornidroid_database_not_found">La base de données d\'ornidroid est introuvable
-		dans le répertoire d\'installation. Ornidroid ne peut pas fonctionner.
+	<string name="dialog_alert_ornidroid_database_not_found">Unable to find the ornidroid database in the
+		installation directory.
 	</string>
-	<string name="dialog_alert_download_error">La base de données d\'ornidroid est introuvable
-		dans le répertoire d\'installation et le téléchargement depuis
-		Internet a échoué. Ornidroid ne peut pas fonctionner.
+	<string name="dialog_alert_download_error">Unable to find the ornidroid database in the
+		installation directory. The download from the website failed. 
 	</string>
 
 	<!-- autres labels -->
-	<string name="scientific_name">Nom scientifique</string>
-	<string name="scientific_order">Ordre</string>
-	<string name="scientific_family">Famille</string>
+	<string name="scientific_name">Scientific name</string>
+	<string name="scientific_order">Order</string>
+	<string name="scientific_family">Family</string>
 
-	<string name="credits">Crédits</string>
+	<string name="credits">Credits</string>
 
-	<string name="no_records">Pas d\'enregistrement. Vérifier et télécharger depuis
-		Internet ?</string>
-	<string name="no_pictures">Pas de photo. Vérifier et télécharger depuis
-		Internet ?
+	<string name="no_records">No records. Do you want to check if records are available on the website ? (Internet connection is required)
 	</string>
-	<string name="about_ornidroid">Ornidroid version 1.0.\nCette application est sous
-		licence Creative Commons BY
-		NC\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.fr
+	<string name="no_pictures">No pictures. Do you want to check if records are available on the website ? (Internet connection is required)
 	</string>
-	<string name="download_in_progress">Téléchargement en cours ...</string>
-	<string name="download_please_wait">Veuillez patienter pendant le téléchargement.
-		L\'écran va se rafraîchir automatiquement.</string>
-
-
+	<string name="about_ornidroid">Ornidroid.\nLicence Creative Commons BY
+		NC\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.en
+	</string>
+	<string name="download_in_progress">Download in progress ...</string>
+	<string name="download_please_wait">Please wait during download. The screen will automatically refresh.
+	</string>
 </resources>

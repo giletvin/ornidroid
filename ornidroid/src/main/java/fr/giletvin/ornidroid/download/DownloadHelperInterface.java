@@ -56,13 +56,10 @@ public interface DownloadHelperInterface {
 	 *            the file name
 	 * @param destinationPath
 	 *            : local directory where the file is to be put.
-	 * @param expectedMimeType
-	 *            : expected mime type of the downloaded file. If null, no check
-	 *            is performed
 	 * @return the file, can be null if the file doesnt not exist
 	 * @throws OrnidroidException
 	 *             if an exception occurs
 	 */
-	File downloadFile(String baseUrl, String fileName, String destinationPath,
-			MimeType expectedMimeType) throws OrnidroidException;
+	File downloadFile(String baseUrl, String fileName, String destinationPath)
+			throws OrnidroidException;
 }

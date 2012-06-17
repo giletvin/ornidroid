@@ -92,7 +92,7 @@ public class DownloadHelperImplTest extends AbstractTest {
 	public void testDownloadFile() throws OrnidroidException {
 		File downloadedFile = downloadHelper.downloadFile(
 				ORNIDROID_TEST_WEB_BASE_IMAGE_URL + "/barge_a_queue_noire",
-				"barge_a_queue_noire_1.jpg", TEST_DIRECTORY, MimeType.jpg);
+				"barge_a_queue_noire_1.jpg", TEST_DIRECTORY);
 
 		Assert.assertNotNull(downloadedFile);
 		Assert.assertTrue(downloadedFile.exists());
@@ -107,7 +107,7 @@ public class DownloadHelperImplTest extends AbstractTest {
 	public void testDownloadUnknownFile() throws OrnidroidException {
 		File downloadedFile = downloadHelper.downloadFile(
 				ORNIDROID_TEST_WEB_BASE_IMAGE_URL + "/barge_a_queue_noire",
-				"unknownFile.jpg", TEST_DIRECTORY, MimeType.jpg);
+				"unknownFile.jpg", TEST_DIRECTORY);
 		Assert.assertNull(downloadedFile);
 	}
 

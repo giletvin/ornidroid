@@ -27,7 +27,7 @@ public class DefaultDownloadableTest extends AbstractTest {
 				+ "/barge_a_queue_noire/barge_a_queue_noire_1.jpg");
 
 		final Downloadable fixture = new DefaultDownloadable(url,
-				TEST_DIRECTORY, MimeType.jpg);
+				TEST_DIRECTORY);
 		fixture.download();
 		Assert.assertTrue(fixture.getFile().exists());
 
@@ -45,18 +45,17 @@ public class DefaultDownloadableTest extends AbstractTest {
 		URL url = new URL(ORNIDROID_TEST_WEB_BASE_IMAGE_URL
 				+ "/barge_a_queue_noire/contents.properties");
 
-		Downloadable fixture = new DefaultDownloadable(url, TEST_DIRECTORY,
-				MimeType.text);
+		Downloadable fixture = new DefaultDownloadable(url, TEST_DIRECTORY);
 		fixture.download();
 		Assert.assertTrue(fixture.getFile().exists());
 
 		url = new URL(ORNIDROID_TEST_WEB_BASE + "/ornidroid.sqlite");
-		fixture = new DefaultDownloadable(url, TEST_DIRECTORY, MimeType.text);
+		fixture = new DefaultDownloadable(url, TEST_DIRECTORY);
 		fixture.download();
 		Assert.assertTrue(fixture.getFile().exists());
 
 		url = new URL(ORNIDROID_TEST_WEB_BASE + "/ornidroid.sqlite.top");
-		fixture = new DefaultDownloadable(url, TEST_DIRECTORY, MimeType.text);
+		fixture = new DefaultDownloadable(url, TEST_DIRECTORY);
 		fixture.download();
 		Assert.assertTrue(fixture.getFile().exists());
 
@@ -74,7 +73,7 @@ public class DefaultDownloadableTest extends AbstractTest {
 				+ "/not_found_file.jpg");
 
 		final Downloadable fixture = new DefaultDownloadable(url,
-				TEST_DIRECTORY, MimeType.jpg);
+				TEST_DIRECTORY);
 		fixture.download();
 		Assert.assertFalse(fixture.getFile().exists());
 	}
@@ -91,7 +90,7 @@ public class DefaultDownloadableTest extends AbstractTest {
 				"http://unknownwebsite.free.fr/tmp/not_found_file.jpg");
 
 		final Downloadable fixture = new DefaultDownloadable(url,
-				TEST_DIRECTORY, MimeType.jpg);
+				TEST_DIRECTORY);
 		fixture.download();
 		Assert.assertFalse(fixture.getFile().exists());
 	}

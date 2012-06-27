@@ -15,6 +15,40 @@ import fr.giletvin.ornidroid.tests.AbstractTest;
 public class DefaultDownloadableTest extends AbstractTest {
 
 	/**
+	 * Test error web site download.
+	 * 
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testErrorWebSiteDownload() throws Exception {
+		final URL url = new URL(
+				"http://unknownwebsite.free.fr/tmp/not_found_file.jpg");
+
+		final Downloadable fixture = new DefaultDownloadable(url,
+				TEST_DIRECTORY);
+		fixture.download();
+		Assert.assertFalse(fixture.getFile().exists());
+	}
+
+	/**
+	 * Test not found download.
+	 * 
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testNotFoundDownload() throws Exception {
+		final URL url = new URL(ORNIDROID_TEST_WEB_BASE_IMAGE_URL
+				+ "/not_found_file.jpg");
+
+		final Downloadable fixture = new DefaultDownloadable(url,
+				TEST_DIRECTORY);
+		fixture.download();
+		Assert.assertFalse(fixture.getFile().exists());
+	}
+
+	/**
 	 * Test real download.
 	 * 
 	 * @throws Exception
@@ -54,45 +88,11 @@ public class DefaultDownloadableTest extends AbstractTest {
 		fixture.download();
 		Assert.assertTrue(fixture.getFile().exists());
 
-		url = new URL(ORNIDROID_TEST_WEB_BASE + "/ornidroid.sqlite.top");
+		url = new URL(ORNIDROID_TEST_WEB_BASE + "/ornidroid.sqlite.properties");
 		fixture = new DefaultDownloadable(url, TEST_DIRECTORY);
 		fixture.download();
 		Assert.assertTrue(fixture.getFile().exists());
 
-	}
-
-	/**
-	 * Test not found download.
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void testNotFoundDownload() throws Exception {
-		final URL url = new URL(ORNIDROID_TEST_WEB_BASE_IMAGE_URL
-				+ "/not_found_file.jpg");
-
-		final Downloadable fixture = new DefaultDownloadable(url,
-				TEST_DIRECTORY);
-		fixture.download();
-		Assert.assertFalse(fixture.getFile().exists());
-	}
-
-	/**
-	 * Test error web site download.
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void testErrorWebSiteDownload() throws Exception {
-		final URL url = new URL(
-				"http://unknownwebsite.free.fr/tmp/not_found_file.jpg");
-
-		final Downloadable fixture = new DefaultDownloadable(url,
-				TEST_DIRECTORY);
-		fixture.download();
-		Assert.assertFalse(fixture.getFile().exists());
 	}
 
 }

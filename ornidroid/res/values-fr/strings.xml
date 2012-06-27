@@ -25,7 +25,7 @@
 
 
 	<!-- Search failure message. -->
-	
+
 	<string name="ok">OK</string>
 
 	<!-- activity titles -->
@@ -75,8 +75,10 @@
 
 	<string name="credits">Crédits</string>
 
-	<string name="no_records">Pas d\'enregistrement. Vérifier et télécharger depuis
-		Internet ?</string>
+	<string name="no_records">Pas d\'enregistrement. Vérifier et télécharger
+		depuis
+		Internet ?
+	</string>
 	<string name="no_pictures">Pas de photo. Vérifier et télécharger depuis
 		Internet ?
 	</string>
@@ -86,7 +88,10 @@
 	</string>
 	<string name="download_in_progress">Téléchargement en cours ...</string>
 	<string name="download_please_wait">Veuillez patienter pendant le téléchargement.
-		L\'écran va se rafraîchir automatiquement.</string>
-
+		L\'écran va se rafraîchir automatiquement.
+	</string>
+	<string name="no_resources_online">Désolé, pas de fichier à télécharger depuis
+		Internet.
+	</string>
 
 </resources>

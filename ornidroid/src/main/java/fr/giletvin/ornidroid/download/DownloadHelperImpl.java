@@ -22,14 +22,64 @@ import fr.giletvin.ornidroid.helper.OrnidroidException;
  */
 public class DownloadHelperImpl implements DownloadHelperInterface {
 
-	/** The Constant FILES_SEPARATOR_PROPERTY_VALUE. */
-	private static final String FILES_SEPARATOR_PROPERTY_VALUE = ",";
+	/** The Constant CONTENTS_PROPERTIES. */
+	private static final String CONTENTS_PROPERTIES = "contents.properties";
 
 	/** The Constant FILES_PROPERTY_KEY. */
 	private static final String FILES_PROPERTY_KEY = "files";
 
-	/** The Constant CONTENTS_PROPERTIES. */
-	private static final String CONTENTS_PROPERTIES = "contents.properties";
+	/** The Constant FILES_SEPARATOR_PROPERTY_VALUE. */
+	private static final String FILES_SEPARATOR_PROPERTY_VALUE = ",";
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.giletvin.ornidroid.download.DownloadHelperInterface#downloadFile(java
+	 * .lang.String, java.lang.String, java.lang.String,
+	 * fr.giletvin.ornidroid.download.MimeType)
+	 */
+	public File downloadFile(String baseUrl, String fileName,
+			String destinationPath) throws OrnidroidException {
+		URL url;
+		File downloadedFile = null;
+		try {
+			url = new URL(baseUrl + File.separator + fileName);
+			DefaultDownloadable mediaFileDownloadable = new DefaultDownloadable(
+					url, destinationPath);
+			mediaFileDownloadable.download();
+			if (mediaFileDownloadable.getStatus().equals(
+					Downloadable.Status.BROKEN)) {
+
+				throw new OrnidroidException(
+						OrnidroidError.ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST);
+			}
+			// it is important to download the properties file AFTER the media
+			// since its presence is used to control the validity of the
+			// downloading
+			url = new URL(baseUrl + File.separator + fileName
+					+ AbstractOrnidroidFile.PROPERTIES_SUFFIX);
+			DefaultDownloadable propertiesFileDownloadable = new DefaultDownloadable(
+					url, destinationPath);
+			propertiesFileDownloadable.download();
+			if (propertiesFileDownloadable.getStatus().equals(
+					Downloadable.Status.BROKEN)) {
+
+				throw new OrnidroidException(
+						OrnidroidError.ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST);
+			}
+
+			// if the mediaFile exists, return it. Otherwise, we return null
+			if ((mediaFileDownloadable.getFile() != null)
+					&& mediaFileDownloadable.getFile().exists()) {
+				downloadedFile = mediaFileDownloadable.getFile();
+			}
+		} catch (MalformedURLException e) {
+			throw new OrnidroidException(
+					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR);
+		}
+		return downloadedFile;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -68,51 +118,13 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 			for (String fileName : filesToDownload) {
 				File downloadedFile = downloadFile(baseUrl, fileName,
 						destinationPath);
-				if (null != downloadedFile && downloadedFile.exists()) {
+				if ((null != downloadedFile) && downloadedFile.exists()) {
 					downloadedFiles.add(downloadedFile);
 				}
 			}
 		}
 		return downloadedFiles;
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.giletvin.ornidroid.download.DownloadHelperInterface#downloadFile(java
-	 * .lang.String, java.lang.String, java.lang.String,
-	 * fr.giletvin.ornidroid.download.MimeType)
-	 */
-	public File downloadFile(String baseUrl, String fileName,
-			String destinationPath) throws OrnidroidException {
-		URL url;
-		File downloadedFile = null;
-		try {
-			url = new URL(baseUrl + File.separator + fileName);
-			DefaultDownloadable mediaFileDownloadable = new DefaultDownloadable(
-					url, destinationPath);
-			mediaFileDownloadable.download();
-			// it is important to download the properties file AFTER the media
-			// since its presence is used to control the validity of the
-			// downloading
-			url = new URL(baseUrl + File.separator + fileName
-					+ AbstractOrnidroidFile.PROPERTIES_SUFFIX);
-			DefaultDownloadable propertiesFileDownloadable = new DefaultDownloadable(
-					url, destinationPath);
-			propertiesFileDownloadable.download();
-
-			// if the mediaFile exists, return it. Otherwise, we return null
-			if (mediaFileDownloadable.getFile() != null
-					&& mediaFileDownloadable.getFile().exists()) {
-				downloadedFile = mediaFileDownloadable.getFile();
-			}
-		} catch (MalformedURLException e) {
-			throw new OrnidroidException(
-					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR);
-		}
-		return downloadedFile;
 	}
 
 	/*
@@ -132,6 +144,11 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 			DefaultDownloadable contentFileDownloadable = new DefaultDownloadable(
 					url, destinationPath);
 			contentFileDownloadable.download();
+			if (contentFileDownloadable.getStatus().equals(
+					Downloadable.Status.BROKEN)) {
+				throw new OrnidroidException(
+						OrnidroidError.ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST);
+			}
 			if (contentFileDownloadable.getFile().exists()) {
 				// contentFileDownloadable.getFile();
 				fis = new FileInputStream(contentFileDownloadable.getFile());

@@ -9,7 +9,7 @@ cat insert_data_table_taxonomy.sql | sqlite3 ornidroid.sqlite
 cat insert_data_table_bird_description.sql | sqlite3 ornidroid.sqlite
 cat insert_data_table_scientific_order_and_family.sql | sqlite3 ornidroid.sqlite
 php add_traductions.php
-touch ornidroid.sqlite.top
+touch ornidroid.sqlite.properties
 
 
 

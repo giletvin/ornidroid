@@ -30,8 +30,31 @@ import fr.giletvin.ornidroid.service.OrnidroidServiceFactory;
  */
 public abstract class AbstractDownloadableMediaActivity extends Activity
 		implements Runnable, OnClickListener {
+	/** The Constant BROKEN_LINK. */
+	public static final String BROKEN_LINK_INTENT_PARAM = "BROKEN_LINK_INTENT_PARAM";
+
+	/** The Constant DOWNLOAD_FINISHED. */
+	protected static final int DOWNLOAD_FINISHED = 2;
+
+	/** The Constant DOWNLOAD_STARTED. */
+	protected static final int DOWNLOAD_STARTED = 0;
+
+	/** The Constant PROBLEM_DIRECTORY_ID. */
+	protected static final int PROBLEM_DIRECTORY_ID = 2;
+
+	/** The Constant PROBLEM_DOWNLOAD_ID. */
+	protected static final int PROBLEM_DOWNLOAD_ID = 1;
+
+	/** The Constant DOWNLOAD_NOT_STARTED. */
+	private static final int DOWNLOAD_NOT_STARTED = 1;
+
+	/** The Constant PROGRESS_BAR_MAX. */
+	private static final int PROGRESS_BAR_MAX = 100;
 	/** The bird. */
 	private Bird bird;
+
+	/** The broken link flag. */
+	private boolean brokenLinkFlag;
 
 	/** The download from internet button. */
 	private ImageView downloadFromInternetButton;
@@ -39,57 +62,32 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	/** The download info text. */
 	private TextView downloadInfoText;
 
-	/**
-	 * Gets the bird.
-	 * 
-	 * @return the bird
-	 */
-	protected Bird getBird() {
-		return bird;
-	}
-
-	/** The Constant PROGRESS_BAR_MAX. */
-	private static final int PROGRESS_BAR_MAX = 100;
-	/** The Constant DOWNLOAD_FINISHED. */
-	protected static final int DOWNLOAD_FINISHED = 2;
-
-	/** The Constant DOWNLOAD_STARTED. */
-	protected static final int DOWNLOAD_STARTED = 0;
-
-	/** The Constant DOWNLOAD_NOT_STARTED. */
-	private static final int DOWNLOAD_NOT_STARTED = 1;
-
-	/** The Constant PROBLEM_DOWNLOAD_ID. */
-	protected static final int PROBLEM_DOWNLOAD_ID = 1;
-
-	/** The Constant PROBLEM_DIRECTORY_ID. */
-	protected static final int PROBLEM_DIRECTORY_ID = 2;
-	/** The progress bar. */
-	private ProgressDialog progressBar;
-
-	/** The progress bar status. */
-	private int progressBarStatus = 0;
-
-	/** The progress bar handler. */
-	private Handler progressBarHandler = new Handler();
-
+	/** The download progress. */
+	private final int downloadProgress = 0;
 	/** The download status. */
 	private int downloadStatus;
 
-	/** The download progress. */
-	private int downloadProgress = 0;
-
 	/** The ornidroid io service. */
 	private final IOrnidroidIOService ornidroidIOService;
+
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
+
+	/** The progress bar. */
+	private ProgressDialog progressBar;
+
+	/** The progress bar handler. */
+	private final Handler progressBarHandler = new Handler();
+
+	/** The progress bar status. */
+	private int progressBarStatus = 0;
 
 	/**
 	 * Instantiates a new abstract downloadable media activity.
 	 */
 	public AbstractDownloadableMediaActivity() {
-		ornidroidService = OrnidroidServiceFactory.getService(this);
-		ornidroidIOService = new OrnidroidIOServiceImpl();
+		this.ornidroidService = OrnidroidServiceFactory.getService(this);
+		this.ornidroidIOService = new OrnidroidIOServiceImpl();
 	}
 
 	/**
@@ -98,83 +96,31 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	 * @return the download status
 	 */
 	public int getDownloadStatus() {
-		return downloadStatus;
+		return this.downloadStatus;
 	}
 
 	/**
-	 * Sets the download status.
+	 * Gets the file type.
 	 * 
-	 * @param downloadStatus
-	 *            the new download status
+	 * @return the file type
 	 */
-	public void setDownloadStatus(int downloadStatus) {
-		this.downloadStatus = downloadStatus;
-	}
+	public abstract OrnidroidFileType getFileType();
 
-	/**
-	 * Start download.
-	 */
-	protected void startDownload() {
-		downloadStatus = DOWNLOAD_NOT_STARTED;
-		// prepare for a progress bar dialog
-		progressBar = new ProgressDialog(this);
-		progressBar.setCancelable(true);
-		progressBar.setMessage(this.getResources().getText(
-				R.string.download_in_progress));
-		progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		progressBar.setProgress(0);
-		progressBar.setMax(100);
-		progressBar.show();
-
-		// reset progress bar status
-		progressBarStatus = 0;
-
-		new Thread(this).start();
-	}
-
-	/**
-	 * Start download thread and compute download progress.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @return the int : this method is periodically called by the progress bar
-	 *         thread. When the download is finished, the return is 100%.
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
-	protected int startDownloadThreadAndComputeDownloadProgress() {
-		if (downloadStatus == DOWNLOAD_NOT_STARTED) {
-			// if download is not started, start it in a new thread
-			downloadStatus = DOWNLOAD_STARTED;
-			new Thread(new Runnable() {
-				public void run() {
+	public void onClick(View v) {
 
-					try {
-						ornidroidIOService.downloadMediaFiles(
-								getMediaHomeDirectory(), bird, getFileType());
-
-					} catch (OrnidroidException e) {
-						Log.e(Constants.LOG_TAG,
-								"Download pb " + e.getErrorType() + " " + e);
-
-					} finally {
-						downloadStatus = DOWNLOAD_FINISHED;
-					}
-
-				}
-			}).start();
+		if (v == this.downloadFromInternetButton) {
+			getSpecificContentLayout().removeAllViews();
+			this.downloadInfoText = new TextView(this);
+			this.downloadInfoText.setText(R.string.download_please_wait);
+			getSpecificContentLayout().addView(this.downloadInfoText);
+			startDownload();
 		}
-		if (downloadStatus != DOWNLOAD_FINISHED) {
-			return computeDownloadProgress();
-		} else {
-			return PROGRESS_BAR_MAX;
-		}
-	}
 
-	/**
-	 * Compute download progress.
-	 * 
-	 * @return the int
-	 */
-	private int computeDownloadProgress() {
-		return (int) Math.floor(downloadProgress
-				+ (PROGRESS_BAR_MAX - downloadProgress) / 5);
 	}
 
 	/*
@@ -191,10 +137,10 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	 */
 	public void run() {
 
-		while (progressBarStatus < 100) {
+		while (this.progressBarStatus < 100) {
 
 			// process some tasks
-			progressBarStatus = startDownloadThreadAndComputeDownloadProgress();
+			this.progressBarStatus = startDownloadThreadAndComputeDownloadProgress();
 
 			// your computer is too fast, sleep 1 second
 			try {
@@ -208,15 +154,16 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 			}
 
 			// Update the progress bar
-			progressBarHandler.post(new Runnable() {
+			this.progressBarHandler.post(new Runnable() {
 				public void run() {
-					progressBar.setProgress(progressBarStatus);
+					AbstractDownloadableMediaActivity.this.progressBar
+							.setProgress(AbstractDownloadableMediaActivity.this.progressBarStatus);
 				}
 			});
 		}
 
 		// ok, file is downloaded,
-		if (progressBarStatus >= 100) {
+		if (this.progressBarStatus >= 100) {
 
 			// sleep 2 seconds, so that you can see the 100%
 			try {
@@ -228,7 +175,7 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 			}
 
 			// close the progress bar dialog
-			progressBar.dismiss();
+			this.progressBar.dismiss();
 
 			// now that the files have been downloaded, force a reopen of the
 			// same screen with an intent
@@ -240,6 +187,9 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 			// open.
 			intent.putExtra(BirdInfoActivity.INTENT_ACTIVITY_TO_OPEN,
 					OrnidroidFileType.getCode(getFileType()));
+			intent.putExtra(
+					AbstractDownloadableMediaActivity.BROKEN_LINK_INTENT_PARAM,
+					this.brokenLinkFlag);
 			startActivity(intent);
 			finish();
 		}
@@ -247,11 +197,36 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	}
 
 	/**
-	 * Gets the file type.
+	 * Sets the download status.
 	 * 
-	 * @return the file type
+	 * @param downloadStatus
+	 *            the new download status
 	 */
-	public abstract OrnidroidFileType getFileType();
+	public void setDownloadStatus(int downloadStatus) {
+		this.downloadStatus = downloadStatus;
+	}
+
+	/**
+	 * Gets the bird.
+	 * 
+	 * @return the bird
+	 */
+	protected Bird getBird() {
+		return this.bird;
+	}
+
+	/**
+	 * 
+	 * Gets the specific content layout.
+	 * 
+	 * @return the specific content layout
+	 */
+	protected abstract LinearLayout getSpecificContentLayout();
+
+	/**
+	 * Hook on create. Here is the specific onCreate stuff for the subclasses.
+	 */
+	protected abstract void hookOnCreate();
 
 	/**
 	 * Load media files locally.
@@ -261,13 +236,99 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	 */
 	protected void loadMediaFilesLocally() throws OrnidroidException {
 
-		File fileDirectory = new File(Constants.getOrnidroidBirdHomeMedia(bird,
-				getFileType()));
-		ornidroidIOService.checkAndCreateDirectory(fileDirectory);
+		File fileDirectory = new File(Constants.getOrnidroidBirdHomeMedia(
+				this.bird, getFileType()));
+		this.ornidroidIOService.checkAndCreateDirectory(fileDirectory);
 
-		ornidroidIOService.loadMediaFiles(getMediaHomeDirectory(), bird,
-				getFileType());
+		this.ornidroidIOService.loadMediaFiles(getMediaHomeDirectory(),
+				this.bird, getFileType());
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
+	@Override
+	protected final void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		this.bird = this.ornidroidService.getCurrentBird();
+
+		this.brokenLinkFlag = getIntent().getBooleanExtra(
+				BROKEN_LINK_INTENT_PARAM, false);
+		try {
+			loadMediaFilesLocally();
+		} catch (OrnidroidException e) {
+			Log.e(Constants.LOG_TAG, "Error reading media files of bird "
+					+ this.bird.getTaxon() + " e");
+		}
+		hookOnCreate();
+	}
+
+	/**
+	 * Prints the download button and info.
+	 */
+	protected void printDownloadButtonAndInfo() {
+		getSpecificContentLayout().setOrientation(LinearLayout.VERTICAL);
+		getSpecificContentLayout().setGravity(Gravity.CENTER_HORIZONTAL);
+
+		TextView noMediaMessage = new TextView(this);
+		getSpecificContentLayout().addView(noMediaMessage);
+		if (this.brokenLinkFlag) {
+			noMediaMessage.setText(R.string.no_resources_online);
+
+		} else {
+			switch (getFileType()) {
+			case AUDIO:
+				noMediaMessage.setText(R.string.no_records);
+				break;
+			case PICTURE:
+				noMediaMessage.setText(R.string.no_pictures);
+				break;
+			}
+
+			this.downloadFromInternetButton = new ImageView(this);
+			this.downloadFromInternetButton.setOnClickListener(this);
+			this.downloadFromInternetButton
+					.setImageResource(R.drawable.ic_file_download);
+			this.downloadFromInternetButton.setLayoutParams(new LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+			getSpecificContentLayout().addView(this.downloadFromInternetButton);
+		}
+
+	}
+
+	/**
+	 * Start download.
+	 */
+	protected void startDownload() {
+		this.downloadStatus = DOWNLOAD_NOT_STARTED;
+		// prepare for a progress bar dialog
+		this.progressBar = new ProgressDialog(this);
+		this.progressBar.setCancelable(true);
+		this.progressBar.setMessage(this.getResources().getText(
+				R.string.download_in_progress));
+		this.progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		this.progressBar.setProgress(0);
+		this.progressBar.setMax(100);
+		this.progressBar.show();
+
+		// reset progress bar status
+		this.progressBarStatus = 0;
+
+		new Thread(this).start();
+	}
+
+	/**
+	 * Compute download progress.
+	 * 
+	 * @return the int
+	 */
+	private int computeDownloadProgress() {
+		return (int) Math.floor(this.downloadProgress
+				+ ((PROGRESS_BAR_MAX - this.downloadProgress) / 5));
 	}
 
 	/**
@@ -288,77 +349,42 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 		return mediaHomeDirectory;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
-	 */
-	@Override
-	protected final void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		bird = ornidroidService.getCurrentBird();
-		try {
-			loadMediaFilesLocally();
-		} catch (OrnidroidException e) {
-			Log.e(Constants.LOG_TAG, "Error reading media files of bird "
-					+ bird.getTaxon() + " e");
-		}
-		hookOnCreate();
-	}
-
 	/**
-	 * Hook on create. Here is the specific onCreate stuff for the subclasses.
-	 */
-	protected abstract void hookOnCreate();
-
-	/**
-	 * Gets the specific content layout.
+	 * Start download thread and compute download progress.
 	 * 
-	 * @return the specific content layout
+	 * @return the int : this method is periodically called by the progress bar
+	 *         thread. When the download is finished, the return is 100%.
 	 */
-	protected abstract LinearLayout getSpecificContentLayout();
+	private int startDownloadThreadAndComputeDownloadProgress() {
+		if (this.downloadStatus == DOWNLOAD_NOT_STARTED) {
+			// if download is not started, start it in a new thread
+			this.downloadStatus = DOWNLOAD_STARTED;
+			new Thread(new Runnable() {
+				public void run() {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.view.View.OnClickListener#onClick(android.view.View)
-	 */
-	public void onClick(View v) {
+					try {
+						AbstractDownloadableMediaActivity.this.ornidroidIOService
+								.downloadMediaFiles(
+										getMediaHomeDirectory(),
+										AbstractDownloadableMediaActivity.this.bird,
+										getFileType());
 
-		if (v == downloadFromInternetButton) {
-			getSpecificContentLayout().removeAllViews();
-			downloadInfoText = new TextView(this);
-			downloadInfoText.setText(R.string.download_please_wait);
-			getSpecificContentLayout().addView(downloadInfoText);
-			startDownload();
+					} catch (OrnidroidException e) {
+						Log.e(Constants.LOG_TAG,
+								"Download pb " + e.getErrorType() + " " + e);
+						AbstractDownloadableMediaActivity.this.brokenLinkFlag = true;
+
+					} finally {
+						AbstractDownloadableMediaActivity.this.downloadStatus = DOWNLOAD_FINISHED;
+					}
+
+				}
+			}).start();
 		}
-
-	}
-
-	/**
-	 * Prints the download button and info.
-	 */
-	protected void printDownloadButtonAndInfo() {
-		getSpecificContentLayout().setOrientation(LinearLayout.VERTICAL);
-		getSpecificContentLayout().setGravity(Gravity.CENTER_HORIZONTAL);
-
-		TextView noMediaMessage = new TextView(this);
-		switch (getFileType()) {
-		case AUDIO:
-			noMediaMessage.setText(R.string.no_records);
-			break;
-		case PICTURE:
-			noMediaMessage.setText(R.string.no_pictures);
-			break;
+		if (this.downloadStatus != DOWNLOAD_FINISHED) {
+			return computeDownloadProgress();
+		} else {
+			return PROGRESS_BAR_MAX;
 		}
-		getSpecificContentLayout().addView(noMediaMessage);
-		downloadFromInternetButton = new ImageView(this);
-		downloadFromInternetButton.setOnClickListener(this);
-		downloadFromInternetButton
-				.setImageResource(R.drawable.ic_file_download);
-		downloadFromInternetButton.setLayoutParams(new LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-		getSpecificContentLayout().addView(downloadFromInternetButton);
 	}
 }

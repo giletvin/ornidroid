@@ -2,7 +2,6 @@ package fr.giletvin.ornidroid.ui;
 
 import android.app.TabActivity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import fr.giletvin.ornidroid.R;
 import fr.giletvin.ornidroid.bo.OrnidroidFileType;
@@ -30,161 +30,40 @@ import fr.giletvin.ornidroid.service.OrnidroidServiceFactory;
  */
 public class BirdInfoActivity extends TabActivity {
 
-	/** The Constant TAB_HEIGHT. */
-	private static final int TAB_HEIGHT = 50;
-
-	/** The Constant PICTURES_TAB_NAME. */
-	private static final String PICTURES_TAB_NAME = "pictures";
-
-	/** The Constant AUDIO_TAB_NAME. */
-	private static final String AUDIO_TAB_NAME = "audioTab";
-
-	/** The Constant DETAIL_TAB_NAME. */
-	private static final String DETAIL_TAB_NAME = "detailTab";
-
-	/** The Constant BIRD_NAMES_TAB_NAME. */
-	private static final String BIRD_NAMES_TAB_NAME = "birdNamesTab";
-
-	/** The Constant SWIPE_MIN_DISTANCE. */
-	private static final int SWIPE_MIN_DISTANCE = 120;
-
-	/** The Constant SWIPE_MAX_OFF_PATH. */
-	private static final int SWIPE_MAX_OFF_PATH = 250;
-
-	/** The Constant SWIPE_THRESHOLD_VELOCITY. */
-	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
-	/** The Constant INTENT_ACTIVITY_TO_OPEN. */
-	public static final String INTENT_ACTIVITY_TO_OPEN = "intentActivityToOpenParameter";
-
-	/** The gesture detector. */
-	private GestureDetector gestureDetector;
-
-	/** The gesture listener. */
-	View.OnTouchListener gestureListener;
-
-	/** The ornidroid service. */
-	private final IOrnidroidService ornidroidService;
-
-	/** The uri. */
-	private Uri uri;
-
 	/**
-	 * Instantiates a new bird info activity.
-	 */
-	public BirdInfoActivity() {
-		ornidroidService = OrnidroidServiceFactory.getService(this);
-
-	}
-
-	/*
-	 * (non-Javadoc)
+	 * The listener interface for receiving onBirdTabChange events. The class
+	 * that is interested in processing a onBirdTabChange event implements this
+	 * interface, and the object created with that class is registered with a
+	 * component using the component's
+	 * <code>addOnBirdTabChangeListener<code> method. When
+	 * the onBirdTabChange event occurs, that object's appropriate
+	 * method is invoked.
 	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 * @see OnBirdTabChangeEvent
 	 */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	private class OnBirdTabChangeListener implements OnTabChangeListener {
 
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.bird_info);
+		/** The audio activity. */
+		SoundActivity audioActivity;
 
-		Resources res = getResources(); // Resource object to get Drawables
-		TabHost tabHost = getTabHost(); // The activity TabHost
-		TabHost.TabSpec spec; // Resusable TabSpec for each tab
-		Intent intent; // Reusable Intent for each tab
-
-		tabHost.setOnTabChangedListener(new OnBirdTabChangeListener());
-
-		loadBirdDetails();
-
-		// Create an Intent to launch an Activity for the tab (to be reused)
-		intent = new Intent().setClass(this, PictureActivity.class);
-		intent.setData(uri);
-		// put the displayed picture id in the extra to pass it to the
-		// pictureActivityScreen
-		intent.putExtra(PictureActivity.DISPLAYED_PICTURE_ID, getIntent()
-				.getIntExtra(PictureActivity.DISPLAYED_PICTURE_ID, 0));
-
-		// Initialize a TabSpec for each tab and add it to the TabHost
-		spec = tabHost.newTabSpec(PICTURES_TAB_NAME)
-				.setIndicator("", res.getDrawable(R.drawable.ic_tab_pictures))
-				.setContent(intent);
-		tabHost.addTab(spec);
-
-		// Do the same for the other tabs
-		intent = new Intent().setClass(this, SoundActivity.class);
-		spec = tabHost.newTabSpec(AUDIO_TAB_NAME)
-				.setIndicator("", res.getDrawable(R.drawable.ic_tab_sounds))
-				.setContent(intent);
-		tabHost.addTab(spec);
-
-		intent = new Intent().setClass(this, BirdDetailActivity.class);
-		spec = tabHost.newTabSpec(DETAIL_TAB_NAME)
-				.setIndicator("", res.getDrawable(R.drawable.ic_tab_details))
-				.setContent(intent);
-		tabHost.addTab(spec);
-
-		intent = new Intent().setClass(this, BirdNamesActivity.class);
-		spec = tabHost
-				.newTabSpec(BIRD_NAMES_TAB_NAME)
-				.setIndicator("", res.getDrawable(R.drawable.ic_tab_bird_names))
-				.setContent(intent);
-		tabHost.addTab(spec);
-
-		setCurrentTab(tabHost);
-		resizeTabs(tabHost);
-
-		gestureDetector = new GestureDetector(new GestureListener());
-		gestureListener = new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				if (gestureDetector.onTouchEvent(event)) {
-					return true;
-				}
-				return false;
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * android.widget.TabHost.OnTabChangeListener#onTabChanged(java.lang
+		 * .String)
+		 */
+		public void onTabChanged(String tabId) {
+			// couper le player mp3 si on change de tabulation
+			if ((this.audioActivity == null)
+					&& SoundActivity.class.isInstance(getCurrentActivity())) {
+				this.audioActivity = (SoundActivity) getCurrentActivity();
 			}
-		};
-	}
-
-	/**
-	 * Sets the current tab.
-	 * 
-	 * @param tabHost
-	 *            the new current tab
-	 */
-	private void setCurrentTab(TabHost tabHost) {
-		Intent intent = this.getIntent();
-		// default on the picture tab
-		int codeTab = intent.getIntExtra(INTENT_ACTIVITY_TO_OPEN,
-				OrnidroidFileType.getCode(OrnidroidFileType.PICTURE));
-		tabHost.setCurrentTab(codeTab);
-	}
-
-	/**
-	 * Resize tabs. Hint found there :
-	 * http://groups.google.com/group/android-developers
-	 * /browse_thread/thread/c0ce750ca2525637?pli=1
-	 * 
-	 * @param tabHost
-	 *            the tab host
-	 */
-	private void resizeTabs(TabHost tabHost) {
-		TabWidget widget = tabHost.getTabWidget();
-		int childCount = widget.getChildCount();
-		for (int i = 0; i < childCount; i++) {
-			View child = widget.getChildAt(i);
-			child.getLayoutParams().height = TAB_HEIGHT;
+			if (this.audioActivity != null) {
+				this.audioActivity.stopPlayer();
+			}
 		}
 
-	}
-
-	/**
-	 * Load bird details, from uri contained in the intent.
-	 */
-	private void loadBirdDetails() {
-		uri = getIntent().getData();
-		if (null != uri) {
-			ornidroidService.loadBirdDetails(uri);
-		}
 	}
 
 	/**
@@ -240,11 +119,12 @@ public class BirdInfoActivity extends TabActivity {
 				float velocityY) {
 			if (PictureActivity.class.isInstance(getCurrentActivity())) {
 				try {
-					if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
 						return false;
+					}
 					// right to left swipe
-					if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-							&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					if (((e1.getX() - e2.getX()) > SWIPE_MIN_DISTANCE)
+							&& (Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)) {
 						PictureActivity photoActivity = (PictureActivity) getCurrentActivity();
 
 						// photoActivity.getViewFlipper().setInAnimation(
@@ -253,8 +133,8 @@ public class BirdInfoActivity extends TabActivity {
 						// slideLeftOut);
 						photoActivity.showNextPicture();
 
-					} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
-							&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					} else if (((e2.getX() - e1.getX()) > SWIPE_MIN_DISTANCE)
+							&& (Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)) {
 						PictureActivity photoActivity = (PictureActivity) getCurrentActivity();
 						// photoActivity.getViewFlipper().setInAnimation(
 						// slideRightIn);
@@ -270,53 +150,100 @@ public class BirdInfoActivity extends TabActivity {
 		}
 	}
 
+	/** The Constant INTENT_ACTIVITY_TO_OPEN. */
+	public static final String INTENT_ACTIVITY_TO_OPEN = "intentActivityToOpenParameter";
+
+	/** The Constant AUDIO_TAB_NAME. */
+	private static final String AUDIO_TAB_NAME = "audioTab";
+
+	/** The Constant BIRD_NAMES_TAB_NAME. */
+	private static final String BIRD_NAMES_TAB_NAME = "birdNamesTab";
+
+	/** The Constant DETAIL_TAB_NAME. */
+	private static final String DETAIL_TAB_NAME = "detailTab";
+
+	/** The Constant PICTURES_TAB_NAME. */
+	private static final String PICTURES_TAB_NAME = "pictures";
+
+	/** The Constant SWIPE_MAX_OFF_PATH. */
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+
+	/** The Constant SWIPE_MIN_DISTANCE. */
+	private static final int SWIPE_MIN_DISTANCE = 120;
+
+	/** The Constant SWIPE_THRESHOLD_VELOCITY. */
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+	/** The Constant TAB_HEIGHT. */
+	private static final int TAB_HEIGHT = 50;
+
+	/** The gesture detector. */
+	private GestureDetector gestureDetector;
+
+	/** The ornidroid service. */
+	private final IOrnidroidService ornidroidService;
+
+	/** The tab id to display. */
+	private int tabIdToDisplay;
+
+	/** The uri. */
+	private Uri uri;
+
+	/** The gesture listener. */
+	View.OnTouchListener gestureListener;
+
+	/**
+	 * Instantiates a new bird info activity.
+	 */
+	public BirdInfoActivity() {
+		this.ornidroidService = OrnidroidServiceFactory.getService(this);
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onTouchEvent(android.view.MotionEvent)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if (gestureDetector.onTouchEvent(event))
-			return true;
-		else
-			return false;
-	}
+	public void onCreate(Bundle savedInstanceState) {
 
-	/**
-	 * The listener interface for receiving onBirdTabChange events. The class
-	 * that is interested in processing a onBirdTabChange event implements this
-	 * interface, and the object created with that class is registered with a
-	 * component using the component's
-	 * <code>addOnBirdTabChangeListener<code> method. When
-	 * the onBirdTabChange event occurs, that object's appropriate
-	 * method is invoked.
-	 * 
-	 * @see OnBirdTabChangeEvent
-	 */
-	private class OnBirdTabChangeListener implements OnTabChangeListener {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.bird_info);
 
-		/** The audio activity. */
-		SoundActivity audioActivity;
+		getTabHost().setOnTabChangedListener(new OnBirdTabChangeListener());
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.widget.TabHost.OnTabChangeListener#onTabChanged(java.lang
-		 * .String)
-		 */
-		public void onTabChanged(String tabId) {
-			// couper le player mp3 si on change de tabulation
-			if (audioActivity == null
-					&& SoundActivity.class.isInstance(getCurrentActivity())) {
-				audioActivity = (SoundActivity) getCurrentActivity();
+		loadBirdDetails();
+
+		this.tabIdToDisplay = getIntent().getIntExtra(INTENT_ACTIVITY_TO_OPEN,
+				OrnidroidFileType.getCode(OrnidroidFileType.PICTURE));
+
+		createTab(PictureActivity.class, R.drawable.ic_tab_pictures,
+				PICTURES_TAB_NAME,
+				OrnidroidFileType.getCode(OrnidroidFileType.PICTURE));
+
+		createTab(SoundActivity.class, R.drawable.ic_tab_sounds,
+				AUDIO_TAB_NAME,
+				OrnidroidFileType.getCode(OrnidroidFileType.AUDIO));
+
+		createTab(BirdDetailActivity.class, R.drawable.ic_tab_details,
+				DETAIL_TAB_NAME, OrnidroidFileType.getCode(null));
+		createTab(BirdNamesActivity.class, R.drawable.ic_tab_bird_names,
+				BIRD_NAMES_TAB_NAME, OrnidroidFileType.getCode(null));
+
+		getTabHost().setCurrentTab(this.tabIdToDisplay);
+
+		resizeTabs(getTabHost());
+
+		this.gestureDetector = new GestureDetector(new GestureListener());
+		this.gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (BirdInfoActivity.this.gestureDetector.onTouchEvent(event)) {
+					return true;
+				}
+				return false;
 			}
-			if (audioActivity != null) {
-				audioActivity.stopPlayer();
-			}
-		}
-
+		};
 	}
 
 	/*
@@ -348,6 +275,102 @@ public class BirdInfoActivity extends TabActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onTouchEvent(android.view.MotionEvent)
+	 */
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (this.gestureDetector.onTouchEvent(event)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Add info to the intent, which will be passed to the tabbed activity
+	 * (picture, sound). The Extra data received in the intent are passed to the
+	 * intent of the tabbed activity
+	 * 
+	 * @param intent
+	 *            the intent
+	 */
+	private void addInfoToIntent(Intent intent) {
+		Intent birdInfoActivityIntent = this.getIntent();
+		intent.putExtra(
+				AbstractDownloadableMediaActivity.BROKEN_LINK_INTENT_PARAM,
+				birdInfoActivityIntent
+						.getBooleanExtra(
+								AbstractDownloadableMediaActivity.BROKEN_LINK_INTENT_PARAM,
+								false));
+
+	}
+
+	/**
+	 * Creates the tab.
+	 * 
+	 * @param activityClass
+	 *            the activity class
+	 * @param tabIconResId
+	 *            the tab icon res id
+	 * @param tabName
+	 *            the tab name
+	 * @param tabIndex
+	 *            the tab index
+	 * @return intent
+	 */
+	@SuppressWarnings("rawtypes")
+	private Intent createTab(Class activityClass, int tabIconResId,
+			String tabName, int tabIndex) {
+		Intent intent = new Intent().setClass(this, activityClass);
+		TabSpec spec = getTabHost().newTabSpec(tabName)
+				.setIndicator("", getResources().getDrawable(tabIconResId))
+				.setContent(intent);
+		if (this.tabIdToDisplay == tabIndex) {
+			addInfoToIntent(intent);
+		}
+		if (this.tabIdToDisplay == OrnidroidFileType
+				.getCode(OrnidroidFileType.PICTURE)) {
+			// put the displayed picture id in the extra to pass it to the
+			// pictureActivityScreen
+			intent.putExtra(PictureActivity.DISPLAYED_PICTURE_ID, getIntent()
+					.getIntExtra(PictureActivity.DISPLAYED_PICTURE_ID, 0));
+
+		}
+		getTabHost().addTab(spec);
+		return intent;
+	}
+
+	/**
+	 * Load bird details, from uri contained in the intent.
+	 */
+	private void loadBirdDetails() {
+		this.uri = getIntent().getData();
+		if (null != this.uri) {
+			this.ornidroidService.loadBirdDetails(this.uri);
+		}
+	}
+
+	/**
+	 * Resize tabs. Hint found there :
+	 * http://groups.google.com/group/android-developers
+	 * /browse_thread/thread/c0ce750ca2525637?pli=1
+	 * 
+	 * @param tabHost
+	 *            the tab host
+	 */
+	private void resizeTabs(TabHost tabHost) {
+		TabWidget widget = tabHost.getTabWidget();
+		int childCount = widget.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			View child = widget.getChildAt(i);
+			child.getLayoutParams().height = TAB_HEIGHT;
+		}
+
 	}
 
 }

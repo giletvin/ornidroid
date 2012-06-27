@@ -28,6 +28,39 @@ import fr.giletvin.ornidroid.helper.OrnidroidException;
  * The Class OrnidroidIOServiceImpl.
  */
 public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
+	/**
+	 * The Class OrnidroidFileFilter.
+	 */
+	private class OrnidroidFileFilter implements FileFilter {
+
+		/** The file type. */
+		private final OrnidroidFileType fileType;
+
+		/**
+		 * Instantiates a new ornidroid file filter.
+		 * 
+		 * @param fileType
+		 *            the file type
+		 */
+		OrnidroidFileFilter(OrnidroidFileType fileType) {
+			this.fileType = fileType;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.io.FileFilter#accept(java.io.File)
+		 */
+		public boolean accept(File pathname) {
+
+			if (pathname.getAbsolutePath().endsWith(
+					OrnidroidFileType.getExtension(this.fileType))) {
+				return true;
+			}
+			return false;
+		}
+	}
+
 	/** The download helper. */
 	private final DownloadHelperInterface downloadHelper;
 
@@ -43,6 +76,25 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
+	 * fr.giletvin.ornidroid.service.IOrnidroidIOService#checkAndCreateDirectory
+	 * (java.io.File)
+	 */
+	public void checkAndCreateDirectory(File fileDirectory)
+			throws OrnidroidException {
+		if (!fileDirectory.exists()) {
+			try {
+				FileUtils.forceMkdir(fileDirectory);
+			} catch (IOException e) {
+				throw new OrnidroidException(
+						OrnidroidError.ORNIDROID_HOME_NOT_FOUND);
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
 	 * fr.giletvin.ornidroid.service.IOrnidroidService#checkOrnidroidDatabase
 	 * (java.lang.String)
 	 */
@@ -50,24 +102,15 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 			String dbName) throws OrnidroidException {
 		File ornidroidDb = new File(localDatabaseDirectory + File.separator
 				+ dbName);
-		String topFileName = dbName + ".top";
-		File topFile = new File(localDatabaseDirectory + File.separator
-				+ topFileName);
-		if (!ornidroidDb.exists() || !topFile.exists()) {
+		String propertiesFileName = dbName
+				+ AbstractOrnidroidFile.PROPERTIES_SUFFIX;
+		File propertiesFile = new File(localDatabaseDirectory + File.separator
+				+ propertiesFileName);
+		if (!ornidroidDb.exists() || !propertiesFile.exists()) {
 			// try to download it if it doesnt not exist
-			File dbFile = downloadHelper.downloadFile(
+			this.downloadHelper.downloadFile(
 					DownloadConstants.getOrnidroidWebSite(), dbName,
 					localDatabaseDirectory);
-			// try to download the top file
-			topFile = downloadHelper.downloadFile(
-					DownloadConstants.getOrnidroidWebSite(), topFileName,
-					localDatabaseDirectory);
-			if (null == topFile || null == dbFile) {
-				if (null != dbFile) {
-					dbFile.delete();
-				}
-				throw new OrnidroidException(OrnidroidError.DATABASE_NOT_FOUND);
-			}
 		}
 
 	}
@@ -95,19 +138,25 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * fr.giletvin.ornidroid.service.IOrnidroidIOService#checkAndCreateDirectory
-	 * (java.io.File)
+	 * fr.giletvin.ornidroid.service.IOrnidroidIOService#downloadMediaFiles(
+	 * java.lang.String, fr.giletvin.ornidroid.bo.Bird,
+	 * fr.giletvin.ornidroid.bo.OrnidroidFileType)
 	 */
-	public void checkAndCreateDirectory(File fileDirectory)
-			throws OrnidroidException {
-		if (!fileDirectory.exists()) {
-			try {
-				FileUtils.forceMkdir(fileDirectory);
-			} catch (IOException e) {
-				throw new OrnidroidException(
-						OrnidroidError.ORNIDROID_HOME_NOT_FOUND);
-			}
+	public void downloadMediaFiles(String mediaHomeDirectory, Bird bird,
+			OrnidroidFileType fileType) throws OrnidroidException {
+		switch (fileType) {
+		case PICTURE:
+			bird.setPictures(lookForOrnidroidFiles(mediaHomeDirectory,
+					bird.getBirdDirectoryName(), OrnidroidFileType.PICTURE,
+					true));
+			break;
+
+		case AUDIO:
+			bird.setSounds(lookForOrnidroidFiles(mediaHomeDirectory,
+					bird.getBirdDirectoryName(), OrnidroidFileType.AUDIO, true));
+			break;
 		}
+
 	}
 
 	/*
@@ -142,31 +191,6 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 					bird.getBirdDirectoryName(), OrnidroidFileType.AUDIO, false));
 			break;
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.giletvin.ornidroid.service.IOrnidroidIOService#downloadMediaFiles(
-	 * java.lang.String, fr.giletvin.ornidroid.bo.Bird,
-	 * fr.giletvin.ornidroid.bo.OrnidroidFileType)
-	 */
-	public void downloadMediaFiles(String mediaHomeDirectory, Bird bird,
-			OrnidroidFileType fileType) throws OrnidroidException {
-		switch (fileType) {
-		case PICTURE:
-			bird.setPictures(lookForOrnidroidFiles(mediaHomeDirectory,
-					bird.getBirdDirectoryName(), OrnidroidFileType.PICTURE,
-					true));
-			break;
-
-		case AUDIO:
-			bird.setSounds(lookForOrnidroidFiles(mediaHomeDirectory,
-					bird.getBirdDirectoryName(), OrnidroidFileType.AUDIO, true));
-			break;
-		}
-
 	}
 
 	/**
@@ -208,8 +232,8 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 						.listFiles(new OrnidroidFileFilter(fileType)));
 				// no files in the local directory. Try to download from
 				// internet
-				if (filesList.size() == 0 && downloadFromInternet) {
-					filesList = downloadHelper.downloadFiles(
+				if ((filesList.size() == 0) && downloadFromInternet) {
+					filesList = this.downloadHelper.downloadFiles(
 							ornidroidMediaHome, directoryName, fileType);
 				}
 				try {
@@ -243,39 +267,6 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 			}
 		}
 		return files;
-	}
-
-	/**
-	 * The Class OrnidroidFileFilter.
-	 */
-	private class OrnidroidFileFilter implements FileFilter {
-
-		/** The file type. */
-		private OrnidroidFileType fileType;
-
-		/**
-		 * Instantiates a new ornidroid file filter.
-		 * 
-		 * @param fileType
-		 *            the file type
-		 */
-		OrnidroidFileFilter(OrnidroidFileType fileType) {
-			this.fileType = fileType;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.io.FileFilter#accept(java.io.File)
-		 */
-		public boolean accept(File pathname) {
-
-			if (pathname.getAbsolutePath().endsWith(
-					OrnidroidFileType.getExtension(fileType))) {
-				return true;
-			}
-			return false;
-		}
 	}
 
 }

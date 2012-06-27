@@ -31,4 +31,4 @@ generate_contents_properties.sh ../ornidroid_audio/images_audio
 
 Finalement, déposer les répertoires audio et images générés sur http://ornidroid.free.fr/ornidroid
 Zipper le répertoire images et audio et les mettre dans le répertoire packages
-Poser le fichier ornidroid.sqlite dans http://ornidroid.free.fr/ornidroid
+Poser le fichier ornidroid.sqlite et son fichier de properties dans http://ornidroid.free.fr/ornidroid

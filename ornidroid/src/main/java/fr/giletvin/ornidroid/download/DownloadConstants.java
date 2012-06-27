@@ -15,11 +15,11 @@ import fr.giletvin.ornidroid.helper.Constants;
  */
 public class DownloadConstants {
 
-	/** The Constant DOWNLOAD_SITE_PROPERTY_KEY. */
-	private static final String DOWNLOAD_SITE_PROPERTY_KEY = "ornidroid_download_site";
-
 	/** The Constant DEFAULT_DOWNLOAD_SITE. */
 	private static final String DEFAULT_DOWNLOAD_SITE = "http://ornidroid.free.fr/ornidroid";
+
+	/** The Constant DOWNLOAD_SITE_PROPERTY_KEY. */
+	private static final String DOWNLOAD_SITE_PROPERTY_KEY = "ornidroid_download_site";
 
 	/** The Constant JUNIT_DOWNLOAD_SITE. */
 	private static final String JUNIT_DOWNLOAD_SITE = "http://ornidroid.free.fr/tests";
@@ -27,14 +27,13 @@ public class DownloadConstants {
 	private static String ORNIDROID_WEB_SITE_ROOT;
 
 	/**
-	 * Gets the ornidroid web site images.
+	 * Gets the ornidroid web site.
 	 * 
-	 * @return the ornidroid web site images
+	 * @return the ornidroid web site
 	 */
-	public static String getOrnidroidWebSiteImages() {
+	public static String getOrnidroidWebSite() {
 		loadWebSiteRoot();
-		return ORNIDROID_WEB_SITE_ROOT + File.separator
-				+ BasicConstants.IMAGES_DIRECTORY;
+		return ORNIDROID_WEB_SITE_ROOT;
 	}
 
 	/**
@@ -49,13 +48,14 @@ public class DownloadConstants {
 	}
 
 	/**
-	 * Gets the ornidroid web site.
+	 * Gets the ornidroid web site images.
 	 * 
-	 * @return the ornidroid web site
+	 * @return the ornidroid web site images
 	 */
-	public static String getOrnidroidWebSite() {
+	public static String getOrnidroidWebSiteImages() {
 		loadWebSiteRoot();
-		return ORNIDROID_WEB_SITE_ROOT;
+		return ORNIDROID_WEB_SITE_ROOT + File.separator
+				+ BasicConstants.IMAGES_DIRECTORY;
 	}
 
 	/**

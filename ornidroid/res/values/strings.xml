@@ -57,7 +57,7 @@
 		installation directory.
 	</string>
 	<string name="dialog_alert_download_error">Unable to find the ornidroid database in the
-		installation directory. The download from the website failed. 
+		installation directory. The download from the website failed.
 	</string>
 
 	<!-- autres labels -->
@@ -67,14 +67,19 @@
 
 	<string name="credits">Credits</string>
 
-	<string name="no_records">No records. Do you want to check if records are available on the website ? (Internet connection is required)
+	<string name="no_records">No records. Do you want to check if records are
+		available on the website ? (Internet connection is required)
 	</string>
-	<string name="no_pictures">No pictures. Do you want to check if records are available on the website ? (Internet connection is required)
+	<string name="no_pictures">No pictures. Do you want to check if records are
+		available on the website ? (Internet connection is required)
 	</string>
 	<string name="about_ornidroid">Ornidroid.\nLicence Creative Commons BY
 		NC\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.en
 	</string>
 	<string name="download_in_progress">Download in progress ...</string>
-	<string name="download_please_wait">Please wait during download. The screen will automatically refresh.
+	<string name="download_please_wait">Please wait during download. The screen will
+		automatically refresh.
+	</string>
+	<string name="no_resources_online">Sorry, no files to download on the website.
 	</string>
 </resources>

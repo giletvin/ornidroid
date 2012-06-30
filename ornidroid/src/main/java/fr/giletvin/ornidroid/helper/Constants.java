@@ -2,8 +2,11 @@ package fr.giletvin.ornidroid.helper;
 
 import java.io.File;
 
+import org.apache.commons.lang.StringUtils;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import fr.giletvin.ornidroid.R;
 import fr.giletvin.ornidroid.bo.Bird;
 import fr.giletvin.ornidroid.bo.OrnidroidFileType;
@@ -15,14 +18,11 @@ import fr.giletvin.ornidroid.bo.OrnidroidFileType;
  */
 public class Constants extends BasicConstants {
 
-	/** The Constant ORNIDROID_HOME_DEFAULT_VALUE. */
-	private static final String ORNIDROID_HOME_DEFAULT_VALUE = "/mnt/storage/ornidroid/";
+	/** The Constant BIRD_ID_PARAMETER_NAME. */
+	public static final String BIRD_ID_PARAMETER_NAME = "BIRD_ID";
 
-	/** The Constant ORNIDROID_LANG_DEFAULT_VALUE. */
-	private static final String ORNIDROID_LANG_DEFAULT_VALUE = I18nHelper.FRENCH;
-
-	/** The Constant ORNIDROID_PREFERENCES_FILE_NAME. */
-	private static final String ORNIDROID_PREFERENCES_FILE_NAME = "fr.giletvin.ornidroid_preferences";
+	/** The Constant CARRIAGE_RETURN. */
+	public static final String CARRIAGE_RETURN = "\n";
 
 	/** The Constant LOG_TAG. */
 	public static final String LOG_TAG = "Ornidroid";
@@ -30,14 +30,14 @@ public class Constants extends BasicConstants {
 	/** The Constant MP3_PATH. */
 	public static final String MP3_PATH = "MP3_PATH";
 
-	/** The Constant BIRD_ID_PARAMETER_NAME. */
-	public static final String BIRD_ID_PARAMETER_NAME = "BIRD_ID";
-
-	/** The Constant CARRIAGE_RETURN. */
-	public static final String CARRIAGE_RETURN = "\n";
-
 	/** The CONTEXT. */
 	private static Context CONTEXT;
+
+	/** The Constant ORNIDROID_LANG_DEFAULT_VALUE. */
+	private static final String ORNIDROID_LANG_DEFAULT_VALUE = I18nHelper.FRENCH;
+
+	/** The Constant ORNIDROID_PREFERENCES_FILE_NAME. */
+	private static final String ORNIDROID_PREFERENCES_FILE_NAME = "fr.giletvin.ornidroid_preferences";
 
 	/**
 	 * Gets the cONTEXT.
@@ -46,47 +46,6 @@ public class Constants extends BasicConstants {
 	 */
 	public static Context getCONTEXT() {
 		return CONTEXT;
-	}
-
-	/**
-	 * Initialize constants. Called from the constructor of the main activity.
-	 * The context is mandatory for other methods
-	 * 
-	 * @param context
-	 *            the context
-	 */
-	public static void initializeConstants(Context context) {
-		CONTEXT = context;
-	}
-
-	/**
-	 * Gets the ornidroid preferences.
-	 * 
-	 * @return the ornidroid preferences
-	 */
-	private static final SharedPreferences getOrnidroidPreferences() {
-		return CONTEXT.getSharedPreferences(ORNIDROID_PREFERENCES_FILE_NAME,
-				Context.MODE_PRIVATE);
-	}
-
-	/**
-	 * Gets the ornidroid home.
-	 * 
-	 * @return the ornidroid home. Never null. If empty, returns a default value
-	 */
-	public static final String getOrnidroidHome() {
-		return Constants.getOrnidroidPreferences().getString(
-				getStringFromXmlResource(R.string.preferences_home_key),
-				ORNIDROID_HOME_DEFAULT_VALUE);
-	}
-
-	/**
-	 * Gets the ornidroid images directory.
-	 * 
-	 * @return the ornidroid images directory
-	 */
-	public static final String getOrnidroidHomeImages() {
-		return Constants.getOrnidroidHome() + File.separator + IMAGES_DIRECTORY;
 	}
 
 	/**
@@ -113,6 +72,32 @@ public class Constants extends BasicConstants {
 	}
 
 	/**
+	 * Gets the ornidroid db path.
+	 * 
+	 * @return the ornidroid db path
+	 */
+	public static final String getOrnidroidDbPath() {
+		return Constants.getOrnidroidHome() + File.separator + DB_NAME;
+	}
+
+	/**
+	 * Gets the ornidroid home.
+	 * 
+	 * @return the ornidroid home. Never null. If empty, returns a default value
+	 */
+	public static final String getOrnidroidHome() {
+		return StringUtils
+				.defaultIfBlank(
+						Constants
+								.getOrnidroidPreferences()
+								.getString(
+										getStringFromXmlResource(R.string.preferences_home_key),
+										Constants
+												.getOrnidroidHomeDefaultValue()),
+						Constants.getOrnidroidHomeDefaultValue());
+	}
+
+	/**
 	 * Gets the ornidroid home audio.
 	 * 
 	 * @return the ornidroid home audio
@@ -134,12 +119,12 @@ public class Constants extends BasicConstants {
 	}
 
 	/**
-	 * Gets the ornidroid db path.
+	 * Gets the ornidroid images directory.
 	 * 
-	 * @return the ornidroid db path
+	 * @return the ornidroid images directory
 	 */
-	public static final String getOrnidroidDbPath() {
-		return Constants.getOrnidroidHome() + File.separator + DB_NAME;
+	public static final String getOrnidroidHomeImages() {
+		return Constants.getOrnidroidHome() + File.separator + IMAGES_DIRECTORY;
 	}
 
 	/**
@@ -167,5 +152,38 @@ public class Constants extends BasicConstants {
 	 */
 	public static final String getStringFromXmlResource(int resId) {
 		return CONTEXT.getString(resId);
+	}
+
+	/**
+	 * Initialize constants. Called from the constructor of the main activity.
+	 * The context is mandatory for other methods
+	 * 
+	 * @param context
+	 *            the context
+	 */
+	public static void initializeConstants(Context context) {
+		CONTEXT = context;
+	}
+
+	/**
+	 * Gets the ornidroid home default value if the OrnidroidHomePreference is
+	 * not set by the user
+	 * 
+	 * @return the ornidroid home default value : directory "ornidroid" on the
+	 *         external storage
+	 */
+	private static final String getOrnidroidHomeDefaultValue() {
+		return Environment.getExternalStorageDirectory().getAbsolutePath()
+				+ File.separator + "ornidroid/";
+	}
+
+	/**
+	 * Gets the ornidroid preferences.
+	 * 
+	 * @return the ornidroid preferences
+	 */
+	private static final SharedPreferences getOrnidroidPreferences() {
+		return CONTEXT.getSharedPreferences(ORNIDROID_PREFERENCES_FILE_NAME,
+				Context.MODE_PRIVATE);
 	}
 }

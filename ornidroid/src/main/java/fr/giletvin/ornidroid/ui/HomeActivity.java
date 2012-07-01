@@ -21,22 +21,28 @@ import fr.giletvin.ornidroid.service.OrnidroidIOServiceImpl;
 public class HomeActivity extends AbstractOrnidroidActivity implements
 		OnTouchListener {
 
-	/** The Constant DIALOG_ORNIDROID_HOME_NOT_FOUND_ID. */
-	private static final int DIALOG_ORNIDROID_HOME_NOT_FOUND_ID = 0;
-
-	/** The Constant DIALOG_ORNIDROID_DATABASE_NOT_FOUND. */
-	private static final int DIALOG_ORNIDROID_DATABASE_NOT_FOUND_ID = 1;
+	/** The Constant DIALOG_DOWNLOAD_CONNECTION_PROBLEM_ID. */
+	private static final int DIALOG_DOWNLOAD_CONNECTION_PROBLEM_ID = 4;
 
 	/** The Constant DIALOG_DOWNLOAD_ERROR_ID. */
 	private static final int DIALOG_DOWNLOAD_ERROR_ID = 2;
 
-	/** The search link. */
-	private TextView searchLink;
+	/** The Constant DIALOG_DOWNLOAD_MEDIA_DOES_NOT_EXIST_ID. */
+	private static final int DIALOG_DOWNLOAD_MEDIA_DOES_NOT_EXIST_ID = 3;
+
+	/** The Constant DIALOG_ORNIDROID_DATABASE_NOT_FOUND. */
+	private static final int DIALOG_ORNIDROID_DATABASE_NOT_FOUND_ID = 1;
+
+	/** The Constant DIALOG_ORNIDROID_HOME_NOT_FOUND_ID. */
+	private static final int DIALOG_ORNIDROID_HOME_NOT_FOUND_ID = 0;
 
 	/** The about link. */
 	private TextView aboutLink;
+
 	/** The ornidroid io service. */
 	private final IOrnidroidIOService ornidroidIOService;
+	/** The search link. */
+	private TextView searchLink;
 
 	/**
 	 * Instantiates a new home activity.
@@ -44,7 +50,7 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 	public HomeActivity() {
 		super();
 		Constants.initializeConstants(this);
-		ornidroidIOService = new OrnidroidIOServiceImpl();
+		this.ornidroidIOService = new OrnidroidIOServiceImpl();
 
 	}
 
@@ -60,42 +66,27 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 
 		setTitle(R.string.app_name);
 
-		searchLink = (TextView) findViewById(R.id.menu_search);
-		searchLink.setOnTouchListener(this);
-		aboutLink = (TextView) findViewById(R.id.menu_about);
-		aboutLink.setOnTouchListener(this);
+		this.searchLink = (TextView) findViewById(R.id.menu_search);
+		this.searchLink.setOnTouchListener(this);
+		this.aboutLink = (TextView) findViewById(R.id.menu_about);
+		this.aboutLink.setOnTouchListener(this);
 
 	}
 
-	/**
-	 * Check ornidroid home directory.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.view.View.OnTouchListener#onTouch(android.view.View,
+	 * android.view.MotionEvent)
 	 */
-	private void checkOrnidroidHomeDirectory() {
-		try {
-			ornidroidIOService.checkOrnidroidHome(Constants.getOrnidroidHome());
-
-			// check the ornidroid.sqlite file. If it doesnt exist, try to
-			// download
-			// it from internet
-			ornidroidIOService.checkOrnidroidDatabase(
-					Constants.getOrnidroidHome(), Constants.DB_NAME);
-		} catch (OrnidroidException e) {
-			switch (e.getErrorType()) {
-			case DATABASE_NOT_FOUND:
-				showDialog(DIALOG_ORNIDROID_DATABASE_NOT_FOUND_ID);
-				break;
-			case ORNIDROID_HOME_NOT_FOUND:
-				showDialog(DIALOG_ORNIDROID_HOME_NOT_FOUND_ID);
-				break;
-			case ORNIDROID_DOWNLOAD_ERROR:
-				showDialog(DIALOG_DOWNLOAD_ERROR_ID);
-				break;
-			default:
-				showDialog(DIALOG_ORNIDROID_HOME_NOT_FOUND_ID);
-				break;
-			}
-
+	public boolean onTouch(View v, MotionEvent event) {
+		if (v == this.searchLink) {
+			return launchActivity(MainActivity.class);
 		}
+		if (v == this.aboutLink) {
+			return launchActivity(AboutActivity.class);
+		}
+		return false;
 	}
 
 	/*
@@ -143,6 +134,28 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 								}
 							});
 			break;
+		case DIALOG_DOWNLOAD_MEDIA_DOES_NOT_EXIST_ID:
+			builder.setMessage(
+					this.getText(R.string.dialog_alert_database_not_found_online))
+					.setNegativeButton("OK",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									dialog.cancel();
+								}
+							});
+			break;
+		case DIALOG_DOWNLOAD_CONNECTION_PROBLEM_ID:
+			builder.setMessage(
+					this.getText(R.string.dialog_alert_connection_problem))
+					.setNegativeButton("OK",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									dialog.cancel();
+								}
+							});
+			break;
 		default:
 			builder.setMessage(
 					this.getText(R.string.dialog_alert_ornidroid_home_not_found))
@@ -170,20 +183,42 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.view.View.OnTouchListener#onTouch(android.view.View,
-	 * android.view.MotionEvent)
+	/**
+	 * Check ornidroid home directory.
 	 */
-	public boolean onTouch(View v, MotionEvent event) {
-		if (v == searchLink) {
-			return launchActivity(MainActivity.class);
+	private void checkOrnidroidHomeDirectory() {
+		try {
+			this.ornidroidIOService.checkOrnidroidHome(Constants
+					.getOrnidroidHome());
+
+			// check the ornidroid.sqlite file. If it doesnt exist, try to
+			// download
+			// it from internet
+			this.ornidroidIOService.checkOrnidroidDatabase(
+					Constants.getOrnidroidHome(), Constants.DB_NAME);
+		} catch (OrnidroidException e) {
+			switch (e.getErrorType()) {
+			case DATABASE_NOT_FOUND:
+				showDialog(DIALOG_ORNIDROID_DATABASE_NOT_FOUND_ID);
+				break;
+			case ORNIDROID_HOME_NOT_FOUND:
+				showDialog(DIALOG_ORNIDROID_HOME_NOT_FOUND_ID);
+				break;
+			case ORNIDROID_DOWNLOAD_ERROR:
+				showDialog(DIALOG_DOWNLOAD_ERROR_ID);
+				break;
+			case ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST:
+				showDialog(DIALOG_DOWNLOAD_MEDIA_DOES_NOT_EXIST_ID);
+				break;
+			case ORNIDROID_CONNECTION_PROBLEM:
+				showDialog(DIALOG_DOWNLOAD_CONNECTION_PROBLEM_ID);
+				break;
+			default:
+				showDialog(DIALOG_ORNIDROID_HOME_NOT_FOUND_ID);
+				break;
+			}
+
 		}
-		if (v == aboutLink) {
-			return launchActivity(AboutActivity.class);
-		}
-		return false;
 	}
 
 	/**

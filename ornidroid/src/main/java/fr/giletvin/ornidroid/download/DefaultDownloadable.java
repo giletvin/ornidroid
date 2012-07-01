@@ -23,6 +23,7 @@
 package fr.giletvin.ornidroid.download;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,26 +43,53 @@ import org.apache.commons.lang.StringUtils;
  */
 public class DefaultDownloadable extends Downloadable {
 
-	/** The destination path. */
-	private final String destinationPath;
+	/**
+	 * safe delete.
+	 * 
+	 * @param file
+	 *            the file
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	private static void safeDelete(final File file) throws IOException {
+		if (!file.delete()) {
+			throw new IOException("Not deleted: " + file); // Java 5 / Android
+															// compatibility
+		}
+	}
 
-	/** The url. */
-	public final URL url; // FIXME
+	/**
+	 * Normalized.
+	 * 
+	 * @param url
+	 *            the url
+	 * @return the string
+	 */
+	static String normalized(final URL url) {
+		return url.toExternalForm().replaceAll("://", "/")
+				.replaceAll("[:;#$?&=]", "_");
+	}
 
 	/** The proxied url. */
 	public final URL proxiedUrl;
 
+	/** The url. */
+	public final URL url; // FIXME
+
+	/** The destination path. */
+	private final String destinationPath;
+
 	/* package *//** The cached file. */
 	File cachedFile;
+
+	/** The content length. */
+	int contentLength = 0;
 
 	/* package *//** The download file. */
 	File downloadFile;
 
 	/* package *//** The timestamp file. */
 	File timestampFile;
-
-	/** The content length. */
-	int contentLength = 0;
 
 	/**
 	 * Constructor.
@@ -97,6 +125,16 @@ public class DefaultDownloadable extends Downloadable {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see fr.giletvin.ornidroid.download.Downloadable#getFile()
+	 */
+	@Override
+	public File getFile() {
+		return this.cachedFile;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.giletvin.ornidroid.download.Downloadable#refresh()
 	 */
 	@Override
@@ -111,121 +149,9 @@ public class DefaultDownloadable extends Downloadable {
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public void remove() throws IOException {
-		safeDelete(cachedFile);
+		safeDelete(this.cachedFile);
 
 		setStatus(Status.NOT_DOWNLOADED);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.giletvin.ornidroid.download.Downloadable#getFile()
-	 */
-	@Override
-	public File getFile() {
-		return cachedFile;
-	}
-
-	/**
-	 * 
-	 * 
-	 * Can be overridden for testing (URLs are not mockable).
-	 * 
-	 * 
-	 * @return the input stream
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	private InputStream createInputStream() throws IOException {
-		final URLConnection connection = proxiedUrl.openConnection();
-		connection.connect();
-		contentLength = connection.getContentLength(); // TODO: handle the case
-														// in which it's unknown
-														// size
-		return connection.getInputStream();
-
-	}
-
-	/**
-	 * Download.
-	 * 
-	 * @param always
-	 *            the always
-	 */
-	private synchronized void download(final boolean always) {
-		computeCachedFile();
-
-		if (always || (status == Status.NOT_DOWNLOADED)) {
-			setStatus(Status.DOWNLOADING);
-			try {
-				load();
-			} catch (IOException e) {
-				setStatus(Status.BROKEN);
-			}
-
-		}
-	}
-
-	/**
-	 * load file from internet.
-	 * 
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	private void load() throws IOException {
-		final byte[] buffer = new byte[64 * 1024];
-		cachedFile.getParentFile().mkdirs();
-
-		if (downloadFile.exists()) {
-			safeDelete(downloadFile);
-		}
-
-		final InputStream is = createInputStream();
-
-		final OutputStream os = new FileOutputStream(downloadFile);
-		// final OutputStream os =
-		// fileSystem.get().openFileOutput(getCachedFile());
-		// FIXME: first download in cache, at the end copy to the real
-		// resource.
-		int loaded = 0;
-
-		for (;;) {
-			final int n = is.read(buffer);
-
-			if (n < 0) {
-				break;
-			}
-
-			os.write(buffer, 0, n);
-			loaded += n;
-
-			if (contentLength > 0) {
-				setDownloadProgress((1.0f * loaded) / contentLength);
-
-			}
-		}
-
-		if (cachedFile.exists()) {
-			safeDelete(cachedFile);
-		}
-
-		downloadFile.renameTo(cachedFile);
-		FileWriter w = new FileWriter(timestampFile);
-		w.write("downloaded: " + System.currentTimeMillis() + "\n");
-
-		setStatus(Status.DOWNLOADED);
-	}
-
-	/**
-	 * Normalized.
-	 * 
-	 * @param url
-	 *            the url
-	 * @return the string
-	 */
-	static String normalized(final URL url) {
-		return url.toExternalForm().replaceAll("://", "/")
-				.replaceAll("[:;#$?&=]", "_");
 	}
 
 	/**
@@ -235,21 +161,21 @@ public class DefaultDownloadable extends Downloadable {
 		Status newStatus = null;
 
 		synchronized (this) {
-			if (cachedFile == null) {
+			if (this.cachedFile == null) {
 				try {
 
-					final String prefix = destinationPath
+					final String prefix = this.destinationPath
 							+ File.separator
-							+ StringUtils.substringAfterLast(normalized(url),
-									File.separator);
+							+ StringUtils.substringAfterLast(
+									normalized(this.url), File.separator);
 
 					// + "/"+ normalized(url);
 
-					cachedFile = new File(prefix);
-					downloadFile = new File(prefix + ".download");
-					timestampFile = new File(prefix + ".timestamp");
+					this.cachedFile = new File(prefix);
+					this.downloadFile = new File(prefix + ".download");
+					this.timestampFile = new File(prefix + ".timestamp");
 
-					if (cachedFile.exists()) {
+					if (this.cachedFile.exists()) {
 						newStatus = Status.DOWNLOADED;
 					} else {
 						newStatus = Status.NOT_DOWNLOADED;
@@ -266,17 +192,95 @@ public class DefaultDownloadable extends Downloadable {
 	}
 
 	/**
-	 * safe delete.
 	 * 
-	 * @param file
-	 *            the file
+	 * 
+	 * Can be overridden for testing (URLs are not mockable).
+	 * 
+	 * 
+	 * @return the input stream
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	private static void safeDelete(final File file) throws IOException {
-		if (!file.delete()) {
-			throw new IOException("Not deleted: " + file); // Java 5 / Android
-															// compatibility
+	private InputStream createInputStream() throws IOException {
+		final URLConnection connection = this.proxiedUrl.openConnection();
+		connection.connect();
+		this.contentLength = connection.getContentLength(); // TODO: handle the
+															// case
+		// in which it's unknown
+		// size
+		return connection.getInputStream();
+
+	}
+
+	/**
+	 * Download.
+	 * 
+	 * @param always
+	 *            the always
+	 */
+	private synchronized void download(final boolean always) {
+		computeCachedFile();
+
+		if (always || (this.status == Status.NOT_DOWNLOADED)) {
+			setStatus(Status.DOWNLOADING);
+			try {
+				load();
+			} catch (FileNotFoundException e) {
+				setStatus(Status.BROKEN);
+			} catch (IOException e) {
+				setStatus(Status.CONNECTION_PROBLEM);
+			}
+
 		}
+	}
+
+	/**
+	 * load file from internet.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	private void load() throws IOException {
+		final byte[] buffer = new byte[64 * 1024];
+		this.cachedFile.getParentFile().mkdirs();
+
+		if (this.downloadFile.exists()) {
+			safeDelete(this.downloadFile);
+		}
+
+		final InputStream is = createInputStream();
+
+		final OutputStream os = new FileOutputStream(this.downloadFile);
+		// final OutputStream os =
+		// fileSystem.get().openFileOutput(getCachedFile());
+		// FIXME: first download in cache, at the end copy to the real
+		// resource.
+		int loaded = 0;
+
+		for (;;) {
+			final int n = is.read(buffer);
+
+			if (n < 0) {
+				break;
+			}
+
+			os.write(buffer, 0, n);
+			loaded += n;
+
+			if (this.contentLength > 0) {
+				setDownloadProgress((1.0f * loaded) / this.contentLength);
+
+			}
+		}
+
+		if (this.cachedFile.exists()) {
+			safeDelete(this.cachedFile);
+		}
+
+		this.downloadFile.renameTo(this.cachedFile);
+		FileWriter w = new FileWriter(this.timestampFile);
+		w.write("downloaded: " + System.currentTimeMillis() + "\n");
+
+		setStatus(Status.DOWNLOADED);
 	}
 }

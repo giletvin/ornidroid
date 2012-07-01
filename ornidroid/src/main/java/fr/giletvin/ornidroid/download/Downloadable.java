@@ -46,47 +46,29 @@ import java.util.TreeSet;
  */
 public abstract class Downloadable {
 
-	/** The Constant serialVersionUID. */
-	private final static long serialVersionUID = 876756656347568673L;
-
-	/** The Constant NOT_DOWNLOADED. */
-	public final static int NOT_DOWNLOADED = 0;
-
-	/** The status. */
-	protected Status status = Status.NOT_DOWNLOADED;
-
 	/**
 	 * The Enum Status.
 	 */
 	public static enum Status {
 
-		/** The NO t_ downloaded. */
-		NOT_DOWNLOADED(false),
-		/** The QUEUED. */
-		QUEUED(false),
-		/** The DOWNLOADING. */
-		DOWNLOADING(false),
+		/** The BROKEN. */
+		BROKEN(true),
+		/** The CONNECTIO n_ problem. */
+		CONNECTION_PROBLEM(true),
 		/** The DOWNLOADED. */
 		DOWNLOADED(true),
+		/** The DOWNLOADING. */
+		DOWNLOADING(false),
+		/** The NO t_ downloaded. */
+		NOT_DOWNLOADED(false),
 		/** The OBSOLETE. */
-		OBSOLETE(false),
-		/** The BROKEN. */
-		BROKEN(true);
+		OBSOLETE(false), /** The QUEUED. */
+		QUEUED(false);
 
 		/** The Constant BUNDLE_NAME. */
 		private static final String BUNDLE_NAME = Status.class.getPackage()
 				.getName().replace('.', '/')
 				+ "/Bundle";
-
-		/**
-		 * Instantiates a new status.
-		 * 
-		 * @param b
-		 *            the b
-		 */
-		Status(boolean b) {
-			final_ = b;
-		}
 
 		/** The Constant LOCALE_COMPARATOR. */
 		static final Comparator<Locale> LOCALE_COMPARATOR = new Comparator<Locale>() {
@@ -97,6 +79,16 @@ public abstract class Downloadable {
 
 		/** The final_. */
 		private final boolean final_;
+
+		/**
+		 * Instantiates a new status.
+		 * 
+		 * @param b
+		 *            the b
+		 */
+		Status(boolean b) {
+			this.final_ = b;
+		}
 
 		/**
 		 * Gets the display name.
@@ -156,7 +148,7 @@ public abstract class Downloadable {
 		 * @return true, if is final
 		 */
 		public boolean isFinal() {
-			return final_;
+			return this.final_;
 		}
 	}
 
@@ -170,20 +162,29 @@ public abstract class Downloadable {
 
 	public static final Class<Downloadable> Downloadable = Downloadable.class;
 
+	/** The Constant NOT_DOWNLOADED. */
+	public final static int NOT_DOWNLOADED = 0;
+
+	/** The Constant PROP_CACHED. */
+	public static final String PROP_CACHED = "cached";
+
 	/** The Constant PROP_DOWNLOAD_PROGRESS. */
 	public static final String PROP_DOWNLOAD_PROGRESS = "downloadProgress";
 
 	/** The Constant PROP_STATUS. */
 	public static final String PROP_STATUS = "status";
 
-	/** The Constant PROP_CACHED. */
-	public static final String PROP_CACHED = "cached";
+	/** The Constant serialVersionUID. */
+	private final static long serialVersionUID = 876756656347568673L;
+
+	/** The cached. */
+	protected boolean cached = false;
 
 	/** The download progress. */
 	protected float downloadProgress = 0f;
 
-	/** The cached. */
-	protected boolean cached = false;
+	/** The status. */
+	protected Status status = Status.NOT_DOWNLOADED;
 
 	/** The property change support. */
 	private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
@@ -197,11 +198,11 @@ public abstract class Downloadable {
 	 * *************************************************************************
 	 * ***************************************.
 	 * 
-	 * @return the download progress
+	 * @param listener
+	 *            the listener
 	 */
-
-	public float getDownloadProgress() {
-		return downloadProgress;
+	public void addPropertyChangeListener(final PropertyChangeListener listener) {
+		this.propertyChangeSupport.addPropertyChangeListener(listener);
 	}
 
 	/**
@@ -214,58 +215,6 @@ public abstract class Downloadable {
 	 * 
 	 * @return the file
 	 */
-
-	/*******************************************************************************************************************
-     *
-     *
-     ******************************************************************************************************************/
-
-	public abstract File getFile();
-
-	/**
-	 * *************************************************************************
-	 * ****************************************
-	 * 
-	 * 
-	 * *************************************************************************
-	 * ***************************************.
-	 * 
-	 * @return true, if is cached
-	 */
-	public boolean isCached() {
-		return cached;
-	}
-
-	/**
-	 * *************************************************************************
-	 * ****************************************
-	 * 
-	 * 
-	 * *************************************************************************
-	 * ***************************************.
-	 * 
-	 * @param listener
-	 *            the listener
-	 */
-	public void addPropertyChangeListener(final PropertyChangeListener listener) {
-		propertyChangeSupport.addPropertyChangeListener(listener);
-	}
-
-	/**
-	 * *************************************************************************
-	 * ****************************************
-	 * 
-	 * 
-	 * *************************************************************************
-	 * ***************************************.
-	 * 
-	 * @param listener
-	 *            the listener
-	 */
-	public void removePropertyChangeListener(
-			final PropertyChangeListener listener) {
-		propertyChangeSupport.removePropertyChangeListener(listener);
-	}
 
 	/**
 	 * *************************************************************************
@@ -284,8 +233,20 @@ public abstract class Downloadable {
 	 * 
 	 * *************************************************************************
 	 * ***************************************.
+	 * 
+	 * @return the download progress
 	 */
-	public abstract void refresh();
+
+	public float getDownloadProgress() {
+		return this.downloadProgress;
+	}
+
+	/*******************************************************************************************************************
+     *
+     *
+     ******************************************************************************************************************/
+
+	public abstract File getFile();
 
 	/**
 	 * Gets the status.
@@ -293,7 +254,47 @@ public abstract class Downloadable {
 	 * @return the status
 	 */
 	public Status getStatus() {
-		return status;
+		return this.status;
+	}
+
+	/**
+	 * *************************************************************************
+	 * ****************************************
+	 * 
+	 * 
+	 * *************************************************************************
+	 * ***************************************.
+	 * 
+	 * @return true, if is cached
+	 */
+	public boolean isCached() {
+		return this.cached;
+	}
+
+	/**
+	 * *************************************************************************
+	 * ****************************************
+	 * 
+	 * 
+	 * *************************************************************************
+	 * ***************************************.
+	 */
+	public abstract void refresh();
+
+	/**
+	 * *************************************************************************
+	 * ****************************************
+	 * 
+	 * 
+	 * *************************************************************************
+	 * ***************************************.
+	 * 
+	 * @param listener
+	 *            the listener
+	 */
+	public void removePropertyChangeListener(
+			final PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(listener);
 	}
 
 	/**
@@ -322,13 +323,31 @@ public abstract class Downloadable {
 	 * *************************************************************************
 	 * ***************************************.
 	 * 
+	 * @param cached
+	 *            the new cached
+	 */
+	protected void setCached(final boolean cached) {
+		final boolean oldCached = this.cached;
+		this.cached = cached;
+		this.propertyChangeSupport.firePropertyChange(PROP_CACHED, oldCached,
+				cached);
+	}
+
+	/**
+	 * *************************************************************************
+	 * ****************************************
+	 * 
+	 * 
+	 * *************************************************************************
+	 * ***************************************.
+	 * 
 	 * @param downloadProgress
 	 *            the new download progress
 	 */
 	protected void setDownloadProgress(final float downloadProgress) {
 		final float oldDownloadProgress = this.downloadProgress;
 		this.downloadProgress = downloadProgress;
-		propertyChangeSupport.firePropertyChange(PROP_DOWNLOAD_PROGRESS,
+		this.propertyChangeSupport.firePropertyChange(PROP_DOWNLOAD_PROGRESS,
 				oldDownloadProgress, downloadProgress);
 	}
 
@@ -352,25 +371,7 @@ public abstract class Downloadable {
 			notifyAll();
 		}
 
-		propertyChangeSupport
-				.firePropertyChange(PROP_STATUS, oldStatus, status);
-	}
-
-	/**
-	 * *************************************************************************
-	 * ****************************************
-	 * 
-	 * 
-	 * *************************************************************************
-	 * ***************************************.
-	 * 
-	 * @param cached
-	 *            the new cached
-	 */
-	protected void setCached(final boolean cached) {
-		final boolean oldCached = this.cached;
-		this.cached = cached;
-		propertyChangeSupport
-				.firePropertyChange(PROP_CACHED, oldCached, cached);
+		this.propertyChangeSupport.firePropertyChange(PROP_STATUS, oldStatus,
+				status);
 	}
 }

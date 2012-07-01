@@ -48,12 +48,7 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 			DefaultDownloadable mediaFileDownloadable = new DefaultDownloadable(
 					url, destinationPath);
 			mediaFileDownloadable.download();
-			if (mediaFileDownloadable.getStatus().equals(
-					Downloadable.Status.BROKEN)) {
-
-				throw new OrnidroidException(
-						OrnidroidError.ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST);
-			}
+			checkDownloadErrors(mediaFileDownloadable);
 			// it is important to download the properties file AFTER the media
 			// since its presence is used to control the validity of the
 			// downloading
@@ -62,13 +57,7 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 			DefaultDownloadable propertiesFileDownloadable = new DefaultDownloadable(
 					url, destinationPath);
 			propertiesFileDownloadable.download();
-			if (propertiesFileDownloadable.getStatus().equals(
-					Downloadable.Status.BROKEN)) {
-
-				throw new OrnidroidException(
-						OrnidroidError.ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST);
-			}
-
+			checkDownloadErrors(mediaFileDownloadable);
 			// if the mediaFile exists, return it. Otherwise, we return null
 			if ((mediaFileDownloadable.getFile() != null)
 					&& mediaFileDownloadable.getFile().exists()) {
@@ -144,11 +133,7 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 			DefaultDownloadable contentFileDownloadable = new DefaultDownloadable(
 					url, destinationPath);
 			contentFileDownloadable.download();
-			if (contentFileDownloadable.getStatus().equals(
-					Downloadable.Status.BROKEN)) {
-				throw new OrnidroidException(
-						OrnidroidError.ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST);
-			}
+			checkDownloadErrors(contentFileDownloadable);
 			if (contentFileDownloadable.getFile().exists()) {
 				// contentFileDownloadable.getFile();
 				fis = new FileInputStream(contentFileDownloadable.getFile());
@@ -186,6 +171,28 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 		}
 
 		return filesToDownload;
+
+	}
+
+	/**
+	 * Check download errors. Check the status of the downloadable.
+	 * 
+	 * @param downloadableFile
+	 *            the downloadable file
+	 * @throws OrnidroidException
+	 *             the ornidroid exception if the status is an error.
+	 */
+	private void checkDownloadErrors(Downloadable downloadableFile)
+			throws OrnidroidException {
+		switch (downloadableFile.getStatus()) {
+		case CONNECTION_PROBLEM:
+			throw new OrnidroidException(
+					OrnidroidError.ORNIDROID_CONNECTION_PROBLEM);
+		case BROKEN:
+			throw new OrnidroidException(
+					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST);
+
+		}
 
 	}
 }

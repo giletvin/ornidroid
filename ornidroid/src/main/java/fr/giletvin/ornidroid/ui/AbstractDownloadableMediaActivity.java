@@ -19,6 +19,7 @@ import fr.giletvin.ornidroid.R;
 import fr.giletvin.ornidroid.bo.Bird;
 import fr.giletvin.ornidroid.bo.OrnidroidFileType;
 import fr.giletvin.ornidroid.helper.Constants;
+import fr.giletvin.ornidroid.helper.OrnidroidError;
 import fr.giletvin.ornidroid.helper.OrnidroidException;
 import fr.giletvin.ornidroid.service.IOrnidroidIOService;
 import fr.giletvin.ornidroid.service.IOrnidroidService;
@@ -30,8 +31,8 @@ import fr.giletvin.ornidroid.service.OrnidroidServiceFactory;
  */
 public abstract class AbstractDownloadableMediaActivity extends Activity
 		implements Runnable, OnClickListener {
-	/** The Constant BROKEN_LINK. */
-	public static final String BROKEN_LINK_INTENT_PARAM = "BROKEN_LINK_INTENT_PARAM";
+	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
+	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
 
 	/** The Constant DOWNLOAD_FINISHED. */
 	protected static final int DOWNLOAD_FINISHED = 2;
@@ -53,9 +54,6 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	/** The bird. */
 	private Bird bird;
 
-	/** The broken link flag. */
-	private boolean brokenLinkFlag;
-
 	/** The download from internet button. */
 	private ImageView downloadFromInternetButton;
 
@@ -64,8 +62,11 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 
 	/** The download progress. */
 	private final int downloadProgress = 0;
+
 	/** The download status. */
 	private int downloadStatus;
+	/** The ornidroid download error. */
+	private int ornidroidDownloadErrorCode;
 
 	/** The ornidroid io service. */
 	private final IOrnidroidIOService ornidroidIOService;
@@ -188,8 +189,8 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 			intent.putExtra(BirdInfoActivity.INTENT_ACTIVITY_TO_OPEN,
 					OrnidroidFileType.getCode(getFileType()));
 			intent.putExtra(
-					AbstractDownloadableMediaActivity.BROKEN_LINK_INTENT_PARAM,
-					this.brokenLinkFlag);
+					AbstractDownloadableMediaActivity.DOWNLOAD_ERROR_INTENT_PARAM,
+					this.ornidroidDownloadErrorCode);
 			startActivity(intent);
 			finish();
 		}
@@ -255,8 +256,8 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 		super.onCreate(savedInstanceState);
 		this.bird = this.ornidroidService.getCurrentBird();
 
-		this.brokenLinkFlag = getIntent().getBooleanExtra(
-				BROKEN_LINK_INTENT_PARAM, false);
+		this.ornidroidDownloadErrorCode = getIntent().getIntExtra(
+				DOWNLOAD_ERROR_INTENT_PARAM, 0);
 		try {
 			loadMediaFilesLocally();
 		} catch (OrnidroidException e) {
@@ -275,10 +276,19 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 
 		TextView noMediaMessage = new TextView(this);
 		getSpecificContentLayout().addView(noMediaMessage);
-		if (this.brokenLinkFlag) {
-			noMediaMessage.setText(R.string.no_resources_online);
 
-		} else {
+		OrnidroidError ornidroidError = OrnidroidError
+				.getOrnidroidError(this.ornidroidDownloadErrorCode);
+
+		switch (ornidroidError) {
+
+		case ORNIDROID_CONNECTION_PROBLEM:
+			noMediaMessage.setText(R.string.dialog_alert_connection_problem);
+			break;
+		case ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST:
+			noMediaMessage.setText(R.string.no_resources_online);
+			break;
+		case NO_ERROR:
 			switch (getFileType()) {
 			case AUDIO:
 				noMediaMessage.setText(R.string.no_records);
@@ -287,7 +297,6 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 				noMediaMessage.setText(R.string.no_pictures);
 				break;
 			}
-
 			this.downloadFromInternetButton = new ImageView(this);
 			this.downloadFromInternetButton.setOnClickListener(this);
 			this.downloadFromInternetButton
@@ -296,6 +305,10 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
 			getSpecificContentLayout().addView(this.downloadFromInternetButton);
+			break;
+		default:
+			noMediaMessage.setText(R.string.unknown_error);
+			break;
 		}
 
 	}
@@ -372,7 +385,10 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 					} catch (OrnidroidException e) {
 						Log.e(Constants.LOG_TAG,
 								"Download pb " + e.getErrorType() + " " + e);
-						AbstractDownloadableMediaActivity.this.brokenLinkFlag = true;
+						// keep it in the field, to get it back when the
+						// activity is reloaded.
+						AbstractDownloadableMediaActivity.this.ornidroidDownloadErrorCode = OrnidroidError
+								.getErrorCode(e.getErrorType());
 
 					} finally {
 						AbstractDownloadableMediaActivity.this.downloadStatus = DOWNLOAD_FINISHED;

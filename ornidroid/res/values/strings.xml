@@ -59,6 +59,13 @@
 	<string name="dialog_alert_download_error">Unable to find the ornidroid database in the
 		installation directory. The download from the website failed.
 	</string>
+	<string name="dialog_alert_database_not_found_online">Unable to find the ornidroid database on the
+		website. Ornidroid can\'t run.
+	</string>
+
+	<string name="dialog_alert_connection_problem">Connection problem. Please check your access to the
+		Internet.
+	</string>
 
 	<!-- autres labels -->
 	<string name="scientific_name">Scientific name</string>
@@ -81,5 +88,7 @@
 		automatically refresh.
 	</string>
 	<string name="no_resources_online">Sorry, no files to download on the website.
+	</string>
+	<string name="unknown_error">Sorry, an unexpected error has occurred.
 	</string>
 </resources>

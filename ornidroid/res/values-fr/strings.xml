@@ -67,6 +67,11 @@
 		dans le répertoire d\'installation et le téléchargement depuis
 		Internet a échoué. Ornidroid ne peut pas fonctionner.
 	</string>
+		<string name="dialog_alert_database_not_found_online">Impossible de télécharger le fichier de base de données depuis le site web. Ornidroid ne peut pas fonctionner.
+	</string>
+	
+	<string name="dialog_alert_connection_problem">Problème de connexion. Merci de vérifier vos paramètres réseau.
+	</string>
 
 	<!-- autres labels -->
 	<string name="scientific_name">Nom scientifique</string>
@@ -92,6 +97,8 @@
 	</string>
 	<string name="no_resources_online">Désolé, pas de fichier à télécharger depuis
 		Internet.
+	</string>
+	<string name="unknown_error">Désolé, une erreur inattendue est survenue.
 	</string>
 
 </resources>

@@ -302,11 +302,11 @@ public class BirdInfoActivity extends TabActivity {
 	private void addInfoToIntent(Intent intent) {
 		Intent birdInfoActivityIntent = this.getIntent();
 		intent.putExtra(
-				AbstractDownloadableMediaActivity.BROKEN_LINK_INTENT_PARAM,
+				AbstractDownloadableMediaActivity.DOWNLOAD_ERROR_INTENT_PARAM,
 				birdInfoActivityIntent
-						.getBooleanExtra(
-								AbstractDownloadableMediaActivity.BROKEN_LINK_INTENT_PARAM,
-								false));
+						.getIntExtra(
+								AbstractDownloadableMediaActivity.DOWNLOAD_ERROR_INTENT_PARAM,
+								0));
 
 	}
 

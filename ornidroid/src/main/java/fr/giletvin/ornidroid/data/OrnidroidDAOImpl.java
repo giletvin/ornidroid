@@ -1,7 +1,6 @@
 package fr.giletvin.ornidroid.data;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,19 +14,46 @@ import fr.giletvin.ornidroid.helper.Constants;
  */
 public class OrnidroidDAOImpl implements IOrnidroidDAO {
 
-	/** The Constant COMMA. */
-	private static final String COMMA = ",";
-
-	/** The Constant FTS_VIRTUAL_TABLE_TAXONOMY. */
-	private static final String FTS_VIRTUAL_TABLE_TAXONOMY = "taxonomy";
-
 	/** The Constant BIRD_TABLE. */
 	private static final String BIRD_TABLE = "bird";
+
+	/** The Constant COMMA. */
+	private static final String COMMA = ",";
 
 	/** The Constant DESCRIPTION_TABLE. */
 	private static final String DESCRIPTION_TABLE = "bird_description";
 
+	/** The Constant FTS_VIRTUAL_TABLE_TAXONOMY. */
+	private static final String FTS_VIRTUAL_TABLE_TAXONOMY = "taxonomy";
+
+	/** The singleton. */
 	private static IOrnidroidDAO singleton;
+
+	/**
+	 * Gets the single instance of OrnidroidDAOImpl.
+	 * 
+	 * @return single instance of OrnidroidDAOImpl
+	 */
+	public static IOrnidroidDAO getInstance() {
+
+		return singleton;
+	}
+
+	/**
+	 * Gets the single instance of OrnidroidDAOImpl. If it doesn't exist, create
+	 * it.
+	 * 
+	 * @param dataBaseOpenHelper
+	 *            the data base open helper
+	 * @return single instance of OrnidroidDAOImpl
+	 */
+	public static IOrnidroidDAO getInstance(
+			OrnidroidDatabaseOpenHelper dataBaseOpenHelper) {
+		if (null == singleton) {
+			singleton = new OrnidroidDAOImpl(dataBaseOpenHelper);
+		}
+		return singleton;
+	}
 
 	/** The data base open helper. */
 	private final OrnidroidDatabaseOpenHelper dataBaseOpenHelper;
@@ -38,22 +64,17 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/**
 	 * Constructor.
 	 * 
-	 * @param context
-	 *            The Context within which to work, used to create the DB
+	 * @param pDataBaseOpenHelper
+	 *            the data base open helper
 	 */
-	private OrnidroidDAOImpl(Context context) {
-		dataBaseOpenHelper = new OrnidroidDatabaseOpenHelper(context);
-		historyHelper = new HistoryHelper();
+	private OrnidroidDAOImpl(OrnidroidDatabaseOpenHelper pDataBaseOpenHelper) {
+		this.dataBaseOpenHelper = pDataBaseOpenHelper;
+		this.historyHelper = new HistoryHelper();
 	}
 
-	public static IOrnidroidDAO getInstance(Context context) {
-		if (null == singleton) {
-			singleton = new OrnidroidDAOImpl(context);
-		}
-		return singleton;
-	}
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.giletvin.ornidroid.data.IOrnidroidDAO#getBird(java.lang.String)
 	 */
 	public Cursor getBird(String rowId) {
@@ -68,16 +89,82 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		 */
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.giletvin.ornidroid.data.IOrnidroidDAO#getBirdMatches(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.giletvin.ornidroid.data.IOrnidroidDAO#getBirdIdInHistory(int)
+	 */
+	public Integer getBirdIdInHistory(int position) {
+		return this.historyHelper.getBirdIdInHistory(position);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.giletvin.ornidroid.data.IOrnidroidDAO#getBirdMatches(java.lang.String)
 	 */
 	public Cursor getBirdMatches(String query) {
 		String selection = SEARCHED_TAXON + " MATCH ?";
 		String[] selectionArgs = new String[] { query + "*" };
 		Cursor cursor = query(selection, selectionArgs, false);
-		historyHelper.setHistory(cursor);
+		this.historyHelper.setHistory(cursor);
 		return cursor;
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.giletvin.ornidroid.data.IOrnidroidDAO#getBirdNames(java.lang.Integer)
+	 */
+	public Cursor getBirdNames(Integer id) {
+		Cursor cursor = null;
+		try {
+			SQLiteDatabase db = this.dataBaseOpenHelper.getReadableDatabase();
+			StringBuilder query = new StringBuilder();
+			query.append("select ");
+			query.append(LANG_COLUMN_NAME);
+			query.append(COMMA);
+			query.append(TAXON);
+			query.append(" from taxonomy where bird_fk=");
+			query.append(id);
+			query.append(" order by ");
+			query.append(LANG_COLUMN_NAME);
+			Log.d(Constants.LOG_TAG, "Perform SQL query " + query.toString());
+			String[] selectionArgs = null;
+			cursor = db.rawQuery(query.toString(), selectionArgs);
+			if (cursor == null) {
+				return null;
+			} else if (!cursor.moveToFirst()) {
+				cursor.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			Log.e(Constants.LOG_TAG, "Exception sql " + e);
+		} finally {
+			this.dataBaseOpenHelper.close();
+		}
+		return cursor;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.giletvin.ornidroid.data.IOrnidroidDAO#getHistoricResultsAdapter()
+	 */
+	public ListAdapter getHistoricResultsAdapter() {
+		return this.historyHelper.getResultsAdapter();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.giletvin.ornidroid.data.IOrnidroidDAO#hasHistory()
+	 */
+	public boolean hasHistory() {
+		return this.historyHelper.hasHistory();
 	}
 
 	/**
@@ -97,7 +184,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 
 		Cursor cursor = null;
 		try {
-			SQLiteDatabase db = dataBaseOpenHelper.openDatabase();
+			SQLiteDatabase db = this.dataBaseOpenHelper.getReadableDatabase();
 			StringBuilder query = new StringBuilder();
 			query.append("select bird.id as ");
 			query.append(BaseColumns._ID);
@@ -178,63 +265,9 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 
 			Log.e(Constants.LOG_TAG, "Exception sql " + e);
 		} finally {
-			dataBaseOpenHelper.close();
+			this.dataBaseOpenHelper.close();
 		}
 		return cursor;
 
-	}
-
-	/* (non-Javadoc)
-	 * @see fr.giletvin.ornidroid.data.IOrnidroidDAO#getBirdNames(java.lang.Integer)
-	 */
-	public Cursor getBirdNames(Integer id) {
-		Cursor cursor = null;
-		try {
-			SQLiteDatabase db = dataBaseOpenHelper.openDatabase();
-			StringBuilder query = new StringBuilder();
-			query.append("select ");
-			query.append(LANG_COLUMN_NAME);
-			query.append(COMMA);
-			query.append(TAXON);
-			query.append(" from taxonomy where bird_fk=");
-			query.append(id);
-			query.append(" order by ");
-			query.append(LANG_COLUMN_NAME);
-			Log.d(Constants.LOG_TAG, "Perform SQL query " + query.toString());
-			String[] selectionArgs = null;
-			cursor = db.rawQuery(query.toString(), selectionArgs);
-			if (cursor == null) {
-				return null;
-			} else if (!cursor.moveToFirst()) {
-				cursor.close();
-				return null;
-			}
-		} catch (SQLException e) {
-			Log.e(Constants.LOG_TAG, "Exception sql " + e);
-		} finally {
-			dataBaseOpenHelper.close();
-		}
-		return cursor;
-	}
-
-	/* (non-Javadoc)
-	 * @see fr.giletvin.ornidroid.data.IOrnidroidDAO#getHistoricResultsAdapter()
-	 */
-	public ListAdapter getHistoricResultsAdapter() {
-		return this.historyHelper.getResultsAdapter();
-	}
-
-	/* (non-Javadoc)
-	 * @see fr.giletvin.ornidroid.data.IOrnidroidDAO#hasHistory()
-	 */
-	public boolean hasHistory() {
-		return this.historyHelper.hasHistory();
-	}
-
-	/* (non-Javadoc)
-	 * @see fr.giletvin.ornidroid.data.IOrnidroidDAO#getBirdIdInHistory(int)
-	 */
-	public Integer getBirdIdInHistory(int position) {
-		return historyHelper.getBirdIdInHistory(position);
 	}
 }

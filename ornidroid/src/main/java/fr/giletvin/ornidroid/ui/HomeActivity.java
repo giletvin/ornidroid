@@ -13,22 +13,15 @@ import fr.giletvin.ornidroid.R;
 import fr.giletvin.ornidroid.helper.Constants;
 import fr.giletvin.ornidroid.helper.OrnidroidException;
 import fr.giletvin.ornidroid.service.IOrnidroidIOService;
+import fr.giletvin.ornidroid.service.IOrnidroidService;
 import fr.giletvin.ornidroid.service.OrnidroidIOServiceImpl;
+import fr.giletvin.ornidroid.service.OrnidroidServiceFactory;
 
 /**
  * The Class HomeActivity. Start screen of the application
  */
 public class HomeActivity extends AbstractOrnidroidActivity implements
 		OnTouchListener {
-
-	/** The Constant DIALOG_DOWNLOAD_CONNECTION_PROBLEM_ID. */
-	private static final int DIALOG_DOWNLOAD_CONNECTION_PROBLEM_ID = 4;
-
-	/** The Constant DIALOG_DOWNLOAD_ERROR_ID. */
-	private static final int DIALOG_DOWNLOAD_ERROR_ID = 2;
-
-	/** The Constant DIALOG_DOWNLOAD_MEDIA_DOES_NOT_EXIST_ID. */
-	private static final int DIALOG_DOWNLOAD_MEDIA_DOES_NOT_EXIST_ID = 3;
 
 	/** The Constant DIALOG_ORNIDROID_DATABASE_NOT_FOUND. */
 	private static final int DIALOG_ORNIDROID_DATABASE_NOT_FOUND_ID = 1;
@@ -41,6 +34,10 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 
 	/** The ornidroid io service. */
 	private final IOrnidroidIOService ornidroidIOService;
+
+	/** The ornidroid service. */
+	private final IOrnidroidService ornidroidService;
+
 	/** The search link. */
 	private TextView searchLink;
 
@@ -51,6 +48,7 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 		super();
 		Constants.initializeConstants(this);
 		this.ornidroidIOService = new OrnidroidIOServiceImpl();
+		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 
 	}
 
@@ -123,39 +121,7 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 							});
 
 			break;
-		case DIALOG_DOWNLOAD_ERROR_ID:
-			builder.setMessage(
-					this.getText(R.string.dialog_alert_download_error))
-					.setNegativeButton("OK",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id) {
-									dialog.cancel();
-								}
-							});
-			break;
-		case DIALOG_DOWNLOAD_MEDIA_DOES_NOT_EXIST_ID:
-			builder.setMessage(
-					this.getText(R.string.dialog_alert_database_not_found_online))
-					.setNegativeButton("OK",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id) {
-									dialog.cancel();
-								}
-							});
-			break;
-		case DIALOG_DOWNLOAD_CONNECTION_PROBLEM_ID:
-			builder.setMessage(
-					this.getText(R.string.dialog_alert_connection_problem))
-					.setNegativeButton("OK",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id) {
-									dialog.cancel();
-								}
-							});
-			break;
+
 		default:
 			builder.setMessage(
 					this.getText(R.string.dialog_alert_ornidroid_home_not_found))
@@ -191,11 +157,9 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 			this.ornidroidIOService.checkOrnidroidHome(Constants
 					.getOrnidroidHome());
 
-			// check the ornidroid.sqlite file. If it doesnt exist, try to
-			// download
-			// it from internet
-			this.ornidroidIOService.checkOrnidroidDatabase(
-					Constants.getOrnidroidHome(), Constants.DB_NAME);
+			// check the ornidroid.sqlite file.
+			this.ornidroidService.createDbIfNecessary();
+
 		} catch (OrnidroidException e) {
 			switch (e.getErrorType()) {
 			case DATABASE_NOT_FOUND:
@@ -203,15 +167,6 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 				break;
 			case ORNIDROID_HOME_NOT_FOUND:
 				showDialog(DIALOG_ORNIDROID_HOME_NOT_FOUND_ID);
-				break;
-			case ORNIDROID_DOWNLOAD_ERROR:
-				showDialog(DIALOG_DOWNLOAD_ERROR_ID);
-				break;
-			case ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST:
-				showDialog(DIALOG_DOWNLOAD_MEDIA_DOES_NOT_EXIST_ID);
-				break;
-			case ORNIDROID_CONNECTION_PROBLEM:
-				showDialog(DIALOG_DOWNLOAD_CONNECTION_PROBLEM_ID);
 				break;
 			default:
 				showDialog(DIALOG_ORNIDROID_HOME_NOT_FOUND_ID);

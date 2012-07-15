@@ -36,6 +36,6 @@ Création des packages
 dans ornidroid_database 
 create_packages.sh  ../ornidroid_images/ images
 create_packages.sh  ../ornidroid_audio/ audio
-Zipper ornidroid.sqlite et ornidroid.sqlite.properties dans ornidroid_database.zip
-Placer les zip obtenus dans le répertoire packages sur ornidroid.free.fr
-Poser le fichier ornidroid.sqlite et son fichier de properties dans http://ornidroid.free.fr/ornidroid
+
+Placer ornidroid.sqlite dans le répertoire assets de l'application pour Android
+Placer les zip générés sur http://ornidroid.free.fr/ornidroid/packages/

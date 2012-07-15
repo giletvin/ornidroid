@@ -12,36 +12,18 @@ import android.widget.ListAdapter;
 import fr.giletvin.ornidroid.bo.Bird;
 import fr.giletvin.ornidroid.bo.BirdFactoryImpl;
 import fr.giletvin.ornidroid.bo.Taxon;
-import fr.giletvin.ornidroid.data.OrnidroidDAOImpl;
 import fr.giletvin.ornidroid.data.IOrnidroidDAO;
+import fr.giletvin.ornidroid.data.OrnidroidDAOImpl;
+import fr.giletvin.ornidroid.data.OrnidroidDatabaseOpenHelper;
+import fr.giletvin.ornidroid.helper.OrnidroidException;
 
 /**
  * The Class OrnidroidServiceImpl.
  */
 public class OrnidroidServiceImpl implements IOrnidroidService {
 
-	/** The activity. */
-	private final Activity activity;
-
-	/** The ornidroid dao. */
-	private final IOrnidroidDAO ornidroidDAO;
-
 	/** The service instance. */
 	private static IOrnidroidService serviceInstance;
-
-	/** The current bird. */
-	private Bird currentBird;
-
-	/**
-	 * Instantiates a new ornidroid service impl.
-	 * 
-	 * @param pActivity
-	 *            the activity
-	 */
-	private OrnidroidServiceImpl(Activity pActivity) {
-		this.activity = pActivity;
-		this.ornidroidDAO = OrnidroidDAOImpl.getInstance(pActivity);
-	}
 
 	/**
 	 * Gets the single instance of OrnidroidServiceImpl.
@@ -50,57 +32,55 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 *            the activity
 	 * @return single instance of OrnidroidServiceImpl
 	 */
-	protected static IOrnidroidService getInstance(Activity pActivity) {
+	protected static IOrnidroidService getInstance(final Activity pActivity) {
 		if (null == serviceInstance) {
 			serviceInstance = new OrnidroidServiceImpl(pActivity);
 		}
 		return serviceInstance;
 	}
 
+	/** The activity. */
+	private final Activity activity;
+	/** The current bird. */
+	private Bird currentBird;
+
+	/** The data base open helper. */
+	private final OrnidroidDatabaseOpenHelper dataBaseOpenHelper;
+
+	/** The ornidroid dao. */
+	private final IOrnidroidDAO ornidroidDAO;
+
+	/**
+	 * Instantiates a new ornidroid service impl.
+	 * 
+	 * @param pActivity
+	 *            the activity
+	 */
+	private OrnidroidServiceImpl(final Activity pActivity) {
+		this.activity = pActivity;
+		this.dataBaseOpenHelper = new OrnidroidDatabaseOpenHelper(pActivity);
+		this.ornidroidDAO = OrnidroidDAOImpl
+				.getInstance(this.dataBaseOpenHelper);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * fr.giletvin.ornidroid.service.IOrnidroidService#loadBirdDetails(android
-	 * .net.Uri)
+	 * fr.giletvin.ornidroid.service.IOrnidroidService#createDbIfNecessary()
 	 */
-	public void loadBirdDetails(Uri uri) {
-		Cursor cursor = activity.managedQuery(uri, null, null, null, null);
-
-		loadBirdDetailsFromCursor(cursor);
+	public void createDbIfNecessary() throws OrnidroidException {
+		this.dataBaseOpenHelper.createDbIfNecessary();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.giletvin.ornidroid.service.IOrnidroidService#getCurrentBird()
+	 * @see
+	 * fr.giletvin.ornidroid.service.IOrnidroidService#getBirdIdInHistory(int)
 	 */
-	public Bird getCurrentBird() {
-		return currentBird;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.giletvin.ornidroid.service.IOrnidroidService#getNames(int)
-	 */
-	public List<Taxon> getNames(int id) {
-		Cursor cursor = ornidroidDAO.getBirdNames(id);
-		List<Taxon> result = new ArrayList<Taxon>();
-		if (cursor != null) {
-			int nbResults = cursor.getCount();
-			for (int i = 0; i < nbResults; i++) {
-				cursor.moveToPosition(i);
-				int langIndex = cursor
-						.getColumnIndexOrThrow(IOrnidroidDAO.LANG_COLUMN_NAME);
-				int taxonIndex = cursor
-						.getColumnIndexOrThrow(IOrnidroidDAO.TAXON);
-				Taxon taxon = new Taxon(cursor.getString(langIndex),
-						cursor.getString(taxonIndex));
-				result.add(taxon);
-			}
-		}
-		return result;
+	public Integer getBirdIdInHistory(final int position) {
+		return this.ornidroidDAO.getBirdIdInHistory(position);
 	}
 
 	/*
@@ -110,61 +90,17 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * fr.giletvin.ornidroid.service.IOrnidroidService#getBirdMatches(java.lang
 	 * .String)
 	 */
-	public Cursor getBirdMatches(String query) {
-		return ornidroidDAO.getBirdMatches(query);
+	public Cursor getBirdMatches(final String query) {
+		return this.ornidroidDAO.getBirdMatches(query);
 	}
 
-	/**
-	 * Load bird details from cursor.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param cursor
-	 *            the cursor
+	 * @see fr.giletvin.ornidroid.service.IOrnidroidService#getCurrentBird()
 	 */
-	private void loadBirdDetailsFromCursor(Cursor cursor) {
-		if (cursor != null) {
-			cursor.moveToFirst();
-			int idIndex = cursor.getColumnIndexOrThrow(BaseColumns._ID);
-
-			int taxonIndex = cursor
-					.getColumnIndexOrThrow(SearchManager.SUGGEST_COLUMN_TEXT_1);
-			int scientificNameIndex = cursor
-					.getColumnIndexOrThrow(SearchManager.SUGGEST_COLUMN_TEXT_2);
-			int directoryNameIndex = cursor
-					.getColumnIndexOrThrow(IOrnidroidDAO.DIRECTORY_NAME_COLUMN);
-			int descriptionIndex = cursor
-					.getColumnIndex(IOrnidroidDAO.DESCRIPTION_COLUMN);
-			int scientificOrderIndex = cursor
-					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_ORDER_NAME_COLUMN);
-			int scientificFamilyIndex = cursor
-					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_FAMILY_NAME_COLUMN);
-			String description = (descriptionIndex == -1) ? "" : cursor
-					.getString(descriptionIndex);
-			String scientificOrder = (scientificOrderIndex == -1) ? "" : cursor
-					.getString(scientificOrderIndex);
-			String scientificFamily = (scientificFamilyIndex == -1) ? ""
-					: cursor.getString(scientificFamilyIndex);
-			BirdFactoryImpl birdFactory = new BirdFactoryImpl();
-			currentBird = birdFactory.createBird(cursor.getInt(idIndex),
-					cursor.getString(taxonIndex),
-					cursor.getString(scientificNameIndex),
-					cursor.getString(directoryNameIndex), description,
-					scientificOrder, scientificFamily);
-
-		}
-		cursor.close();
-	}
-
-	/**
-	 * Load bird details.
-	 * 
-	 * @param birdId
-	 *            the bird id
-	 */
-	public void loadBirdDetails(Integer birdId) {
-		Cursor cursor = ornidroidDAO.getBird(birdId.toString());
-
-		loadBirdDetailsFromCursor(cursor);
-
+	public Bird getCurrentBird() {
+		return this.currentBird;
 	}
 
 	/*
@@ -176,7 +112,31 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 */
 	public ListAdapter getHistoricResultsAdapter() {
 
-		return ornidroidDAO.getHistoricResultsAdapter();
+		return this.ornidroidDAO.getHistoricResultsAdapter();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.giletvin.ornidroid.service.IOrnidroidService#getNames(int)
+	 */
+	public List<Taxon> getNames(final int id) {
+		final Cursor cursor = this.ornidroidDAO.getBirdNames(id);
+		final List<Taxon> result = new ArrayList<Taxon>();
+		if (cursor != null) {
+			final int nbResults = cursor.getCount();
+			for (int i = 0; i < nbResults; i++) {
+				cursor.moveToPosition(i);
+				final int langIndex = cursor
+						.getColumnIndexOrThrow(IOrnidroidDAO.LANG_COLUMN_NAME);
+				final int taxonIndex = cursor
+						.getColumnIndexOrThrow(IOrnidroidDAO.TAXON);
+				final Taxon taxon = new Taxon(cursor.getString(langIndex),
+						cursor.getString(taxonIndex));
+				result.add(taxon);
+			}
+		}
+		return result;
 	}
 
 	/*
@@ -185,17 +145,74 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * @see fr.giletvin.ornidroid.service.IOrnidroidService#hasHistory()
 	 */
 	public boolean hasHistory() {
-		return ornidroidDAO.hasHistory();
+		return this.ornidroidDAO.hasHistory();
+	}
+
+	/**
+	 * Load bird details.
+	 * 
+	 * @param birdId
+	 *            the bird id
+	 */
+	public void loadBirdDetails(final Integer birdId) {
+		final Cursor cursor = this.ornidroidDAO.getBird(birdId.toString());
+
+		loadBirdDetailsFromCursor(cursor);
+
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * fr.giletvin.ornidroid.service.IOrnidroidService#getBirdIdInHistory(int)
+	 * fr.giletvin.ornidroid.service.IOrnidroidService#loadBirdDetails(android
+	 * .net.Uri)
 	 */
-	public Integer getBirdIdInHistory(int position) {
-		return ornidroidDAO.getBirdIdInHistory(position);
+	public void loadBirdDetails(final Uri uri) {
+		final Cursor cursor = this.activity.managedQuery(uri, null, null, null,
+				null);
+
+		loadBirdDetailsFromCursor(cursor);
+	}
+
+	/**
+	 * Load bird details from cursor.
+	 * 
+	 * @param cursor
+	 *            the cursor
+	 */
+	private void loadBirdDetailsFromCursor(final Cursor cursor) {
+		if (cursor != null) {
+			cursor.moveToFirst();
+			final int idIndex = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+
+			final int taxonIndex = cursor
+					.getColumnIndexOrThrow(SearchManager.SUGGEST_COLUMN_TEXT_1);
+			final int scientificNameIndex = cursor
+					.getColumnIndexOrThrow(SearchManager.SUGGEST_COLUMN_TEXT_2);
+			final int directoryNameIndex = cursor
+					.getColumnIndexOrThrow(IOrnidroidDAO.DIRECTORY_NAME_COLUMN);
+			final int descriptionIndex = cursor
+					.getColumnIndex(IOrnidroidDAO.DESCRIPTION_COLUMN);
+			final int scientificOrderIndex = cursor
+					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_ORDER_NAME_COLUMN);
+			final int scientificFamilyIndex = cursor
+					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_FAMILY_NAME_COLUMN);
+			final String description = (descriptionIndex == -1) ? "" : cursor
+					.getString(descriptionIndex);
+			final String scientificOrder = (scientificOrderIndex == -1) ? ""
+					: cursor.getString(scientificOrderIndex);
+			final String scientificFamily = (scientificFamilyIndex == -1) ? ""
+					: cursor.getString(scientificFamilyIndex);
+			final BirdFactoryImpl birdFactory = new BirdFactoryImpl();
+			this.currentBird = birdFactory.createBird(cursor.getInt(idIndex),
+					cursor.getString(taxonIndex),
+					cursor.getString(scientificNameIndex),
+					cursor.getString(directoryNameIndex), description,
+					scientificOrder, scientificFamily);
+
+		}
+		cursor.close();
 	}
 
 }

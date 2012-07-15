@@ -16,7 +16,6 @@ import fr.giletvin.ornidroid.bo.AbstractOrnidroidFile;
 import fr.giletvin.ornidroid.bo.Bird;
 import fr.giletvin.ornidroid.bo.OrnidroidFileFactoryImpl;
 import fr.giletvin.ornidroid.bo.OrnidroidFileType;
-import fr.giletvin.ornidroid.download.DownloadConstants;
 import fr.giletvin.ornidroid.download.DownloadHelperImpl;
 import fr.giletvin.ornidroid.download.DownloadHelperInterface;
 import fr.giletvin.ornidroid.helper.BasicConstants;
@@ -86,33 +85,9 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 				FileUtils.forceMkdir(fileDirectory);
 			} catch (IOException e) {
 				throw new OrnidroidException(
-						OrnidroidError.ORNIDROID_HOME_NOT_FOUND);
+						OrnidroidError.ORNIDROID_HOME_NOT_FOUND, e);
 			}
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.giletvin.ornidroid.service.IOrnidroidService#checkOrnidroidDatabase
-	 * (java.lang.String)
-	 */
-	public void checkOrnidroidDatabase(String localDatabaseDirectory,
-			String dbName) throws OrnidroidException {
-		File ornidroidDb = new File(localDatabaseDirectory + File.separator
-				+ dbName);
-		String propertiesFileName = dbName
-				+ AbstractOrnidroidFile.PROPERTIES_SUFFIX;
-		File propertiesFile = new File(localDatabaseDirectory + File.separator
-				+ propertiesFileName);
-		if (!ornidroidDb.exists() || !propertiesFile.exists()) {
-			// try to download it if it doesnt not exist
-			this.downloadHelper.downloadFile(
-					DownloadConstants.getOrnidroidWebSite(), dbName,
-					localDatabaseDirectory);
-		}
-
 	}
 
 	/*
@@ -224,7 +199,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 					FileUtils.forceMkdir(filesDirectory);
 				} catch (IOException e) {
 					throw new OrnidroidException(
-							OrnidroidError.ORNIDROID_HOME_NOT_FOUND);
+							OrnidroidError.ORNIDROID_HOME_NOT_FOUND, e);
 				}
 			}
 			if (filesDirectory.isDirectory()) {

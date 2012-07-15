@@ -68,7 +68,7 @@ public class DefaultDownloadableTest extends AbstractTest {
 	}
 
 	/**
-	 * Test real download of the sqlite db.
+	 * Test real download.
 	 * 
 	 * @throws Exception
 	 *             the exception
@@ -76,20 +76,11 @@ public class DefaultDownloadableTest extends AbstractTest {
 	@Test
 	public void testRealDownloadRawFiles() throws Exception {
 
-		URL url = new URL(ORNIDROID_TEST_WEB_BASE_IMAGE_URL
+		final URL url = new URL(ORNIDROID_TEST_WEB_BASE_IMAGE_URL
 				+ "/barge_a_queue_noire/contents.properties");
 
-		Downloadable fixture = new DefaultDownloadable(url, TEST_DIRECTORY);
-		fixture.download();
-		Assert.assertTrue(fixture.getFile().exists());
-
-		url = new URL(ORNIDROID_TEST_WEB_BASE + "/ornidroid.sqlite");
-		fixture = new DefaultDownloadable(url, TEST_DIRECTORY);
-		fixture.download();
-		Assert.assertTrue(fixture.getFile().exists());
-
-		url = new URL(ORNIDROID_TEST_WEB_BASE + "/ornidroid.sqlite.properties");
-		fixture = new DefaultDownloadable(url, TEST_DIRECTORY);
+		final Downloadable fixture = new DefaultDownloadable(url,
+				TEST_DIRECTORY);
 		fixture.download();
 		Assert.assertTrue(fixture.getFile().exists());
 

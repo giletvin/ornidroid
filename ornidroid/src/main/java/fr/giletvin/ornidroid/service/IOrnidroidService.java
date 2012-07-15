@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.widget.ListAdapter;
 import fr.giletvin.ornidroid.bo.Bird;
 import fr.giletvin.ornidroid.bo.Taxon;
+import fr.giletvin.ornidroid.helper.OrnidroidException;
 
 /**
  * The Interface IOrnidroidService.
@@ -14,38 +15,21 @@ import fr.giletvin.ornidroid.bo.Taxon;
 public interface IOrnidroidService {
 
 	/**
-	 * Load bird details. Load info from the database. The created bird doesn't
-	 * have its media files yet.
+	 * Creates the db if necessary.
 	 * 
-	 * @param uri
-	 *            the uri
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
 	 */
-	void loadBirdDetails(Uri uri);
+	void createDbIfNecessary() throws OrnidroidException;
 
 	/**
-	 * Load bird details.
+	 * Gets the bird id in history.
 	 * 
-	 * @param birdId
-	 *            the bird id
+	 * @param position
+	 *            the position
+	 * @return the bird id in history
 	 */
-	void loadBirdDetails(Integer birdId);
-
-	/**
-	 * Gets the current bird. If a previous call to show bird detail was already
-	 * done, get the bird without querying the db
-	 * 
-	 * @return the current bird
-	 */
-	Bird getCurrentBird();
-
-	/**
-	 * Gets the names of the bird in different languages.
-	 * 
-	 * @param id
-	 *            the id
-	 * @return List of taxon
-	 */
-	List<Taxon> getNames(int id);
+	Integer getBirdIdInHistory(int position);
 
 	/**
 	 * Gets the bird matches.
@@ -57,11 +41,28 @@ public interface IOrnidroidService {
 	Cursor getBirdMatches(String query);
 
 	/**
+	 * Gets the current bird. If a previous call to show bird detail was already
+	 * done, get the bird without querying the db
+	 * 
+	 * @return the current bird
+	 */
+	Bird getCurrentBird();
+
+	/**
 	 * Gets the historic results adapter.
 	 * 
 	 * @return the historic results adapter
 	 */
 	ListAdapter getHistoricResultsAdapter();
+
+	/**
+	 * Gets the names of the bird in different languages.
+	 * 
+	 * @param id
+	 *            the id
+	 * @return List of taxon
+	 */
+	List<Taxon> getNames(int id);
 
 	/**
 	 * Checks for history.
@@ -71,12 +72,20 @@ public interface IOrnidroidService {
 	boolean hasHistory();
 
 	/**
-	 * Gets the bird id in history.
+	 * Load bird details.
 	 * 
-	 * @param position
-	 *            the position
-	 * @return the bird id in history
+	 * @param birdId
+	 *            the bird id
 	 */
-	Integer getBirdIdInHistory(int position);
+	void loadBirdDetails(Integer birdId);
+
+	/**
+	 * Load bird details. Load info from the database. The created bird doesn't
+	 * have its media files yet.
+	 * 
+	 * @param uri
+	 *            the uri
+	 */
+	void loadBirdDetails(Uri uri);
 
 }

@@ -13,9 +13,6 @@ import android.net.Uri;
  */
 public class DictionaryProvider extends ContentProvider {
 
-	/** The TAG. */
-	String TAG = "DictionaryProvider";
-
 	/** The AUTHORITY. */
 	public static String AUTHORITY = "fr.giletvin.ornidroid.data.DictionaryProvider";
 
@@ -23,30 +20,27 @@ public class DictionaryProvider extends ContentProvider {
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
 			+ "/dictionary");
 
+	/** The Constant DEFINITION_MIME_TYPE. */
+	public static final String DEFINITION_MIME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
+			+ "/vnd.example.android.searchabledict";
+
 	// MIME types used for searching words or looking up a single definition
 	/** The Constant WORDS_MIME_TYPE. */
 	public static final String WORDS_MIME_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
 			+ "/vnd.example.android.searchabledict";
 
-	/** The Constant DEFINITION_MIME_TYPE. */
-	public static final String DEFINITION_MIME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
-			+ "/vnd.example.android.searchabledict";
-
-	/** The m dictionary. */
-	private IOrnidroidDAO mDictionary;
-
-	// UriMatcher stuff
-	/** The Constant SEARCH_WORDS. */
-	private static final int SEARCH_WORDS = 0;
-
 	/** The Constant GET_WORD. */
 	private static final int GET_WORD = 1;
+
+	/** The Constant REFRESH_SHORTCUT. */
+	private static final int REFRESH_SHORTCUT = 3;
 
 	/** The Constant SEARCH_SUGGEST. */
 	private static final int SEARCH_SUGGEST = 2;
 
-	/** The Constant REFRESH_SHORTCUT. */
-	private static final int REFRESH_SHORTCUT = 3;
+	// UriMatcher stuff
+	/** The Constant SEARCH_WORDS. */
+	private static final int SEARCH_WORDS = 0;
 
 	/** The Constant sURIMatcher. */
 	private static final UriMatcher sURIMatcher = buildUriMatcher();
@@ -83,14 +77,62 @@ public class DictionaryProvider extends ContentProvider {
 		return matcher;
 	}
 
+	/** The TAG. */
+	String TAG = "DictionaryProvider";
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see android.content.ContentProvider#onCreate()
 	 */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.content.ContentProvider#delete(android.net.Uri,
+	 * java.lang.String, java.lang.String[])
+	 */
+	@Override
+	public int delete(Uri uri, String selection, String[] selectionArgs) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * This method is required in order to query the supported types. It's also
+	 * useful in our own query() method to determine the type of Uri received.
+	 * 
+	 * @param uri
+	 *            the uri
+	 * @return the type
+	 */
+	@Override
+	public String getType(Uri uri) {
+		switch (sURIMatcher.match(uri)) {
+		case SEARCH_WORDS:
+			return WORDS_MIME_TYPE;
+		case GET_WORD:
+			return DEFINITION_MIME_TYPE;
+		case SEARCH_SUGGEST:
+			return SearchManager.SUGGEST_MIME_TYPE;
+		case REFRESH_SHORTCUT:
+			return SearchManager.SHORTCUT_MIME_TYPE;
+		default:
+			throw new IllegalArgumentException("Unknown URL " + uri);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.content.ContentProvider#insert(android.net.Uri,
+	 * android.content.ContentValues)
+	 */
+	@Override
+	public Uri insert(Uri uri, ContentValues values) {
+		throw new UnsupportedOperationException();
+	}
+
 	@Override
 	public boolean onCreate() {
-		mDictionary = OrnidroidDAOImpl.getInstance(getContext());
 		return true;
 	}
 
@@ -142,6 +184,24 @@ public class DictionaryProvider extends ContentProvider {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.content.ContentProvider#update(android.net.Uri,
+	 * android.content.ContentValues, java.lang.String, java.lang.String[])
+	 */
+	@Override
+	public int update(Uri uri, ContentValues values, String selection,
+			String[] selectionArgs) {
+		throw new UnsupportedOperationException();
+	}
+
+	private IOrnidroidDAO getDao() {
+		return OrnidroidDAOImpl.getInstance();
+	}
+
+	// Other required implementations...
+
 	/**
 	 * Gets the suggestions.
 	 * 
@@ -151,22 +211,8 @@ public class DictionaryProvider extends ContentProvider {
 	 */
 	private Cursor getSuggestions(String query) {
 		query = query.toLowerCase();
-		Cursor cursor = mDictionary.getBirdMatches(query);
+		Cursor cursor = getDao().getBirdMatches(query);
 
-		return cursor;
-	}
-
-	/**
-	 * Search.
-	 * 
-	 * @param query
-	 *            the query
-	 * @return the cursor
-	 */
-	private Cursor search(String query) {
-		query = query.toLowerCase();
-		Cursor cursor = mDictionary.getBirdMatches(query);
-		// Constants.setRESULTS_ADAPTER(cursor);
 		return cursor;
 	}
 
@@ -179,7 +225,7 @@ public class DictionaryProvider extends ContentProvider {
 	 */
 	private Cursor getWord(Uri uri) {
 		String rowId = uri.getLastPathSegment();
-		return mDictionary.getBird(rowId);
+		return this.getDao().getBird(rowId);
 	}
 
 	/**
@@ -201,67 +247,21 @@ public class DictionaryProvider extends ContentProvider {
 		 */
 		String rowId = uri.getLastPathSegment();
 
-		return mDictionary.getBird(rowId);
+		return this.getDao().getBird(rowId);
 	}
 
 	/**
-	 * This method is required in order to query the supported types. It's also
-	 * useful in our own query() method to determine the type of Uri received.
+	 * Search.
 	 * 
-	 * @param uri
-	 *            the uri
-	 * @return the type
+	 * @param query
+	 *            the query
+	 * @return the cursor
 	 */
-	@Override
-	public String getType(Uri uri) {
-		switch (sURIMatcher.match(uri)) {
-		case SEARCH_WORDS:
-			return WORDS_MIME_TYPE;
-		case GET_WORD:
-			return DEFINITION_MIME_TYPE;
-		case SEARCH_SUGGEST:
-			return SearchManager.SUGGEST_MIME_TYPE;
-		case REFRESH_SHORTCUT:
-			return SearchManager.SHORTCUT_MIME_TYPE;
-		default:
-			throw new IllegalArgumentException("Unknown URL " + uri);
-		}
-	}
-
-	// Other required implementations...
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.content.ContentProvider#insert(android.net.Uri,
-	 * android.content.ContentValues)
-	 */
-	@Override
-	public Uri insert(Uri uri, ContentValues values) {
-		throw new UnsupportedOperationException();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.content.ContentProvider#delete(android.net.Uri,
-	 * java.lang.String, java.lang.String[])
-	 */
-	@Override
-	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		throw new UnsupportedOperationException();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.content.ContentProvider#update(android.net.Uri,
-	 * android.content.ContentValues, java.lang.String, java.lang.String[])
-	 */
-	@Override
-	public int update(Uri uri, ContentValues values, String selection,
-			String[] selectionArgs) {
-		throw new UnsupportedOperationException();
+	private Cursor search(String query) {
+		query = query.toLowerCase();
+		Cursor cursor = this.getDao().getBirdMatches(query);
+		// Constants.setRESULTS_ADAPTER(cursor);
+		return cursor;
 	}
 
 }

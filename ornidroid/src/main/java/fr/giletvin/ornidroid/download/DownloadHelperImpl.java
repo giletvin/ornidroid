@@ -65,7 +65,7 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 			}
 		} catch (MalformedURLException e) {
 			throw new OrnidroidException(
-					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR);
+					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 		}
 		return downloadedFile;
 	}
@@ -148,15 +148,15 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 		} catch (MalformedURLException e) {
 
 			throw new OrnidroidException(
-					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR);
+					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 		} catch (FileNotFoundException e) {
 
 			throw new OrnidroidException(
-					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR);
+					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 		} catch (IOException e) {
 
 			throw new OrnidroidException(
-					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR);
+					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 		} finally {
 			if (null != fis) {
 				try {
@@ -164,7 +164,7 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 					fis = null;
 				} catch (IOException e) {
 					throw new OrnidroidException(
-							OrnidroidError.ORNIDROID_DOWNLOAD_ERROR);
+							OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 				}
 			}
 
@@ -187,10 +187,11 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 		switch (downloadableFile.getStatus()) {
 		case CONNECTION_PROBLEM:
 			throw new OrnidroidException(
-					OrnidroidError.ORNIDROID_CONNECTION_PROBLEM);
+					OrnidroidError.ORNIDROID_CONNECTION_PROBLEM, null);
 		case BROKEN:
 			throw new OrnidroidException(
-					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST);
+					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST,
+					null);
 
 		}
 

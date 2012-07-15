@@ -384,7 +384,8 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 
 					} catch (OrnidroidException e) {
 						Log.e(Constants.LOG_TAG,
-								"Download pb " + e.getErrorType() + " " + e);
+								"Download pb " + e.getErrorType() + " "
+										+ e.getSourceException());
 						// keep it in the field, to get it back when the
 						// activity is reloaded.
 						AbstractDownloadableMediaActivity.this.ornidroidDownloadErrorCode = OrnidroidError

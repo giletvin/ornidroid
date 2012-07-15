@@ -14,15 +14,22 @@ public class OrnidroidException extends Exception {
 	/** The error type. */
 	private final OrnidroidError errorType;
 
+	/** The source exception. */
+	private final Exception sourceException;
+
 	/**
 	 * Instantiates a new ornidroid exception.
 	 * 
 	 * @param pErrorType
 	 *            the error type
+	 * @param pSourceException
+	 *            the source exception
 	 */
-	public OrnidroidException(OrnidroidError pErrorType) {
+	public OrnidroidException(OrnidroidError pErrorType,
+			Exception pSourceException) {
 		super();
-		errorType = pErrorType;
+		this.errorType = pErrorType;
+		this.sourceException = pSourceException;
 	}
 
 	/**
@@ -31,7 +38,19 @@ public class OrnidroidException extends Exception {
 	 * @return the error type
 	 */
 	public OrnidroidError getErrorType() {
-		return errorType;
+		return this.errorType;
+	}
+
+	/**
+	 * Gets the source exception.
+	 * 
+	 * @return the source exception
+	 */
+	public String getSourceException() {
+		if (null != this.sourceException) {
+			return this.sourceException.toString();
+		}
+		return "";
 	}
 
 }

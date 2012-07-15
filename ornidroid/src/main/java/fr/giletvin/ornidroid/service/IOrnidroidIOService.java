@@ -12,30 +12,6 @@ import fr.giletvin.ornidroid.helper.OrnidroidException;
 public interface IOrnidroidIOService {
 
 	/**
-	 * Check ornidroid database. If the file doesnt exist, try to download it
-	 * 
-	 * @param localDatabaseDirectory
-	 *            the local database directory
-	 * @param dbName
-	 *            the db name
-	 */
-	void checkOrnidroidDatabase(String localDatabaseDirectory, String dbName)
-			throws OrnidroidException;
-
-	/**
-	 * Check ornidroid home. If the directory doesn't exist, try to create it.
-	 * Check if the subdirectories images and audio exist too. If not, try to
-	 * create it.
-	 * 
-	 * @param ornidroidHome
-	 *            the ornidroid home : the local path where ornidroid files
-	 *            should be
-	 * @throws OrnidroidException
-	 *             the ornidroid exception
-	 */
-	void checkOrnidroidHome(String ornidroidHome) throws OrnidroidException;
-
-	/**
 	 * Check and create directory if necessary.
 	 * 
 	 * @param fileDirectory
@@ -44,6 +20,19 @@ public interface IOrnidroidIOService {
 	 */
 	public void checkAndCreateDirectory(File fileDirectory)
 			throws OrnidroidException;
+
+	/**
+	 * Download media files.
+	 * 
+	 * @param mediaHomeDirectory
+	 *            the media home directory
+	 * @param bird
+	 *            the bird
+	 * @param fileType
+	 *            the file type
+	 */
+	public void downloadMediaFiles(String mediaHomeDirectory, Bird bird,
+			OrnidroidFileType fileType) throws OrnidroidException;
 
 	/**
 	 * Checks if is directory empty.
@@ -68,16 +57,16 @@ public interface IOrnidroidIOService {
 			OrnidroidFileType fileType) throws OrnidroidException;
 
 	/**
-	 * Download media files.
+	 * Check ornidroid home. If the directory doesn't exist, try to create it.
+	 * Check if the subdirectories images and audio exist too. If not, try to
+	 * create it.
 	 * 
-	 * @param mediaHomeDirectory
-	 *            the media home directory
-	 * @param bird
-	 *            the bird
-	 * @param fileType
-	 *            the file type
+	 * @param ornidroidHome
+	 *            the ornidroid home : the local path where ornidroid files
+	 *            should be
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
 	 */
-	public void downloadMediaFiles(String mediaHomeDirectory, Bird bird,
-			OrnidroidFileType fileType) throws OrnidroidException;
+	void checkOrnidroidHome(String ornidroidHome) throws OrnidroidException;
 
 }

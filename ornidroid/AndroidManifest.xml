@@ -10,7 +10,7 @@
 	the License. */ -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="fr.ornidroid" android:versionCode="1"
-	android:versionName="1.0.0-RC1">
+	android:versionName="1.0.0">
 
 	<uses-sdk android:minSdkVersion="8" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

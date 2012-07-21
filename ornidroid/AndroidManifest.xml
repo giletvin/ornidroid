@@ -9,8 +9,8 @@
 	for the specific language governing permissions and ** limitations under 
 	the License. */ -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="fr.giletvin.ornidroid" android:versionCode="1"
-	android:versionName="1.0.0-beta-6">
+	package="fr.ornidroid" android:versionCode="1"
+	android:versionName="1.0.0-RC1">
 
 	<uses-sdk android:minSdkVersion="8" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -65,7 +65,7 @@
 
 		<!-- Provides search suggestions for words and their definitions. -->
 		<provider android:name=".data.DictionaryProvider"
-			android:authorities="fr.giletvin.ornidroid.data.DictionaryProvider" />
+			android:authorities="fr.ornidroid.data.DictionaryProvider" />
 
 		<!-- Points to searchable activity so the whole app can invoke search. -->
 		<meta-data android:name="android.app.default_searchable"

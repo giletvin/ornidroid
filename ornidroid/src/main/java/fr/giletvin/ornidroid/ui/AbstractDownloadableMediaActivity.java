@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -112,7 +111,7 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	 * 
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
-	public void onClick(View v) {
+	public void onClick(final View v) {
 
 		if (v == this.downloadFromInternetButton) {
 			getSpecificContentLayout().removeAllViews();
@@ -148,9 +147,9 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 
 				Thread.sleep(1000);
 
-			} catch (InterruptedException e) {
-				Log.e(Constants.LOG_TAG,
-						"Exception in the progress bar thread " + e);
+			} catch (final InterruptedException e) {
+				// Log.e(Constants.LOG_TAG,
+				// "Exception in the progress bar thread " + e);
 
 			}
 
@@ -169,9 +168,9 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 			// sleep 2 seconds, so that you can see the 100%
 			try {
 				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				Log.e(Constants.LOG_TAG,
-						"Exception in the completed progress bar thread " + e);
+			} catch (final InterruptedException e) {
+				// Log.e(Constants.LOG_TAG,
+				// "Exception in the completed progress bar thread " + e);
 
 			}
 
@@ -180,7 +179,7 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 
 			// now that the files have been downloaded, force a reopen of the
 			// same screen with an intent
-			Intent intent = new Intent(this, BirdInfoActivity.class);
+			final Intent intent = new Intent(this, BirdInfoActivity.class);
 			// put the uri so that the BirdInfoActivity reloads correctly the
 			// bird
 			intent.setData(getIntent().getData());
@@ -203,7 +202,7 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	 * @param downloadStatus
 	 *            the new download status
 	 */
-	public void setDownloadStatus(int downloadStatus) {
+	public void setDownloadStatus(final int downloadStatus) {
 		this.downloadStatus = downloadStatus;
 	}
 
@@ -237,8 +236,8 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	 */
 	protected void loadMediaFilesLocally() throws OrnidroidException {
 
-		File fileDirectory = new File(Constants.getOrnidroidBirdHomeMedia(
-				this.bird, getFileType()));
+		final File fileDirectory = new File(
+				Constants.getOrnidroidBirdHomeMedia(this.bird, getFileType()));
 		this.ornidroidIOService.checkAndCreateDirectory(fileDirectory);
 
 		this.ornidroidIOService.loadMediaFiles(getMediaHomeDirectory(),
@@ -252,7 +251,7 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
-	protected final void onCreate(Bundle savedInstanceState) {
+	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.bird = this.ornidroidService.getCurrentBird();
 
@@ -260,9 +259,9 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 				DOWNLOAD_ERROR_INTENT_PARAM, 0);
 		try {
 			loadMediaFilesLocally();
-		} catch (OrnidroidException e) {
-			Log.e(Constants.LOG_TAG, "Error reading media files of bird "
-					+ this.bird.getTaxon() + " e");
+		} catch (final OrnidroidException e) {
+			// Log.e(Constants.LOG_TAG, "Error reading media files of bird "
+			// + this.bird.getTaxon() + " e");
 		}
 		hookOnCreate();
 	}
@@ -274,10 +273,10 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 		getSpecificContentLayout().setOrientation(LinearLayout.VERTICAL);
 		getSpecificContentLayout().setGravity(Gravity.CENTER_HORIZONTAL);
 
-		TextView noMediaMessage = new TextView(this);
+		final TextView noMediaMessage = new TextView(this);
 		getSpecificContentLayout().addView(noMediaMessage);
 
-		OrnidroidError ornidroidError = OrnidroidError
+		final OrnidroidError ornidroidError = OrnidroidError
 				.getOrnidroidError(this.ornidroidDownloadErrorCode);
 
 		switch (ornidroidError) {
@@ -382,10 +381,10 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 										AbstractDownloadableMediaActivity.this.bird,
 										getFileType());
 
-					} catch (OrnidroidException e) {
-						Log.e(Constants.LOG_TAG,
-								"Download pb " + e.getErrorType() + " "
-										+ e.getSourceException());
+					} catch (final OrnidroidException e) {
+						// Log.e(Constants.LOG_TAG,
+						// "Download pb " + e.getErrorType() + " "
+						// + e.getSourceException());
 						// keep it in the field, to get it back when the
 						// activity is reloaded.
 						AbstractDownloadableMediaActivity.this.ornidroidDownloadErrorCode = OrnidroidError

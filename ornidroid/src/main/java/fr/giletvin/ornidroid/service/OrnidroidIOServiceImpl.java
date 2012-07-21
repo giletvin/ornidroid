@@ -11,7 +11,6 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
-import android.util.Log;
 import fr.giletvin.ornidroid.bo.AbstractOrnidroidFile;
 import fr.giletvin.ornidroid.bo.Bird;
 import fr.giletvin.ornidroid.bo.OrnidroidFileFactoryImpl;
@@ -41,7 +40,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		 * @param fileType
 		 *            the file type
 		 */
-		OrnidroidFileFilter(OrnidroidFileType fileType) {
+		OrnidroidFileFilter(final OrnidroidFileType fileType) {
 			this.fileType = fileType;
 		}
 
@@ -50,7 +49,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		 * 
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
-		public boolean accept(File pathname) {
+		public boolean accept(final File pathname) {
 
 			if (pathname.getAbsolutePath().endsWith(
 					OrnidroidFileType.getExtension(this.fileType))) {
@@ -78,12 +77,12 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 * fr.giletvin.ornidroid.service.IOrnidroidIOService#checkAndCreateDirectory
 	 * (java.io.File)
 	 */
-	public void checkAndCreateDirectory(File fileDirectory)
+	public void checkAndCreateDirectory(final File fileDirectory)
 			throws OrnidroidException {
 		if (!fileDirectory.exists()) {
 			try {
 				FileUtils.forceMkdir(fileDirectory);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new OrnidroidException(
 						OrnidroidError.ORNIDROID_HOME_NOT_FOUND, e);
 			}
@@ -97,9 +96,9 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 * fr.giletvin.ornidroid.service.IOrnidroidIOService#checkOrnidroidHome(
 	 * java.lang.String)
 	 */
-	public void checkOrnidroidHome(String ornidroidHome)
+	public void checkOrnidroidHome(final String ornidroidHome)
 			throws OrnidroidException {
-		File fileOrnidroidHome = new File(ornidroidHome);
+		final File fileOrnidroidHome = new File(ornidroidHome);
 		if (!fileOrnidroidHome.exists()) {
 			checkAndCreateDirectory(fileOrnidroidHome);
 		}
@@ -117,8 +116,9 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 * java.lang.String, fr.giletvin.ornidroid.bo.Bird,
 	 * fr.giletvin.ornidroid.bo.OrnidroidFileType)
 	 */
-	public void downloadMediaFiles(String mediaHomeDirectory, Bird bird,
-			OrnidroidFileType fileType) throws OrnidroidException {
+	public void downloadMediaFiles(final String mediaHomeDirectory,
+			final Bird bird, final OrnidroidFileType fileType)
+			throws OrnidroidException {
 		switch (fileType) {
 		case PICTURE:
 			bird.setPictures(lookForOrnidroidFiles(mediaHomeDirectory,
@@ -141,7 +141,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 * fr.giletvin.ornidroid.service.IOrnidroidIOService#isDirectoryEmpty(java
 	 * .io.File)
 	 */
-	public boolean isDirectoryEmpty(File fileDirectory) {
+	public boolean isDirectoryEmpty(final File fileDirectory) {
 		return FileUtils.listFiles(fileDirectory, null, false).isEmpty();
 	}
 
@@ -152,8 +152,8 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 * fr.giletvin.ornidroid.service.IOrnidroidIOService#loadMediaFiles(java
 	 * .io.File, fr.giletvin.ornidroid.bo.Bird)
 	 */
-	public void loadMediaFiles(String fileDirectory, Bird bird,
-			OrnidroidFileType fileType) throws OrnidroidException {
+	public void loadMediaFiles(final String fileDirectory, final Bird bird,
+			final OrnidroidFileType fileType) throws OrnidroidException {
 		switch (fileType) {
 		case PICTURE:
 			bird.setPictures(lookForOrnidroidFiles(fileDirectory,
@@ -187,17 +187,17 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 *         choice to try a download from the web site
 	 */
 	private List<AbstractOrnidroidFile> lookForOrnidroidFiles(
-			String ornidroidMediaHome, String directoryName,
-			OrnidroidFileType fileType, boolean downloadFromInternet)
+			final String ornidroidMediaHome, final String directoryName,
+			final OrnidroidFileType fileType, final boolean downloadFromInternet)
 			throws OrnidroidException {
-		List<AbstractOrnidroidFile> files = new ArrayList<AbstractOrnidroidFile>();
+		final List<AbstractOrnidroidFile> files = new ArrayList<AbstractOrnidroidFile>();
 		if (StringUtils.isNotBlank(directoryName)) {
-			File filesDirectory = new File(ornidroidMediaHome + File.separator
-					+ directoryName);
+			final File filesDirectory = new File(ornidroidMediaHome
+					+ File.separator + directoryName);
 			if (!filesDirectory.exists()) {
 				try {
 					FileUtils.forceMkdir(filesDirectory);
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					throw new OrnidroidException(
 							OrnidroidError.ORNIDROID_HOME_NOT_FOUND, e);
 				}
@@ -212,30 +212,30 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 							ornidroidMediaHome, directoryName, fileType);
 				}
 				try {
-					for (File file : filesList) {
-						AbstractOrnidroidFile ornidroidFile = OrnidroidFileFactoryImpl
+					for (final File file : filesList) {
+						final AbstractOrnidroidFile ornidroidFile = OrnidroidFileFactoryImpl
 								.getFactory().createOrnidroidFile(
 										file.getAbsolutePath(), fileType,
 										Constants.getOrnidroidLang());
 						files.add(ornidroidFile);
 					}
-				} catch (FileNotFoundException e) {
+				} catch (final FileNotFoundException e) {
 					// one of the media files doesnt have its properties.
 					// this reveals a pb in the downloading : maybe the picture
 					// or the sound file is corrupted
 					// we remove the entire bird media directory and don't load
 					// anything.
 					files.clear();
-					Log.w(Constants.LOG_TAG, e.getMessage());
-					Log.w(Constants.LOG_TAG,
-							"The directory " + filesDirectory.getPath()
-									+ " is going to be deleted");
+					// Log.w(Constants.LOG_TAG, e.getMessage());
+					// Log.w(Constants.LOG_TAG,
+					// "The directory " + filesDirectory.getPath()
+					// + " is going to be deleted");
 					try {
 						FileUtils.forceDelete(filesDirectory);
-					} catch (IOException e1) {
-						Log.e(Constants.LOG_TAG,
-								"Unable to delete the directory "
-										+ filesDirectory.getPath());
+					} catch (final IOException e1) {
+						// Log.e(Constants.LOG_TAG,
+						// "Unable to delete the directory "
+						// + filesDirectory.getPath());
 					}
 
 				}

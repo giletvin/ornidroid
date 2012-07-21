@@ -4,7 +4,6 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Menu;
@@ -18,7 +17,6 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import fr.giletvin.ornidroid.R;
 import fr.giletvin.ornidroid.bo.OrnidroidFileType;
-import fr.giletvin.ornidroid.helper.Constants;
 import fr.giletvin.ornidroid.service.IOrnidroidService;
 import fr.giletvin.ornidroid.service.OrnidroidServiceFactory;
 
@@ -53,7 +51,7 @@ public class BirdInfoActivity extends TabActivity {
 		 * android.widget.TabHost.OnTabChangeListener#onTabChanged(java.lang
 		 * .String)
 		 */
-		public void onTabChanged(String tabId) {
+		public void onTabChanged(final String tabId) {
 			// couper le player mp3 si on change de tabulation
 			if ((this.audioActivity == null)
 					&& SoundActivity.class.isInstance(getCurrentActivity())) {
@@ -88,14 +86,14 @@ public class BirdInfoActivity extends TabActivity {
 		 * @return true, if successful
 		 */
 		@Override
-		public boolean onDoubleTap(MotionEvent e) {
+		public boolean onDoubleTap(final MotionEvent e) {
 			if (PictureActivity.class.isInstance(getCurrentActivity())) {
-				PictureActivity pictureActivity = (PictureActivity) getCurrentActivity();
-				int displayedPictureId = pictureActivity
+				final PictureActivity pictureActivity = (PictureActivity) getCurrentActivity();
+				final int displayedPictureId = pictureActivity
 						.getDisplayedPictureId();
 				pictureActivity.resetResources();
-				Intent intentImageFullSize = new Intent(getCurrentActivity(),
-						FullSizeImageActivity.class);
+				final Intent intentImageFullSize = new Intent(
+						getCurrentActivity(), FullSizeImageActivity.class);
 				intentImageFullSize.putExtra(
 						PictureActivity.DISPLAYED_PICTURE_ID,
 						displayedPictureId);
@@ -115,8 +113,8 @@ public class BirdInfoActivity extends TabActivity {
 		 * .view.MotionEvent, android.view.MotionEvent, float, float)
 		 */
 		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-				float velocityY) {
+		public boolean onFling(final MotionEvent e1, final MotionEvent e2,
+				final float velocityX, final float velocityY) {
 			if (PictureActivity.class.isInstance(getCurrentActivity())) {
 				try {
 					if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
@@ -125,7 +123,7 @@ public class BirdInfoActivity extends TabActivity {
 					// right to left swipe
 					if (((e1.getX() - e2.getX()) > SWIPE_MIN_DISTANCE)
 							&& (Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)) {
-						PictureActivity photoActivity = (PictureActivity) getCurrentActivity();
+						final PictureActivity photoActivity = (PictureActivity) getCurrentActivity();
 
 						// photoActivity.getViewFlipper().setInAnimation(
 						// slideLeftIn);
@@ -135,15 +133,16 @@ public class BirdInfoActivity extends TabActivity {
 
 					} else if (((e2.getX() - e1.getX()) > SWIPE_MIN_DISTANCE)
 							&& (Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)) {
-						PictureActivity photoActivity = (PictureActivity) getCurrentActivity();
+						final PictureActivity photoActivity = (PictureActivity) getCurrentActivity();
 						// photoActivity.getViewFlipper().setInAnimation(
 						// slideRightIn);
 						// photoActivity.getViewFlipper().setOutAnimation(
 						// slideRightOut);
 						photoActivity.showPreviousPicture();
 					}
-				} catch (Exception e) {
-					Log.e(Constants.LOG_TAG, "Exception occured in onFling", e);
+				} catch (final Exception e) {
+					// Log.e(Constants.LOG_TAG, "Exception occured in onFling",
+					// e);
 				}
 			}
 			return false;
@@ -206,7 +205,7 @@ public class BirdInfoActivity extends TabActivity {
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bird_info);
@@ -237,7 +236,7 @@ public class BirdInfoActivity extends TabActivity {
 
 		this.gestureDetector = new GestureDetector(new GestureListener());
 		this.gestureListener = new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
+			public boolean onTouch(final View v, final MotionEvent event) {
 				if (BirdInfoActivity.this.gestureDetector.onTouchEvent(event)) {
 					return true;
 				}
@@ -252,8 +251,8 @@ public class BirdInfoActivity extends TabActivity {
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
+	public boolean onCreateOptionsMenu(final Menu menu) {
+		final MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.options_menu, menu);
 		return true;
 	}
@@ -264,7 +263,7 @@ public class BirdInfoActivity extends TabActivity {
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.search:
 			onSearchRequested();
@@ -283,7 +282,7 @@ public class BirdInfoActivity extends TabActivity {
 	 * @see android.app.Activity#onTouchEvent(android.view.MotionEvent)
 	 */
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public boolean onTouchEvent(final MotionEvent event) {
 		if (this.gestureDetector.onTouchEvent(event)) {
 			return true;
 		} else {
@@ -299,8 +298,8 @@ public class BirdInfoActivity extends TabActivity {
 	 * @param intent
 	 *            the intent
 	 */
-	private void addInfoToIntent(Intent intent) {
-		Intent birdInfoActivityIntent = this.getIntent();
+	private void addInfoToIntent(final Intent intent) {
+		final Intent birdInfoActivityIntent = this.getIntent();
 		intent.putExtra(
 				AbstractDownloadableMediaActivity.DOWNLOAD_ERROR_INTENT_PARAM,
 				birdInfoActivityIntent
@@ -324,10 +323,10 @@ public class BirdInfoActivity extends TabActivity {
 	 * @return intent
 	 */
 	@SuppressWarnings("rawtypes")
-	private Intent createTab(Class activityClass, int tabIconResId,
-			String tabName, int tabIndex) {
-		Intent intent = new Intent().setClass(this, activityClass);
-		TabSpec spec = getTabHost().newTabSpec(tabName)
+	private Intent createTab(final Class activityClass, final int tabIconResId,
+			final String tabName, final int tabIndex) {
+		final Intent intent = new Intent().setClass(this, activityClass);
+		final TabSpec spec = getTabHost().newTabSpec(tabName)
 				.setIndicator("", getResources().getDrawable(tabIconResId))
 				.setContent(intent);
 		if (this.tabIdToDisplay == tabIndex) {
@@ -363,11 +362,11 @@ public class BirdInfoActivity extends TabActivity {
 	 * @param tabHost
 	 *            the tab host
 	 */
-	private void resizeTabs(TabHost tabHost) {
-		TabWidget widget = tabHost.getTabWidget();
-		int childCount = widget.getChildCount();
+	private void resizeTabs(final TabHost tabHost) {
+		final TabWidget widget = tabHost.getTabWidget();
+		final int childCount = widget.getChildCount();
 		for (int i = 0; i < childCount; i++) {
-			View child = widget.getChildAt(i);
+			final View child = widget.getChildAt(i);
 			child.getLayoutParams().height = TAB_HEIGHT;
 		}
 

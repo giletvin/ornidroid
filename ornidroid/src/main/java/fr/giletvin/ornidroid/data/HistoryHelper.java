@@ -8,7 +8,6 @@ import java.util.Map;
 import android.app.SearchManager;
 import android.database.Cursor;
 import android.provider.BaseColumns;
-import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 import fr.giletvin.ornidroid.R;
@@ -32,19 +31,6 @@ public class HistoryHelper {
 			SearchManager.SUGGEST_COLUMN_TEXT_2 };
 
 	/**
-	 * mapping in the adapter results between the from columns in SQL and the
-	 * "to" fields in the displayed results.
-	 */
-	private final int[] to = new int[] { R.id.taxon, R.id.scientific_name };
-
-	/**
-	 * Instantiates a new history helper.
-	 */
-	protected HistoryHelper() {
-		birdFactory = new BirdFactoryImpl();
-	}
-
-	/**
 	 * List Adapter which contains the results of the search, to enable the
 	 * return to the result list when the back button is pressed.
 	 */
@@ -57,21 +43,16 @@ public class HistoryHelper {
 	private List<Integer> resultsBirdIds;
 
 	/**
-	 * Gets the bird id in history.
-	 * 
-	 * @param position
-	 *            the position in the list. Out of bound exception is handled in
-	 *            the method.
-	 * @return the bird id in history. If position is invalid, returns the first
-	 *         id in the list
+	 * mapping in the adapter results between the from columns in SQL and the
+	 * "to" fields in the displayed results.
 	 */
-	protected Integer getBirdIdInHistory(int position) {
-		if (position < 0 || position >= resultsBirdIds.size()) {
-			Log.w(Constants.LOG_TAG, "invalid position" + position
-					+ " size of list : " + resultsBirdIds.size());
-			position = 0;
-		}
-		return resultsBirdIds.get(position);
+	private final int[] to = new int[] { R.id.taxon, R.id.scientific_name };
+
+	/**
+	 * Instantiates a new history helper.
+	 */
+	protected HistoryHelper() {
+		this.birdFactory = new BirdFactoryImpl();
 	}
 
 	/**
@@ -83,43 +64,52 @@ public class HistoryHelper {
 	public void setHistory(final Cursor cursor) {
 		if (null != cursor) {
 
-			resultsBirdIds = new ArrayList<Integer>();
-			List<Map<String, SimpleBird>> data = new ArrayList<Map<String, SimpleBird>>();
-			int nbRouws = cursor.getCount();
+			this.resultsBirdIds = new ArrayList<Integer>();
+			final List<Map<String, SimpleBird>> data = new ArrayList<Map<String, SimpleBird>>();
+			final int nbRouws = cursor.getCount();
 			for (int i = 0; i < nbRouws; i++) {
 				cursor.moveToPosition(i);
-				resultsBirdIds.add(cursor.getInt(cursor
+				this.resultsBirdIds.add(cursor.getInt(cursor
 						.getColumnIndex(BaseColumns._ID)));
-				String column_1 = cursor.getString(cursor
+				final String column_1 = cursor.getString(cursor
 						.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1));
-				String directoryName = cursor.getString(cursor
+				final String directoryName = cursor.getString(cursor
 						.getColumnIndex(IOrnidroidDAO.DIRECTORY_NAME_COLUMN));
-				String column_2 = cursor.getString(cursor
+				final String column_2 = cursor.getString(cursor
 						.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
 
-				Map<String, SimpleBird> map = new HashMap<String, SimpleBird>();
-				SimpleBird birdLine1 = birdFactory.createSimpleBird(column_1,
-						directoryName);
-				SimpleBird birdLine2 = birdFactory.createSimpleBird(column_2,
-						null);
+				final Map<String, SimpleBird> map = new HashMap<String, SimpleBird>();
+				final SimpleBird birdLine1 = this.birdFactory.createSimpleBird(
+						column_1, directoryName);
+				final SimpleBird birdLine2 = this.birdFactory.createSimpleBird(
+						column_2, null);
 				map.put(SearchManager.SUGGEST_COLUMN_TEXT_1, birdLine1);
 				map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, birdLine2);
 				data.add(map);
 			}
-			resultsAdapter = new SimpleAdapter(Constants.getCONTEXT(), data,
-					R.layout.result, from, to);
-			resultsAdapter.setViewBinder(new OrnidroidViewBinder());
+			this.resultsAdapter = new SimpleAdapter(Constants.getCONTEXT(),
+					data, R.layout.result, this.from, this.to);
+			this.resultsAdapter.setViewBinder(new OrnidroidViewBinder());
 		}
 
 	}
 
 	/**
-	 * Checks for history.
+	 * Gets the bird id in history.
 	 * 
-	 * @return true, if successful
+	 * @param position
+	 *            the position in the list. Out of bound exception is handled in
+	 *            the method.
+	 * @return the bird id in history. If position is invalid, returns the first
+	 *         id in the list
 	 */
-	protected boolean hasHistory() {
-		return null != resultsBirdIds && resultsBirdIds.size() > 0;
+	protected Integer getBirdIdInHistory(int position) {
+		if ((position < 0) || (position >= this.resultsBirdIds.size())) {
+			// Log.w(Constants.LOG_TAG, "invalid position" + position
+			// + " size of list : " + resultsBirdIds.size());
+			position = 0;
+		}
+		return this.resultsBirdIds.get(position);
 	}
 
 	/**
@@ -128,7 +118,17 @@ public class HistoryHelper {
 	 * @return the results adapter
 	 */
 	protected ListAdapter getResultsAdapter() {
-		return resultsAdapter;
+		return this.resultsAdapter;
+	}
+
+	/**
+	 * Checks for history.
+	 * 
+	 * @return true, if successful
+	 */
+	protected boolean hasHistory() {
+		return (null != this.resultsBirdIds)
+				&& (this.resultsBirdIds.size() > 0);
 	}
 
 }

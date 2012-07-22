@@ -40,17 +40,17 @@
 		</activity>
 
 		<!-- Tabbed screen to display bird info. -->
-		<activity android:name=".ui.BirdInfoActivity" android:theme="@android:style/Theme.NoTitleBar" />
+		<activity android:name=".ui.BirdInfoActivity" android:theme="@android:style/Theme.NoTitleBar" android:noHistory="true"/>
 
 		<!-- Preferences activity -->
-		<activity android:label="@string/preferences" android:name=".ui.OrnidroidPreferenceActivity"></activity>
+		<activity android:label="@string/preferences" android:name=".ui.OrnidroidPreferenceActivity" android:noHistory="true"/>
 		<!-- about activity -->
-		<activity android:label="@string/about" android:name=".ui.AboutActivity"></activity>
+		<activity android:label="@string/about" android:name=".ui.AboutActivity" android:noHistory="true"/>
 		<!-- SoundActivtity -->
-		<activity android:label="@string/sounds" android:name=".ui.SoundActivity"></activity>
+		<activity android:label="@string/sounds" android:name=".ui.SoundActivity" android:noHistory="true"/>
 
 		<!-- picture activity -->
-		<activity android:name=".ui.PictureActivity" android:label="@string/bird_image" />
+		<activity android:name=".ui.PictureActivity" android:label="@string/bird_image" android:noHistory="true" />
 
 		<!-- full size image activity -->
 		<activity android:name=".ui.FullSizeImageActivity"
@@ -58,10 +58,10 @@
 
 		<!-- bird detail activity -->
 		<activity android:name=".ui.BirdDetailActivity"
-			android:label="@string/bird_info" />
+			android:label="@string/bird_info" android:noHistory="true"/>
 
 		<!-- bird names activity -->
-		<activity android:name=".ui.BirdNamesActivity" android:label="@string/bird_names" />
+		<activity android:name=".ui.BirdNamesActivity" android:label="@string/bird_names" android:noHistory="true"/>
 
 		<!-- Provides search suggestions for words and their definitions. -->
 		<provider android:name=".data.DictionaryProvider"

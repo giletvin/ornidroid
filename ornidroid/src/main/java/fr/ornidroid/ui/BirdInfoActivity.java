@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import fr.ornidroid.R;
@@ -27,42 +26,6 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
  * the pictures in the sub activity
  */
 public class BirdInfoActivity extends TabActivity {
-
-	/**
-	 * The listener interface for receiving onBirdTabChange events. The class
-	 * that is interested in processing a onBirdTabChange event implements this
-	 * interface, and the object created with that class is registered with a
-	 * component using the component's
-	 * <code>addOnBirdTabChangeListener<code> method. When
-	 * the onBirdTabChange event occurs, that object's appropriate
-	 * method is invoked.
-	 * 
-	 * @see OnBirdTabChangeEvent
-	 */
-	private class OnBirdTabChangeListener implements OnTabChangeListener {
-
-		/** The audio activity. */
-		SoundActivity audioActivity;
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.widget.TabHost.OnTabChangeListener#onTabChanged(java.lang
-		 * .String)
-		 */
-		public void onTabChanged(final String tabId) {
-			// couper le player mp3 si on change de tabulation
-			if ((this.audioActivity == null)
-					&& SoundActivity.class.isInstance(getCurrentActivity())) {
-				this.audioActivity = (SoundActivity) getCurrentActivity();
-			}
-			if (this.audioActivity != null) {
-				this.audioActivity.stopPlayer();
-			}
-		}
-
-	}
 
 	/**
 	 * The listener interface for receiving gesture events. The class that is
@@ -209,8 +172,6 @@ public class BirdInfoActivity extends TabActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bird_info);
-
-		getTabHost().setOnTabChangedListener(new OnBirdTabChangeListener());
 
 		loadBirdDetails();
 

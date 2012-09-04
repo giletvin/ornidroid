@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tabbed_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:weightSum="1" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tabs"
+        android:layout_width="fill_parent"
+        android:layout_height="50sp"
+        android:background="#CCCCCC"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/ic_tab_pictures"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingRight="1sp"
+            android:src="@drawable/ic_tab_pictures_grey" />
+
+        <ImageView
+            android:id="@+id/ic_tab_sounds"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingRight="1sp"
+            android:src="@drawable/ic_tab_sounds_white" />
+
+        <ImageView
+            android:id="@+id/ic_tab_details"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingRight="1sp"
+            android:src="@drawable/ic_tab_details_white" />
+
+        <ImageView
+            android:id="@+id/ic_tab_bird_names"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingRight="1sp"
+            android:src="@drawable/ic_tab_bird_names_white" />
+
+        <!-- zone noire pour terminer la zone des tabs -->
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/tabs_end"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#000000"
+            android:orientation="horizontal" />
+    </LinearLayout>
+
+    <!-- petite ligne grise -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tabs_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1sp"
+        android:background="#CCCCCC"
+        android:orientation="horizontal" />
+
+    <LinearLayout
+        android:id="@+id/main_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </LinearLayout>
+
+</LinearLayout>

@@ -97,7 +97,7 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	 */
 	private Intent buildIntentBirdInfoActivity(final String birdId) {
 		final Intent birdIntent = new Intent(getApplicationContext(),
-				ImageActivity.class);
+				BirdInfoActivity.class);
 		final Uri data = Uri.withAppendedPath(DictionaryProvider.CONTENT_URI,
 				birdId);
 		birdIntent.setData(data);

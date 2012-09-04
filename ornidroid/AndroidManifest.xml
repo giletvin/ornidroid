@@ -51,8 +51,6 @@
 
 		<!-- picture activity -->
 		<activity android:name=".ui.PictureActivity" android:label="@string/bird_image" android:noHistory="true" />
-		
-		<activity android:name=".ui.ImageActivity" android:label="@string/bird_image" />
 
 		<!-- full size image activity -->
 		<activity android:name=".ui.FullSizeImageActivity"

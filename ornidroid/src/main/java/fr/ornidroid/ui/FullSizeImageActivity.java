@@ -27,27 +27,80 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
  */
 public class FullSizeImageActivity extends Activity {
 
+	/** The ornidroid service. */
+	private final IOrnidroidService ornidroidService;
+
+	/** The display width. */
+	private int displayWidth;
+
+	/** The display height. */
+	private int displayHeight;
+
+	/** The bm large image. */
+	private Bitmap bmLargeImage;
+
+	/** The displayed picture id. */
+	private int displayedPictureId;
+
+	/** The gesture detector. */
+	private GestureDetector gestureDetector;
+
+	/**
+	 * Instantiates a new picture activity.
+	 */
+	public FullSizeImageActivity() {
+		ornidroidService = OrnidroidServiceFactory.getService(this);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		displayedPictureId = getIntent().getIntExtra(
+				PictureActivity.DISPLAYED_PICTURE_ID, 0);
+		Bird bird = ornidroidService.getCurrentBird();
+		if (bird == null) {
+			finish();
+		}
+		AbstractOrnidroidFile picture = bird.getPicture(displayedPictureId);
+		if (null != picture) {
+			bmLargeImage = BitmapFactory.decodeFile(picture.getPath());
+		}
+		Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE))
+				.getDefaultDisplay();
+
+		displayWidth = display.getWidth();
+		displayHeight = display.getHeight();
+		gestureDetector = new GestureDetector(new GestureListener(this));
+		setContentView(new SampleView(this));
+	}
+
 	/**
 	 * The Class SampleView.
 	 */
 	private class SampleView extends View {
 		/** The display rect. */
-		private final Rect displayRect;
-
-		/** The scroll by x. */
-		private float scrollByX = 0; // x amount to scroll by
-
-		/** The scroll by y. */
-		private float scrollByY = 0; // y amount to scroll by
+		private Rect displayRect;
 
 		/** The scroll rect. */
-		private final Rect scrollRect;
+		private Rect scrollRect;
 
 		/** The scroll rect x. */
 		private int scrollRectX = 0; // current left location of scroll rect
 
 		/** The scroll rect y. */
 		private int scrollRectY = 0; // current top location of scroll rect
+
+		/** The scroll by x. */
+		private float scrollByX = 0; // x amount to scroll by
+
+		/** The scroll by y. */
+		private float scrollByY = 0; // y amount to scroll by
 
 		/** The start x. */
 		private float startX = 0; // track x from one ACTION_MOVE to the next
@@ -61,14 +114,10 @@ public class FullSizeImageActivity extends Activity {
 		 * @param pContext
 		 *            the context
 		 */
-		public SampleView(final Context pContext) {
+		public SampleView(Context pContext) {
 			super(pContext);
-			this.displayRect = new Rect(0, 0,
-					FullSizeImageActivity.this.displayWidth,
-					FullSizeImageActivity.this.displayHeight);
-			this.scrollRect = new Rect(0, 0,
-					FullSizeImageActivity.this.displayWidth,
-					FullSizeImageActivity.this.displayHeight);
+			displayRect = new Rect(0, 0, displayWidth, displayHeight);
+			scrollRect = new Rect(0, 0, displayWidth, displayHeight);
 		}
 
 		/*
@@ -77,24 +126,24 @@ public class FullSizeImageActivity extends Activity {
 		 * @see android.view.View#onTouchEvent(android.view.MotionEvent)
 		 */
 		@Override
-		public boolean onTouchEvent(final MotionEvent event) {
-			if (FullSizeImageActivity.this.gestureDetector.onTouchEvent(event)) {
+		public boolean onTouchEvent(MotionEvent event) {
+			if (gestureDetector.onTouchEvent(event)) {
 				return true;
 			} else {
 
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					this.startX = event.getRawX();
-					this.startY = event.getRawY();
+					startX = event.getRawX();
+					startY = event.getRawY();
 					break;
 
 				case MotionEvent.ACTION_MOVE:
-					final float x = event.getRawX();
-					final float y = event.getRawY();
-					this.scrollByX = x - this.startX;
-					this.scrollByY = y - this.startY;
-					this.startX = x;
-					this.startY = y;
+					float x = event.getRawX();
+					float y = event.getRawY();
+					scrollByX = x - startX;
+					scrollByY = y - startY;
+					startX = x;
+					startY = y;
 					invalidate();
 					break;
 				}
@@ -108,8 +157,8 @@ public class FullSizeImageActivity extends Activity {
 		 * @see android.view.View#onDraw(android.graphics.Canvas)
 		 */
 		@Override
-		protected void onDraw(final Canvas canvas) {
-			if (null != FullSizeImageActivity.this.bmLargeImage) {
+		protected void onDraw(Canvas canvas) {
+			if (null != bmLargeImage) {
 				// Our move updates are calculated in ACTION_MOVE in the
 				// opposite
 				// direction
@@ -117,47 +166,37 @@ public class FullSizeImageActivity extends Activity {
 				// dragging to
 				// the left being the same as sliding the scroll rect to the
 				// right.
-				int newScrollRectX = this.scrollRectX - (int) this.scrollByX;
-				int newScrollRectY = this.scrollRectY - (int) this.scrollByY;
+				int newScrollRectX = scrollRectX - (int) scrollByX;
+				int newScrollRectY = scrollRectY - (int) scrollByY;
 
-				if (FullSizeImageActivity.this.bmLargeImage.getWidth() >= FullSizeImageActivity.this.displayWidth) {
+				if (bmLargeImage.getWidth() >= displayWidth) {
 
 					// Don't scroll off the left or right edges of the bitmap.
-					if (newScrollRectX < 0) {
+					if (newScrollRectX < 0)
 						newScrollRectX = 0;
-					} else if (newScrollRectX > (FullSizeImageActivity.this.bmLargeImage
-							.getWidth() - FullSizeImageActivity.this.displayWidth)) {
-						newScrollRectX = (FullSizeImageActivity.this.bmLargeImage
-								.getWidth() - FullSizeImageActivity.this.displayWidth);
-					}
+					else if (newScrollRectX > (bmLargeImage.getWidth() - displayWidth))
+						newScrollRectX = (bmLargeImage.getWidth() - displayWidth);
 				}
 
-				if (FullSizeImageActivity.this.bmLargeImage.getHeight() >= FullSizeImageActivity.this.displayHeight) {
+				if (bmLargeImage.getHeight() >= displayHeight) {
 					// Don't scroll off the top or bottom edges of the bitmap.
-					if (newScrollRectY < 0) {
+					if (newScrollRectY < 0)
 						newScrollRectY = 0;
-					} else if (newScrollRectY > (FullSizeImageActivity.this.bmLargeImage
-							.getHeight() - FullSizeImageActivity.this.displayHeight)) {
-						newScrollRectY = (FullSizeImageActivity.this.bmLargeImage
-								.getHeight() - FullSizeImageActivity.this.displayHeight);
-					}
+					else if (newScrollRectY > (bmLargeImage.getHeight() - displayHeight))
+						newScrollRectY = (bmLargeImage.getHeight() - displayHeight);
 				}
 				// We have our updated scroll rect coordinates, set them and
 				// draw.
-				this.scrollRect.set(newScrollRectX, newScrollRectY,
-						newScrollRectX
-								+ FullSizeImageActivity.this.displayWidth,
-						newScrollRectY
-								+ FullSizeImageActivity.this.displayHeight);
-				final Paint paint = new Paint();
-				canvas.drawBitmap(FullSizeImageActivity.this.bmLargeImage,
-						this.scrollRect, this.displayRect, paint);
+				scrollRect.set(newScrollRectX, newScrollRectY, newScrollRectX
+						+ displayWidth, newScrollRectY + displayHeight);
+				Paint paint = new Paint();
+				canvas.drawBitmap(bmLargeImage, scrollRect, displayRect, paint);
 
 				// Reset current scroll coordinates to reflect the latest
 				// updates,
 				// so we can repeat this update process.
-				this.scrollRectX = newScrollRectX;
-				this.scrollRectY = newScrollRectY;
+				scrollRectX = newScrollRectX;
+				scrollRectY = newScrollRectY;
 			}
 		}
 
@@ -184,7 +223,7 @@ public class FullSizeImageActivity extends Activity {
 		 * @param pContext
 		 *            the context
 		 */
-		GestureListener(final Context pContext) {
+		GestureListener(Context pContext) {
 			this.context = pContext;
 
 		}
@@ -195,71 +234,16 @@ public class FullSizeImageActivity extends Activity {
 		 * @see android.view.GestureDetector.SimpleOnGestureListener#onDoubleTap(android.view.MotionEvent)
 		 */
 		@Override
-		public boolean onDoubleTap(final MotionEvent e) {
+		public boolean onDoubleTap(MotionEvent e) {
 			// deallocate the bitmap and request for a gc.
-			FullSizeImageActivity.this.bmLargeImage = null;
+			bmLargeImage = null;
 			System.gc();
-			final Intent intentBirdInfo = new Intent(this.context,
-					ImageActivity.class);
-			intentBirdInfo.putExtra(ImageActivity.DISPLAYED_PICTURE_ID,
-					FullSizeImageActivity.this.displayedPictureId);
+			Intent intentBirdInfo = new Intent(context, BirdInfoActivity.class);
+			intentBirdInfo.putExtra(PictureActivity.DISPLAYED_PICTURE_ID,
+					displayedPictureId);
 			startActivity(intentBirdInfo);
 			return true;
 		}
-	}
-
-	/** The bm large image. */
-	private Bitmap bmLargeImage;
-
-	/** The displayed picture id. */
-	private int displayedPictureId;
-
-	/** The display height. */
-	private int displayHeight;
-
-	/** The display width. */
-	private int displayWidth;
-
-	/** The gesture detector. */
-	private GestureDetector gestureDetector;
-
-	/** The ornidroid service. */
-	private final IOrnidroidService ornidroidService;
-
-	/**
-	 * Instantiates a new picture activity.
-	 */
-	public FullSizeImageActivity() {
-		this.ornidroidService = OrnidroidServiceFactory.getService(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
-	 */
-	@Override
-	protected void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		this.displayedPictureId = getIntent().getIntExtra(
-				PictureActivity.DISPLAYED_PICTURE_ID, 0);
-		final Bird bird = this.ornidroidService.getCurrentBird();
-		if (bird == null) {
-			finish();
-		}
-		final AbstractOrnidroidFile picture = bird
-				.getPicture(this.displayedPictureId);
-		if (null != picture) {
-			this.bmLargeImage = BitmapFactory.decodeFile(picture.getPath());
-		}
-		final Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE))
-				.getDefaultDisplay();
-
-		this.displayWidth = display.getWidth();
-		this.displayHeight = display.getHeight();
-		this.gestureDetector = new GestureDetector(new GestureListener(this));
-		setContentView(new SampleView(this));
 	}
 
 }

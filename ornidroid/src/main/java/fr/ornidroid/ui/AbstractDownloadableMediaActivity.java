@@ -2,6 +2,7 @@ package fr.ornidroid.ui;
 
 import java.io.File;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,8 +28,8 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
 /**
  * The Class AbstractDownloadableMediaActivity.
  */
-public abstract class AbstractDownloadableMediaActivity extends
-		AbstractTabbedActivity implements Runnable, OnClickListener {
+public abstract class AbstractDownloadableMediaActivity extends Activity
+		implements Runnable, OnClickListener {
 	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
 	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
 
@@ -63,9 +64,9 @@ public abstract class AbstractDownloadableMediaActivity extends
 
 	/** The download status. */
 	private int downloadStatus;
-
 	/** The ornidroid download error. */
 	private int ornidroidDownloadErrorCode;
+
 	/** The ornidroid io service. */
 	private final IOrnidroidIOService ornidroidIOService;
 
@@ -104,10 +105,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * @return the file type
 	 */
 	public abstract OrnidroidFileType getFileType();
-
-	public IOrnidroidService getOrnidroidService() {
-		return this.ornidroidService;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -223,20 +220,13 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * Gets the specific content layout.
 	 * 
 	 * @return the specific content layout
-	 * @deprecated : use directly super.getMainContent()
 	 */
-	@Deprecated
 	protected abstract LinearLayout getSpecificContentLayout();
 
 	/**
 	 * Hook on create. Here is the specific onCreate stuff for the subclasses.
 	 */
-	protected abstract void hookPostOnCreate();
-
-	/**
-	 * Hook pre on create.
-	 */
-	protected abstract void hookPreOnCreate();
+	protected abstract void hookOnCreate();
 
 	/**
 	 * Load media files locally.
@@ -263,7 +253,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		hookPreOnCreate();
 		this.bird = this.ornidroidService.getCurrentBird();
 
 		this.ornidroidDownloadErrorCode = getIntent().getIntExtra(
@@ -274,8 +263,7 @@ public abstract class AbstractDownloadableMediaActivity extends
 			// Log.e(Constants.LOG_TAG, "Error reading media files of bird "
 			// + this.bird.getTaxon() + " e");
 		}
-		hookPostOnCreate();
-
+		hookOnCreate();
 	}
 
 	/**
@@ -322,16 +310,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 			break;
 		}
 
-	}
-
-	/**
-	 * Sets the bird.
-	 * 
-	 * @param bird
-	 *            the new bird
-	 */
-	protected void setBird(final Bird bird) {
-		this.bird = bird;
 	}
 
 	/**

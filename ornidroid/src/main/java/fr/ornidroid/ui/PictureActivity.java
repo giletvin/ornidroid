@@ -127,7 +127,7 @@ public class PictureActivity extends AbstractDownloadableMediaActivity
 	 * @see fr.ornidroid.ui.AbstractDownloadableMediaActivity#hookOnCreate()
 	 */
 	@Override
-	protected void hookPostOnCreate() {
+	protected void hookOnCreate() {
 
 		if (getBird() == null) {
 			finish();
@@ -154,12 +154,6 @@ public class PictureActivity extends AbstractDownloadableMediaActivity
 			populateViewFlipper();
 
 		}
-	}
-
-	@Override
-	protected void hookPreOnCreate() {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*

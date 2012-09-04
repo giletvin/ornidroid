@@ -162,7 +162,7 @@ public class SoundActivity extends AbstractDownloadableMediaActivity {
 	 * @see fr.ornidroid.ui.AbstractDownloadableMediaActivity#hookOnCreate()
 	 */
 	@Override
-	protected void hookOnCreate() {
+	protected void hookPostOnCreate() {
 
 		this.mListView = new ListView(this);
 
@@ -188,6 +188,12 @@ public class SoundActivity extends AbstractDownloadableMediaActivity {
 		linearLayout.addView(this.mListView);
 
 		setContentView(linearLayout);
+
+	}
+
+	@Override
+	protected void hookPreOnCreate() {
+		// TODO Auto-generated method stub
 
 	}
 

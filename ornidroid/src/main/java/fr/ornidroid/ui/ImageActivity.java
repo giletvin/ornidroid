@@ -5,11 +5,17 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.widget.Button;
@@ -23,20 +29,107 @@ import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.bo.PictureOrnidroidFile;
 
 /**
- * Displays a picture.
+ * The Class ImageActivity.
  */
-public class PictureActivity extends AbstractDownloadableMediaActivity
-		implements OnClickListener {
+public class ImageActivity extends AbstractDownloadableMediaActivity implements
+		OnClickListener {
+	/**
+	 * The listener interface for receiving gesture events. The class that is
+	 * interested in processing a gesture event implements this interface, and
+	 * the object created with that class is registered with a component using
+	 * the component's <code>addGestureListener<code> method. When
+	 * the gesture event occurs, that object's appropriate
+	 * method is invoked.
+	 * 
+	 * @see GestureEvent
+	 */
+	class GestureListener extends SimpleOnGestureListener {
+
+		/**
+		 * On double tap. If the double tap occurs on picture activity, open the
+		 * full size picture activity which displays the original full size
+		 * picture
+		 * 
+		 * @param e
+		 *            the e
+		 * @return true, if successful
+		 */
+		@Override
+		public boolean onDoubleTap(final MotionEvent e) {
+			resetResources();
+			final Intent intentImageFullSize = new Intent(ImageActivity.this,
+					FullSizeImageActivity.class);
+			intentImageFullSize.putExtra(ImageActivity.DISPLAYED_PICTURE_ID,
+					ImageActivity.this.displayedPictureId);
+			startActivity(intentImageFullSize);
+			return true;
+		}
+
+		/*
+		 * Handles the flip between pictures in the PictureActivity
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * android.view.GestureDetector.SimpleOnGestureListener#onFling(android
+		 * .view.MotionEvent, android.view.MotionEvent, float, float)
+		 */
+		@Override
+		public boolean onFling(final MotionEvent e1, final MotionEvent e2,
+				final float velocityX, final float velocityY) {
+
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
+					return false;
+				}
+				// right to left swipe
+				if (((e1.getX() - e2.getX()) > SWIPE_MIN_DISTANCE)
+						&& (Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)) {
+
+					// photoActivity.getViewFlipper().setInAnimation(
+					// slideLeftIn);
+					// photoActivity.getViewFlipper().setOutAnimation(
+					// slideLeftOut);
+					ImageActivity.this.showNextPicture();
+
+				} else if (((e2.getX() - e1.getX()) > SWIPE_MIN_DISTANCE)
+						&& (Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)) {
+
+					// photoActivity.getViewFlipper().setInAnimation(
+					// slideRightIn);
+					// photoActivity.getViewFlipper().setOutAnimation(
+					// slideRightOut);
+					ImageActivity.this.showPreviousPicture();
+				}
+			} catch (final Exception e) {
+				// Log.e(Constants.LOG_TAG, "Exception occured in onFling",
+				// e);
+			}
+
+			return true;
+		}
+	}
 
 	/** The Constant DISPLAYED_PICTURE_ID. */
 	public static final String DISPLAYED_PICTURE_ID = "DISPLAYED_PICTURE_ID";
+
 	/** The Constant DIALOG_PICTURE_INFO_ID. */
 	private static final int DIALOG_PICTURE_INFO_ID = 0;
 
+	/** The Constant SWIPE_MAX_OFF_PATH. */
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+
+	/** The Constant SWIPE_MIN_DISTANCE. */
+	private static final int SWIPE_MIN_DISTANCE = 120;
+
+	/** The Constant SWIPE_THRESHOLD_VELOCITY. */
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	/** The dialog. */
 	private Dialog dialog;
+
 	/** The displayed picture id. */
 	private int displayedPictureId;
+
+	private GestureDetector gestureDetector;
 
 	/** The info button. */
 	private ImageView infoButton;
@@ -61,17 +154,17 @@ public class PictureActivity extends AbstractDownloadableMediaActivity
 
 	/** The slide right out. */
 	private Animation slideRightOut;
-
 	/** The taxon. */
 	private TextView taxon;
-
+	/** The uri. */
+	private Uri uri;
 	/** The view flipper. */
 	private ViewFlipper viewFlipper;
 
 	/**
 	 * Instantiates a new picture activity.
 	 */
-	public PictureActivity() {
+	public ImageActivity() {
 		super();
 	}
 
@@ -128,20 +221,19 @@ public class PictureActivity extends AbstractDownloadableMediaActivity
 	 */
 	@Override
 	protected void hookPostOnCreate() {
-
 		if (getBird() == null) {
 			finish();
 		} else {
-			this.linearLayout = new LinearLayout(this);
+			this.linearLayout = getMainContent();
 
 			// retrieve the displayed picture (when coming back from the zoom)
 			this.displayedPictureId = getIntent().getIntExtra(
-					PictureActivity.DISPLAYED_PICTURE_ID, 0);
+					ImageActivity.DISPLAYED_PICTURE_ID, 0);
 
 			this.linearLayout.setOrientation(LinearLayout.VERTICAL);
 
 			this.linearLayout.addView(createHeaderView());
-			setContentView(this.linearLayout);
+			// setContentView(this.linearLayout);
 
 			this.taxon.setText(getBird().getTaxon());
 
@@ -152,13 +244,29 @@ public class PictureActivity extends AbstractDownloadableMediaActivity
 			this.viewFlipper.setOutAnimation(this, android.R.anim.fade_out);
 
 			populateViewFlipper();
+			this.gestureDetector = new GestureDetector(new GestureListener());
+
+			this.viewFlipper.setOnTouchListener(new OnTouchListener() {
+
+				public boolean onTouch(final View v, final MotionEvent event) {
+					if (ImageActivity.this.gestureDetector.onTouchEvent(event)) {
+						return false;
+					} else {
+						return true;
+					}
+				}
+			});
 
 		}
 	}
 
 	@Override
 	protected void hookPreOnCreate() {
-		// TODO Auto-generated method stub
+		// only in this activity, we load the bird from the database because we
+		// are coming from the search results
+		// TODO : avoid load from db when coming from an other "tab"
+		loadBirdDetails();
+		setBird(getOrnidroidService().getCurrentBird());
 
 	}
 
@@ -191,46 +299,6 @@ public class PictureActivity extends AbstractDownloadableMediaActivity
 			displayPictureInfoInDialog(dialog);
 			break;
 		}
-	}
-
-	/**
-	 * Reset resources.
-	 */
-	protected void resetResources() {
-		this.viewFlipper = null;
-	}
-
-	/**
-	 * Show next picture and update the displayed picture id.
-	 */
-	protected void showNextPicture() {
-		removeBitmapInViewFlipper(this.displayedPictureId);
-		this.displayedPictureId++;
-		if (this.displayedPictureId == getBird().getNumberOfPictures()) {
-			this.displayedPictureId = 0;
-		}
-		insertBitmapInViewFlipper(this.displayedPictureId);
-		updateNumberOfPicturesText();
-		this.viewFlipper.setInAnimation(this.slideLeftIn);
-		this.viewFlipper.setOutAnimation(this.slideLeftOut);
-		this.viewFlipper.showNext();
-	}
-
-	/**
-	 * Show previous picture and update the displayed picture id.
-	 */
-	protected void showPreviousPicture() {
-		removeBitmapInViewFlipper(this.displayedPictureId);
-		this.displayedPictureId--;
-		if (this.displayedPictureId == -1) {
-			this.displayedPictureId = getBird().getNumberOfPictures() - 1;
-		}
-		insertBitmapInViewFlipper(this.displayedPictureId);
-		updateNumberOfPicturesText();
-		this.viewFlipper.setInAnimation(this.slideRightIn);
-		this.viewFlipper.setOutAnimation(this.slideRightOut);
-		this.viewFlipper.showPrevious();
-
 	}
 
 	/**
@@ -364,6 +432,16 @@ public class PictureActivity extends AbstractDownloadableMediaActivity
 	}
 
 	/**
+	 * Load bird details, from uri contained in the intent.
+	 */
+	private void loadBirdDetails() {
+		this.uri = getIntent().getData();
+		if (null != this.uri) {
+			getOrnidroidService().loadBirdDetails(this.uri);
+		}
+	}
+
+	/**
 	 * Update view flipper with the pictures of the bird. If the bird doesn't
 	 * have pictures, instead of the view flipper, show a button to ask if the
 	 * user wants to download pictures from the web site.
@@ -409,6 +487,46 @@ public class PictureActivity extends AbstractDownloadableMediaActivity
 		final LinearLayout imageAndDescription = (LinearLayout) this.viewFlipper
 				.getChildAt(index);
 		imageAndDescription.removeViewAt(1);
+	}
+
+	/**
+	 * Reset resources.
+	 */
+	private void resetResources() {
+		this.viewFlipper = null;
+	}
+
+	/**
+	 * Show next picture and update the displayed picture id.
+	 */
+	private void showNextPicture() {
+		removeBitmapInViewFlipper(this.displayedPictureId);
+		this.displayedPictureId++;
+		if (this.displayedPictureId == getBird().getNumberOfPictures()) {
+			this.displayedPictureId = 0;
+		}
+		insertBitmapInViewFlipper(this.displayedPictureId);
+		updateNumberOfPicturesText();
+		this.viewFlipper.setInAnimation(this.slideLeftIn);
+		this.viewFlipper.setOutAnimation(this.slideLeftOut);
+		this.viewFlipper.showNext();
+	}
+
+	/**
+	 * Show previous picture and update the displayed picture id.
+	 */
+	private void showPreviousPicture() {
+		removeBitmapInViewFlipper(this.displayedPictureId);
+		this.displayedPictureId--;
+		if (this.displayedPictureId == -1) {
+			this.displayedPictureId = getBird().getNumberOfPictures() - 1;
+		}
+		insertBitmapInViewFlipper(this.displayedPictureId);
+		updateNumberOfPicturesText();
+		this.viewFlipper.setInAnimation(this.slideRightIn);
+		this.viewFlipper.setOutAnimation(this.slideRightOut);
+		this.viewFlipper.showPrevious();
+
 	}
 
 	/**

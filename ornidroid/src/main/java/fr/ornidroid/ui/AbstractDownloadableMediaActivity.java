@@ -2,9 +2,9 @@ package fr.ornidroid.ui;
 
 import java.io.File;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -28,8 +28,8 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
 /**
  * The Class AbstractDownloadableMediaActivity.
  */
-public abstract class AbstractDownloadableMediaActivity extends Activity
-		implements Runnable, OnClickListener {
+public abstract class AbstractDownloadableMediaActivity extends
+		AbstractOrnidroidActivity implements Runnable, OnClickListener {
 	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
 	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
 
@@ -45,11 +45,15 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	/** The Constant PROBLEM_DOWNLOAD_ID. */
 	protected static final int PROBLEM_DOWNLOAD_ID = 1;
 
+	/** The Constant DOWNLOAD_BUTTON_ID. */
+	private static final int DOWNLOAD_BUTTON_ID = 1109;
+
 	/** The Constant DOWNLOAD_NOT_STARTED. */
 	private static final int DOWNLOAD_NOT_STARTED = 1;
 
 	/** The Constant PROGRESS_BAR_MAX. */
 	private static final int PROGRESS_BAR_MAX = 100;
+
 	/** The bird. */
 	private Bird bird;
 
@@ -61,9 +65,9 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 
 	/** The download progress. */
 	private final int downloadProgress = 0;
-
 	/** The download status. */
 	private int downloadStatus;
+
 	/** The ornidroid download error. */
 	private int ornidroidDownloadErrorCode;
 
@@ -81,6 +85,9 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 
 	/** The progress bar status. */
 	private int progressBarStatus = 0;
+
+	/** The uri. */
+	private Uri uri;
 
 	/**
 	 * Instantiates a new abstract downloadable media activity.
@@ -106,6 +113,24 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	 */
 	public abstract OrnidroidFileType getFileType();
 
+	/**
+	 * Load media files locally.
+	 * 
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
+	 */
+	public void loadMediaFilesLocally() throws OrnidroidException {
+
+		final File fileDirectory = new File(
+				Constants.getOrnidroidBirdHomeMedia(
+						this.ornidroidService.getCurrentBird(), getFileType()));
+		this.ornidroidIOService.checkAndCreateDirectory(fileDirectory);
+
+		this.ornidroidIOService.loadMediaFiles(getMediaHomeDirectory(),
+				this.ornidroidService.getCurrentBird(), getFileType());
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -113,7 +138,7 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	 */
 	public void onClick(final View v) {
 
-		if (v == this.downloadFromInternetButton) {
+		if (v.getId() == DOWNLOAD_BUTTON_ID) {
 			getSpecificContentLayout().removeAllViews();
 			this.downloadInfoText = new TextView(this);
 			this.downloadInfoText.setText(R.string.download_please_wait);
@@ -179,13 +204,13 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 
 			// now that the files have been downloaded, force a reopen of the
 			// same screen with an intent
-			final Intent intent = new Intent(this, BirdInfoActivity.class);
+			final Intent intent = new Intent(this, BirdActivity.class);
 			// put the uri so that the BirdInfoActivity reloads correctly the
 			// bird
 			intent.setData(getIntent().getData());
 			// put an extra info to let the BirdInfoActivity know which tab to
 			// open.
-			intent.putExtra(BirdInfoActivity.INTENT_ACTIVITY_TO_OPEN,
+			intent.putExtra(BirdActivity.INTENT_ACTIVITY_TO_OPEN,
 					OrnidroidFileType.getCode(getFileType()));
 			intent.putExtra(
 					AbstractDownloadableMediaActivity.DOWNLOAD_ERROR_INTENT_PARAM,
@@ -228,23 +253,6 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	 */
 	protected abstract void hookOnCreate();
 
-	/**
-	 * Load media files locally.
-	 * 
-	 * @throws OrnidroidException
-	 *             the ornidroid exception
-	 */
-	protected void loadMediaFilesLocally() throws OrnidroidException {
-
-		final File fileDirectory = new File(
-				Constants.getOrnidroidBirdHomeMedia(this.bird, getFileType()));
-		this.ornidroidIOService.checkAndCreateDirectory(fileDirectory);
-
-		this.ornidroidIOService.loadMediaFiles(getMediaHomeDirectory(),
-				this.bird, getFileType());
-
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -253,16 +261,17 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		loadBirdDetails();
 		this.bird = this.ornidroidService.getCurrentBird();
 
 		this.ornidroidDownloadErrorCode = getIntent().getIntExtra(
 				DOWNLOAD_ERROR_INTENT_PARAM, 0);
-		try {
-			loadMediaFilesLocally();
-		} catch (final OrnidroidException e) {
-			// Log.e(Constants.LOG_TAG, "Error reading media files of bird "
-			// + this.bird.getTaxon() + " e");
-		}
+		// try {
+		// loadMediaFilesLocally();
+		// } catch (final OrnidroidException e) {
+		// // Log.e(Constants.LOG_TAG, "Error reading media files of bird "
+		// // + this.bird.getTaxon() + " e");
+		// }
 		hookOnCreate();
 	}
 
@@ -295,8 +304,11 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 			case PICTURE:
 				noMediaMessage.setText(R.string.no_pictures);
 				break;
+
 			}
+
 			this.downloadFromInternetButton = new ImageView(this);
+			this.downloadFromInternetButton.setId(DOWNLOAD_BUTTON_ID);
 			this.downloadFromInternetButton.setOnClickListener(this);
 			this.downloadFromInternetButton
 					.setImageResource(R.drawable.ic_file_download);
@@ -359,6 +371,16 @@ public abstract class AbstractDownloadableMediaActivity extends Activity
 			break;
 		}
 		return mediaHomeDirectory;
+	}
+
+	/**
+	 * Load bird details, from uri contained in the intent.
+	 */
+	private void loadBirdDetails() {
+		this.uri = getIntent().getData();
+		if (null != this.uri) {
+			this.ornidroidService.loadBirdDetails(this.uri);
+		}
 	}
 
 	/**

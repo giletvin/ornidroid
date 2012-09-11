@@ -98,6 +98,15 @@ public abstract class AbstractDownloadableMediaActivity extends
 	}
 
 	/**
+	 * Gets the bird.
+	 * 
+	 * @return the bird
+	 */
+	public Bird getBird() {
+		return this.bird;
+	}
+
+	/**
 	 * Gets the download status.
 	 * 
 	 * @return the download status
@@ -229,15 +238,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 */
 	public void setDownloadStatus(final int downloadStatus) {
 		this.downloadStatus = downloadStatus;
-	}
-
-	/**
-	 * Gets the bird.
-	 * 
-	 * @return the bird
-	 */
-	protected Bird getBird() {
-		return this.bird;
 	}
 
 	/**

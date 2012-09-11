@@ -6,18 +6,15 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -40,6 +37,7 @@ import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.audio.AudioControlButtonListener;
+import fr.ornidroid.ui.picture.BirdActivityGestureListener;
 import fr.ornidroid.ui.views.DetailsViewFactory;
 import fr.ornidroid.ui.views.NamesViewFactory;
 
@@ -48,89 +46,6 @@ import fr.ornidroid.ui.views.NamesViewFactory;
  */
 public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		TabContentFactory, OnClickListener {
-	/**
-	 * The listener interface for receiving gesture events. The class that is
-	 * interested in processing a gesture event implements this interface, and
-	 * the object created with that class is registered with a component using
-	 * the component's <code>addGestureListener<code> method. When
-	 * the gesture event occurs, that object's appropriate
-	 * method is invoked.
-	 * 
-	 * @see GestureEvent
-	 */
-	class GestureListener extends SimpleOnGestureListener {
-
-		/**
-		 * On double tap. If the double tap occurs on picture activity, open the
-		 * full size picture activity which displays the original full size
-		 * picture
-		 * 
-		 * @param e
-		 *            the e
-		 * @return true, if successful
-		 */
-		@Override
-		public boolean onDoubleTap(final MotionEvent e) {
-			if (PICTURES_TAB_NAME.equals(BirdActivity.this.tabs
-					.getCurrentTabTag())) {
-
-				final int displayedPictureId = getDisplayedPictureId();
-				resetResources();
-				final Intent intentImageFullSize = new Intent(
-						BirdActivity.this, FullSizeImageActivity.class);
-				intentImageFullSize.putExtra(DISPLAYED_PICTURE_ID,
-						displayedPictureId);
-				startActivity(intentImageFullSize);
-				return true;
-			} else {
-				return false;
-			}
-		}
-
-		/*
-		 * Handles the flip between pictures in the PictureActivity
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.view.GestureDetector.SimpleOnGestureListener#onFling(android
-		 * .view.MotionEvent, android.view.MotionEvent, float, float)
-		 */
-		@Override
-		public boolean onFling(final MotionEvent e1, final MotionEvent e2,
-				final float velocityX, final float velocityY) {
-			if (PICTURES_TAB_NAME.equals(BirdActivity.this.tabs
-					.getCurrentTabTag())) {
-				try {
-					if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
-						return false;
-					}
-					// right to left swipe
-					if (((e1.getX() - e2.getX()) > SWIPE_MIN_DISTANCE)
-							&& (Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)) {
-
-						// photoActivity.getViewFlipper().setInAnimation(
-						// slideLeftIn);
-						// photoActivity.getViewFlipper().setOutAnimation(
-						// slideLeftOut);
-						showNextPicture();
-
-					} else if (((e2.getX() - e1.getX()) > SWIPE_MIN_DISTANCE)
-							&& (Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)) {
-
-						// photoActivity.getViewFlipper().setInAnimation(
-						// slideRightIn);
-						// photoActivity.getViewFlipper().setOutAnimation(
-						// slideRightOut);
-						showPreviousPicture();
-					}
-				} catch (final Exception e) {
-					// Log.e(Constants.LOG_TAG, "Exception occured in onFling",
-					// e);
-				}
-			}
-			return false;
-		}
-	}
 
 	/** The Constant DISPLAYED_PICTURE_ID. */
 	public static final String DISPLAYED_PICTURE_ID = "DISPLAYED_PICTURE_ID";
@@ -138,6 +53,8 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/** The Constant INTENT_ACTIVITY_TO_OPEN. */
 	public static final String INTENT_ACTIVITY_TO_OPEN = "intentActivityToOpenParameter";
 
+	/** The Constant PICTURES_TAB_NAME. */
+	public static final String PICTURES_TAB_NAME = "pictures";
 	/** The Constant PLAY_PAUSE_BUTTON. */
 	public static final int PLAY_PAUSE_BUTTON = 0;
 	/** The Constant STOP_BUTTON. */
@@ -146,6 +63,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	private static final String AUDIO_TAB_NAME = "audioTab";
 	/** The Constant BIRD_NAMES_TAB_NAME. */
 	private static final String BIRD_NAMES_TAB_NAME = "birdNamesTab";
+
 	/** The Constant DETAIL_TAB_NAME. */
 	private static final String DETAIL_TAB_NAME = "detailTab";
 
@@ -154,16 +72,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 	/** The Constant EMPTY. */
 	private static final String EMPTY = "";
-
-	/** The Constant PICTURES_TAB_NAME. */
-	private static final String PICTURES_TAB_NAME = "pictures";
-	/** The Constant SWIPE_MAX_OFF_PATH. */
-	private static final int SWIPE_MAX_OFF_PATH = 250;
-	/** The Constant SWIPE_MIN_DISTANCE. */
-	private static final int SWIPE_MIN_DISTANCE = 120;
-
-	/** The Constant SWIPE_THRESHOLD_VELOCITY. */
-	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
 	/** The Constant TAB_HEIGHT. */
 	private static final int TAB_HEIGHT = 50;
@@ -205,18 +113,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 	/** The play pause button. */
 	private ImageView playPauseButton;
-
-	/** The slide left in. */
-	private Animation slideLeftIn;
-
-	/** The slide left out. */
-	private Animation slideLeftOut;
-
-	/** The slide right in. */
-	private Animation slideRightIn;
-
-	/** The slide right out. */
-	private Animation slideRightOut;
 
 	/** The tab id to display. */
 	private int tabIdToDisplay;
@@ -327,7 +223,8 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			this.viewFlipper.setOutAnimation(this, android.R.anim.fade_out);
 
 			populateViewFlipper();
-			this.gestureDetector = new GestureDetector(new GestureListener());
+			this.gestureDetector = new GestureDetector(
+					new BirdActivityGestureListener(this));
 			this.gestureListener = new View.OnTouchListener() {
 				public boolean onTouch(final View v, final MotionEvent event) {
 					if (BirdActivity.this.gestureDetector.onTouchEvent(event)) {
@@ -340,6 +237,15 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 		}
 
+	}
+
+	/**
+	 * Gets the current tab tag.
+	 * 
+	 * @return the current tab tag
+	 */
+	public String getCurrentTabTag() {
+		return this.tabs.getCurrentTabTag();
 	}
 
 	/**
@@ -394,6 +300,32 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		return this.playPauseButton;
 	}
 
+	/**
+	 * Gets the view flipper.
+	 * 
+	 * @return the view flipper
+	 */
+	public ViewFlipper getViewFlipper() {
+		return this.viewFlipper;
+	}
+
+	/**
+	 * Memory consumption : Insert the bitmap of the given index in view
+	 * flipper.
+	 * 
+	 * @param index
+	 *            the index
+	 */
+	public void insertBitmapInViewFlipper(final int index) {
+		final LinearLayout imageAndDescription = (LinearLayout) this.viewFlipper
+				.getChildAt(index);
+		final ImageView imagePicture = new ImageView(this);
+		final Bitmap bMap = BitmapFactory.decodeFile(getBird()
+				.getPicture(index).getPath());
+		imagePicture.setImageBitmap(bMap);
+		imageAndDescription.addView(imagePicture);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -424,6 +356,23 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Reset resources.
+	 */
+	public void resetResources() {
+		this.viewFlipper = null;
+	}
+
+	/**
+	 * Sets the displayed picture id.
+	 * 
+	 * @param displayedPictureId
+	 *            the new displayed picture id
+	 */
+	public void setDisplayedPictureId(final int displayedPictureId) {
+		this.displayedPictureId = displayedPictureId;
 	}
 
 	/**
@@ -466,6 +415,22 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			// Log.w(Constants.LOG_TAG,
 			// "Illegal State on the media player while trying to stop it");
 		}
+	}
+
+	/**
+	 * Returns the formatted text which displays the number of pictures for this
+	 * bird and the current picture number.
+	 * 
+	 * @return the text
+	 */
+	public void updateNumberOfPicturesText() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append(this.displayedPictureId + 1);
+		sb.append("/");
+		sb.append(getBird().getNumberOfPictures());
+
+		this.numberOfPictures.setText(sb.toString());
+
 	}
 
 	/*
@@ -591,46 +556,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	protected void onStop() {
 		super.onStop();
 		this.mediaPlayer.release();
-	}
-
-	/**
-	 * Reset resources.
-	 */
-	protected void resetResources() {
-		this.viewFlipper = null;
-	}
-
-	/**
-	 * Show next picture and update the displayed picture id.
-	 */
-	protected void showNextPicture() {
-		removeBitmapInViewFlipper(this.displayedPictureId);
-		this.displayedPictureId++;
-		if (this.displayedPictureId == getBird().getNumberOfPictures()) {
-			this.displayedPictureId = 0;
-		}
-		insertBitmapInViewFlipper(this.displayedPictureId);
-		updateNumberOfPicturesText();
-		this.viewFlipper.setInAnimation(this.slideLeftIn);
-		this.viewFlipper.setOutAnimation(this.slideLeftOut);
-		this.viewFlipper.showNext();
-	}
-
-	/**
-	 * Show previous picture and update the displayed picture id.
-	 */
-	protected void showPreviousPicture() {
-		removeBitmapInViewFlipper(this.displayedPictureId);
-		this.displayedPictureId--;
-		if (this.displayedPictureId == -1) {
-			this.displayedPictureId = getBird().getNumberOfPictures() - 1;
-		}
-		insertBitmapInViewFlipper(this.displayedPictureId);
-		updateNumberOfPicturesText();
-		this.viewFlipper.setInAnimation(this.slideRightIn);
-		this.viewFlipper.setOutAnimation(this.slideRightOut);
-		this.viewFlipper.showPrevious();
-
 	}
 
 	/**
@@ -778,23 +703,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	}
 
 	/**
-	 * Memory consumption : Insert the bitmap of the given index in view
-	 * flipper.
-	 * 
-	 * @param index
-	 *            the index
-	 */
-	private void insertBitmapInViewFlipper(final int index) {
-		final LinearLayout imageAndDescription = (LinearLayout) this.viewFlipper
-				.getChildAt(index);
-		final ImageView imagePicture = new ImageView(this);
-		final Bitmap bMap = BitmapFactory.decodeFile(getBird()
-				.getPicture(index).getPath());
-		imagePicture.setImageBitmap(bMap);
-		imageAndDescription.addView(imagePicture);
-	}
-
-	/**
 	 * Update view flipper with the pictures of the bird. If the bird doesn't
 	 * have pictures, instead of the view flipper, show a button to ask if the
 	 * user wants to download pictures from the web site.
@@ -830,19 +738,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	}
 
 	/**
-	 * Memory consumption : Removes the bitmap of the given index in view
-	 * flipper.
-	 * 
-	 * @param index
-	 *            the index
-	 */
-	private void removeBitmapInViewFlipper(final int index) {
-		final LinearLayout imageAndDescription = (LinearLayout) this.viewFlipper
-				.getChildAt(index);
-		imageAndDescription.removeViewAt(1);
-	}
-
-	/**
 	 * Resize tabs. Hint found there :
 	 * http://groups.google.com/group/android-developers
 	 * /browse_thread/thread/c0ce750ca2525637?pli=1
@@ -857,22 +752,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			final View child = widget.getChildAt(i);
 			child.getLayoutParams().height = TAB_HEIGHT;
 		}
-
-	}
-
-	/**
-	 * Returns the formatted text which displays the number of pictures for this
-	 * bird and the current picture number.
-	 * 
-	 * @return the text
-	 */
-	private void updateNumberOfPicturesText() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(this.displayedPictureId + 1);
-		sb.append("/");
-		sb.append(getBird().getNumberOfPictures());
-
-		this.numberOfPictures.setText(sb.toString());
 
 	}
 }

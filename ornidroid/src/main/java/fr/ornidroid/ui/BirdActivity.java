@@ -1,7 +1,5 @@
 package fr.ornidroid.ui;
 
-import org.apache.commons.lang.StringUtils;
-
 import android.app.Dialog;
 import android.media.MediaPlayer;
 import android.view.GestureDetector;
@@ -24,10 +22,9 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import fr.ornidroid.R;
-import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.AudioOrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
-import fr.ornidroid.bo.PictureOrnidroidFile;
+import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
@@ -49,7 +46,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	public static final String DISPLAYED_PICTURE_ID = "DISPLAYED_PICTURE_ID";
 
 	/** The Constant INTENT_ACTIVITY_TO_OPEN. */
-	public static final String INTENT_ACTIVITY_TO_OPEN = "intentActivityToOpenParameter";
+	public static final String INTENT_TAB_TO_OPEN = "intentTabToOpenParameter";
 
 	/** The Constant PICTURES_TAB_NAME. */
 	public static final String PICTURES_TAB_NAME = "pictures";
@@ -67,9 +64,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 	/** The Constant DIALOG_PICTURE_INFO_ID. */
 	private static final int DIALOG_PICTURE_INFO_ID = 0;
-
-	/** The Constant EMPTY. */
-	private static final String EMPTY = "";
 
 	/** The Constant TAB_HEIGHT. */
 	private static final int TAB_HEIGHT = 50;
@@ -281,6 +275,15 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	}
 
 	/**
+	 * Gets the ok dialog button.
+	 * 
+	 * @return the ok dialog button
+	 */
+	public Button getOkDialogButton() {
+		return this.okDialogButton;
+	}
+
+	/**
 	 * Gets the ornidroid service.
 	 * 
 	 * @return the ornidroid service
@@ -349,13 +352,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	}
 
 	/**
-	 * Reset resources.
-	 */
-	public void resetResources() {
-		this.viewFlipper = null;
-	}
-
-	/**
 	 * Sets the displayed picture id.
 	 * 
 	 * @param displayedPictureId
@@ -363,6 +359,26 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	 */
 	public void setDisplayedPictureId(final int displayedPictureId) {
 		this.displayedPictureId = displayedPictureId;
+	}
+
+	/**
+	 * Sets the ok dialog button.
+	 * 
+	 * @param okDialogButton
+	 *            the new ok dialog button
+	 */
+	public void setOkDialogButton(final Button okDialogButton) {
+		this.okDialogButton = okDialogButton;
+	}
+
+	/**
+	 * Sets the view flipper.
+	 * 
+	 * @param viewFlipper
+	 *            the new view flipper
+	 */
+	public void setViewFlipper(final ViewFlipper viewFlipper) {
+		this.viewFlipper = viewFlipper;
 	}
 
 	/*
@@ -389,30 +405,30 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	@Override
 	protected void hookOnCreate() {
 		setContentView(R.layout.bird);
-		this.tabIdToDisplay = getIntent().getIntExtra(INTENT_ACTIVITY_TO_OPEN,
+		this.tabIdToDisplay = getIntent().getIntExtra(INTENT_TAB_TO_OPEN,
 				OrnidroidFileType.getCode(OrnidroidFileType.PICTURE));
 		this.tabs = (TabHost) this.findViewById(R.id.my_tabhost);
 		this.tabs.setup();
 
 		// pictures tab
 		final TabSpec tspecPicture = this.tabs.newTabSpec(PICTURES_TAB_NAME);
-		tspecPicture.setIndicator(EMPTY,
-				getResources().getDrawable(R.drawable.ic_tab_pictures));
+		tspecPicture.setIndicator(BasicConstants.EMPTY_STRING, getResources()
+				.getDrawable(R.drawable.ic_tab_pictures));
 		tspecPicture.setContent(this);
 		this.tabs.addTab(tspecPicture);
 
 		// audio tab
 		final TabSpec tspecAudio = this.tabs.newTabSpec(AUDIO_TAB_NAME);
-		tspecAudio.setIndicator(EMPTY,
-				getResources().getDrawable(R.drawable.ic_tab_sounds));
+		tspecAudio.setIndicator(BasicConstants.EMPTY_STRING, getResources()
+				.getDrawable(R.drawable.ic_tab_sounds));
 		tspecAudio.setContent(this);
 
 		this.tabs.addTab(tspecAudio);
 
 		// details
 		final TabSpec tspec1 = this.tabs.newTabSpec(DETAIL_TAB_NAME);
-		tspec1.setIndicator(EMPTY,
-				getResources().getDrawable(R.drawable.ic_tab_details));
+		tspec1.setIndicator(BasicConstants.EMPTY_STRING, getResources()
+				.getDrawable(R.drawable.ic_tab_details));
 		tspec1.setContent(new TabContentFactory() {
 
 			public View createTabContent(final String tag) {
@@ -425,8 +441,8 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 		// bird names
 		final TabSpec tspec2 = this.tabs.newTabSpec(BIRD_NAMES_TAB_NAME);
-		tspec2.setIndicator(EMPTY,
-				getResources().getDrawable(R.drawable.ic_tab_bird_names));
+		tspec2.setIndicator(BasicConstants.EMPTY_STRING, getResources()
+				.getDrawable(R.drawable.ic_tab_bird_names));
 		tspec2.setContent(new TabContentFactory() {
 
 			public View createTabContent(final String tag) {
@@ -467,7 +483,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	protected void onPrepareDialog(final int id, final Dialog dialog) {
 		switch (id) {
 		case DIALOG_PICTURE_INFO_ID:
-			displayPictureInfoInDialog(dialog);
+			this.pictureHelper.displayPictureInfoInDialog(dialog);
 			break;
 		}
 	}
@@ -565,66 +581,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		}
 
 		return headerLayout;
-	}
-
-	/**
-	 * Display line in dialog.<br/>
-	 * Example : <br/>
-	 * source : http://www.wikipedia.org
-	 * 
-	 * @param dialog
-	 *            dialog
-	 * @param displayedPicture
-	 *            the displayed picture
-	 * @param textViewResId
-	 *            the text view res id
-	 * @param labelResourceId
-	 *            the label resource id
-	 * @param propertyName
-	 *            the property name
-	 */
-	private void displayLineInDialog(final Dialog dialog,
-			final AbstractOrnidroidFile displayedPicture,
-			final int textViewResId, final int labelResourceId,
-			final String propertyName) {
-		final String propertyValue = displayedPicture.getProperty(propertyName);
-		if (StringUtils.isNotBlank(propertyValue)) {
-			final TextView textView = (TextView) dialog
-					.findViewById(textViewResId);
-			textView.setText(this.getString(labelResourceId) + ": "
-					+ displayedPicture.getProperty(propertyName));
-		}
-	}
-
-	/**
-	 * Display picture info in dialog.
-	 * 
-	 * @param dialog
-	 *            the dialog
-	 */
-	private void displayPictureInfoInDialog(final Dialog dialog) {
-		dialog.setContentView(R.layout.picture_info_dialog);
-		dialog.setTitle(R.string.dialog_picture_title);
-		final AbstractOrnidroidFile displayedPicture = getBird().getPictures()
-				.get(this.displayedPictureId);
-		displayLineInDialog(dialog, displayedPicture,
-				R.id.dialog_picture_description,
-				R.string.dialog_picture_description,
-				PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY);
-		displayLineInDialog(dialog, displayedPicture,
-				R.id.dialog_picture_author, R.string.dialog_picture_author,
-				PictureOrnidroidFile.IMAGE_AUTHOR_PROPERTY);
-		displayLineInDialog(dialog, displayedPicture,
-				R.id.dialog_picture_source, R.string.dialog_picture_source,
-				PictureOrnidroidFile.IMAGE_SOURCE_PROPERTY);
-		displayLineInDialog(dialog, displayedPicture,
-				R.id.dialog_picture_licence, R.string.dialog_picture_licence,
-				PictureOrnidroidFile.IMAGE_LICENCE_PROPERTY);
-
-		this.okDialogButton = (Button) dialog
-				.findViewById(R.id.dialog_ok_button);
-		this.okDialogButton.setOnClickListener(this);
-
 	}
 
 	/**

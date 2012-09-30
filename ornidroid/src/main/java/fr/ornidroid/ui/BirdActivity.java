@@ -1,6 +1,5 @@
 package fr.ornidroid.ui;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -36,7 +35,7 @@ import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.audio.AudioControlButtonListener;
+import fr.ornidroid.ui.audio.AudioHelper;
 import fr.ornidroid.ui.picture.BirdActivityGestureListener;
 import fr.ornidroid.ui.views.DetailsViewFactory;
 import fr.ornidroid.ui.views.NamesViewFactory;
@@ -78,6 +77,9 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 	/** The audio control layout. */
 	private LinearLayout audioControlLayout;
+
+	/** The audio helper. */
+	private final AudioHelper audioHelper;
 
 	/** The audio layout. */
 	private LinearLayout audioLayout;
@@ -135,23 +137,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	 */
 	public BirdActivity() {
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
-
-	}
-
-	/**
-	 * Change play pause button.
-	 * 
-	 * @param printPlayIcon
-	 *            the print play icon : if true, print play icon, if false,
-	 *            pause button
-	 */
-	public void changePlayPauseButton(final boolean printPlayIcon) {
-		if (printPlayIcon) {
-			this.playPauseButton.setImageResource(R.drawable.ic_sound_play);
-		} else {
-			this.playPauseButton.setImageResource(R.drawable.ic_sound_pause);
-
-		}
+		this.audioHelper = new AudioHelper(this);
 	}
 
 	/*
@@ -186,7 +172,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			this.mListView.setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(final AdapterView<?> parent,
 						final View view, final int position, final long id) {
-					spinThatShit(position);
+					BirdActivity.this.audioHelper.spinThatShit(position);
 				}
 			});
 
@@ -376,48 +362,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	}
 
 	/**
-	 * Spin that shit.
-	 * 
-	 * @param position
-	 *            the position
-	 */
-	public void spinThatShit(final int position) {
-		// Log.i(Constants.LOG_TAG, "Reading mp3 number " + position);
-		final AbstractOrnidroidFile mp3File = this.ornidroidService
-				.getCurrentBird().getSound(position);
-		if (null != mp3File) {
-			try {
-				this.mediaPlayer.reset();
-				this.mediaPlayer.setDataSource(mp3File.getPath());
-				this.mediaPlayer.prepare();
-				this.mediaPlayer.start();
-				changePlayPauseButton(false);
-			} catch (final IOException e) {
-				// Log.e(Constants.LOG_TAG, "Could not open file " + mp3File
-				// + " for playback.", e);
-			} catch (final IllegalArgumentException e2) {
-				// Log.e(Constants.LOG_TAG, "Error on setDataSource " + mp3File
-				// + " for playback.", e2);
-			}
-		}
-	}
-
-	/**
-	 * Stop player.
-	 */
-	public void stopPlayer() {
-		try {
-			if ((null != this.mediaPlayer) && this.mediaPlayer.isPlaying()) {
-				this.mediaPlayer.stop();
-				this.mediaPlayer.reset();
-			}
-		} catch (final IllegalStateException e) {
-			// Log.w(Constants.LOG_TAG,
-			// "Illegal State on the media player while trying to stop it");
-		}
-	}
-
-	/**
 	 * Returns the formatted text which displays the number of pictures for this
 	 * bird and the current picture number.
 	 * 
@@ -573,15 +517,14 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			this.playPauseButton = new ImageView(this);
 			this.playPauseButton.setId(PLAY_PAUSE_BUTTON);
 			this.playPauseButton.setImageResource(R.drawable.ic_sound_play);
-			this.playPauseButton
-					.setOnClickListener(new AudioControlButtonListener(this));
+			this.playPauseButton.setOnClickListener(this.audioHelper);
 			this.playPauseButton.setPadding(0, 0, 25, 0);
 			this.audioControlLayout.addView(this.playPauseButton);
 
 			final ImageView stopButton = new ImageView(this);
 			stopButton.setId(STOP_BUTTON);
 			stopButton.setImageResource(R.drawable.ic_sound_stop);
-			stopButton.setOnClickListener(new AudioControlButtonListener(this));
+			stopButton.setOnClickListener(this.audioHelper);
 			this.audioControlLayout.addView(stopButton);
 		} else {
 			printDownloadButtonAndInfo();

@@ -157,6 +157,55 @@ public abstract class AbstractDownloadableMediaActivity extends
 
 	}
 
+	/**
+	 * Prints the download button and info.
+	 */
+	public void printDownloadButtonAndInfo() {
+		getSpecificContentLayout().setOrientation(LinearLayout.VERTICAL);
+		getSpecificContentLayout().setGravity(Gravity.CENTER_HORIZONTAL);
+
+		final TextView noMediaMessage = new TextView(this);
+		getSpecificContentLayout().addView(noMediaMessage);
+
+		final OrnidroidError ornidroidError = OrnidroidError
+				.getOrnidroidError(this.ornidroidDownloadErrorCode);
+
+		switch (ornidroidError) {
+
+		case ORNIDROID_CONNECTION_PROBLEM:
+			noMediaMessage.setText(R.string.dialog_alert_connection_problem);
+			break;
+		case ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST:
+			noMediaMessage.setText(R.string.no_resources_online);
+			break;
+		case NO_ERROR:
+			switch (getFileType()) {
+			case AUDIO:
+				noMediaMessage.setText(R.string.no_records);
+				break;
+			case PICTURE:
+				noMediaMessage.setText(R.string.no_pictures);
+				break;
+
+			}
+
+			this.downloadFromInternetButton = new ImageView(this);
+			this.downloadFromInternetButton.setId(DOWNLOAD_BUTTON_ID);
+			this.downloadFromInternetButton.setOnClickListener(this);
+			this.downloadFromInternetButton
+					.setImageResource(R.drawable.ic_file_download);
+			this.downloadFromInternetButton.setLayoutParams(new LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+			getSpecificContentLayout().addView(this.downloadFromInternetButton);
+			break;
+		default:
+			noMediaMessage.setText(R.string.unknown_error);
+			break;
+		}
+
+	}
+
 	/*
 	 * This thread handles the progress bar, and launches in an other thread the
 	 * download of the pictures. When the download is completed, show the 100 %
@@ -273,55 +322,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 		// // + this.bird.getTaxon() + " e");
 		// }
 		hookOnCreate();
-	}
-
-	/**
-	 * Prints the download button and info.
-	 */
-	protected void printDownloadButtonAndInfo() {
-		getSpecificContentLayout().setOrientation(LinearLayout.VERTICAL);
-		getSpecificContentLayout().setGravity(Gravity.CENTER_HORIZONTAL);
-
-		final TextView noMediaMessage = new TextView(this);
-		getSpecificContentLayout().addView(noMediaMessage);
-
-		final OrnidroidError ornidroidError = OrnidroidError
-				.getOrnidroidError(this.ornidroidDownloadErrorCode);
-
-		switch (ornidroidError) {
-
-		case ORNIDROID_CONNECTION_PROBLEM:
-			noMediaMessage.setText(R.string.dialog_alert_connection_problem);
-			break;
-		case ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST:
-			noMediaMessage.setText(R.string.no_resources_online);
-			break;
-		case NO_ERROR:
-			switch (getFileType()) {
-			case AUDIO:
-				noMediaMessage.setText(R.string.no_records);
-				break;
-			case PICTURE:
-				noMediaMessage.setText(R.string.no_pictures);
-				break;
-
-			}
-
-			this.downloadFromInternetButton = new ImageView(this);
-			this.downloadFromInternetButton.setId(DOWNLOAD_BUTTON_ID);
-			this.downloadFromInternetButton.setOnClickListener(this);
-			this.downloadFromInternetButton
-					.setImageResource(R.drawable.ic_file_download);
-			this.downloadFromInternetButton.setLayoutParams(new LayoutParams(
-					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-			getSpecificContentLayout().addView(this.downloadFromInternetButton);
-			break;
-		default:
-			noMediaMessage.setText(R.string.unknown_error);
-			break;
-		}
-
 	}
 
 	/**

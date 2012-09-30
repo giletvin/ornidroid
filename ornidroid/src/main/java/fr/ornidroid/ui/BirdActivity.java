@@ -1,12 +1,8 @@
 package fr.ornidroid.ui;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 
 import android.app.Dialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -37,11 +33,14 @@ import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.audio.AudioHelper;
 import fr.ornidroid.ui.picture.BirdActivityGestureListener;
+import fr.ornidroid.ui.picture.PictureHelper;
 import fr.ornidroid.ui.views.DetailsViewFactory;
 import fr.ornidroid.ui.views.NamesViewFactory;
 
 /**
- * Displays bird details.
+ * Displays bird details. This is the main activity which contains the tabs.
+ * Picture, audio, description and bird names tabs.<br>
+ * The tabs are not activities, only views.
  */
 public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		TabContentFactory, OnClickListener {
@@ -101,14 +100,17 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/** The m list view. */
 	private ListView mListView;
 
-	/** The number of pictures. */
-	private TextView numberOfPictures;
+	/** The number of pictures text view. */
+	private TextView numberOfPicturesTextView;
 
 	/** The ok dialog button. */
 	private Button okDialogButton;
 
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
+
+	/** The picture helper. */
+	private final PictureHelper pictureHelper;
 
 	/** The picture layout. */
 	private LinearLayout pictureLayout;
@@ -138,6 +140,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	public BirdActivity() {
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 		this.audioHelper = new AudioHelper(this);
+		this.pictureHelper = new PictureHelper(this);
 	}
 
 	/*
@@ -208,7 +211,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			this.viewFlipper.setInAnimation(this, android.R.anim.fade_in);
 			this.viewFlipper.setOutAnimation(this, android.R.anim.fade_out);
 
-			populateViewFlipper();
+			this.pictureHelper.populateViewFlipper();
 			this.gestureDetector = new GestureDetector(
 					new BirdActivityGestureListener(this));
 			this.gestureListener = new View.OnTouchListener() {
@@ -269,12 +272,30 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	}
 
 	/**
+	 * Gets the number of pictures text view.
+	 * 
+	 * @return the number of pictures text view
+	 */
+	public TextView getNumberOfPicturesTextView() {
+		return this.numberOfPicturesTextView;
+	}
+
+	/**
 	 * Gets the ornidroid service.
 	 * 
 	 * @return the ornidroid service
 	 */
 	public IOrnidroidService getOrnidroidService() {
 		return this.ornidroidService;
+	}
+
+	/**
+	 * Gets the picture helper.
+	 * 
+	 * @return the picture helper
+	 */
+	public PictureHelper getPictureHelper() {
+		return this.pictureHelper;
 	}
 
 	/**
@@ -293,23 +314,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	 */
 	public ViewFlipper getViewFlipper() {
 		return this.viewFlipper;
-	}
-
-	/**
-	 * Memory consumption : Insert the bitmap of the given index in view
-	 * flipper.
-	 * 
-	 * @param index
-	 *            the index
-	 */
-	public void insertBitmapInViewFlipper(final int index) {
-		final LinearLayout imageAndDescription = (LinearLayout) this.viewFlipper
-				.getChildAt(index);
-		final ImageView imagePicture = new ImageView(this);
-		final Bitmap bMap = BitmapFactory.decodeFile(getBird()
-				.getPicture(index).getPath());
-		imagePicture.setImageBitmap(bMap);
-		imageAndDescription.addView(imagePicture);
 	}
 
 	/*
@@ -361,22 +365,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		this.displayedPictureId = displayedPictureId;
 	}
 
-	/**
-	 * Returns the formatted text which displays the number of pictures for this
-	 * bird and the current picture number.
-	 * 
-	 * @return the text
-	 */
-	public void updateNumberOfPicturesText() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(this.displayedPictureId + 1);
-		sb.append("/");
-		sb.append(getBird().getNumberOfPictures());
-
-		this.numberOfPictures.setText(sb.toString());
-
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -406,12 +394,14 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		this.tabs = (TabHost) this.findViewById(R.id.my_tabhost);
 		this.tabs.setup();
 
+		// pictures tab
 		final TabSpec tspecPicture = this.tabs.newTabSpec(PICTURES_TAB_NAME);
 		tspecPicture.setIndicator(EMPTY,
 				getResources().getDrawable(R.drawable.ic_tab_pictures));
 		tspecPicture.setContent(this);
 		this.tabs.addTab(tspecPicture);
 
+		// audio tab
 		final TabSpec tspecAudio = this.tabs.newTabSpec(AUDIO_TAB_NAME);
 		tspecAudio.setIndicator(EMPTY,
 				getResources().getDrawable(R.drawable.ic_tab_sounds));
@@ -432,6 +422,8 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			}
 		});
 		this.tabs.addTab(tspec1);
+
+		// bird names
 		final TabSpec tspec2 = this.tabs.newTabSpec(BIRD_NAMES_TAB_NAME);
 		tspec2.setIndicator(EMPTY,
 				getResources().getDrawable(R.drawable.ic_tab_bird_names));
@@ -550,9 +542,9 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		final LinearLayout taxonAndNbPicturesLayout = new LinearLayout(this);
 		taxonAndNbPicturesLayout.setOrientation(LinearLayout.VERTICAL);
 		this.taxon = new TextView(this);
-		this.numberOfPictures = new TextView(this);
+		this.numberOfPicturesTextView = new TextView(this);
 		taxonAndNbPicturesLayout.addView(this.taxon);
-		taxonAndNbPicturesLayout.addView(this.numberOfPictures);
+		taxonAndNbPicturesLayout.addView(this.numberOfPicturesTextView);
 		taxonAndNbPicturesLayout.setLayoutParams(new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 		headerLayout.addView(taxonAndNbPicturesLayout);
@@ -573,16 +565,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		}
 
 		return headerLayout;
-	}
-
-	/**
-	 * When coming to this screen with a given picture id to display. set the
-	 * cursor of the view flipper on the good image to display
-	 */
-	private void displayFixedPicture() {
-		for (int i = 0; i < this.displayedPictureId; i++) {
-			this.viewFlipper.showNext();
-		}
 	}
 
 	/**
@@ -643,41 +625,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 				.findViewById(R.id.dialog_ok_button);
 		this.okDialogButton.setOnClickListener(this);
 
-	}
-
-	/**
-	 * Update view flipper with the pictures of the bird. If the bird doesn't
-	 * have pictures, instead of the view flipper, show a button to ask if the
-	 * user wants to download pictures from the web site.
-	 * 
-	 * To limit memory consumption, the bitmaps are not loaded yet (except the
-	 * first to display). The bitmaps are loaded and deallocated on the fly when
-	 * the user flips the view flipper.
-	 * 
-	 */
-	private void populateViewFlipper() {
-		if (getBird().getNumberOfPictures() > 0) {
-			final List<AbstractOrnidroidFile> listPictures = getBird()
-					.getPictures();
-			for (final AbstractOrnidroidFile picture : listPictures) {
-				final LinearLayout imageAndDescription = new LinearLayout(this);
-				imageAndDescription.setOrientation(LinearLayout.VERTICAL);
-
-				final TextView description = new TextView(this);
-				description
-						.setText(picture
-								.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
-				description.setTextAppearance(this,
-						android.R.style.TextAppearance_Small);
-				imageAndDescription.addView(description);
-				this.viewFlipper.addView(imageAndDescription);
-				displayFixedPicture();
-				updateNumberOfPicturesText();
-			}
-			insertBitmapInViewFlipper(this.displayedPictureId);
-		} else {
-			printDownloadButtonAndInfo();
-		}
 	}
 
 	/**

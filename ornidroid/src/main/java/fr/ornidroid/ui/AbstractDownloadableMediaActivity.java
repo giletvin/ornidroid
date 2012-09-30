@@ -268,7 +268,7 @@ public abstract class AbstractDownloadableMediaActivity extends
 			intent.setData(getIntent().getData());
 			// put an extra info to let the BirdInfoActivity know which tab to
 			// open.
-			intent.putExtra(BirdActivity.INTENT_ACTIVITY_TO_OPEN,
+			intent.putExtra(BirdActivity.INTENT_TAB_TO_OPEN,
 					OrnidroidFileType.getCode(getFileType()));
 			intent.putExtra(
 					AbstractDownloadableMediaActivity.DOWNLOAD_ERROR_INTENT_PARAM,

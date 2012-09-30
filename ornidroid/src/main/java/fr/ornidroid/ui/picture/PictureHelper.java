@@ -2,13 +2,19 @@ package fr.ornidroid.ui.picture;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import fr.ornidroid.R;
 import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.PictureOrnidroidFile;
+import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.ui.BirdActivity;
 
 /**
@@ -27,6 +33,39 @@ public class PictureHelper {
 	 */
 	public PictureHelper(final BirdActivity pBirdActivity) {
 		this.birdActivity = pBirdActivity;
+	}
+
+	/**
+	 * Display picture info in dialog.
+	 * 
+	 * @param dialog
+	 *            the dialog
+	 */
+	public void displayPictureInfoInDialog(final Dialog dialog) {
+		dialog.setContentView(R.layout.picture_info_dialog);
+		dialog.setTitle(R.string.dialog_picture_title);
+		final AbstractOrnidroidFile displayedPicture = this.birdActivity
+				.getBird().getPictures()
+				.get(this.birdActivity.getDisplayedPictureId());
+		displayLineInDialog(dialog, displayedPicture,
+				R.id.dialog_picture_description,
+				R.string.dialog_picture_description,
+				PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY);
+		displayLineInDialog(dialog, displayedPicture,
+				R.id.dialog_picture_author, R.string.dialog_picture_author,
+				PictureOrnidroidFile.IMAGE_AUTHOR_PROPERTY);
+		displayLineInDialog(dialog, displayedPicture,
+				R.id.dialog_picture_source, R.string.dialog_picture_source,
+				PictureOrnidroidFile.IMAGE_SOURCE_PROPERTY);
+		displayLineInDialog(dialog, displayedPicture,
+				R.id.dialog_picture_licence, R.string.dialog_picture_licence,
+				PictureOrnidroidFile.IMAGE_LICENCE_PROPERTY);
+
+		this.birdActivity.setOkDialogButton((Button) dialog
+				.findViewById(R.id.dialog_ok_button));
+		this.birdActivity.getOkDialogButton().setOnClickListener(
+				this.birdActivity);
+
 	}
 
 	/**
@@ -83,6 +122,13 @@ public class PictureHelper {
 	}
 
 	/**
+	 * Reset resources. Set the viewFlipper to null
+	 */
+	public void resetViewFlipper() {
+		this.birdActivity.setViewFlipper(null);
+	}
+
+	/**
 	 * Returns the formatted text which displays the number of pictures for this
 	 * bird and the current picture number.
 	 * 
@@ -91,7 +137,7 @@ public class PictureHelper {
 	public void updateNumberOfPicturesText() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(this.birdActivity.getDisplayedPictureId() + 1);
-		sb.append("/");
+		sb.append(BasicConstants.SLASH_STRING);
 		sb.append(this.birdActivity.getBird().getNumberOfPictures());
 
 		this.birdActivity.getNumberOfPicturesTextView().setText(sb.toString());
@@ -105,6 +151,36 @@ public class PictureHelper {
 	private void displayFixedPicture() {
 		for (int i = 0; i < this.birdActivity.getDisplayedPictureId(); i++) {
 			this.birdActivity.getViewFlipper().showNext();
+		}
+	}
+
+	/**
+	 * Display line in dialog.<br/>
+	 * Example : <br/>
+	 * source : http://www.wikipedia.org
+	 * 
+	 * @param dialog
+	 *            dialog
+	 * @param displayedPicture
+	 *            the displayed picture
+	 * @param textViewResId
+	 *            the text view res id
+	 * @param labelResourceId
+	 *            the label resource id
+	 * @param propertyName
+	 *            the property name
+	 */
+	private void displayLineInDialog(final Dialog dialog,
+			final AbstractOrnidroidFile displayedPicture,
+			final int textViewResId, final int labelResourceId,
+			final String propertyName) {
+		final String propertyValue = displayedPicture.getProperty(propertyName);
+		if (StringUtils.isNotBlank(propertyValue)) {
+			final TextView textView = (TextView) dialog
+					.findViewById(textViewResId);
+			textView.setText(this.birdActivity.getString(labelResourceId)
+					+ BasicConstants.COLUMN_STRING
+					+ displayedPicture.getProperty(propertyName));
 		}
 	}
 }

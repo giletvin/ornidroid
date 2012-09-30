@@ -18,18 +18,6 @@ import fr.ornidroid.bo.OrnidroidFileType;
  */
 public class Constants extends BasicConstants {
 
-	/** The Constant BIRD_ID_PARAMETER_NAME. */
-	public static final String BIRD_ID_PARAMETER_NAME = "BIRD_ID";
-
-	/** The Constant CARRIAGE_RETURN. */
-	public static final String CARRIAGE_RETURN = "\n";
-
-	/** The Constant LOG_TAG. */
-	public static final String LOG_TAG = "Ornidroid";
-
-	/** The Constant MP3_PATH. */
-	public static final String MP3_PATH = "MP3_PATH";
-
 	/** The CONTEXT. */
 	private static Context CONTEXT;
 

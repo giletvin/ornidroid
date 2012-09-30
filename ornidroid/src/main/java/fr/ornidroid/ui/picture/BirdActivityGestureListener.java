@@ -64,7 +64,7 @@ public class BirdActivityGestureListener extends SimpleOnGestureListener {
 
 			final int displayedPictureId = this.birdActivity
 					.getDisplayedPictureId();
-			this.birdActivity.resetResources();
+			this.birdActivity.getPictureHelper().resetViewFlipper();
 			final Intent intentImageFullSize = new Intent(this.birdActivity,
 					FullSizeImageActivity.class);
 			intentImageFullSize.putExtra(BirdActivity.DISPLAYED_PICTURE_ID,

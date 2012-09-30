@@ -129,9 +129,9 @@ public class BirdActivityGestureListener extends SimpleOnGestureListener {
 				.getBird().getNumberOfPictures()) {
 			this.birdActivity.setDisplayedPictureId(0);
 		}
-		this.birdActivity.insertBitmapInViewFlipper(this.birdActivity
-				.getDisplayedPictureId());
-		this.birdActivity.updateNumberOfPicturesText();
+		this.birdActivity.getPictureHelper().insertBitmapInViewFlipper(
+				this.birdActivity.getDisplayedPictureId());
+		this.birdActivity.getPictureHelper().updateNumberOfPicturesText();
 		this.birdActivity.getViewFlipper().setInAnimation(this.slideLeftIn);
 		this.birdActivity.getViewFlipper().setOutAnimation(this.slideLeftOut);
 		this.birdActivity.getViewFlipper().showNext();
@@ -149,9 +149,9 @@ public class BirdActivityGestureListener extends SimpleOnGestureListener {
 					.getNumberOfPictures() - 1);
 
 		}
-		this.birdActivity.insertBitmapInViewFlipper(this.birdActivity
-				.getDisplayedPictureId());
-		this.birdActivity.updateNumberOfPicturesText();
+		this.birdActivity.getPictureHelper().insertBitmapInViewFlipper(
+				this.birdActivity.getDisplayedPictureId());
+		this.birdActivity.getPictureHelper().updateNumberOfPicturesText();
 		this.birdActivity.getViewFlipper().setInAnimation(this.slideRightIn);
 		this.birdActivity.getViewFlipper().setOutAnimation(this.slideRightOut);
 		this.birdActivity.getViewFlipper().showPrevious();

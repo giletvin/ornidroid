@@ -178,11 +178,11 @@ function genereInsertTableTaxonomy($id,$csvLine){
 
 /*
 * Genere la commande insert dans la table description
-* //INSERT INTO bird_description(lang,description,bird_fk) VALUES('en','English description',1);
+* //INSERT INTO bird_description(lang,description,distribution, bird_fk) VALUES('en','English description','distribution',1);
 */
 function genereInsertTableDescription($id,$csvLine){
-	if ($csvLine[16]!=''){
-		return "INSERT INTO bird_description(lang,description,bird_fk) VALUES('fr',\"".$csvLine[16]."\",".$id.");\n";
+	if ($csvLine[16]!=''||$csvLine[17]!=''){
+		return "INSERT INTO bird_description(lang,description,distribution,bird_fk) VALUES('fr',\"".$csvLine[16]."\",\"".$csvLine[17]."\",".$id.");\n";
 	}
 	else{
 		return "";

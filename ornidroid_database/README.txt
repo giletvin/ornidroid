@@ -5,8 +5,8 @@ Génération de la base de données sqlite
 ---------------------------------------
 Script creation_bdd.sh
 Input : fichier oiseaux_europe_avibase_ss_rares.csv
-Output : génération du fichier ornidroid.sqlite et de fichiers .sql temporaires.
-
+Output : génération du fichier SQLITE "ornidroid.jpg" (extension JPG pour la gestion des assets dans le sdk) et ornidroid.jpg.size (et de fichiers .sql temporaires qu'on peut effacer).
+Suite à la génération, poser les fichiers ornidroid.jpg et ornidroid.jpg.size dans le répertoire assets du projet Android
 
 Audio
 -----

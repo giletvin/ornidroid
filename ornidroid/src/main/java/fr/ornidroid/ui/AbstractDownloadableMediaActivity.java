@@ -151,6 +151,7 @@ public abstract class AbstractDownloadableMediaActivity extends
 			getSpecificContentLayout().removeAllViews();
 			this.downloadInfoText = new TextView(this);
 			this.downloadInfoText.setText(R.string.download_please_wait);
+			this.downloadInfoText.setPadding(5, 0, 5, 20);
 			getSpecificContentLayout().addView(this.downloadInfoText);
 			startDownload();
 		}
@@ -165,6 +166,8 @@ public abstract class AbstractDownloadableMediaActivity extends
 		getSpecificContentLayout().setGravity(Gravity.CENTER_HORIZONTAL);
 
 		final TextView noMediaMessage = new TextView(this);
+		noMediaMessage.setPadding(5, 0, 5, 20);
+
 		getSpecificContentLayout().addView(noMediaMessage);
 
 		final OrnidroidError ornidroidError = OrnidroidError

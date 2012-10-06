@@ -188,12 +188,16 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					.getColumnIndexOrThrow(IOrnidroidDAO.DIRECTORY_NAME_COLUMN);
 			final int descriptionIndex = cursor
 					.getColumnIndex(IOrnidroidDAO.DESCRIPTION_COLUMN);
+			final int distributionIndex = cursor
+					.getColumnIndex(IOrnidroidDAO.DISTRIBUTION_COLUMN);
 			final int scientificOrderIndex = cursor
 					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_ORDER_NAME_COLUMN);
 			final int scientificFamilyIndex = cursor
 					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_FAMILY_NAME_COLUMN);
 			final String description = (descriptionIndex == -1) ? "" : cursor
 					.getString(descriptionIndex);
+			final String distribution = (distributionIndex == -1) ? "" : cursor
+					.getString(distributionIndex);
 			final String scientificOrder = (scientificOrderIndex == -1) ? ""
 					: cursor.getString(scientificOrderIndex);
 			final String scientificFamily = (scientificFamilyIndex == -1) ? ""
@@ -203,7 +207,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					cursor.getString(taxonIndex),
 					cursor.getString(scientificNameIndex),
 					cursor.getString(directoryNameIndex), description,
-					scientificOrder, scientificFamily);
+					distribution, scientificOrder, scientificFamily);
 
 		}
 		cursor.close();

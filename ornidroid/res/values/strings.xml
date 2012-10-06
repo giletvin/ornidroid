@@ -69,6 +69,8 @@
 
 	<!-- autres labels -->
 	<string name="scientific_name">Scientific name</string>
+	<string name="description">Description</string>
+	<string name="distribution">Distribution and behaviour</string>
 	<string name="scientific_order">Order</string>
 	<string name="scientific_family">Family</string>
 

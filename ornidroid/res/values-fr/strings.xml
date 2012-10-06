@@ -75,6 +75,8 @@
 
 	<!-- autres labels -->
 	<string name="scientific_name">Nom scientifique</string>
+	<string name="description">Description</string>
+	<string name="distribution">Habitat et comportement</string>
 	<string name="scientific_order">Ordre</string>
 	<string name="scientific_family">Famille</string>
 

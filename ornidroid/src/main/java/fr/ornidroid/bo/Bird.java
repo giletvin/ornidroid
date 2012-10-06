@@ -9,125 +9,35 @@ import java.util.Map;
  */
 public class Bird extends SimpleBird {
 
-	/**
-	 * Instantiates a new bird.
-	 */
-	protected Bird() {
-		super();
-	}
-
 	/** The description. */
 	private String description;
 
-	/** The scientific name. */
-	private String scientificName;
-
-	/** The scientific family. */
-	private String scientificFamily;
+	/** The distribution. */
+	private String distribution;
 
 	/** The id. */
 	private Integer id;
 
-	/**
-	 * Gets the id.
-	 * 
-	 * @return the id
-	 */
-	public Integer getId() {
-		return id;
-	}
+	/** The pictures. */
+	private List<AbstractOrnidroidFile> pictures;
 
-	/**
-	 * Sets the id.
-	 * 
-	 * @param id
-	 *            the new id
-	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	/** The scientific family. */
+	private String scientificFamily;
 
-	/**
-	 * Gets the scientific family.
-	 * 
-	 * @return the scientific family
-	 */
-	public String getScientificFamily() {
-		return scientificFamily;
-	}
-
-	/**
-	 * Sets the scientific family.
-	 * 
-	 * @param scientificFamily
-	 *            the new scientific family
-	 */
-	public void setScientificFamily(String scientificFamily) {
-		this.scientificFamily = scientificFamily;
-	}
-
-	/**
-	 * Gets the scientific order.
-	 * 
-	 * @return the scientific order
-	 */
-	public String getScientificOrder() {
-		return scientificOrder;
-	}
-
-	/**
-	 * Sets the scientific order.
-	 * 
-	 * @param scientificOrder
-	 *            the new scientific order
-	 */
-	public void setScientificOrder(String scientificOrder) {
-		this.scientificOrder = scientificOrder;
-	}
+	/** The scientific name. */
+	private String scientificName;
 
 	/** The scientific order. */
 	private String scientificOrder;
-
-	/** The pictures. */
-	private List<AbstractOrnidroidFile> pictures;
 
 	/** The sounds. */
 	private List<AbstractOrnidroidFile> sounds;
 
 	/**
-	 * Gets the list of pictures.
-	 * 
-	 * @return the pictures.
+	 * Instantiates a new bird.
 	 */
-	public List<AbstractOrnidroidFile> getPictures() {
-		// if (pictures == null) {
-		// setPictures(new ArrayList<AbstractOrnidroidFile>());
-		// }
-		return pictures;
-	}
-
-	/**
-	 * Gets the picture.
-	 * 
-	 * @param pictureNumber
-	 *            the picture number
-	 * @return the picture
-	 */
-	public AbstractOrnidroidFile getPicture(int pictureNumber) {
-		if ((pictures != null) && (pictures.size() > pictureNumber)) {
-			return pictures.get(pictureNumber);
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * Gets the sounds.
-	 * 
-	 * @return the sounds
-	 */
-	public List<AbstractOrnidroidFile> getSounds() {
-		return sounds;
+	protected Bird() {
+		super();
 	}
 
 	/**
@@ -136,95 +46,25 @@ public class Bird extends SimpleBird {
 	 * @return the description
 	 */
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	/**
-	 * Sets the description.
+	 * Gets the distribution.
 	 * 
-	 * @param description
-	 *            the new description
+	 * @return the distribution
 	 */
-	protected void setDescription(String description) {
-		this.description = description;
+	public String getDistribution() {
+		return this.distribution;
 	}
 
 	/**
-	 * Gets the scientific name.
+	 * Gets the id.
 	 * 
-	 * @return the scientific name
+	 * @return the id
 	 */
-	public String getScientificName() {
-		return scientificName;
-	}
-
-	/**
-	 * Sets the scientific name.
-	 * 
-	 * @param scientificName
-	 *            the new scientific name
-	 */
-	protected void setScientificName(String scientificName) {
-		this.scientificName = scientificName;
-	}
-
-	/**
-	 * Gets the number of pictures.
-	 * 
-	 * @return the number of pictures, 0 if list of pictures is null
-	 */
-	public int getNumberOfPictures() {
-		if (pictures != null) {
-			return pictures.size();
-		}
-		return 0;
-	}
-
-	/**
-	 * Gets the number of sounds.
-	 * 
-	 * @return the number of sounds
-	 */
-	public int getNumberOfSounds() {
-		if (sounds != null) {
-			return sounds.size();
-		}
-		return 0;
-	}
-
-	/**
-	 * Gets the sound.
-	 * 
-	 * @param soundNumber
-	 *            the sound number
-	 * @return the sound, can be null if soundNumber is not valid
-	 */
-	public AbstractOrnidroidFile getSound(int soundNumber) {
-		if ((sounds != null) && (sounds.size() > soundNumber)) {
-			return sounds.get(soundNumber);
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * Sets the pictures.
-	 * 
-	 * @param pictures
-	 *            the new pictures
-	 */
-	public void setPictures(List<AbstractOrnidroidFile> pictures) {
-		this.pictures = pictures;
-	}
-
-	/**
-	 * Sets the sounds.
-	 * 
-	 * @param sounds
-	 *            the new sounds
-	 */
-	public void setSounds(List<AbstractOrnidroidFile> sounds) {
-		this.sounds = sounds;
+	public Integer getId() {
+		return this.id;
 	}
 
 	/**
@@ -237,14 +77,196 @@ public class Bird extends SimpleBird {
 	 *      defined in this class
 	 */
 	public List<Map<String, String>> getListAudioFiles() {
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-		if (null != sounds) {
-			for (AbstractOrnidroidFile audioFile : sounds) {
-				AudioOrnidroidFile ornidroidAudioFile = (AudioOrnidroidFile) audioFile;
+		final List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		if (null != this.sounds) {
+			for (final AbstractOrnidroidFile audioFile : this.sounds) {
+				final AudioOrnidroidFile ornidroidAudioFile = (AudioOrnidroidFile) audioFile;
 				list.add(ornidroidAudioFile.getPropertiesForScreen());
 			}
 		}
 		return list;
+	}
+
+	/**
+	 * Gets the number of pictures.
+	 * 
+	 * @return the number of pictures, 0 if list of pictures is null
+	 */
+	public int getNumberOfPictures() {
+		if (this.pictures != null) {
+			return this.pictures.size();
+		}
+		return 0;
+	}
+
+	/**
+	 * Gets the number of sounds.
+	 * 
+	 * @return the number of sounds
+	 */
+	public int getNumberOfSounds() {
+		if (this.sounds != null) {
+			return this.sounds.size();
+		}
+		return 0;
+	}
+
+	/**
+	 * Gets the picture.
+	 * 
+	 * @param pictureNumber
+	 *            the picture number
+	 * @return the picture
+	 */
+	public AbstractOrnidroidFile getPicture(final int pictureNumber) {
+		if ((this.pictures != null) && (this.pictures.size() > pictureNumber)) {
+			return this.pictures.get(pictureNumber);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the list of pictures.
+	 * 
+	 * @return the pictures.
+	 */
+	public List<AbstractOrnidroidFile> getPictures() {
+		// if (pictures == null) {
+		// setPictures(new ArrayList<AbstractOrnidroidFile>());
+		// }
+		return this.pictures;
+	}
+
+	/**
+	 * Gets the scientific family.
+	 * 
+	 * @return the scientific family
+	 */
+	public String getScientificFamily() {
+		return this.scientificFamily;
+	}
+
+	/**
+	 * Gets the scientific name.
+	 * 
+	 * @return the scientific name
+	 */
+	public String getScientificName() {
+		return this.scientificName;
+	}
+
+	/**
+	 * Gets the scientific order.
+	 * 
+	 * @return the scientific order
+	 */
+	public String getScientificOrder() {
+		return this.scientificOrder;
+	}
+
+	/**
+	 * Gets the sound.
+	 * 
+	 * @param soundNumber
+	 *            the sound number
+	 * @return the sound, can be null if soundNumber is not valid
+	 */
+	public AbstractOrnidroidFile getSound(final int soundNumber) {
+		if ((this.sounds != null) && (this.sounds.size() > soundNumber)) {
+			return this.sounds.get(soundNumber);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the sounds.
+	 * 
+	 * @return the sounds
+	 */
+	public List<AbstractOrnidroidFile> getSounds() {
+		return this.sounds;
+	}
+
+	/**
+	 * Sets the distribution.
+	 * 
+	 * @param distribution
+	 *            the new distribution
+	 */
+	public void setDistribution(final String distribution) {
+		this.distribution = distribution;
+	}
+
+	/**
+	 * Sets the id.
+	 * 
+	 * @param id
+	 *            the new id
+	 */
+	public void setId(final Integer id) {
+		this.id = id;
+	}
+
+	/**
+	 * Sets the pictures.
+	 * 
+	 * @param pictures
+	 *            the new pictures
+	 */
+	public void setPictures(final List<AbstractOrnidroidFile> pictures) {
+		this.pictures = pictures;
+	}
+
+	/**
+	 * Sets the scientific family.
+	 * 
+	 * @param scientificFamily
+	 *            the new scientific family
+	 */
+	public void setScientificFamily(final String scientificFamily) {
+		this.scientificFamily = scientificFamily;
+	}
+
+	/**
+	 * Sets the scientific order.
+	 * 
+	 * @param scientificOrder
+	 *            the new scientific order
+	 */
+	public void setScientificOrder(final String scientificOrder) {
+		this.scientificOrder = scientificOrder;
+	}
+
+	/**
+	 * Sets the sounds.
+	 * 
+	 * @param sounds
+	 *            the new sounds
+	 */
+	public void setSounds(final List<AbstractOrnidroidFile> sounds) {
+		this.sounds = sounds;
+	}
+
+	/**
+	 * Sets the description.
+	 * 
+	 * @param description
+	 *            the new description
+	 */
+	protected void setDescription(final String description) {
+		this.description = description;
+	}
+
+	/**
+	 * Sets the scientific name.
+	 * 
+	 * @param scientificName
+	 *            the new scientific name
+	 */
+	protected void setScientificName(final String scientificName) {
+		this.scientificName = scientificName;
 	}
 
 }

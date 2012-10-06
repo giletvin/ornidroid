@@ -201,6 +201,8 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(COMMA);
 				query.append(DESCRIPTION_COLUMN);
 				query.append(COMMA);
+				query.append(DISTRIBUTION_COLUMN);
+				query.append(COMMA);
 				query.append("scientific_order.name as ");
 				query.append(SCIENTIFIC_ORDER_NAME_COLUMN);
 				query.append(COMMA);

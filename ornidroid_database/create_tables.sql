@@ -13,7 +13,7 @@ create table bird(
 
 CREATE VIRTUAL TABLE taxonomy USING fts3(lang, taxon, searched_taxon, bird_fk);
 
-CREATE TABLE bird_description (lang, description, bird_fk);
+CREATE TABLE bird_description (lang, description, distribution, bird_fk);
 
 create table scientific_order(
 		id,

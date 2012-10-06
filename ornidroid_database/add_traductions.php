@@ -176,7 +176,7 @@ $se_code='se';
 $zh_code='zh';
 
 try {
-	$sqliteFile = "ornidroid.sqlite";
+	$sqliteFile = "ornidroid.jpg";
 	$dbh = new PDO('sqlite:'.$sqliteFile); // success
 /*
 	//create the database

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /* ** Copyright 2010, The Android Open Source Project ** ** Licensed 
+	under the Apache License, Version 2.0 (the "License"); ** you may not use 
+	this file except in compliance with the License. ** You may obtain a copy 
+	of the License at ** ** http://www.apache.org/licenses/LICENSE-2.0 ** ** 
+	Unless required by applicable law or agreed to in writing, software ** distributed 
+	under the License is distributed on an "AS IS" BASIS, ** WITHOUT WARRANTIES 
+	OR CONDITIONS OF ANY KIND, either express or implied. ** See the License 
+	for the specific language governing permissions and ** limitations under 
+	the License. */ -->
+<resources>
+
+	<!-- The name of the application. -->
+	<string name="app_name">Ornidroid</string>
+
+	<!-- The hint text that appears in the search box. -->
+	<string name="search_hint">Suche in der Datenbank</string>
+
+	<!-- The menu entry that invokes search. -->
+	<string name="menu_search">Suche nach Namen</string>
+
+	<string name="menu_search_multi">Mehrkriterien-Suche</string>
+
+	<string name="menu_about">Über</string>
+
+
+	<!-- Search failure message. -->
+
+	<string name="ok">OK</string>
+
+	<!-- activity titles -->
+	<string name="preferences">Einstellungen</string>
+	<string name="about">Über</string>
+	<string name="sounds">Töne</string>
+	<string name="bird_info">Vogeldaten</string>
+	<string name="bird_image">Bilder</string>
+	<string name="bird_image_big">Vergrößtes Bild</string>
+	<string name="bird_names">Taxonomie</string>
+
+	<!-- labes used in preferences -->
+	<string name="preferences_home_key">OrnidroidHome</string>
+	<string name="preferences_home_label">Installationsverzeichnis der ornidroid-Datenbank
+	</string>
+	<string name="preferences_lang_key">OrnidroidSearchLang</string>
+	<string name="preferences_lang_label">Suchsprache</string>
+
+
+	<!-- pictures info dialog box -->
+	<string name="dialog_picture_title">Bildinformationen</string>
+	<string name="dialog_picture_description">Beschreibung</string>
+	<string name="dialog_picture_author">Autor</string>
+	<string name="dialog_picture_source">Quelle</string>
+	<string name="dialog_picture_licence">Lizenz</string>
+
+	<!-- alert dialogs from the home activity -->
+	<string name="dialog_alert_ornidroid_home_not_found">Installationsverzeichnis der ornidroid-Datenbank nicht gefunden! Bitte prüfe Deine Einstellungen.
+	</string>
+	<string name="dialog_alert_ornidroid_database_not_found">ornidroid-Datenbank im Installationsverzeichnis nicht gefunden! Ornidroid kann nicht so weiterlaufen.
+	</string>
+	<string name="dialog_alert_download_error">ornidroid-Datenbank im Installationsverzeichnis nicht gefunden! Herunterladen der Datenbank gescheitert. Ornidroid kann nicht so weiterlaufen.
+	</string>
+		<string name="dialog_alert_database_not_found_online">Herunterladen der Datenbank von der Website gescheitert. Ornidroid kann nicht so weiterlaufen.
+	</string>
+	
+	<string name="dialog_alert_connection_problem">Verbindungsstörung. Bitte prüfe Deine Netzwerkseinstellungen.
+	</string>
+
+	<!-- autres labels -->
+	<string name="scientific_name">Wissenschaftlicher Name</string>
+	<string name="description">Beschreibung</string>
+	<string name="distribution">Lebensraum und Verhalten</string>
+	<string name="scientific_order">Ordnung</string>
+	<string name="scientific_family">Familie</string>
+
+	<string name="credits">Nachweis</string>
+
+	<string name="no_records">Keine Daten gefunden. Bitte nochmals prüfen und die Daten vom Internet herunterladen.
+	</string>
+	<string name="no_pictures">Kein Bild gefunden. Bitte nochmals prüfen und das Bild vom Internet herunterladen.
+	</string>
+	<string name="about_ornidroid">Ornidroid Version 1.0.\nDiese Anwendung steht unter
+		der Creative Commons BY
+		NC-Lizenz\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.de
+	</string>
+	<string name="download_in_progress">Download wird durchgeführt...</string>
+	<string name="download_please_wait">Bitte warte während des Downloads.
+		Der Bildschirm wird automatisch aktualisiert werden.
+	</string>
+	<string name="no_resources_online">Sorry, keine online-Daten gefunden.
+	</string>
+	<string name="unknown_error">Sorry, unerwarteter Fehler.
+	</string>
+
+</resources>

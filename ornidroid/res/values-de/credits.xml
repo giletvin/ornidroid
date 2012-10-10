@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources>
+	<string-array name="credits">
+		<!-- Every item contains 4 fields, separed by "|" : Title|Author|URL|Licence -->
+		<item>Bild der Startseite|Florent
+			Chavouet|http://florentchavouet.blogspot.com/|Mit seiner freundlichen
+			Genehmigung
+		</item>
+		<item>Übersetzung der
+			Vogelnamen|Avibase|http://avibase.bsc-eoc.org/|
+		</item>
+		<item>Aufnahmen
+			von Vogelstimmen|Xeno-Canto|http://www.xeno-canto.org|Creative Commons
+		</item>
+		<item>Vogelbilder|Ein Klick auf die Info-Taste liefert Informationen über die Bildquelle.||Creative Commons
+		</item>
+		<item>Icons|Christian
+			Burprich|http://chrfb.deviantart.com/|Creative
+			Commons 3.0 Share
+			Alike license
+		</item>
+		<item>Icons|MazeNL77|http://mazenl77.deviantart.com/gallery/|
+		</item>
+	</string-array>
+</resources>

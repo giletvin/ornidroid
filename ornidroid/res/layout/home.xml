@@ -22,7 +22,7 @@
 	<TextView android:id="@+id/menu_search_multi" android:text="@string/menu_search_multi"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:textSize="20sp" android:paddingLeft="20sp" android:paddingTop="25sp"
-		android:textColor="#CCC" />
+		 />
 
 	<TextView android:id="@+id/menu_about" android:text="@string/menu_about"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"

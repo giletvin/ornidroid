@@ -148,7 +148,7 @@ function normalizeString($string){
 * Genere la commande insert dans la table bird
 * insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk) values (1,'morus bassanus','morus_bassanus',1,1);
 */
-function genereInsertTableBird($array_scientific_orders,$array_scientific_family,$id,$csvLine){
+function genereInsertTableBird($array_category,$array_scientific_orders,$array_scientific_family,$id,$csvLine){
 
         $directory_name = nettoie_nom($csvLine[0]);
 	$scientific_name = $csvLine[2];
@@ -157,7 +157,10 @@ function genereInsertTableBird($array_scientific_orders,$array_scientific_family
 	$ordre= array_search(normalizeString($data[0]),$array_scientific_orders)+1;
 	//id = index dans le tableau +1 car les id commencent à 1 et pas 0
 	$famille=array_search($data[1],$array_scientific_family)+1;
-	return "insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk) values (".$id.",'".$scientific_name."','".$directory_name."',".$ordre.",".$famille.");\n";
+	//retrouver dans la map des categories l'id qui lui a été accordé dans la table des category
+	//id = index dans le tableau +1 car les id commencent à 1 et pas 0
+	$category_fk=array_search($csvLine[6],$array_category)+1;
+	return "insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk) values (".$id.",'".$scientific_name."','".$directory_name."',".$ordre.",".$famille.",".$category_fk.");\n";
 }
 
 /*
@@ -215,6 +218,26 @@ function genereInsertTableScientificOrderAndFamily(&$array_scientific_orders,&$a
 		return "";
 	}
 }
+
+/*
+* Genere la commande insert dans la table des categories
+* //INSERT INTO category(id,name,lang) VALUES(1,'Chouettes, hiboux','fr');
+* //7eme colonne
+*/
+function genereInsertTableCategory(&$array_category,$csvLine){
+	$category=$csvLine[6];
+	if ($category!=''){
+		$sqlquery="";
+		if (!in_array($category,$array_category)){
+			$id=array_push($array_category,$category);
+			$sqlquery .= "INSERT INTO category(id,name,lang) VALUES(".$id.",\"".$category."\",'fr');\n";
+		}
+		return $sqlquery;
+	}
+	else{
+		return "";
+	}
+}
 /*
 * MAIN
 */
@@ -227,21 +250,26 @@ $handlerTableDescription = fopen('insert_data_table_bird_description.sql', 'w');
 
 $handlerTableScientificOrderAndFamily = fopen('insert_data_table_scientific_order_and_family.sql', 'w');
 
+$handlerTableCategory = fopen('insert_data_table_category.sql', 'w');
+
 $array_scientific_orders = array();
 $array_scientific_family = array();
+$array_category = array();
 
 $idBird=0;
 if (($handle = fopen("oiseaux_europe_avibase_ss_rares.csv", "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
 	if ($idBird>0) {
+		$insertTableCategory=genereInsertTableCategory($array_category,$data);
 		$insertTableScientificOrderAndFamily=genereInsertTableScientificOrderAndFamily($array_scientific_orders,$array_scientific_family,$data);
-		$insertTableBird=genereInsertTableBird($array_scientific_orders,$array_scientific_family,$idBird,$data);
+		$insertTableBird=genereInsertTableBird($array_category,$array_scientific_orders,$array_scientific_family,$idBird,$data);
 		$insertTableTaxonomy=genereInsertTableTaxonomy($idBird,$data);
 		$insertTableDescription=genereInsertTableDescription($idBird,$data);
 		fwrite($handlerTableBird, $insertTableBird);
 		fwrite($handlerTableTaxonomy, $insertTableTaxonomy);
 		fwrite($handlerTableDescription, $insertTableDescription);
 		fwrite($handlerTableScientificOrderAndFamily, $insertTableScientificOrderAndFamily);
+		fwrite($handlerTableCategory, $insertTableCategory);
 	}
 	$idBird++;
     }
@@ -251,6 +279,7 @@ fclose($handlerTableBird);
 fclose($handlerTableTaxonomy);
 fclose($handlerTableDescription);
 fclose($handlerTableScientificOrderAndFamily);
+fclose($handlerTableCategory);
 
 
 ?>

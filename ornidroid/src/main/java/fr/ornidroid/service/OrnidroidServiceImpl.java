@@ -1,7 +1,9 @@
 package fr.ornidroid.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.SearchManager;
@@ -9,8 +11,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.widget.ListAdapter;
+import fr.ornidroid.R;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.BirdFactoryImpl;
+import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.bo.Taxon;
 import fr.ornidroid.data.IOrnidroidDAO;
 import fr.ornidroid.data.OrnidroidDAOImpl;
@@ -21,7 +25,6 @@ import fr.ornidroid.helper.OrnidroidException;
  * The Class OrnidroidServiceImpl.
  */
 public class OrnidroidServiceImpl implements IOrnidroidService {
-
 	/** The service instance. */
 	private static IOrnidroidService serviceInstance;
 
@@ -41,6 +44,12 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 
 	/** The activity. */
 	private final Activity activity;
+
+	/** The categories list. */
+	private ArrayList<String> categoriesList;
+
+	/** The categories map. */
+	private Map<String, Integer> categoriesMap;
 	/** The current bird. */
 	private Bird currentBird;
 
@@ -94,6 +103,74 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getBirdMatchesFromMultiSearchCriteria
+	 * (fr.ornidroid.bo.MultiCriteriaSearchFormBean)
+	 */
+	public void getBirdMatchesFromMultiSearchCriteria(
+			final MultiCriteriaSearchFormBean formBean) {
+		this.ornidroidDAO.getBirdMatchesFromMultiSearchCriteria(formBean);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidService#getCategories()
+	 */
+	public List<String> getCategories() {
+		// TODO : quand il faudra éventuellement afficher la catégorie de
+		// l'oiseau dans un onglet, ensuite, creer ici une map de <Category> et
+		// faire evoluer Bird
+		// pour y ajouter une categorie. En reecuperant l'instance de Bird, je
+		// veux qu'il y ait une instance de Categorie qu'on ira piocher dans la
+		// map qui est ici, à partir du category_fk qui est recuperé par sql
+		// quand on a l'oiseau
+		if (this.categoriesMap == null) {
+			this.categoriesMap = new HashMap<String, Integer>();
+			this.categoriesList = new ArrayList<String>();
+			// init the map and the list with "ALL" with id = 0
+			this.categoriesMap.put(
+					this.activity.getString(R.string.search_all), 0);
+			this.categoriesList.add(this.activity
+					.getString(R.string.search_all));
+			final Cursor cursorQueryCategories = this.ornidroidDAO
+					.getCategories();
+			if (cursorQueryCategories != null) {
+				final int nbResults = cursorQueryCategories.getCount();
+				for (int i = 0; i < nbResults; i++) {
+					cursorQueryCategories.moveToPosition(i);
+					final int idIndex = cursorQueryCategories
+							.getColumnIndexOrThrow("id");
+					final int nameIndex = cursorQueryCategories
+							.getColumnIndexOrThrow("name");
+					this.categoriesMap.put(
+							cursorQueryCategories.getString(nameIndex),
+							cursorQueryCategories.getInt(idIndex));
+					this.categoriesList.add(cursorQueryCategories
+							.getString(nameIndex));
+				}
+				cursorQueryCategories.close();
+			}
+
+		}
+		return this.categoriesList;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getCategoryId(java.lang.String)
+	 */
+	public Integer getCategoryId(final String categoryName) {
+		return this.categoriesMap.get(categoryName);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.ornidroid.service.IOrnidroidService#getCurrentBird()
 	 */
 	public Bird getCurrentBird() {
@@ -108,6 +185,18 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	public ListAdapter getHistoricResultsAdapter() {
 
 		return this.ornidroidDAO.getHistoricResultsAdapter();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getMultiSearchCriteriaCountResults
+	 * (fr.ornidroid.bo.MultiCriteriaSearchFormBean)
+	 */
+	public int getMultiSearchCriteriaCountResults(
+			final MultiCriteriaSearchFormBean formBean) {
+		return this.ornidroidDAO.getMultiSearchCriteriaCountResults(formBean);
 	}
 
 	/*
@@ -212,5 +301,4 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		}
 		cursor.close();
 	}
-
 }

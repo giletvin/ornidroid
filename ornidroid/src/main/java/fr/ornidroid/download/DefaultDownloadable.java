@@ -36,10 +36,10 @@ import java.net.URLConnection;
 import org.apache.commons.lang.StringUtils;
 
 /**
+ * The Class DefaultDownloadable.
  * 
  * @author Fabrizio Giudici
  * @version $Id$
- * 
  */
 public class DefaultDownloadable extends Downloadable {
 
@@ -204,7 +204,7 @@ public class DefaultDownloadable extends Downloadable {
 	private InputStream createInputStream() throws IOException {
 		final URLConnection connection = this.proxiedUrl.openConnection();
 		connection.connect();
-		this.contentLength = connection.getContentLength(); // TODO: handle the
+		this.contentLength = connection.getContentLength(); // FIXME: handle the
 															// case
 		// in which it's unknown
 		// size

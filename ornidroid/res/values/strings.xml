@@ -93,4 +93,16 @@
 	</string>
 	<string name="unknown_error">Sorry, an unexpected error has occurred.
 	</string>
+	
+	<!-- strings of the multi search  -->
+	<string name="search_category_choose">Choose a category
+	</string>
+	<string name="search_category">Category
+	</string>
+	<string name="search_count_results">Number of results : 
+	</string>
+	<string name="search_show_results">Show results 
+	</string>
+	<string name="search_all">All 
+	</string>
 </resources>

@@ -2,12 +2,14 @@ package fr.ornidroid.data;
 
 import android.database.Cursor;
 import android.widget.ListAdapter;
+import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 
 /**
  * The Interface IOrnidroidDAO.
  */
 public interface IOrnidroidDAO {
-
+	/** The Constant BIRD_TABLE. */
+	public static final String BIRD_TABLE = "bird";
 	/** The Constant DESCRIPTION_COLUMN. */
 	public static final String DESCRIPTION_COLUMN = "description";
 	/** The Constant DIRECTORY_NAME_COLUMN. */
@@ -65,6 +67,16 @@ public interface IOrnidroidDAO {
 	Cursor getBirdMatches(String query);
 
 	/**
+	 * Gets the bird matches from multi search criteria and stores the results
+	 * in the history stack.
+	 * 
+	 * @param formBean
+	 *            the form bean
+	 * */
+	void getBirdMatchesFromMultiSearchCriteria(
+			MultiCriteriaSearchFormBean formBean);
+
+	/**
 	 * Gets the bird names in different languages.
 	 * 
 	 * @param id
@@ -75,11 +87,27 @@ public interface IOrnidroidDAO {
 	Cursor getBirdNames(Integer id);
 
 	/**
+	 * Gets the categories.
+	 * 
+	 * @return the categories
+	 */
+	Cursor getCategories();
+
+	/**
 	 * Gets the historic results adapter.
 	 * 
 	 * @return the historic results adapter
 	 */
 	ListAdapter getHistoricResultsAdapter();
+
+	/**
+	 * Gets the multi search criteria count results.
+	 * 
+	 * @param formBean
+	 *            the form bean
+	 * @return the multi search criteria count results
+	 */
+	int getMultiSearchCriteriaCountResults(MultiCriteriaSearchFormBean formBean);
 
 	/**
 	 * Checks for history.

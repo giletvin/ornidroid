@@ -8,6 +8,7 @@ create table bird(
 	directory_name,
 	scientific_order_fk,
 	scientific_family_fk,
+	category_fk,
 	PRIMARY KEY(id)
 );
 
@@ -25,4 +26,12 @@ create table scientific_family(
 		id,
 		name,
 		lang
+);
+
+
+create table category(
+	id integer,
+	name,
+	lang,
+	PRIMARY KEY(id)
 );

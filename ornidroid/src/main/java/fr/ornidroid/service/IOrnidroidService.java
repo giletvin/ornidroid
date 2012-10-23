@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.widget.ListAdapter;
 import fr.ornidroid.bo.Bird;
+import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.bo.Taxon;
 import fr.ornidroid.helper.OrnidroidException;
 
@@ -41,6 +42,33 @@ public interface IOrnidroidService {
 	Cursor getBirdMatches(String query);
 
 	/**
+	 * Gets the bird matches from the multi criteria search and load the results
+	 * in the history stack.
+	 * 
+	 * @param formBean
+	 *            the form bean
+	 * @return the bird matches from multi search criteria
+	 */
+	void getBirdMatchesFromMultiSearchCriteria(
+			MultiCriteriaSearchFormBean formBean);
+
+	/**
+	 * Gets the categories to load the select menu of the bird categories.
+	 * 
+	 * @return the categories
+	 */
+	List<String> getCategories();
+
+	/**
+	 * Gets the category id.
+	 * 
+	 * @param categoryName
+	 *            the category name
+	 * @return the category id
+	 */
+	Integer getCategoryId(String categoryName);
+
+	/**
 	 * Gets the current bird. If a previous call to show bird detail was already
 	 * done, get the bird without querying the db
 	 * 
@@ -54,6 +82,15 @@ public interface IOrnidroidService {
 	 * @return the historic results adapter
 	 */
 	ListAdapter getHistoricResultsAdapter();
+
+	/**
+	 * Gets the multi search criteria count results.
+	 * 
+	 * @param formBean
+	 *            the form bean
+	 * @return the multi search criteria count results
+	 */
+	int getMultiSearchCriteriaCountResults(MultiCriteriaSearchFormBean formBean);
 
 	/**
 	 * Gets the names of the bird in different languages.

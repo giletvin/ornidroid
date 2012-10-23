@@ -2,22 +2,19 @@ package fr.ornidroid.data;
 
 import android.app.SearchManager;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.util.Log;
 import android.widget.ListAdapter;
+import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.helper.Constants;
 
 /**
  * Contains sql queries to search for birds in the database.
  */
 public class OrnidroidDAOImpl implements IOrnidroidDAO {
-
-	/** The Constant BIRD_TABLE. */
-	private static final String BIRD_TABLE = "bird";
-
-	/** The Constant COMMA. */
-	private static final String COMMA = ",";
 
 	/** The Constant DESCRIPTION_TABLE. */
 	private static final String DESCRIPTION_TABLE = "bird_description";
@@ -115,6 +112,30 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see
+	 * fr.ornidroid.data.IOrnidroidDAO#getBirdMatchesFromMultiSearchCriteria
+	 * (fr.ornidroid.bo.MultiCriteriaSearchFormBean)
+	 */
+	public void getBirdMatchesFromMultiSearchCriteria(
+			final MultiCriteriaSearchFormBean formBean) {
+		String selection;
+		if (formBean.getCategoryId() != 0) {
+			selection = "bird.category_fk = " + formBean.getCategoryId();
+		} else {
+			selection = "1=1";
+		}
+		// final String[] selectionArgs = new String[] {
+		// formBean.getCategoryId()
+		// .toString() };
+
+		final Cursor cursor = query(selection, null, false);
+		this.historyHelper.setHistory(cursor);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getBirdNames(java.lang.Integer)
 	 */
 	public Cursor getBirdNames(final Integer id) {
@@ -125,7 +146,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			final StringBuilder query = new StringBuilder();
 			query.append("select ");
 			query.append(LANG_COLUMN_NAME);
-			query.append(COMMA);
+			query.append(Constants.COMMA_STRING);
 			query.append(TAXON);
 			query.append(" from taxonomy where bird_fk=");
 			query.append(id);
@@ -152,10 +173,71 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see fr.ornidroid.data.IOrnidroidDAO#getCategories()
+	 */
+	public Cursor getCategories() {
+		Cursor cursor = null;
+		try {
+			final SQLiteDatabase db = this.dataBaseOpenHelper
+					.getReadableDatabase();
+			final StringBuilder query = new StringBuilder();
+			query.append("select ");
+			query.append("id");
+			query.append(Constants.COMMA_STRING);
+			query.append("name");
+			query.append(" from category where ");
+			query.append("lang=\"");
+			query.append(Constants.getOrnidroidLang());
+			query.append("\"");
+			query.append(" order by ");
+			query.append("name");
+			final String[] selectionArgs = null;
+			cursor = db.rawQuery(query.toString(), selectionArgs);
+			if (cursor == null) {
+				return null;
+			} else if (!cursor.moveToFirst()) {
+				cursor.close();
+				return null;
+			}
+		} catch (final SQLException e) {
+			Log.e(Constants.LOG_TAG, "Exception sql " + e);
+		} finally {
+			this.dataBaseOpenHelper.close();
+		}
+		return cursor;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getHistoricResultsAdapter()
 	 */
 	public ListAdapter getHistoricResultsAdapter() {
 		return this.historyHelper.getResultsAdapter();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.data.IOrnidroidDAO#getMultiSearchCriteriaCountResults(fr
+	 * .ornidroid.bo.MultiCriteriaSearchFormBean)
+	 */
+	public int getMultiSearchCriteriaCountResults(
+			final MultiCriteriaSearchFormBean formBean) {
+		// TODO : à améliorer et refactorer avec la méthode query déjà utilisée
+		String countQuery;
+		if (formBean.getCategoryId() != 0) {
+			countQuery = "select count(*) from " + BIRD_TABLE
+					+ " where category_fk=" + formBean.getCategoryId();
+		} else {
+			countQuery = "select count(*) from " + BIRD_TABLE;
+		}
+		final SQLiteDatabase db = this.dataBaseOpenHelper.getReadableDatabase();
+		final int countResults = (int) DatabaseUtils.longForQuery(db,
+				countQuery, null);
+
+		return countResults;
 	}
 
 	/*
@@ -195,17 +277,17 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			query.append(SearchManager.SUGGEST_COLUMN_TEXT_1);
 			query.append(", bird.id as ");
 			query.append(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
-			query.append(COMMA);
+			query.append(Constants.COMMA_STRING);
 			query.append(DIRECTORY_NAME_COLUMN);
 			if (fullBirdInfo) {
-				query.append(COMMA);
+				query.append(Constants.COMMA_STRING);
 				query.append(DESCRIPTION_COLUMN);
-				query.append(COMMA);
+				query.append(Constants.COMMA_STRING);
 				query.append(DISTRIBUTION_COLUMN);
-				query.append(COMMA);
+				query.append(Constants.COMMA_STRING);
 				query.append("scientific_order.name as ");
 				query.append(SCIENTIFIC_ORDER_NAME_COLUMN);
-				query.append(COMMA);
+				query.append(Constants.COMMA_STRING);
 				query.append("scientific_family.name as ");
 				query.append(SCIENTIFIC_FAMILY_NAME_COLUMN);
 			}
@@ -256,6 +338,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			query.append(" and taxonomy.lang=\"");
 			query.append(Constants.getOrnidroidLang());
 			query.append("\"");
+			query.append(" order by taxon");
 			// Log.d(Constants.LOG_TAG, "Perform SQL query " +
 			// query.toString());
 			cursor = db.rawQuery(query.toString(), selectionArgs);

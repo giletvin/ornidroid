@@ -6,17 +6,21 @@ package fr.ornidroid.helper;
 public class BasicConstants {
 	/** The Constant AUDIO Directory. */
 	public static final String AUDIO_DIRECTORY = "audio";
-
 	/** The Constant BIRD_ICONS_DIRECTORY. */
 	public static final String BIRD_ICONS_DIRECTORY = "bird_icons";
 
 	/** The Constant BIRD_ID_PARAMETER_NAME. */
 	public static final String BIRD_ID_PARAMETER_NAME = "BIRD_ID";
 
+	/** The Constant BLANK_STRING. */
+	public static final String BLANK_STRING = " ";
+
 	/** The Constant CARRIAGE_RETURN. */
 	public static final String CARRIAGE_RETURN = "\n";
 	/** The Constant COLUMN_STRING. */
 	public static final String COLUMN_STRING = ": ";
+	/** The Constant COMMA. */
+	public static final String COMMA_STRING = ",";
 
 	/**
 	 * The Constant DB_CHECKSIZE_NAME. This file contains the size ot the

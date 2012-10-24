@@ -9,6 +9,8 @@ create table bird(
 	scientific_order_fk,
 	scientific_family_fk,
 	category_fk,
+	habitat1_fk,
+	habitat2_fk,
 	PRIMARY KEY(id)
 );
 
@@ -30,6 +32,13 @@ create table scientific_family(
 
 
 create table category(
+	id integer,
+	name,
+	lang,
+	PRIMARY KEY(id)
+);
+
+create table habitat(
 	id integer,
 	name,
 	lang,

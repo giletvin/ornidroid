@@ -99,6 +99,10 @@
 	</string>
 	<string name="search_category">Category
 	</string>
+	<string name="search_habitat_choose">Choose a habitat
+	</string>
+	<string name="search_habitat">Habitat
+	</string>
 	<string name="search_count_results">Number of results : 
 	</string>
 	<string name="search_show_results">Show results 

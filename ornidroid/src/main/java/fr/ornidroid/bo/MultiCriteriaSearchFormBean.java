@@ -9,6 +9,9 @@ public class MultiCriteriaSearchFormBean {
 	/** The category id. */
 	private Integer categoryId;
 
+	/** The habitat id. */
+	private Integer habitatId;
+
 	/**
 	 * Gets the category id.
 	 * 
@@ -19,6 +22,15 @@ public class MultiCriteriaSearchFormBean {
 	}
 
 	/**
+	 * Gets the habitat id.
+	 * 
+	 * @return the habitat id
+	 */
+	public Integer getHabitatId() {
+		return this.habitatId != null ? this.habitatId : 0;
+	}
+
+	/**
 	 * Sets the category id.
 	 * 
 	 * @param pCategoryId
@@ -26,6 +38,17 @@ public class MultiCriteriaSearchFormBean {
 	 */
 	public void setCategoryId(final Integer pCategoryId) {
 		this.categoryId = pCategoryId;
+
+	}
+
+	/**
+	 * Sets the habitat id.
+	 * 
+	 * @param pHabitatId
+	 *            the new habitat id
+	 */
+	public void setHabitatId(final Integer pHabitatId) {
+		this.habitatId = pHabitatId;
 
 	}
 

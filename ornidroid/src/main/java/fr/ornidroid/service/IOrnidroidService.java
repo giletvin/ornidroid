@@ -77,6 +77,22 @@ public interface IOrnidroidService {
 	Bird getCurrentBird();
 
 	/**
+	 * Gets the habitat id.
+	 * 
+	 * @param habitatName
+	 *            the habitatName
+	 * @return the habitat id
+	 */
+	Integer getHabitatId(String habitatName);
+
+	/**
+	 * Gets the habitats.
+	 * 
+	 * @return the habitats
+	 */
+	List<String> getHabitats();
+
+	/**
 	 * Gets the historic results adapter.
 	 * 
 	 * @return the historic results adapter

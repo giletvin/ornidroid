@@ -46,7 +46,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	private final Activity activity;
 
 	/** The categories list. */
-	private ArrayList<String> categoriesList;
+	private List<String> categoriesList;
 
 	/** The categories map. */
 	private Map<String, Integer> categoriesMap;
@@ -55,6 +55,12 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 
 	/** The data base open helper. */
 	private final OrnidroidDatabaseOpenHelper dataBaseOpenHelper;
+
+	/** The habitats list. */
+	private List<String> habitatsList;
+
+	/** The habitats map. */
+	private Map<String, Integer> habitatsMap;
 
 	/** The ornidroid dao. */
 	private final IOrnidroidDAO ornidroidDAO;
@@ -175,6 +181,51 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 */
 	public Bird getCurrentBird() {
 		return this.currentBird;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getHabitatId(java.lang.String)
+	 */
+	public Integer getHabitatId(final String habitatName) {
+		return this.habitatsMap.get(habitatName);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidService#getHabitats()
+	 */
+	public List<String> getHabitats() {
+		if (this.habitatsMap == null) {
+			this.habitatsMap = new HashMap<String, Integer>();
+			this.habitatsList = new ArrayList<String>();
+			// init the map and the list with "ALL" with id = 0
+			this.habitatsMap.put(this.activity.getString(R.string.search_all),
+					0);
+			this.habitatsList.add(this.activity.getString(R.string.search_all));
+			final Cursor cursorQueryHabitats = this.ornidroidDAO.getHabitats();
+			if (cursorQueryHabitats != null) {
+				final int nbResults = cursorQueryHabitats.getCount();
+				for (int i = 0; i < nbResults; i++) {
+					cursorQueryHabitats.moveToPosition(i);
+					final int idIndex = cursorQueryHabitats
+							.getColumnIndexOrThrow("id");
+					final int nameIndex = cursorQueryHabitats
+							.getColumnIndexOrThrow("name");
+					this.habitatsMap.put(
+							cursorQueryHabitats.getString(nameIndex),
+							cursorQueryHabitats.getInt(idIndex));
+					this.habitatsList.add(cursorQueryHabitats
+							.getString(nameIndex));
+				}
+				cursorQueryHabitats.close();
+			}
+
+		}
+		return this.habitatsList;
 	}
 
 	/*

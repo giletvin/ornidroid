@@ -72,7 +72,8 @@ public interface IOrnidroidDAO {
 	 * 
 	 * @param formBean
 	 *            the form bean
-	 * */
+	 * @return the bird matches from multi search criteria
+	 */
 	void getBirdMatchesFromMultiSearchCriteria(
 			MultiCriteriaSearchFormBean formBean);
 
@@ -92,6 +93,13 @@ public interface IOrnidroidDAO {
 	 * @return the categories
 	 */
 	Cursor getCategories();
+
+	/**
+	 * Gets the habitats.
+	 * 
+	 * @return the habitats
+	 */
+	Cursor getHabitats();
 
 	/**
 	 * Gets the historic results adapter.

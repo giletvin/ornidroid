@@ -37,6 +37,15 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	/** The search by category spinner. */
 	private Spinner searchByCategorySpinner;
 
+	/** The search by habitat. */
+	private TextView searchByHabitat;
+
+	/** The search by habitat criterias. */
+	private View searchByHabitatCriterias;
+
+	/** The search by habitat spinner. */
+	private Spinner searchByHabitatSpinner;
+
 	/** The search count results. */
 	private TextView searchCountResults;
 
@@ -66,6 +75,14 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 				this.searchByCategoryCriterias.setVisibility(View.GONE);
 			} else {
 				this.searchByCategoryCriterias.setVisibility(View.VISIBLE);
+			}
+
+		}
+		if (v == this.searchByHabitat) {
+			if (this.searchByHabitatCriterias.getVisibility() == View.VISIBLE) {
+				this.searchByHabitatCriterias.setVisibility(View.GONE);
+			} else {
+				this.searchByHabitatCriterias.setVisibility(View.VISIBLE);
 			}
 
 		}
@@ -126,6 +143,37 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 					}
 				});
 		this.searchByCategorySpinner.setAdapter(dataAdapter);
+
+		this.searchByHabitat = (TextView) findViewById(R.id.search_habitat);
+		this.searchByHabitat.setOnClickListener(this);
+		this.searchByHabitatCriterias = findViewById(R.id.search_habitat_criterias);
+		this.searchByHabitatSpinner = (Spinner) findViewById(R.id.search_criteria_habitat);
+		final ArrayAdapter<String> dataHabitatAdapter = new ArrayAdapter<String>(
+				this, android.R.layout.simple_spinner_item,
+				this.ornidroidService.getHabitats());
+		dataHabitatAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		this.searchByHabitatSpinner
+				.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+					public void onItemSelected(final AdapterView<?> parent,
+							final View view, final int pos, final long id) {
+						MultiCriteriaSearchActivity.this.formBean
+								.setHabitatId(MultiCriteriaSearchActivity.this.ornidroidService
+										.getHabitatId(parent.getItemAtPosition(
+												pos).toString()));
+
+						updateSearchCountResults(MultiCriteriaSearchActivity.this.ornidroidService
+								.getMultiSearchCriteriaCountResults(MultiCriteriaSearchActivity.this.formBean));
+
+					}
+
+					public void onNothingSelected(final AdapterView<?> arg0) {
+
+					}
+				});
+		this.searchByHabitatSpinner.setAdapter(dataHabitatAdapter);
 	}
 
 	/**

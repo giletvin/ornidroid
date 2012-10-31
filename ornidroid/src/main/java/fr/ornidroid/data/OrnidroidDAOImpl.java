@@ -118,11 +118,13 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 */
 	public void getBirdMatchesFromMultiSearchCriteria(
 			final MultiCriteriaSearchFormBean formBean) {
-		String selection;
+		String selection = "1=1";
 		if (formBean.getCategoryId() != 0) {
-			selection = "bird.category_fk = " + formBean.getCategoryId();
-		} else {
-			selection = "1=1";
+			selection += " AND bird.category_fk = " + formBean.getCategoryId();
+		}
+		if (formBean.getHabitatId() != 0) {
+			selection += " AND (bird.habitat1_fk = " + formBean.getHabitatId()
+					+ " OR bird.habitat2_fk = " + formBean.getHabitatId() + ")";
 		}
 		// final String[] selectionArgs = new String[] {
 		// formBean.getCategoryId()
@@ -207,6 +209,38 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		return cursor;
 	}
 
+	public Cursor getHabitats() {
+		Cursor cursor = null;
+		try {
+			final SQLiteDatabase db = this.dataBaseOpenHelper
+					.getReadableDatabase();
+			final StringBuilder query = new StringBuilder();
+			query.append("select ");
+			query.append("id");
+			query.append(Constants.COMMA_STRING);
+			query.append("name");
+			query.append(" from habitat where ");
+			query.append("lang=\"");
+			query.append(Constants.getOrnidroidLang());
+			query.append("\"");
+			query.append(" order by ");
+			query.append("name");
+			final String[] selectionArgs = null;
+			cursor = db.rawQuery(query.toString(), selectionArgs);
+			if (cursor == null) {
+				return null;
+			} else if (!cursor.moveToFirst()) {
+				cursor.close();
+				return null;
+			}
+		} catch (final SQLException e) {
+			Log.e(Constants.LOG_TAG, "Exception sql " + e);
+		} finally {
+			this.dataBaseOpenHelper.close();
+		}
+		return cursor;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -227,11 +261,13 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			final MultiCriteriaSearchFormBean formBean) {
 		// TODO : à améliorer et refactorer avec la méthode query déjà utilisée
 		String countQuery;
+		countQuery = "select count(*) from " + BIRD_TABLE + " where 1=1";
 		if (formBean.getCategoryId() != 0) {
-			countQuery = "select count(*) from " + BIRD_TABLE
-					+ " where category_fk=" + formBean.getCategoryId();
-		} else {
-			countQuery = "select count(*) from " + BIRD_TABLE;
+			countQuery += " AND category_fk=" + formBean.getCategoryId();
+		}
+		if (formBean.getHabitatId() != 0) {
+			countQuery += " AND (bird.habitat1_fk = " + formBean.getHabitatId()
+					+ " OR bird.habitat2_fk = " + formBean.getHabitatId() + ")";
 		}
 		final SQLiteDatabase db = this.dataBaseOpenHelper.getReadableDatabase();
 		final int countResults = (int) DatabaseUtils.longForQuery(db,

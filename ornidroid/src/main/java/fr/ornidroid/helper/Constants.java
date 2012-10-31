@@ -18,6 +18,9 @@ import fr.ornidroid.bo.OrnidroidFileType;
  */
 public class Constants extends BasicConstants {
 
+	/** The Constant FR_LANG. */
+	public static final String FR_LANG = "fr";
+
 	/** The CONTEXT. */
 	private static Context CONTEXT;
 

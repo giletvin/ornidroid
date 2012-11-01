@@ -1,6 +1,7 @@
 package fr.ornidroid.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,41 +126,13 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * @see fr.ornidroid.service.IOrnidroidService#getCategories()
 	 */
 	public List<String> getCategories() {
-		// TODO : quand il faudra éventuellement afficher la catégorie de
-		// l'oiseau dans un onglet, ensuite, creer ici une map de <Category> et
-		// faire evoluer Bird
-		// pour y ajouter une categorie. En reecuperant l'instance de Bird, je
-		// veux qu'il y ait une instance de Categorie qu'on ira piocher dans la
-		// map qui est ici, à partir du category_fk qui est recuperé par sql
-		// quand on a l'oiseau
 		if (this.categoriesMap == null) {
-			this.categoriesMap = new HashMap<String, Integer>();
-			this.categoriesList = new ArrayList<String>();
-			// init the map and the list with "ALL" with id = 0
-			this.categoriesMap.put(
-					this.activity.getString(R.string.search_all), 0);
-			this.categoriesList.add(this.activity
-					.getString(R.string.search_all));
-			final Cursor cursorQueryCategories = this.ornidroidDAO
+			final Cursor cursorQueryHabitats = this.ornidroidDAO
 					.getCategories();
-			if (cursorQueryCategories != null) {
-				final int nbResults = cursorQueryCategories.getCount();
-				for (int i = 0; i < nbResults; i++) {
-					cursorQueryCategories.moveToPosition(i);
-					final int idIndex = cursorQueryCategories
-							.getColumnIndexOrThrow("id");
-					final int nameIndex = cursorQueryCategories
-							.getColumnIndexOrThrow("name");
-					this.categoriesMap.put(
-							cursorQueryCategories.getString(nameIndex),
-							cursorQueryCategories.getInt(idIndex));
-					this.categoriesList.add(cursorQueryCategories
-							.getString(nameIndex));
-				}
-				cursorQueryCategories.close();
-			}
-
+			this.categoriesMap = loadSelectFieldsFromCursor(cursorQueryHabitats);
 		}
+		this.categoriesList = new ArrayList<String>(this.categoriesMap.keySet());
+		Collections.sort(this.categoriesList);
 		return this.categoriesList;
 
 	}
@@ -200,31 +173,11 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 */
 	public List<String> getHabitats() {
 		if (this.habitatsMap == null) {
-			this.habitatsMap = new HashMap<String, Integer>();
-			this.habitatsList = new ArrayList<String>();
-			// init the map and the list with "ALL" with id = 0
-			this.habitatsMap.put(this.activity.getString(R.string.search_all),
-					0);
-			this.habitatsList.add(this.activity.getString(R.string.search_all));
 			final Cursor cursorQueryHabitats = this.ornidroidDAO.getHabitats();
-			if (cursorQueryHabitats != null) {
-				final int nbResults = cursorQueryHabitats.getCount();
-				for (int i = 0; i < nbResults; i++) {
-					cursorQueryHabitats.moveToPosition(i);
-					final int idIndex = cursorQueryHabitats
-							.getColumnIndexOrThrow("id");
-					final int nameIndex = cursorQueryHabitats
-							.getColumnIndexOrThrow("name");
-					this.habitatsMap.put(
-							cursorQueryHabitats.getString(nameIndex),
-							cursorQueryHabitats.getInt(idIndex));
-					this.habitatsList.add(cursorQueryHabitats
-							.getString(nameIndex));
-				}
-				cursorQueryHabitats.close();
-			}
-
+			this.habitatsMap = loadSelectFieldsFromCursor(cursorQueryHabitats);
 		}
+		this.habitatsList = new ArrayList<String>(this.habitatsMap.keySet());
+		Collections.sort(this.habitatsList);
 		return this.habitatsList;
 	}
 
@@ -234,7 +187,6 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * @see fr.ornidroid.service.IOrnidroidService#getHistoricResultsAdapter ()
 	 */
 	public ListAdapter getHistoricResultsAdapter() {
-
 		return this.ornidroidDAO.getHistoricResultsAdapter();
 	}
 
@@ -351,5 +303,31 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 
 		}
 		cursor.close();
+	}
+
+	/**
+	 * Load select fields from cursor, used to populate the Spinners.
+	 * 
+	 * @param cursor
+	 *            the cursor from the DAO, from a select query on the fields ID
+	 *            and NAME
+	 * @return the map, NAME (String)-> ID (Integer)
+	 */
+	private Map<String, Integer> loadSelectFieldsFromCursor(final Cursor cursor) {
+		final Map<String, Integer> mapNameId = new HashMap<String, Integer>();
+		// init the map and the list with "ALL" with id = 0
+		mapNameId.put(this.activity.getString(R.string.search_all), 0);
+		if (cursor != null) {
+			final int nbResults = cursor.getCount();
+			for (int i = 0; i < nbResults; i++) {
+				cursor.moveToPosition(i);
+				final int idIndex = cursor.getColumnIndexOrThrow("id");
+				final int nameIndex = cursor.getColumnIndexOrThrow("name");
+				mapNameId.put(cursor.getString(nameIndex),
+						cursor.getInt(idIndex));
+			}
+			cursor.close();
+		}
+		return mapNameId;
 	}
 }

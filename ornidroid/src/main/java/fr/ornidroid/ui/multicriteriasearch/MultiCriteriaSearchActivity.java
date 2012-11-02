@@ -1,4 +1,4 @@
-package fr.ornidroid.ui;
+package fr.ornidroid.ui.multicriteriasearch;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,8 @@ import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.components.MultiCriteriaSelectField;
+import fr.ornidroid.ui.AbstractOrnidroidActivity;
+import fr.ornidroid.ui.MainActivity;
 
 /**
  * The Class MultiCriteriaSearchActivity.
@@ -36,7 +37,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		 */
 		public void onItemSelected(final AdapterView<?> parent,
 				final View view, final int pos, final long id) {
-			final SelectFields selectType = getSelectType(parent);
+			final MultiCriteriaSearchFieldType selectType = getSelectType(parent);
 			switch (selectType) {
 			case CATEGORY:
 				MultiCriteriaSearchActivity.this.formBean
@@ -71,24 +72,8 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		}
 	}
 
-	/**
-	 * This enum lists the fields of the multi criteria search
-	 */
-	private enum SelectFields {
-		/** The category. */
-		CATEGORY,
-		/** The habitat. */
-		HABITAT;
-	}
-
-	/** The category field. */
-	private MultiCriteriaSelectField categoryField;
-
 	/** The form bean. */
 	private final MultiCriteriaSearchFormBean formBean;
-
-	/** The habitat field. */
-	private MultiCriteriaSelectField habitatField;
 
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
@@ -139,8 +124,8 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		this.searchShowResultsButton.setOnClickListener(this);
 		this.searchCountResults = (TextView) findViewById(R.id.search_count_results);
 
-		initSelectField(SelectFields.CATEGORY);
-		initSelectField(SelectFields.HABITAT);
+		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
+		initSelectField(MultiCriteriaSearchFieldType.HABITAT);
 
 	}
 
@@ -151,13 +136,15 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	 *            the parent
 	 * @return the select type
 	 */
-	private SelectFields getSelectType(final AdapterView<?> parent) {
-		if (parent == this.categoryField.getSpinner()) {
-			return SelectFields.CATEGORY;
+	private MultiCriteriaSearchFieldType getSelectType(
+			final AdapterView<?> parent) {
+		if (MultiCriteriaSelectField.class.isInstance(parent.getParent())) {
+			final MultiCriteriaSelectField field = (MultiCriteriaSelectField) parent
+					.getParent();
+			return field.getFieldType();
+
 		}
-		if (parent == this.habitatField.getSpinner()) {
-			return SelectFields.HABITAT;
-		}
+
 		return null;
 	}
 
@@ -167,25 +154,34 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	 * @param selectFieldType
 	 *            the select field type
 	 */
-	private void initSelectField(final SelectFields selectFieldType) {
+	private void initSelectField(
+			final MultiCriteriaSearchFieldType selectFieldType) {
+		ArrayAdapter<String> dataAdapter = null;
+		MultiCriteriaSelectField field = null;
 		switch (selectFieldType) {
 		case CATEGORY:
-			this.categoryField = (MultiCriteriaSelectField) findViewById(R.id.search_category_field);
-			this.categoryField.setDataAdapter(new ArrayAdapter<String>(this,
-					android.R.layout.simple_spinner_item, this.ornidroidService
-							.getCategories()));
-			this.categoryField.getSpinner().setOnItemSelectedListener(
-					new OnSpinnersItemSelected());
+			field = (MultiCriteriaSelectField) findViewById(R.id.search_category_field);
+
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getCategories());
+
 			break;
 		case HABITAT:
-			this.habitatField = (MultiCriteriaSelectField) findViewById(R.id.search_habitat_field);
-			this.habitatField.setDataAdapter(new ArrayAdapter<String>(this,
-					android.R.layout.simple_spinner_item, this.ornidroidService
-							.getHabitats()));
-			this.habitatField.getSpinner().setOnItemSelectedListener(
-					new OnSpinnersItemSelected());
+			field = (MultiCriteriaSelectField) findViewById(R.id.search_habitat_field);
+
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getHabitats());
 			break;
 		}
+		field.setFieldType(selectFieldType);
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		field.getSpinner().setAdapter(dataAdapter);
+		field.getSpinner().setOnItemSelectedListener(
+				new OnSpinnersItemSelected());
+
 	}
 
 	/**

@@ -20,6 +20,8 @@ public interface IOrnidroidDAO {
 	public static final String ID = "id";
 	/** The Constant LANG_COLUMN_NAME. */
 	public static final String LANG_COLUMN_NAME = "lang";
+	/** The Constant NAME_FIELD_NAME. */
+	public static final String NAME_COLUMN_NAME = "name";
 	/** The Constant SCIENTIFIC_FAMILY_NAME_COLUMN. */
 	public static final String SCIENTIFIC_FAMILY_NAME_COLUMN = "scientific_family";
 	/** The Constant SCIENTIFIC_FAMILY_TABLE. */

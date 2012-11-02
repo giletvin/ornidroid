@@ -36,13 +36,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/** The Constant HABITAT_TABLE_NAME. */
 	private static final String HABITAT_TABLE_NAME = "habitat";
 
-	/** The Constant ID_FIELD_NAME. */
-	private static final String ID_FIELD_NAME = "id";
-
 	private static final String LEFT_OUTER_JOIN = " LEFT OUTER JOIN ";
-
-	/** The Constant NAME_FIELD_NAME. */
-	private static final String NAME_FIELD_NAME = "name";
 
 	/** The Constant ORDER_BY. */
 	private static final String ORDER_BY = " order by ";
@@ -263,16 +257,16 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 					.getReadableDatabase();
 			final StringBuilder query = new StringBuilder();
 			query.append(SELECT);
-			query.append(ID_FIELD_NAME);
+			query.append(ID);
 			query.append(Constants.COMMA_STRING);
-			query.append(NAME_FIELD_NAME);
+			query.append(NAME_COLUMN_NAME);
 			query.append(FROM);
 			query.append(tableName);
 			query.append(WHERE).append("lang=\"");
 			query.append(lang);
 			query.append("\"");
 			query.append(ORDER_BY);
-			query.append(NAME_FIELD_NAME);
+			query.append(NAME_COLUMN_NAME);
 			final String[] selectionArgs = null;
 			cursor = db.rawQuery(query.toString(), selectionArgs);
 			if (cursor == null) {

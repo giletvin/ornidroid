@@ -75,7 +75,7 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         
          <activity
-            android:name=".ui.MultiCriteriaSearchActivity"
+            android:name=".ui.multicriteriasearch.MultiCriteriaSearchActivity"
             android:label="@string/menu_search_multi"
         
             android:theme="@android:style/Theme.NoTitleBar" />

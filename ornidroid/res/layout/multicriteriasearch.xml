@@ -1,57 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/fr.ornidroid"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="5sp" >
 
-    <!-- Category -->
-
-    <TextView
-        android:id="@+id/search_category"
+    <fr.ornidroid.ui.components.MultiCriteriaSelectField
+        android:id="@+id/search_category_field"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingBottom="20sp"
-        android:text="@string/search_category"
-        android:textSize="20sp" />
-
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/search_category_criterias"
+        custom:spinnerPrompt="@string/search_category_choose"
+        custom:text="@string/search_category"
+        />
+     <fr.ornidroid.ui.components.MultiCriteriaSelectField
+        android:id="@+id/search_habitat_field"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <Spinner
-            android:id="@+id/search_criteria_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:prompt="@string/search_category_choose" />
-    </LinearLayout>
-    <!-- Habitat -->
-
-    <TextView
-        android:id="@+id/search_habitat"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingBottom="20sp"
-        android:text="@string/search_habitat"
-        android:textSize="20sp" />
+        custom:spinnerPrompt="@string/search_habitat_choose"
+        custom:text="@string/search_habitat"
+ 
+        />
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/search_habitat_criterias"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <Spinner
-            android:id="@+id/search_criteria_habitat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:prompt="@string/search_habitat_choose" />
-    </LinearLayout>
-
+    
+   
     <TextView
         android:id="@+id/search_count_results"
         android:layout_width="fill_parent"

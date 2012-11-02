@@ -130,11 +130,11 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 			final Cursor cursorQueryHabitats = this.ornidroidDAO
 					.getCategories();
 			this.categoriesMap = loadSelectFieldsFromCursor(cursorQueryHabitats);
+			this.categoriesList = new ArrayList<String>(
+					this.categoriesMap.keySet());
+			Collections.sort(this.categoriesList);
 		}
-		this.categoriesList = new ArrayList<String>(this.categoriesMap.keySet());
-		Collections.sort(this.categoriesList);
 		return this.categoriesList;
-
 	}
 
 	/*
@@ -144,7 +144,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * fr.ornidroid.service.IOrnidroidService#getCategoryId(java.lang.String)
 	 */
 	public Integer getCategoryId(final String categoryName) {
-		return this.categoriesMap.get(categoryName);
+		return this.categoriesMap != null ? this.categoriesMap
+				.get(categoryName) : 0;
 	}
 
 	/*
@@ -163,7 +164,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * fr.ornidroid.service.IOrnidroidService#getHabitatId(java.lang.String)
 	 */
 	public Integer getHabitatId(final String habitatName) {
-		return this.habitatsMap.get(habitatName);
+		return this.habitatsMap != null ? this.habitatsMap.get(habitatName) : 0;
 	}
 
 	/*
@@ -175,9 +176,9 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		if (this.habitatsMap == null) {
 			final Cursor cursorQueryHabitats = this.ornidroidDAO.getHabitats();
 			this.habitatsMap = loadSelectFieldsFromCursor(cursorQueryHabitats);
+			this.habitatsList = new ArrayList<String>(this.habitatsMap.keySet());
+			Collections.sort(this.habitatsList);
 		}
-		this.habitatsList = new ArrayList<String>(this.habitatsMap.keySet());
-		Collections.sort(this.habitatsList);
 		return this.habitatsList;
 	}
 
@@ -257,7 +258,6 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	public void loadBirdDetails(final Uri uri) {
 		final Cursor cursor = this.activity.managedQuery(uri, null, null, null,
 				null);
-
 		loadBirdDetailsFromCursor(cursor);
 	}
 
@@ -321,8 +321,10 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 			final int nbResults = cursor.getCount();
 			for (int i = 0; i < nbResults; i++) {
 				cursor.moveToPosition(i);
-				final int idIndex = cursor.getColumnIndexOrThrow("id");
-				final int nameIndex = cursor.getColumnIndexOrThrow("name");
+				final int idIndex = cursor
+						.getColumnIndexOrThrow(IOrnidroidDAO.ID);
+				final int nameIndex = cursor
+						.getColumnIndexOrThrow(IOrnidroidDAO.NAME_COLUMN_NAME);
 				mapNameId.put(cursor.getString(nameIndex),
 						cursor.getInt(idIndex));
 			}

@@ -16,6 +16,7 @@ import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
+import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
 
 /**
  * The Class HomeActivity. Start screen of the application

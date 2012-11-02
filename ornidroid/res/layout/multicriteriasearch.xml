@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="5sp" >
 
-    <fr.ornidroid.ui.components.MultiCriteriaSelectField
+    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
         android:id="@+id/search_category_field"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         custom:spinnerPrompt="@string/search_category_choose"
         custom:text="@string/search_category"
         />
-     <fr.ornidroid.ui.components.MultiCriteriaSelectField
+     <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
         android:id="@+id/search_habitat_field"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

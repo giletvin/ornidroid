@@ -1,4 +1,4 @@
-package fr.ornidroid.ui.components;
+package fr.ornidroid.ui.multicriteriasearch;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -16,8 +16,8 @@ import fr.ornidroid.R;
  */
 public class MultiCriteriaSelectField extends LinearLayout {
 
-	/** The data adapter. */
-	private ArrayAdapter<String> dataAdapter;
+	/** The field type. */
+	private MultiCriteriaSearchFieldType fieldType;
 
 	/** The spinner. */
 	private final Spinner spinner;
@@ -75,6 +75,15 @@ public class MultiCriteriaSelectField extends LinearLayout {
 	}
 
 	/**
+	 * Gets the field type.
+	 * 
+	 * @return the field type
+	 */
+	public MultiCriteriaSearchFieldType getFieldType() {
+		return this.fieldType;
+	}
+
+	/**
 	 * Gets the spinner.
 	 * 
 	 * @return the spinner
@@ -90,10 +99,19 @@ public class MultiCriteriaSelectField extends LinearLayout {
 	 *            the new data adapter
 	 */
 	public void setDataAdapter(final ArrayAdapter<String> dataAdapter) {
-		this.dataAdapter = dataAdapter;
 		dataAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		this.spinner.setAdapter(dataAdapter);
+	}
+
+	/**
+	 * Sets the field type.
+	 * 
+	 * @param fieldType
+	 *            the new field type
+	 */
+	public void setFieldType(final MultiCriteriaSearchFieldType fieldType) {
+		this.fieldType = fieldType;
 	}
 
 }

@@ -6,11 +6,23 @@ package fr.ornidroid.bo;
  */
 public class MultiCriteriaSearchFormBean {
 
+	/** The beak form id. */
+	private Integer beakFormId;
+
 	/** The category id. */
 	private Integer categoryId;
 
 	/** The habitat id. */
 	private Integer habitatId;
+
+	/**
+	 * Gets the beak form id.
+	 * 
+	 * @return the beak form id
+	 */
+	public Integer getBeakFormId() {
+		return this.beakFormId != null ? this.beakFormId : 0;
+	}
 
 	/**
 	 * Gets the category id.
@@ -28,6 +40,17 @@ public class MultiCriteriaSearchFormBean {
 	 */
 	public Integer getHabitatId() {
 		return this.habitatId != null ? this.habitatId : 0;
+	}
+
+	/**
+	 * Sets the beak form id.
+	 * 
+	 * @param pBeakFormId
+	 *            the new beak form id
+	 */
+	public void setBeakFormId(final Integer pBeakFormId) {
+		this.beakFormId = pBeakFormId;
+
 	}
 
 	/**

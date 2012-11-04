@@ -97,6 +97,16 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see fr.ornidroid.data.IOrnidroidDAO#getBeakForms()
+	 */
+	public Cursor getBeakForms() {
+		return getCursorFromListTable(BEAK_FORM_TABLE,
+				Constants.getOrnidroidLang());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getBird(java.lang.String)
 	 */
 	public Cursor getBird(final String rowId) {
@@ -299,13 +309,18 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		final StringBuffer whereClauses = new StringBuffer();
 		whereClauses.append(WHERE).append("1=1");
 		if (formBean.getCategoryId() != 0) {
-			whereClauses.append(" AND bird.category_fk = "
-					+ formBean.getCategoryId());
+			whereClauses.append(" AND bird.category_fk = ").append(
+					formBean.getCategoryId());
 		}
 		if (formBean.getHabitatId() != 0) {
-			whereClauses.append(" AND (bird.habitat1_fk = "
-					+ formBean.getHabitatId() + " OR bird.habitat2_fk = "
-					+ formBean.getHabitatId() + ")");
+			whereClauses.append(" AND (bird.habitat1_fk = ")
+					.append(formBean.getHabitatId())
+					.append(" OR bird.habitat2_fk = ")
+					.append(formBean.getHabitatId()).append(")");
+		}
+		if (formBean.getBeakFormId() != 0) {
+			whereClauses.append(" AND bird.beak_form_fk = ").append(
+					formBean.getBeakFormId());
 		}
 		return whereClauses.toString();
 	}

@@ -24,6 +24,22 @@ public interface IOrnidroidService {
 	void createDbIfNecessary() throws OrnidroidException;
 
 	/**
+	 * Gets the beak form id.
+	 * 
+	 * @param string
+	 *            the string
+	 * @return the beak form id
+	 */
+	Integer getBeakFormId(String string);
+
+	/**
+	 * Gets the beak forms.
+	 * 
+	 * @return the beak forms
+	 */
+	List<String> getBeakForms();
+
+	/**
 	 * Gets the bird id in history.
 	 * 
 	 * @param position

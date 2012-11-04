@@ -11,6 +11,7 @@ create table bird(
 	category_fk,
 	habitat1_fk,
 	habitat2_fk,
+	beak_form_fk,
 	PRIMARY KEY(id)
 );
 
@@ -34,13 +35,17 @@ create table scientific_family(
 create table category(
 	id integer,
 	name,
-	lang,
-	PRIMARY KEY(id)
+	lang
 );
 
 create table habitat(
 	id integer,
 	name,
-	lang,
-	PRIMARY KEY(id)
+	lang
+);
+
+create table beak_form(
+		id integer,
+		name,
+		lang
 );

@@ -146,9 +146,9 @@ function normalizeString($string){
 
 /*
 * Genere la commande insert dans la table bird
-* insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk) values (1,'morus bassanus','morus_bassanus',1,1);
+* insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk,beak_form_fk) values (1,'morus bassanus','morus_bassanus',1,1,1,1);
 */
-function genereInsertTableBird($array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$id,$csvLine){
+function genereInsertTableBird($array_beak_form,$array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$id,$csvLine){
 
         $directory_name = nettoie_nom($csvLine[0]);
 	$scientific_name = $csvLine[2];
@@ -161,7 +161,11 @@ function genereInsertTableBird($array_habitat,$array_category,$array_scientific_
 	//id = index dans le tableau +1 car les id commencent à 1 et pas 0
 	$category_fk=array_search($csvLine[6],$array_category)+1;
 
-	$sqlQuery = "insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk) values (".$id.",'".$scientific_name."','".$directory_name."',".$ordre.",".$famille.",".$category_fk.");\n";
+	//retrouver dans la map des forms de bec l'id qui lui a été accordé dans la table des beak_form
+	//id = index dans le tableau +1 car les id commencent à 1 et pas 0
+	$beak_form_fk=array_search($csvLine[8],$array_beak_form)+1;
+
+	$sqlQuery = "insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk, beak_form_fk) values (".$id.",'".$scientific_name."','".$directory_name."',".$ordre.",".$famille.",".$category_fk.",".$beak_form_fk.");\n";
 
 	//meme chose avec les habitats
 	$habitat1_fk='';
@@ -273,6 +277,26 @@ function genereInsertTableHabitat(&$array_habitat,$csvLine){
 	}
 }
 /*
+* Genere la commande insert dans la table des formes de bec
+* //INSERT INTO beak_form(id,name,lang) VALUES(1,'crochu','fr');
+* //9e colonne->index 8
+*/
+function genereInsertTableBeakForm(&$array_beak_form,$csvLine){
+	$beak_form=$csvLine[8];
+	if ($beak_form!=''){
+
+		$sqlquery="";
+		if (!in_array($beak_form,$array_beak_form)){
+			$id=array_push($array_beak_form,$beak_form);
+			$sqlquery .= "INSERT INTO beak_form(id,name,lang) VALUES(".$id.",\"".$beak_form."\",'fr');\n";
+		}
+		return $sqlquery;
+	}
+	else{
+		return "";
+	}
+}
+/*
 * MAIN
 */
 
@@ -286,21 +310,24 @@ $handlerTableScientificOrderAndFamily = fopen('insert_data_table_scientific_orde
 
 $handlerTableCategory = fopen('insert_data_table_category.sql', 'w');
 $handlerTableHabitat = fopen('insert_data_table_habitat.sql', 'w');
+$handlerTableBeakForm = fopen('insert_data_table_beak_form.sql', 'w');
 
 $array_scientific_orders = array();
 $array_scientific_family = array();
 $array_category = array();
 $array_habitat = array();
+$array_beak_form = array();
 
 $idBird=0;
 if (($handle = fopen("oiseaux_europe_avibase_ss_rares.csv", "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
 	if ($idBird>0) {
 		if (count($data)==21){
+			$insertTableBeakForm=genereInsertTableBeakForm($array_beak_form,$data);
 			$insertTableHabitat=genereInsertTableHabitat($array_habitat,$data);
 			$insertTableCategory=genereInsertTableCategory($array_category,$data);
 			$insertTableScientificOrderAndFamily=genereInsertTableScientificOrderAndFamily($array_scientific_orders,$array_scientific_family,$data);
-			$insertTableBird=genereInsertTableBird($array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$idBird,$data);
+			$insertTableBird=genereInsertTableBird($array_beak_form,$array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$idBird,$data);
 			$insertTableTaxonomy=genereInsertTableTaxonomy($idBird,$data);
 			$insertTableDescription=genereInsertTableDescription($idBird,$data);
 			fwrite($handlerTableBird, $insertTableBird);
@@ -309,6 +336,7 @@ if (($handle = fopen("oiseaux_europe_avibase_ss_rares.csv", "r")) !== FALSE) {
 			fwrite($handlerTableScientificOrderAndFamily, $insertTableScientificOrderAndFamily);
 			fwrite($handlerTableCategory, $insertTableCategory);
 			fwrite($handlerTableHabitat, $insertTableHabitat);
+			fwrite($handlerTableBeakForm, $insertTableBeakForm);
 		}
 		else {
 			echo "erreur sur la ligne : ".$idBird. " ". print_r($data);
@@ -323,6 +351,8 @@ fclose($handlerTableTaxonomy);
 fclose($handlerTableDescription);
 fclose($handlerTableScientificOrderAndFamily);
 fclose($handlerTableCategory);
+fclose($handlerTableHabitat);
+fclose($handlerTableBeakForm);
 
 
 ?>

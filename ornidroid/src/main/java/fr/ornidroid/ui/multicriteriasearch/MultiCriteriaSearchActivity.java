@@ -51,6 +51,12 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 								.getHabitatId(parent.getItemAtPosition(pos)
 										.toString()));
 				break;
+			case BEAK_FORM:
+				MultiCriteriaSearchActivity.this.formBean
+						.setBeakFormId(MultiCriteriaSearchActivity.this.ornidroidService
+								.getBeakFormId(parent.getItemAtPosition(pos)
+										.toString()));
+				break;
 			default:
 				break;
 			}
@@ -68,7 +74,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		 * (android .widget.AdapterView)
 		 */
 		public void onNothingSelected(final AdapterView<?> arg0) {
-			// TODO Auto-generated method stub
+			// not implemented
 		}
 	}
 
@@ -126,6 +132,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
 		initSelectField(MultiCriteriaSearchFieldType.HABITAT);
+		initSelectField(MultiCriteriaSearchFieldType.BEAK_FORM);
 
 	}
 
@@ -174,6 +181,14 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 					android.R.layout.simple_spinner_item,
 					this.ornidroidService.getHabitats());
 			break;
+		case BEAK_FORM:
+			field = (MultiCriteriaSelectField) findViewById(R.id.search_beak_form_field);
+
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getBeakForms());
+			break;
+
 		}
 		field.setFieldType(selectFieldType);
 		dataAdapter

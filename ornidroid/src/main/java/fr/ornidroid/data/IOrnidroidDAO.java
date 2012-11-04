@@ -8,6 +8,9 @@ import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
  * The Interface IOrnidroidDAO.
  */
 public interface IOrnidroidDAO {
+
+	/** The Constant BEAK_FORM_TABLE. */
+	public static final String BEAK_FORM_TABLE = "beak_form";
 	/** The Constant BIRD_TABLE. */
 	public static final String BIRD_TABLE = "bird";
 	/** The Constant DESCRIPTION_COLUMN. */
@@ -40,6 +43,13 @@ public interface IOrnidroidDAO {
 
 	/** The Constant TAXON. */
 	public static final String TAXON = "taxon";
+
+	/**
+	 * Gets the beak forms.
+	 * 
+	 * @return the beak forms
+	 */
+	Cursor getBeakForms();
 
 	/**
 	 * Returns a Cursor positioned at the bird specified by rowId.

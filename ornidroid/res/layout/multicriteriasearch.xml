@@ -13,21 +13,26 @@
         android:orientation="vertical"
         android:paddingBottom="20sp"
         custom:spinnerPrompt="@string/search_category_choose"
-        custom:text="@string/search_category"
-        />
-     <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+        custom:text="@string/search_category" />
+
+    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
         android:id="@+id/search_habitat_field"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="20sp"
         custom:spinnerPrompt="@string/search_habitat_choose"
-        custom:text="@string/search_habitat"
- 
-        />
+        custom:text="@string/search_habitat" />
 
-    
-   
+    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+        android:id="@+id/search_beak_form_field"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="20sp"
+        custom:spinnerPrompt="@string/search_beak_form_choose"
+        custom:text="@string/search_beak_form" />
+
     <TextView
         android:id="@+id/search_count_results"
         android:layout_width="fill_parent"

@@ -46,11 +46,17 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	/** The activity. */
 	private final Activity activity;
 
+	/** The beak forms list. */
+	private ArrayList<String> beakFormsList;
+
+	/** The beak forms maps. */
+	private Map<String, Integer> beakFormsMaps;
 	/** The categories list. */
 	private List<String> categoriesList;
 
 	/** The categories map. */
 	private Map<String, Integer> categoriesMap;
+
 	/** The current bird. */
 	private Bird currentBird;
 
@@ -86,6 +92,33 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 */
 	public void createDbIfNecessary() throws OrnidroidException {
 		this.dataBaseOpenHelper.createDbIfNecessary();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getBeakFormId(java.lang.String)
+	 */
+	public Integer getBeakFormId(final String beakFormName) {
+		return this.beakFormsMaps != null ? this.beakFormsMaps
+				.get(beakFormName) : 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidService#getBeakForms()
+	 */
+	public List<String> getBeakForms() {
+		if (this.beakFormsMaps == null) {
+			final Cursor cursorQueryHabitats = this.ornidroidDAO.getBeakForms();
+			this.beakFormsMaps = loadSelectFieldsFromCursor(cursorQueryHabitats);
+			this.beakFormsList = new ArrayList<String>(
+					this.beakFormsMaps.keySet());
+			Collections.sort(this.beakFormsList);
+		}
+		return this.beakFormsList;
 	}
 
 	/*

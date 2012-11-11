@@ -47,7 +47,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	private final Activity activity;
 
 	/** The beak forms list. */
-	private ArrayList<String> beakFormsList;
+	private List<String> beakFormsList;
 
 	/** The beak forms maps. */
 	private Map<String, Integer> beakFormsMaps;
@@ -112,10 +112,12 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 */
 	public List<String> getBeakForms() {
 		if (this.beakFormsMaps == null) {
+			// Find the names of the beak forms in the selected language
 			final Cursor cursorQueryHabitats = this.ornidroidDAO.getBeakForms();
 			this.beakFormsMaps = loadSelectFieldsFromCursor(cursorQueryHabitats);
 			this.beakFormsList = new ArrayList<String>(
 					this.beakFormsMaps.keySet());
+			// sort the list in alphabetical order
 			Collections.sort(this.beakFormsList);
 		}
 		return this.beakFormsList;

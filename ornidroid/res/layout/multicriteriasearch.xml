@@ -40,7 +40,7 @@
         android:paddingBottom="20sp"
         android:paddingTop="20sp"
         android:text="@string/search_count_results"
-        android:textSize="20sp" />
+        />
 
     <!-- centered layout -->
 

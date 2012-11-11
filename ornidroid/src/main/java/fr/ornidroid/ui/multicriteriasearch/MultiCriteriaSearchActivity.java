@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,69 +22,14 @@ import fr.ornidroid.ui.MainActivity;
 public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		implements OnClickListener {
 
-	/**
-	 * This inner class handles the clicks on the spinners items.
-	 */
-	public class OnSpinnersItemSelected implements OnItemSelectedListener {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(
-		 * android.widget.AdapterView, android.view.View, int, long)
-		 */
-		public void onItemSelected(final AdapterView<?> parent,
-				final View view, final int pos, final long id) {
-			final MultiCriteriaSearchFieldType selectType = getSelectType(parent);
-			switch (selectType) {
-			case CATEGORY:
-				MultiCriteriaSearchActivity.this.formBean
-						.setCategoryId(MultiCriteriaSearchActivity.this.ornidroidService
-								.getCategoryId(parent.getItemAtPosition(pos)
-										.toString()));
-				break;
-			case HABITAT:
-				MultiCriteriaSearchActivity.this.formBean
-						.setHabitatId(MultiCriteriaSearchActivity.this.ornidroidService
-								.getHabitatId(parent.getItemAtPosition(pos)
-										.toString()));
-				break;
-			case BEAK_FORM:
-				MultiCriteriaSearchActivity.this.formBean
-						.setBeakFormId(MultiCriteriaSearchActivity.this.ornidroidService
-								.getBeakFormId(parent.getItemAtPosition(pos)
-										.toString()));
-				break;
-			default:
-				break;
-			}
-
-			updateSearchCountResults(MultiCriteriaSearchActivity.this.ornidroidService
-					.getMultiSearchCriteriaCountResults(MultiCriteriaSearchActivity.this.formBean));
-
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected
-		 * (android .widget.AdapterView)
-		 */
-		public void onNothingSelected(final AdapterView<?> arg0) {
-			// not implemented
-		}
-	}
-
 	/** The form bean. */
 	private final MultiCriteriaSearchFormBean formBean;
 
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
+
 	/** The search count results. */
 	private TextView searchCountResults;
-
 	/** The search show results button. */
 	private Button searchShowResultsButton;
 
@@ -97,6 +41,24 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		Constants.initializeConstants(this);
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 		this.formBean = new MultiCriteriaSearchFormBean();
+	}
+
+	/**
+	 * Gets the form bean.
+	 * 
+	 * @return the form bean
+	 */
+	public MultiCriteriaSearchFormBean getFormBean() {
+		return this.formBean;
+	}
+
+	/**
+	 * Gets the ornidroid service.
+	 * 
+	 * @return the ornidroid service
+	 */
+	public IOrnidroidService getOrnidroidService() {
+		return this.ornidroidService;
 	}
 
 	/*
@@ -137,13 +99,13 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	}
 
 	/**
-	 * Gets the select type.
+	 * Returns the type of the field to which the adapter view belongs.
 	 * 
 	 * @param parent
 	 *            the parent
 	 * @return the select type
 	 */
-	private MultiCriteriaSearchFieldType getSelectType(
+	protected MultiCriteriaSearchFieldType getSelectType(
 			final AdapterView<?> parent) {
 		if (MultiCriteriaSelectField.class.isInstance(parent.getParent())) {
 			final MultiCriteriaSelectField field = (MultiCriteriaSelectField) parent
@@ -151,8 +113,19 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			return field.getFieldType();
 
 		}
-
 		return null;
+	}
+
+	/**
+	 * Update the search count results textview.
+	 * 
+	 * @param countResults
+	 *            the count results
+	 */
+	protected void updateSearchCountResults(final int countResults) {
+		this.searchCountResults.setText(MultiCriteriaSearchActivity.this
+				.getText(R.string.search_count_results)
+				+ Constants.BLANK_STRING + countResults);
 	}
 
 	/**
@@ -183,9 +156,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			break;
 		case BEAK_FORM:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_beak_form_field);
-
-			dataAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_spinner_item,
+			dataAdapter = new MyCustomAdapter(this, R.layout.row_spinner_icons,
 					this.ornidroidService.getBeakForms());
 			break;
 
@@ -195,19 +166,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		field.getSpinner().setAdapter(dataAdapter);
 		field.getSpinner().setOnItemSelectedListener(
-				new OnSpinnersItemSelected());
+				new OnSpinnersItemSelected(this));
 
-	}
-
-	/**
-	 * Update the search count results textview.
-	 * 
-	 * @param countResults
-	 *            the count results
-	 */
-	private void updateSearchCountResults(final int countResults) {
-		this.searchCountResults.setText(MultiCriteriaSearchActivity.this
-				.getText(R.string.search_count_results)
-				+ Constants.BLANK_STRING + countResults);
 	}
 }

@@ -3,5 +3,7 @@
     <declare-styleable name="MultiCriteriaSelectField">
         <attr name="text" format="string"/>
         <attr name="spinnerPrompt" format="string"/>
+        <attr name="textBackground" format="boolean"/>
+        <attr name="expand" format="boolean"/>
     </declare-styleable>
 </resources>

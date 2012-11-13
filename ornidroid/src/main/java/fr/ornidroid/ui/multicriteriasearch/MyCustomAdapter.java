@@ -14,7 +14,7 @@ import fr.ornidroid.R;
  * The Class MyCustomAdapter. This class allows to print icons and text in a
  * spinner
  * 
- * @see http
+ * @see http 
  *      ://android-er.blogspot.fr/2010/12/custom-arrayadapter-for-spinner-with
  *      .html
  */
@@ -67,8 +67,8 @@ public class MyCustomAdapter extends ArrayAdapter<String> {
 				.getBeakFormId(this.itemsList.get(position));
 
 		// TODO : dedicated to beak forms. Could be generalized to other icons
-		final int idRes = BeakFormsHelper.getDrawable(this.activity,
-				BeakFormsHelper.getIconResourceNameFromBeakFormId(beakFormId));
+		final int idRes = BeakFormsHelper
+				.getIconResourceIdFromBeakFormId(beakFormId);
 		icon.setImageResource(idRes);
 		return row;
 	}

@@ -13,7 +13,8 @@
         android:orientation="vertical"
         android:paddingBottom="20sp"
         custom:spinnerPrompt="@string/search_category_choose"
-        custom:text="@string/search_category" />
+        custom:text="@string/search_category"
+        />
 
     <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
         android:id="@+id/search_habitat_field"

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -39,6 +38,9 @@ public class MultiCriteriaSelectField extends LinearLayout {
 
 		this.textView = new TextView(context);
 		this.spinner = new Spinner(context);
+		this.spinner.setVisibility(View.GONE);
+		this.spinner.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.WRAP_CONTENT));
 		this.addView(this.textView);
 		this.addView(this.spinner);
 		this.textView.setOnClickListener(new OnClickListener() {
@@ -68,6 +70,20 @@ public class MultiCriteriaSelectField extends LinearLayout {
 				this.spinner.setPrompt(spinnerPrompt);
 				break;
 
+			case R.styleable.MultiCriteriaSelectField_textBackground:
+				final boolean textBackground = a.getBoolean(attr, false);
+				if (textBackground) {
+					this.textView
+							.setBackgroundResource(R.color.mcs_text_background);
+				}
+				break;
+			case R.styleable.MultiCriteriaSelectField_expand:
+				final boolean expand = a.getBoolean(attr, false);
+				if (expand) {
+					this.spinner.setVisibility(View.VISIBLE);
+				}
+				break;
+
 			}
 		}
 		a.recycle();
@@ -90,18 +106,6 @@ public class MultiCriteriaSelectField extends LinearLayout {
 	 */
 	public Spinner getSpinner() {
 		return this.spinner;
-	}
-
-	/**
-	 * Sets the data adapter.
-	 * 
-	 * @param dataAdapter
-	 *            the new data adapter
-	 */
-	public void setDataAdapter(final ArrayAdapter<String> dataAdapter) {
-		dataAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		this.spinner.setAdapter(dataAdapter);
 	}
 
 	/**

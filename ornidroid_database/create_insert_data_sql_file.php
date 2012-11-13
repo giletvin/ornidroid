@@ -299,17 +299,19 @@ $array_category = array();
 $array_habitat = array();
 $array_beak_form = array();
 
-/*INSERT INTO beak_form(id,name,lang) VALUES(1,"fin long",'fr');
-INSERT INTO beak_form(id,name,lang) VALUES(2,"épais",'fr');
-INSERT INTO beak_form(id,name,lang) VALUES(3,"autre",'fr');
-INSERT INTO beak_form(id,name,lang) VALUES(4,"courbé",'fr');
-INSERT INTO beak_form(id,name,lang) VALUES(5,"grèbe",'fr');
-INSERT INTO beak_form(id,name,lang) VALUES(6,"crochu",'fr');
-INSERT INTO beak_form(id,name,lang) VALUES(7,"fin court",'fr');
-INSERT INTO beak_form(id,name,lang) VALUES(8,"canard",'fr');
-INSERT INTO beak_form(id,name,lang) VALUES(9,"mouette",'fr');
+/*
+INSERT INTO beak_form(id,name,lang)
+		// VALUES(1,"autres becs droits",'fr');
+		// INSERT INTO beak_form(id,name,lang) VALUES(2,"épais et court",'fr');
+		// INSERT INTO beak_form(id,name,lang) VALUES(3,"autre",'fr');
+		// INSERT INTO beak_form(id,name,lang) VALUES(4,"courbé",'fr');
+		// INSERT INTO beak_form(id,name,lang) VALUES(5,"droit et long",'fr');
+		// INSERT INTO beak_form(id,name,lang) VALUES(6,"crochu",'fr');
+		// INSERT INTO beak_form(id,name,lang) VALUES(7,"fin et court",'fr');
+		// INSERT INTO beak_form(id,name,lang) VALUES(8,"canard",'fr');
+		// INSERT INTO beak_form(id,name,lang) VALUES(9,"mouette",'fr');
 */
-$array_beak_form= array('fin long', 'épais', 'autre', "courbé", "grèbe", "crochu", "fin court", "canard", "mouette");
+$array_beak_form= array('autres becs droits', 'épais et court', 'autre', "courbé", "droit et long", "crochu", "fin et court", "canard", "mouette");
 
 $idBird=0;
 if (($handle = fopen("oiseaux_europe_avibase_ss_rares.csv", "r")) !== FALSE) {

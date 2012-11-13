@@ -29,7 +29,11 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
  */
 public class MainActivity extends AbstractOrnidroidActivity {
 
+	/** The Constant USER_QUERY. */
 	private static final String USER_QUERY = "user_query";
+
+	/** The clicked position in the list. */
+	private int clickedPositionInTheList = 0;
 
 	/** The m list view. */
 	private ListView mListView;
@@ -59,6 +63,7 @@ public class MainActivity extends AbstractOrnidroidActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		this.mListView = (ListView) findViewById(R.id.list);
+
 		setTitle(R.string.app_name);
 		final Intent intent = getIntent();
 		initAutoCompleteField(intent);
@@ -76,10 +81,11 @@ public class MainActivity extends AbstractOrnidroidActivity {
 		if (this.ornidroidService.hasHistory()) {
 			this.mListView.setAdapter(this.ornidroidService
 					.getHistoricResultsAdapter());
-
+			this.mListView.setSelection(this.clickedPositionInTheList);
 			this.mListView.setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(final AdapterView<?> parent,
 						final View view, final int position, final long id) {
+					MainActivity.this.clickedPositionInTheList = position;
 					startActivity(buildIntentBirdInfoActivity(String
 							.valueOf(MainActivity.this.ornidroidService
 									.getBirdIdInHistory(position))));

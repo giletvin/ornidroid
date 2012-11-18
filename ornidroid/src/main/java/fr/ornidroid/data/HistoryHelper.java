@@ -21,7 +21,13 @@ import fr.ornidroid.ui.components.OrnidroidViewBinder;
  * when the back button is clicked.
  */
 public class HistoryHelper {
+
+	/** The bird factory. */
 	private final BirdFactoryImpl birdFactory;
+
+	/** The current cursor. */
+	private Cursor currentCursor;
+
 	/**
 	 * mapping in the adapter results between the from columns in SQL and the
 	 * "to" fields in the displayed results.
@@ -62,7 +68,12 @@ public class HistoryHelper {
 	 *            the cursor
 	 */
 	public void setHistory(final Cursor cursor) {
+		if (null != this.currentCursor) {
+			// issue #35 : close the previous cursor
+			this.currentCursor.close();
+		}
 		if (null != cursor) {
+			this.currentCursor = cursor;
 
 			this.resultsBirdIds = new ArrayList<Integer>();
 			final List<Map<String, SimpleBird>> data = new ArrayList<Map<String, SimpleBird>>();

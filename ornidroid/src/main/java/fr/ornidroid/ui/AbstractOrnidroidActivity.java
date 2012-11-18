@@ -40,6 +40,9 @@ public abstract class AbstractOrnidroidActivity extends Activity {
 		case R.id.about:
 			startActivity(new Intent(this, AboutActivity.class));
 			return (true);
+		case R.id.home:
+			startActivity(new Intent(this, HomeActivity.class));
+			return (true);
 		default:
 			return super.onOptionsItemSelected(item);
 		}

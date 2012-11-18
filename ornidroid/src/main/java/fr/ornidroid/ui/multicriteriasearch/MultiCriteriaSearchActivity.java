@@ -73,7 +73,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 
 			final Intent intent = new Intent(getApplicationContext(),
 					MainActivity.class);
-
+			intent.putExtra(MainActivity.SHOW_SEARCH_FIELD_INTENT_PRM, false);
 			startActivity(intent);
 		}
 	}

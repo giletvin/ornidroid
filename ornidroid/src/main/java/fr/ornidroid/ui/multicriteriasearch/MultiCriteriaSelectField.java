@@ -3,7 +3,9 @@ package fr.ornidroid.ui.multicriteriasearch;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,6 +19,9 @@ public class MultiCriteriaSelectField extends LinearLayout {
 
 	/** The field type. */
 	private MultiCriteriaSearchFieldType fieldType;
+
+	/** The icon. */
+	private final ImageView icon;
 
 	/** The spinner. */
 	private final Spinner spinner;
@@ -37,23 +42,33 @@ public class MultiCriteriaSelectField extends LinearLayout {
 		super(context, attrs);
 
 		this.textView = new TextView(context);
+		this.icon = new ImageView(context);
+		final LinearLayout layoutTextIcon = initTextIconLayout(context);
+
 		this.spinner = new Spinner(context);
 		this.spinner.setVisibility(View.GONE);
 		this.spinner.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT));
-		this.addView(this.textView);
+		this.addView(layoutTextIcon);
 		this.addView(this.spinner);
-		this.textView.setOnClickListener(new OnClickListener() {
+
+		// add click behaviour on the text and icon
+		layoutTextIcon.setOnClickListener(new OnClickListener() {
 			public void onClick(final View v) {
 				if (MultiCriteriaSelectField.this.spinner.getVisibility() == View.VISIBLE) {
 					MultiCriteriaSelectField.this.spinner
 							.setVisibility(View.GONE);
+					MultiCriteriaSelectField.this.icon
+							.setImageResource(R.drawable.ic_down);
 				} else {
 					MultiCriteriaSelectField.this.spinner
 							.setVisibility(View.VISIBLE);
+					MultiCriteriaSelectField.this.icon
+							.setImageResource(R.drawable.ic_up);
 				}
 			}
 		});
+
 		final TypedArray a = context.obtainStyledAttributes(attrs,
 				R.styleable.MultiCriteriaSelectField);
 
@@ -116,6 +131,46 @@ public class MultiCriteriaSelectField extends LinearLayout {
 	 */
 	public void setFieldType(final MultiCriteriaSearchFieldType fieldType) {
 		this.fieldType = fieldType;
+	}
+
+	/**
+	 * Inits the icon Laoyout.
+	 * 
+	 * @param context
+	 *            the context
+	 * @return the linear layout
+	 */
+	private LinearLayout initIconLayout(final Context context) {
+		final LinearLayout layoutIcon = new LinearLayout(context);
+		final LayoutParams paramsLayoutIcon = new LinearLayout.LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		paramsLayoutIcon.gravity = Gravity.RIGHT;
+		layoutIcon.setLayoutParams(paramsLayoutIcon);
+
+		this.icon.setImageResource(R.drawable.ic_down);
+		layoutIcon.addView(this.icon);
+		return layoutIcon;
+	}
+
+	/**
+	 * Inits the text icon layout.
+	 * 
+	 * @param context
+	 *            the context
+	 * @return the linear layout
+	 */
+	private LinearLayout initTextIconLayout(final Context context) {
+		final LinearLayout layoutTextIcon = new LinearLayout(context);
+		final LayoutParams paramsLayoutTextIcon = new LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		paramsLayoutTextIcon.gravity = Gravity.CENTER_HORIZONTAL;
+		layoutTextIcon.setLayoutParams(paramsLayoutTextIcon);
+
+		final LinearLayout layoutIcon = initIconLayout(context);
+
+		layoutTextIcon.addView(this.textView);
+		layoutTextIcon.addView(layoutIcon);
+		return layoutTextIcon;
 	}
 
 }

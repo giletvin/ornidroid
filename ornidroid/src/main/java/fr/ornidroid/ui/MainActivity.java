@@ -186,10 +186,12 @@ public class MainActivity extends AbstractOrnidroidActivity {
 				.setOnEditorActionListener(new OnEditorActionListener() {
 					public boolean onEditorAction(final TextView v,
 							final int actionId, final KeyEvent event) {
-						final Intent intent = new Intent(
-								getApplicationContext(), MainActivity.class);
-						intent.putExtra(USER_QUERY, v.getText());
-						startActivity(intent);
+						// #39 : just refresh the list instead of starting the
+						// activity
+						MainActivity.this.mListView
+								.setAdapter(MainActivity.this.ornidroidService
+										.getHistoricResultsAdapter());
+						MainActivity.this.searchField.dismissDropDown();
 						return true;
 					}
 

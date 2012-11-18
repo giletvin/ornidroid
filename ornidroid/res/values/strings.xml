@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- /* ** Copyright 2010, The Android Open Source Project ** ** Licensed 
+<!--
+     /* ** Copyright 2010, The Android Open Source Project ** ** Licensed 
 	under the Apache License, Version 2.0 (the "License"); ** you may not use 
 	this file except in compliance with the License. ** You may obtain a copy 
 	of the License at ** ** http://www.apache.org/licenses/LICENSE-2.0 ** ** 
@@ -7,111 +8,85 @@
 	under the License is distributed on an "AS IS" BASIS, ** WITHOUT WARRANTIES 
 	OR CONDITIONS OF ANY KIND, either express or implied. ** See the License 
 	for the specific language governing permissions and ** limitations under 
-	the License. */ -->
+	the License. */
+-->
 <resources>
 
-	<!-- The name of the application. -->
-	<string name="app_name">Ornidroid</string>
+    <!-- The name of the application. -->
+    <string name="app_name">Ornidroid</string>
 
-	<!-- The hint text that appears in the search box. -->
-	<string name="search_hint">Search</string>
+    <!-- The hint text that appears in the search box. -->
+    <string name="search_hint">Search</string>
 
-	<!-- The menu entry that invokes search. -->
-	<string name="menu_search">Search by name</string>
+    <!-- The menu entry that invokes search. -->
+    <string name="menu_search">Search by name</string>
+    <string name="menu_search_multi">Multi-criteria search</string>
+    <string name="menu_about">About</string>
+    <string name="home">Home</string>
+    <string name="ok">OK</string>
 
-	<string name="menu_search_multi">Multi-criteria search</string>
+    <!-- activity titles -->
+    <string name="preferences">Preferences</string>
+    <string name="about">About</string>
+    <string name="sounds">Sounds</string>
+    <string name="bird_info">Bird info</string>
+    <string name="bird_image">Pictures</string>
+    <string name="bird_image_big">Zoomed picture</string>
+    <string name="bird_names">Taxonomy</string>
 
-	<string name="menu_about">About</string>
-	<string name="home">Home</string>
+    <!-- labes used in preferences -->
+    <string name="preferences_home_key">OrnidroidHome</string>
+    <string name="preferences_home_label">Installation directory of the database</string>
+    <string name="preferences_lang_key">OrnidroidSearchLang</string>
+    <string name="preferences_lang_label">Language of the search engine</string>
 
-	<string name="ok">OK</string>
+    <!-- pictures info dialog box -->
+    <string name="dialog_picture_title">Picture info</string>
+    <string name="dialog_picture_description">Description</string>
+    <string name="dialog_picture_author">Author</string>
+    <string name="dialog_picture_source">Source</string>
+    <string name="dialog_picture_licence">Licence</string>
 
-	<!-- activity titles -->
-	<string name="preferences">Preferences</string>
-	<string name="about">About</string>
-	<string name="sounds">Sounds</string>
-	<string name="bird_info">Bird info</string>
-	<string name="bird_image">Pictures</string>
-	<string name="bird_image_big">Zoomed picture</string>
-	<string name="bird_names">Taxonomy</string>
+    <!-- alert dialogs from the home activity -->
+    <string name="dialog_alert_ornidroid_home_not_found">The installation directory of Ornidroid is deleted
+		or corrupt! Please set it in the application preferences.</string>
+    <string name="dialog_alert_ornidroid_database_not_found">Unable to find the ornidroid database in the
+		installation directory.</string>
+    <string name="dialog_alert_download_error">Unable to find the ornidroid database in the
+		installation directory. The download from the website failed.</string>
+    <string name="dialog_alert_database_not_found_online">Unable to find the ornidroid database on the
+		website. Ornidroid can\'t run.</string>
+    <string name="dialog_alert_connection_problem">Connection problem. Please check your access to the
+		Internet.</string>
 
-	<!-- labes used in preferences -->
-	<string name="preferences_home_key">OrnidroidHome</string>
-	<string name="preferences_home_label">Installation directory of the database
-	</string>
-	<string name="preferences_lang_key">OrnidroidSearchLang</string>
-	<string name="preferences_lang_label">Language of the search engine</string>
+    <!-- autres labels -->
+    <string name="scientific_name">Scientific name</string>
+    <string name="description">Description</string>
+    <string name="distribution">Distribution and behaviour</string>
+    <string name="scientific_order">Order</string>
+    <string name="scientific_family">Family</string>
+    <string name="credits">Credits</string>
+    <string name="no_records">No records. Do you want to check if records are
+		available on the website ? (Internet connection is required)</string>
+    <string name="no_pictures">No pictures. Do you want to check if records are
+		available on the website ? (Internet connection is required)</string>
+    <string name="about_ornidroid">Ornidroid.\nLicence Creative Commons BY
+		NC\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.en</string>
+    <string name="download_in_progress">Download in progress ...</string>
+    <string name="download_please_wait">Please wait during download. The screen will
+		automatically refresh.</string>
+    <string name="no_resources_online">Sorry, no files to download on the website.</string>
+    <string name="unknown_error">Sorry, an unexpected error has occurred.</string>
 
+    <!-- strings of the multi search -->
+    <string name="search_category_choose">Choose a category</string>
+    <string name="search_category">Category</string>
+    <string name="search_habitat_choose">Choose a habitat</string>
+    <string name="search_habitat">Habitat</string>
+    <string name="search_beak_form_choose">Choose a beak type</string>
+    <string name="search_beak_form">Beak type</string>
+    <string name="search_count_results">Number of results : </string>
+    <string name="search_show_results">Show results </string>
+    <string name="search_all">All </string>
 
-	<!-- pictures info dialog box -->
-	<string name="dialog_picture_title">Picture info</string>
-	<string name="dialog_picture_description">Description</string>
-	<string name="dialog_picture_author">Author</string>
-	<string name="dialog_picture_source">Source</string>
-	<string name="dialog_picture_licence">Licence</string>
-
-	<!-- alert dialogs from the home activity -->
-	<string name="dialog_alert_ornidroid_home_not_found">The installation directory of Ornidroid is deleted
-		or corrupt! Please set it in the application preferences.
-	</string>
-	<string name="dialog_alert_ornidroid_database_not_found">Unable to find the ornidroid database in the
-		installation directory.
-	</string>
-	<string name="dialog_alert_download_error">Unable to find the ornidroid database in the
-		installation directory. The download from the website failed.
-	</string>
-	<string name="dialog_alert_database_not_found_online">Unable to find the ornidroid database on the
-		website. Ornidroid can\'t run.
-	</string>
-
-	<string name="dialog_alert_connection_problem">Connection problem. Please check your access to the
-		Internet.
-	</string>
-
-	<!-- autres labels -->
-	<string name="scientific_name">Scientific name</string>
-	<string name="description">Description</string>
-	<string name="distribution">Distribution and behaviour</string>
-	<string name="scientific_order">Order</string>
-	<string name="scientific_family">Family</string>
-
-	<string name="credits">Credits</string>
-
-	<string name="no_records">No records. Do you want to check if records are
-		available on the website ? (Internet connection is required)
-	</string>
-	<string name="no_pictures">No pictures. Do you want to check if records are
-		available on the website ? (Internet connection is required)
-	</string>
-	<string name="about_ornidroid">Ornidroid.\nLicence Creative Commons BY
-		NC\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.en
-	</string>
-	<string name="download_in_progress">Download in progress ...</string>
-	<string name="download_please_wait">Please wait during download. The screen will
-		automatically refresh.
-	</string>
-	<string name="no_resources_online">Sorry, no files to download on the website.
-	</string>
-	<string name="unknown_error">Sorry, an unexpected error has occurred.
-	</string>
-	
-	<!-- strings of the multi search  -->
-	<string name="search_category_choose">Choose a category
-	</string>
-	<string name="search_category">Category
-	</string>
-	<string name="search_habitat_choose">Choose a habitat
-	</string>
-	<string name="search_habitat">Habitat
-	</string>
-	<string name="search_beak_form_choose">Choose a beak type
-	</string>
-	<string name="search_beak_form">Beak type
-	</string>
-	<string name="search_count_results">Number of results : 
-	</string>
-	<string name="search_show_results">Show results 
-	</string>
-	<string name="search_all">All 
-	</string>
 </resources>

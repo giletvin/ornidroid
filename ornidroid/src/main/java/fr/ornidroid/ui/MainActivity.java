@@ -29,6 +29,12 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
  */
 public class MainActivity extends AbstractOrnidroidActivity {
 
+	/**
+	 * The Constant SHOW_SEARCH_FIELD_INTENT_PRM to hide or show the search
+	 * field at the top of this screen
+	 */
+	public static final String SHOW_SEARCH_FIELD_INTENT_PRM = "show_search_field";
+
 	/** The Constant USER_QUERY. */
 	private static final String USER_QUERY = "user_query";
 
@@ -118,6 +124,11 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	 */
 	private void initAutoCompleteField(final Intent intent) {
 		this.searchField = (AutoCompleteTextView) findViewById(R.id.home_search_field);
+		final boolean showTextField = intent.getBooleanExtra(
+				SHOW_SEARCH_FIELD_INTENT_PRM, true);
+		if (!showTextField) {
+			this.searchField.setVisibility(View.GONE);
+		}
 
 		// if coming with a query previously typed by the user
 		final CharSequence userQuery = intent.getCharSequenceExtra(USER_QUERY);

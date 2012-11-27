@@ -93,6 +93,7 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * Instantiates a new abstract downloadable media activity.
 	 */
 	public AbstractDownloadableMediaActivity() {
+		super();
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 		this.ornidroidIOService = new OrnidroidIOServiceImpl();
 	}

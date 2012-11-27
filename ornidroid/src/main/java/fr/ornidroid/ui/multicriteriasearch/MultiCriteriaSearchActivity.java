@@ -38,7 +38,6 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	 */
 	public MultiCriteriaSearchActivity() {
 		super();
-		Constants.initializeConstants(this);
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 		this.formBean = new MultiCriteriaSearchFormBean();
 	}

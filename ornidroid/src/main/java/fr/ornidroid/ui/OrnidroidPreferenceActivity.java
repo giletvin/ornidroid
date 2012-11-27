@@ -7,11 +7,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import fr.ornidroid.R;
+import fr.ornidroid.helper.Constants;
 
 /**
  * The Class OrnidroidPreferenceActivity.
  */
 public class OrnidroidPreferenceActivity extends PreferenceActivity {
+
+	/**
+	 * Instantiates a new ornidroid preference activity.
+	 */
+	public OrnidroidPreferenceActivity() {
+		super();
+		Constants.initializeConstants(this);
+	}
 
 	/*
 	 * (non-Javadoc)

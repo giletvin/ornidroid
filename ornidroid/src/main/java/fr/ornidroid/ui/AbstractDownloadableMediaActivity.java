@@ -328,6 +328,17 @@ public abstract class AbstractDownloadableMediaActivity extends
 	}
 
 	/**
+	 * Sets the ornidroid download error code.
+	 * 
+	 * @param ornidroidDownloadErrorCode
+	 *            the new ornidroid download error code
+	 */
+	protected void setOrnidroidDownloadErrorCode(
+			final int ornidroidDownloadErrorCode) {
+		this.ornidroidDownloadErrorCode = ornidroidDownloadErrorCode;
+	}
+
+	/**
 	 * Start download.
 	 */
 	protected void startDownload() {

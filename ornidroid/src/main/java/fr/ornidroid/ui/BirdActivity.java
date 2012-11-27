@@ -68,9 +68,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/** The Constant TAB_HEIGHT. */
 	private static final int TAB_HEIGHT = 50;
 
-	/** The audio control layout. */
-	private LinearLayout audioControlLayout;
-
 	/** The audio helper. */
 	private final AudioHelper audioHelper;
 
@@ -79,12 +76,12 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 	/** The dialog. */
 	private Dialog dialog;
+
 	/** The displayed picture id. */
 	private int displayedPictureId;
 
 	/** The gesture detector. */
 	private GestureDetector gestureDetector;
-
 	/** The info button. */
 	private ImageView infoButton;
 
@@ -115,8 +112,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/** The tab id to display. */
 	private int tabIdToDisplay;
 
-	/** The progress bar. */
-
+	/** The tabs. */
 	private TabHost tabs;
 
 	/** The taxon. */
@@ -175,7 +171,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 			this.audioLayout.setOrientation(LinearLayout.VERTICAL);
 
-			this.audioLayout.addView(createAudioControlView());
+			this.audioLayout.addView(this.audioHelper.createAudioControlView());
 			this.audioLayout.addView(this.mListView);
 			return this.audioLayout;
 
@@ -372,6 +368,16 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	}
 
 	/**
+	 * Sets the play pause button.
+	 * 
+	 * @param playPauseButton
+	 *            the new play pause button
+	 */
+	public void setPlayPauseButton(final ImageView playPauseButton) {
+		this.playPauseButton = playPauseButton;
+	}
+
+	/**
 	 * Sets the view flipper.
 	 * 
 	 * @param viewFlipper
@@ -409,7 +415,12 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 				OrnidroidFileType.getCode(OrnidroidFileType.PICTURE));
 		this.tabs = (TabHost) this.findViewById(R.id.my_tabhost);
 		this.tabs.setup();
+		this.tabs.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+			public void onTabChanged(final String tabId) {
+				BirdActivity.this.setOrnidroidDownloadErrorCode(0);
 
+			}
+		});
 		// pictures tab
 		final TabSpec tspecPicture = this.tabs.newTabSpec(PICTURES_TAB_NAME);
 		tspecPicture.setIndicator(BasicConstants.EMPTY_STRING, getResources()
@@ -508,36 +519,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	protected void onStop() {
 		super.onStop();
 		this.mediaPlayer.release();
-	}
-
-	/**
-	 * Creates the audio control view to display play/pause stop buttons.
-	 * 
-	 * @return the layout which displays play/pause stop buttons
-	 */
-	private View createAudioControlView() {
-		this.audioControlLayout = new LinearLayout(this);
-		this.audioControlLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-		if (this.ornidroidService.getCurrentBird().getNumberOfSounds() > 0) {
-			this.audioControlLayout.setPadding(0, 25, 0, 25);
-			this.audioControlLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-			this.playPauseButton = new ImageView(this);
-			this.playPauseButton.setId(PLAY_PAUSE_BUTTON);
-			this.playPauseButton.setImageResource(R.drawable.ic_sound_play);
-			this.playPauseButton.setOnClickListener(this.audioHelper);
-			this.playPauseButton.setPadding(0, 0, 25, 0);
-			this.audioControlLayout.addView(this.playPauseButton);
-
-			final ImageView stopButton = new ImageView(this);
-			stopButton.setId(STOP_BUTTON);
-			stopButton.setImageResource(R.drawable.ic_sound_stop);
-			stopButton.setOnClickListener(this.audioHelper);
-			this.audioControlLayout.addView(stopButton);
-		} else {
-			printDownloadButtonAndInfo();
-		}
-		return this.audioControlLayout;
 	}
 
 	/**

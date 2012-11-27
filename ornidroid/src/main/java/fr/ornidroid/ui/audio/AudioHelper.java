@@ -2,8 +2,11 @@ package fr.ornidroid.ui.audio;
 
 import java.io.IOException;
 
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.ui.BirdActivity;
@@ -47,6 +50,39 @@ public class AudioHelper implements OnClickListener {
 					R.drawable.ic_sound_pause);
 
 		}
+	}
+
+	/**
+	 * Creates the audio control view to display play/pause stop buttons.
+	 * 
+	 * @return the layout which displays play/pause stop buttons
+	 */
+	public View createAudioControlView() {
+		final LinearLayout audioControlLayout = new LinearLayout(
+				this.birdActivity);
+		audioControlLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+		if (this.birdActivity.getOrnidroidService().getCurrentBird()
+				.getNumberOfSounds() > 0) {
+			audioControlLayout.setPadding(0, 25, 0, 25);
+			audioControlLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+			final ImageView playPauseButton = new ImageView(this.birdActivity);
+			this.birdActivity.setPlayPauseButton(playPauseButton);
+			playPauseButton.setId(BirdActivity.PLAY_PAUSE_BUTTON);
+			playPauseButton.setImageResource(R.drawable.ic_sound_play);
+			playPauseButton.setOnClickListener(this);
+			playPauseButton.setPadding(0, 0, 25, 0);
+			audioControlLayout.addView(playPauseButton);
+
+			final ImageView stopButton = new ImageView(this.birdActivity);
+			stopButton.setId(BirdActivity.STOP_BUTTON);
+			stopButton.setImageResource(R.drawable.ic_sound_stop);
+			stopButton.setOnClickListener(this);
+			audioControlLayout.addView(stopButton);
+		} else {
+			this.birdActivity.printDownloadButtonAndInfo();
+		}
+		return audioControlLayout;
 	}
 
 	/*

@@ -128,6 +128,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	 * Instantiates a new bird detail activity.
 	 */
 	public BirdActivity() {
+		super();
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 		this.audioHelper = new AudioHelper(this);
 		this.pictureHelper = new PictureHelper(this);

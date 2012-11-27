@@ -6,11 +6,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import fr.ornidroid.R;
+import fr.ornidroid.helper.Constants;
 
 /**
  * The Class AbstractOrnidroidActivity. Extending this class enables the menu.
  */
 public abstract class AbstractOrnidroidActivity extends Activity {
+
+	/**
+	 * Instantiates a new abstract ornidroid activity.
+	 */
+	public AbstractOrnidroidActivity() {
+		super();
+		Constants.initializeConstants(this);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

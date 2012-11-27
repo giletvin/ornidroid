@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import fr.ornidroid.R;
 import fr.ornidroid.data.DictionaryProvider;
-import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 
@@ -55,7 +54,6 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	 */
 	public MainActivity() {
 		super();
-		Constants.initializeConstants(this);
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 	}
 

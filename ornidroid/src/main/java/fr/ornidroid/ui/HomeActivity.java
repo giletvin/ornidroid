@@ -50,7 +50,6 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 	 */
 	public HomeActivity() {
 		super();
-		Constants.initializeConstants(this);
 		this.ornidroidIOService = new OrnidroidIOServiceImpl();
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.Bird;
+import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 
@@ -230,6 +231,8 @@ public class FullSizeImageActivity extends Activity {
 	 * Instantiates a new picture activity.
 	 */
 	public FullSizeImageActivity() {
+		super();
+		Constants.initializeConstants(this);
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 	}
 

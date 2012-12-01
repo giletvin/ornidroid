@@ -88,5 +88,6 @@
     <string name="search_count_results">Number of results : </string>
     <string name="search_show_results">Show results </string>
     <string name="search_all">All </string>
+    <string name="reset_form">Reset form</string>
 
 </resources>

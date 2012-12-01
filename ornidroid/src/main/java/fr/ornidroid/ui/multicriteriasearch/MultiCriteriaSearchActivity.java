@@ -1,5 +1,8 @@
 package fr.ornidroid.ui.multicriteriasearch;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
@@ -22,14 +26,21 @@ import fr.ornidroid.ui.MainActivity;
 public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		implements OnClickListener {
 
+	/** The field list. */
+	private final List<MultiCriteriaSelectField> fieldList;
+
 	/** The form bean. */
 	private final MultiCriteriaSearchFormBean formBean;
 
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
 
+	/** The reset form button. */
+	private ImageView resetFormButton;
+
 	/** The search count results. */
 	private TextView searchCountResults;
+
 	/** The search show results button. */
 	private Button searchShowResultsButton;
 
@@ -40,6 +51,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		super();
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 		this.formBean = new MultiCriteriaSearchFormBean();
+		this.fieldList = new ArrayList<MultiCriteriaSelectField>();
 	}
 
 	/**
@@ -75,6 +87,9 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			intent.putExtra(MainActivity.SHOW_SEARCH_FIELD_INTENT_PRM, false);
 			startActivity(intent);
 		}
+		if (v == this.resetFormButton) {
+			resetForm();
+		}
 	}
 
 	/*
@@ -89,6 +104,8 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		setTitle(R.string.menu_search_multi);
 		this.searchShowResultsButton = (Button) findViewById(R.id.search_show_results_button);
 		this.searchShowResultsButton.setOnClickListener(this);
+		this.resetFormButton = (ImageView) findViewById(R.id.reset_form_button);
+		this.resetFormButton.setOnClickListener(this);
 		this.searchCountResults = (TextView) findViewById(R.id.search_count_results);
 
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
@@ -166,6 +183,16 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		field.getSpinner().setAdapter(dataAdapter);
 		field.getSpinner().setOnItemSelectedListener(
 				new OnSpinnersItemSelected(this));
+		this.fieldList.add(field);
 
+	}
+
+	/**
+	 * Reset all the select fields in the form.
+	 */
+	private void resetForm() {
+		for (final MultiCriteriaSelectField field : this.fieldList) {
+			field.reset();
+		}
 	}
 }

@@ -124,6 +124,13 @@ public class MultiCriteriaSelectField extends LinearLayout {
 	}
 
 	/**
+	 * Reset.
+	 */
+	public void reset() {
+		this.spinner.setSelection(0);
+	}
+
+	/**
 	 * Sets the field type.
 	 * 
 	 * @param fieldType

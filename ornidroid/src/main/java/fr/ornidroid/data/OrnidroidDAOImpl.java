@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.ListAdapter;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.helper.Constants;
+import fr.ornidroid.helper.I18nHelper;
 
 /**
  * Contains sql queries to search for birds in the database.
@@ -102,7 +103,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 */
 	public Cursor getBeakForms() {
 		return getCursorFromListTable(BEAK_FORM_TABLE, NAME_COLUMN_NAME,
-				Constants.getOrnidroidLang());
+				I18nHelper.getLang());
 	}
 
 	/*
@@ -199,7 +200,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 */
 	public Cursor getCategories() {
 		return getCursorFromListTable(CATEGORY_TABLE_NAME, NAME_COLUMN_NAME,
-				Constants.getOrnidroidLang());
+				I18nHelper.getLang());
 	}
 
 	/*
@@ -209,7 +210,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 */
 	public Cursor getHabitats() {
 		return getCursorFromListTable(HABITAT_TABLE_NAME, NAME_COLUMN_NAME,
-				Constants.getOrnidroidLang());
+				I18nHelper.getLang());
 
 	}
 
@@ -247,8 +248,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getSizes()
 	 */
 	public Cursor getSizes() {
-		return getCursorFromListTable(SIZE_TABLE, ID,
-				Constants.getOrnidroidLang());
+		return getCursorFromListTable(SIZE_TABLE, ID, I18nHelper.getLang());
 	}
 
 	/*
@@ -296,11 +296,13 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				return null;
 			} else if (!cursor.moveToFirst()) {
 				cursor.close();
-				if (StringUtils.equals(lang, Constants.FR_LANG)) {
+				if (StringUtils.equals(lang, I18nHelper.FRENCH)) {
 					return null;
 				} else {
-					return getCursorFromListTable(tableName, Constants.FR_LANG,
-							orderBy);
+					// if not found in the locale of the user, try the same
+					// search in FRENCH
+					return getCursorFromListTable(tableName, orderBy,
+							I18nHelper.FRENCH);
 				}
 			}
 		} catch (final SQLException e) {
@@ -398,7 +400,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(".bird_fk and ");
 				query.append(DESCRIPTION_TABLE);
 				query.append(".lang=\"");
-				query.append(Constants.getOrnidroidLang());
+				query.append(Constants.getOrnidroidSearchLang());
 				query.append("\"");
 				// join on scientific order table
 				query.append(LEFT_OUTER_JOIN);
@@ -410,7 +412,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(".id and ");
 				query.append(SCIENTIFIC_ORDER_TABLE);
 				query.append(".lang=\"");
-				query.append(Constants.getOrnidroidLang());
+				query.append(Constants.getOrnidroidSearchLang());
 				query.append("\"");
 				// join on scientific family table
 				query.append(LEFT_OUTER_JOIN);
@@ -422,14 +424,14 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(".id and ");
 				query.append(SCIENTIFIC_FAMILY_TABLE);
 				query.append(".lang=\"");
-				query.append(Constants.getOrnidroidLang());
+				query.append(Constants.getOrnidroidSearchLang());
 				query.append("\"");
 
 			}
 			query.append(whereClause);
 			query.append(" and bird.id=taxonomy.bird_fk");
 			query.append(" and taxonomy.lang=\"");
-			query.append(Constants.getOrnidroidLang());
+			query.append(Constants.getOrnidroidSearchLang());
 			query.append("\"");
 			query.append(" order by taxon");
 			// Log.d(Constants.LOG_TAG, "Perform SQL query " +

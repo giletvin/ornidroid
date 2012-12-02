@@ -207,11 +207,12 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 							ornidroidMediaHome, directoryName, fileType);
 				}
 				try {
+					// TODO : getOrnidroidSearchLang ??
 					for (final File file : filesList) {
 						final AbstractOrnidroidFile ornidroidFile = OrnidroidFileFactoryImpl
 								.getFactory().createOrnidroidFile(
 										file.getAbsolutePath(), fileType,
-										Constants.getOrnidroidLang());
+										Constants.getOrnidroidSearchLang());
 						files.add(ornidroidFile);
 					}
 				} catch (final FileNotFoundException e) {

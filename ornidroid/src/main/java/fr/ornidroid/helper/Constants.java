@@ -18,17 +18,14 @@ import fr.ornidroid.bo.OrnidroidFileType;
  */
 public class Constants extends BasicConstants {
 
-	/** The Constant FR_LANG. */
-	public static final String FR_LANG = "fr";
-
 	/** The CONTEXT. */
 	private static Context CONTEXT;
 
-	/** The Constant ORNIDROID_LANG_DEFAULT_VALUE. */
-	private static final String ORNIDROID_LANG_DEFAULT_VALUE = I18nHelper.FRENCH;
-
 	/** The Constant ORNIDROID_PREFERENCES_FILE_NAME. */
 	private static final String ORNIDROID_PREFERENCES_FILE_NAME = "fr.ornidroid_preferences";
+
+	/** The Constant ORNIDROID_SEARCH_LANG_DEFAULT_VALUE. */
+	private static final String ORNIDROID_SEARCH_LANG_DEFAULT_VALUE = I18nHelper.FRENCH;
 
 	/**
 	 * Gets the cONTEXT.
@@ -119,18 +116,19 @@ public class Constants extends BasicConstants {
 	}
 
 	/**
-	 * Gets the ornidroid lang.
+	 * Gets the ornidroid search lang used in the search engine. It is not the
+	 * same as the UI lang!
 	 * 
-	 * @return the ornidroid lang, never null. Default is French.
+	 * @return the ornidroid search lang, never null. Default is French.
 	 */
-	public static final String getOrnidroidLang() {
+	public static final String getOrnidroidSearchLang() {
 		try {
 			return Constants.getOrnidroidPreferences().getString(
 					getStringFromXmlResource(R.string.preferences_lang_key),
-					ORNIDROID_LANG_DEFAULT_VALUE);
+					ORNIDROID_SEARCH_LANG_DEFAULT_VALUE);
 		} catch (final NullPointerException e) {
 			// should not occur. Only for test purposes
-			return ORNIDROID_LANG_DEFAULT_VALUE;
+			return ORNIDROID_SEARCH_LANG_DEFAULT_VALUE;
 		}
 	}
 

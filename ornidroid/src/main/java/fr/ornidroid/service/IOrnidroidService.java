@@ -134,6 +134,22 @@ public interface IOrnidroidService {
 	List<Taxon> getNames(int id);
 
 	/**
+	 * Gets the size id.
+	 * 
+	 * @param sizeName
+	 *            the size name
+	 * @return the size id
+	 */
+	Integer getSizeId(String sizeName);
+
+	/**
+	 * Gets the sizes.
+	 * 
+	 * @return the sizes
+	 */
+	List<String> getSizes();
+
+	/**
 	 * Checks for history.
 	 * 
 	 * @return true, if successful

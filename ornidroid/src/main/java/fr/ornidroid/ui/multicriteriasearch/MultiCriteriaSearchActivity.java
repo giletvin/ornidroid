@@ -109,6 +109,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		this.searchCountResults = (TextView) findViewById(R.id.search_count_results);
 
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
+		initSelectField(MultiCriteriaSearchFieldType.SIZE);
 		initSelectField(MultiCriteriaSearchFieldType.HABITAT);
 		initSelectField(MultiCriteriaSearchFieldType.BEAK_FORM);
 
@@ -163,6 +164,13 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 					this.ornidroidService.getCategories());
 
 			break;
+		case SIZE:
+			field = (MultiCriteriaSelectField) findViewById(R.id.search_size_field);
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getSizes());
+			break;
+
 		case HABITAT:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_habitat_field);
 

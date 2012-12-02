@@ -1,7 +1,6 @@
 package fr.ornidroid.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +25,52 @@ import fr.ornidroid.helper.OrnidroidException;
  * The Class OrnidroidServiceImpl.
  */
 public class OrnidroidServiceImpl implements IOrnidroidService {
+
+	/**
+	 * The Class SelectFieldsValue : dto object to embed the map and the list of
+	 * the select fields. The SQL queries handles the order by clause.
+	 */
+	private class SelectFieldsValue {
+
+		/** The fields values. */
+		private final List<String> fieldsValues;
+
+		/** The map name id. */
+		private final Map<String, Integer> mapNameId;
+
+		/**
+		 * Instantiates a new select fields value.
+		 * 
+		 * @param pMapNameId
+		 *            the map name id
+		 * @param pFieldValues
+		 *            the field values
+		 */
+		public SelectFieldsValue(final Map<String, Integer> pMapNameId,
+				final List<String> pFieldValues) {
+			this.mapNameId = pMapNameId;
+			this.fieldsValues = pFieldValues;
+		}
+
+		/**
+		 * Gets the fields values.
+		 * 
+		 * @return the fields values
+		 */
+		protected List<String> getFieldsValues() {
+			return this.fieldsValues;
+		}
+
+		/**
+		 * Gets the map name id.
+		 * 
+		 * @return the map name id
+		 */
+		protected Map<String, Integer> getMapNameId() {
+			return this.mapNameId;
+		}
+	}
+
 	/** The service instance. */
 	private static IOrnidroidService serviceInstance;
 
@@ -48,9 +93,9 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 
 	/** The beak forms list. */
 	private List<String> beakFormsList;
-
 	/** The beak forms maps. */
 	private Map<String, Integer> beakFormsMaps;
+
 	/** The categories list. */
 	private List<String> categoriesList;
 
@@ -71,6 +116,12 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 
 	/** The ornidroid dao. */
 	private final IOrnidroidDAO ornidroidDAO;
+
+	/** The sizes list. */
+	private List<String> sizesList;
+
+	/** The sizes map. */
+	private Map<String, Integer> sizesMap;
 
 	/**
 	 * Instantiates a new ornidroid service impl.
@@ -114,11 +165,10 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		if (this.beakFormsMaps == null) {
 			// Find the names of the beak forms in the selected language
 			final Cursor cursorQueryHabitats = this.ornidroidDAO.getBeakForms();
-			this.beakFormsMaps = loadSelectFieldsFromCursor(cursorQueryHabitats);
-			this.beakFormsList = new ArrayList<String>(
-					this.beakFormsMaps.keySet());
-			// sort the list in alphabetical order
-			Collections.sort(this.beakFormsList);
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQueryHabitats);
+			this.beakFormsMaps = sfv.getMapNameId();
+			this.beakFormsList = sfv.getFieldsValues();
+
 		}
 		return this.beakFormsList;
 	}
@@ -164,10 +214,10 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		if (this.categoriesMap == null) {
 			final Cursor cursorQueryHabitats = this.ornidroidDAO
 					.getCategories();
-			this.categoriesMap = loadSelectFieldsFromCursor(cursorQueryHabitats);
-			this.categoriesList = new ArrayList<String>(
-					this.categoriesMap.keySet());
-			Collections.sort(this.categoriesList);
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQueryHabitats);
+			this.categoriesMap = sfv.getMapNameId();
+			this.categoriesList = sfv.getFieldsValues();
+
 		}
 		return this.categoriesList;
 	}
@@ -210,9 +260,10 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	public List<String> getHabitats() {
 		if (this.habitatsMap == null) {
 			final Cursor cursorQueryHabitats = this.ornidroidDAO.getHabitats();
-			this.habitatsMap = loadSelectFieldsFromCursor(cursorQueryHabitats);
-			this.habitatsList = new ArrayList<String>(this.habitatsMap.keySet());
-			Collections.sort(this.habitatsList);
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQueryHabitats);
+			this.habitatsMap = sfv.getMapNameId();
+			this.habitatsList = sfv.getFieldsValues();
+
 		}
 		return this.habitatsList;
 	}
@@ -260,6 +311,31 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 			}
 		}
 		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidService#getSizeId(java.lang.String)
+	 */
+	public Integer getSizeId(final String sizeName) {
+		return this.sizesMap != null ? this.sizesMap.get(sizeName) : 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidService#getSizes()
+	 */
+	public List<String> getSizes() {
+		if (this.sizesMap == null) {
+			final Cursor cursorQuerySizes = this.ornidroidDAO.getSizes();
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQuerySizes);
+			this.sizesMap = sfv.getMapNameId();
+			this.sizesList = sfv.getFieldsValues();
+
+		}
+		return this.sizesList;
 	}
 
 	/*
@@ -348,10 +424,12 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 *            and NAME
 	 * @return the map, NAME (String)-> ID (Integer)
 	 */
-	private Map<String, Integer> loadSelectFieldsFromCursor(final Cursor cursor) {
+	private SelectFieldsValue loadSelectFieldsFromCursor(final Cursor cursor) {
 		final Map<String, Integer> mapNameId = new HashMap<String, Integer>();
+		final List<String> fieldsValues = new ArrayList<String>();
 		// init the map and the list with "ALL" with id = 0
 		mapNameId.put(this.activity.getString(R.string.search_all), 0);
+		fieldsValues.add(this.activity.getString(R.string.search_all));
 		if (cursor != null) {
 			final int nbResults = cursor.getCount();
 			for (int i = 0; i < nbResults; i++) {
@@ -362,9 +440,12 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 						.getColumnIndexOrThrow(IOrnidroidDAO.NAME_COLUMN_NAME);
 				mapNameId.put(cursor.getString(nameIndex),
 						cursor.getInt(idIndex));
+				fieldsValues.add(cursor.getString(nameIndex));
 			}
 			cursor.close();
 		}
-		return mapNameId;
+		final SelectFieldsValue sfv = new SelectFieldsValue(mapNameId,
+				fieldsValues);
+		return sfv;
 	}
 }

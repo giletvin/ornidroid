@@ -11,7 +11,7 @@
 	<TextView android:id="@+id/about_ornidroid_version"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:textSize="15sp" 
-		android:padding="25sp" android:text="@string/about_ornidroid" />
+		android:padding="25sp" />
 
 	<TextView android:id="@+id/credits_title"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"

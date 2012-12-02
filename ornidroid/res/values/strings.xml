@@ -70,7 +70,7 @@
 		available on the website ? (Internet connection is required)</string>
     <string name="no_pictures">No pictures. Do you want to check if records are
 		available on the website ? (Internet connection is required)</string>
-    <string name="about_ornidroid">Ornidroid.\nLicence Creative Commons BY
+    <string name="about_ornidroid">Licence Creative Commons BY
 		NC\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.en</string>
     <string name="download_in_progress">Download in progress ...</string>
     <string name="download_please_wait">Please wait during download. The screen will
@@ -88,6 +88,9 @@
     <string name="search_count_results">Number of results : </string>
     <string name="search_show_results">Show results </string>
     <string name="search_all">All </string>
+    <!-- new labels not translated yet -->
     <string name="reset_form">Reset form</string>
+    <string name="search_size_choose">Choose a size</string>
+    <string name="search_size">Size</string>
 
 </resources>

@@ -126,9 +126,9 @@ function removeDiacritics($str) {
 * le répertoire de l'oiseau est le nom francais sans les caractères accentués, sans apostrophe et sans espace, remplacés par des _
 */
 function nettoie_nom($string){
-	return strtolower(str_replace(array (
+	return trim(strtolower(str_replace(array (
 		" ",
-		"'"),array("_","_"),removeDiacritics($string)));
+		"'"),array("_","_"),removeDiacritics($string))));
 
 }
 /*
@@ -143,10 +143,35 @@ function escapeSql($string){
 function normalizeString($string){
 	return ucfirst(strtolower($string));
 }
-
+/*
+Retourne l'id de la catégorie de taille
+INSERT INTO size_table(id,name,lang) VALUES(1,"Comme le moineau ou plus petit",'fr');
+INSERT INTO size_table(id,name,lang) VALUES(2,"Entre le moineau et le merle",'fr');
+INSERT INTO size_table(id,name,lang) VALUES(3,"Entre le merle et le pigeon",'fr');
+INSERT INTO size_table(id,name,lang) VALUES(4,"Entre le pigeon et le canard colvert",'fr');
+INSERT INTO size_table(id,name,lang) VALUES(5,"Plus grand que le canard colvert",'fr');
+Les valeurs sont les tailles du moineau, du merle, du pigeon et du canard colvert.
+*/
+function getSizeFk($sizeIntValue){
+	if ($sizeIntValue<=14){
+		return 1;
+	}
+	if (($sizeIntValue>14)&&($sizeIntValue<=24)){
+		return 2;
+	}
+	if ($sizeIntValue>24&&$sizeIntValue<=32){
+		return 3;
+	}
+	if ($sizeIntValue>32&&$sizeIntValue<=43){
+		return 4;
+	}
+	if ($sizeIntValue>43){
+		return 5;
+	}
+}
 /*
 * Genere la commande insert dans la table bird
-* insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk,beak_form_fk) values (1,'morus bassanus','morus_bassanus',1,1,1,1);
+* insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk,beak_form_fk, size) values (1,'morus bassanus','morus_bassanus',1,1,1,1,115);
 */
 function genereInsertTableBird($array_beak_form,$array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$id,$csvLine){
 
@@ -155,6 +180,8 @@ function genereInsertTableBird($array_beak_form,$array_habitat,$array_category,$
 	$data = explode(": ",$csvLine[4]);
 	//id = index dans le tableau +1 car les id commencent à 1 et pas 0
 	$ordre= array_search(normalizeString($data[0]),$array_scientific_orders)+1;
+	$size_value=intval(trim($csvLine[5]));
+	$size_fk=getSizeFk($size_value);
 	//id = index dans le tableau +1 car les id commencent à 1 et pas 0
 	$famille=array_search($data[1],$array_scientific_family)+1;
 	//retrouver dans la map des categories l'id qui lui a été accordé dans la table des category
@@ -165,7 +192,7 @@ function genereInsertTableBird($array_beak_form,$array_habitat,$array_category,$
 	//id = index dans le tableau +1 car les id commencent à 1 et pas 0
 	$beak_form_fk=array_search($csvLine[8],$array_beak_form)+1;
 
-	$sqlQuery = "insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk, beak_form_fk) values (".$id.",'".$scientific_name."','".$directory_name."',".$ordre.",".$famille.",".$category_fk.",".$beak_form_fk.");\n";
+	$sqlQuery = "insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk, beak_form_fk,size_value,size_fk) values (".$id.",'".$scientific_name."','".$directory_name."',".$ordre.",".$famille.",".$category_fk.",".$beak_form_fk.",".$size_value.",".$size_fk.");\n";
 
 	//meme chose avec les habitats
 	$habitat1_fk='';
@@ -280,7 +307,6 @@ function genereInsertTableHabitat(&$array_habitat,$csvLine){
 /*
 * MAIN
 */
-
 $handlerTableBird = fopen('insert_data_table_bird.sql', 'w');
 
 $handlerTableTaxonomy = fopen('insert_data_table_taxonomy.sql', 'w');
@@ -299,8 +325,8 @@ $array_category = array();
 $array_habitat = array();
 $array_beak_form = array();
 
-/*
-INSERT INTO beak_form(id,name,lang)
+
+//INSERT INTO beak_form(id,name,lang)
 		// VALUES(1,"autres becs droits",'fr');
 		// INSERT INTO beak_form(id,name,lang) VALUES(2,"épais et court",'fr');
 		// INSERT INTO beak_form(id,name,lang) VALUES(3,"autre",'fr');
@@ -310,7 +336,8 @@ INSERT INTO beak_form(id,name,lang)
 		// INSERT INTO beak_form(id,name,lang) VALUES(7,"fin et court",'fr');
 		// INSERT INTO beak_form(id,name,lang) VALUES(8,"canard",'fr');
 		// INSERT INTO beak_form(id,name,lang) VALUES(9,"mouette",'fr');
-*/
+
+//TODO : attention ! ce sont les valeurs en dur qu'on trouve dans le csv et qui sont dans le sql qui fait les inserts dans la table beak_form !
 $array_beak_form= array('autres becs droits', 'épais et court', 'autre', "courbé", "droit et long", "crochu", "fin et court", "canard", "mouette");
 
 $idBird=0;
@@ -347,7 +374,6 @@ fclose($handlerTableDescription);
 fclose($handlerTableScientificOrderAndFamily);
 fclose($handlerTableCategory);
 fclose($handlerTableHabitat);
-
 
 
 ?>

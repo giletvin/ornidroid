@@ -15,6 +15,9 @@ public class MultiCriteriaSearchFormBean {
 	/** The habitat id. */
 	private Integer habitatId;
 
+	/** The size id. */
+	private Integer sizeId;
+
 	/**
 	 * Gets the beak form id.
 	 * 
@@ -40,6 +43,15 @@ public class MultiCriteriaSearchFormBean {
 	 */
 	public Integer getHabitatId() {
 		return this.habitatId != null ? this.habitatId : 0;
+	}
+
+	/**
+	 * Gets the size id.
+	 * 
+	 * @return the size id
+	 */
+	public Integer getSizeId() {
+		return this.sizeId;
 	}
 
 	/**
@@ -73,6 +85,16 @@ public class MultiCriteriaSearchFormBean {
 	public void setHabitatId(final Integer pHabitatId) {
 		this.habitatId = pHabitatId;
 
+	}
+
+	/**
+	 * Sets the size id.
+	 * 
+	 * @param sizeId
+	 *            the new size id
+	 */
+	public void setSizeId(final Integer sizeId) {
+		this.sizeId = sizeId;
 	}
 
 }

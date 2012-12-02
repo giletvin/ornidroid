@@ -50,8 +50,12 @@ public class OnSpinnersItemSelected implements OnItemSelectedListener {
 					this.activity.getOrnidroidService().getBeakFormId(
 							parent.getItemAtPosition(pos).toString()));
 			break;
-		default:
+		case SIZE:
+			this.activity.getFormBean().setSizeId(
+					this.activity.getOrnidroidService().getSizeId(
+							parent.getItemAtPosition(pos).toString()));
 			break;
+
 		}
 
 		this.activity.updateSearchCountResults(this.activity

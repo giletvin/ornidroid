@@ -36,6 +36,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/** The Constant HABITAT_TABLE_NAME. */
 	private static final String HABITAT_TABLE_NAME = "habitat";
 
+	/** The Constant LEFT_OUTER_JOIN. */
 	private static final String LEFT_OUTER_JOIN = " LEFT OUTER JOIN ";
 
 	/** The Constant ORDER_BY. */
@@ -100,7 +101,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getBeakForms()
 	 */
 	public Cursor getBeakForms() {
-		return getCursorFromListTable(BEAK_FORM_TABLE,
+		return getCursorFromListTable(BEAK_FORM_TABLE, NAME_COLUMN_NAME,
 				Constants.getOrnidroidLang());
 	}
 
@@ -197,7 +198,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getCategories()
 	 */
 	public Cursor getCategories() {
-		return getCursorFromListTable(CATEGORY_TABLE_NAME,
+		return getCursorFromListTable(CATEGORY_TABLE_NAME, NAME_COLUMN_NAME,
 				Constants.getOrnidroidLang());
 	}
 
@@ -207,7 +208,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getHabitats()
 	 */
 	public Cursor getHabitats() {
-		return getCursorFromListTable(HABITAT_TABLE_NAME,
+		return getCursorFromListTable(HABITAT_TABLE_NAME, NAME_COLUMN_NAME,
 				Constants.getOrnidroidLang());
 
 	}
@@ -243,6 +244,16 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see fr.ornidroid.data.IOrnidroidDAO#getSizes()
+	 */
+	public Cursor getSizes() {
+		return getCursorFromListTable(SIZE_TABLE, ID,
+				Constants.getOrnidroidLang());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.ornidroid.data.IOrnidroidDAO#hasHistory()
 	 */
 	public boolean hasHistory() {
@@ -251,16 +262,18 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 
 	/**
 	 * Gets the cursor from list table with ID AND NAME column NAMEs (habitat,
-	 * category)
+	 * category).
 	 * 
 	 * @param tableName
 	 *            the table name (habitat, category, ..)
+	 * @param orderBy
+	 *            the column used in the order by
 	 * @param lang
-	 *            the lang : default lang
+	 *            the lang
 	 * @return the cursor from list table
 	 */
 	private Cursor getCursorFromListTable(final String tableName,
-			final String lang) {
+			final String orderBy, final String lang) {
 		Cursor cursor = null;
 		try {
 			final SQLiteDatabase db = this.dataBaseOpenHelper
@@ -276,7 +289,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			query.append(lang);
 			query.append("\"");
 			query.append(ORDER_BY);
-			query.append(NAME_COLUMN_NAME);
+			query.append(orderBy);
 			final String[] selectionArgs = null;
 			cursor = db.rawQuery(query.toString(), selectionArgs);
 			if (cursor == null) {
@@ -286,7 +299,8 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				if (StringUtils.equals(lang, Constants.FR_LANG)) {
 					return null;
 				} else {
-					return getCursorFromListTable(tableName, Constants.FR_LANG);
+					return getCursorFromListTable(tableName, Constants.FR_LANG,
+							orderBy);
 				}
 			}
 		} catch (final SQLException e) {
@@ -321,6 +335,10 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		if (formBean.getBeakFormId() != 0) {
 			whereClauses.append(" AND bird.beak_form_fk = ").append(
 					formBean.getBeakFormId());
+		}
+		if (formBean.getSizeId() != 0) {
+			whereClauses.append(" AND bird.size_fk = ").append(
+					formBean.getSizeId());
 		}
 		return whereClauses.toString();
 	}

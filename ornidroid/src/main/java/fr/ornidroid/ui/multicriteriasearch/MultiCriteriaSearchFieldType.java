@@ -9,5 +9,7 @@ public enum MultiCriteriaSearchFieldType {
 	/** The category. */
 	CATEGORY,
 	/** The habitat. */
-	HABITAT;
+	HABITAT,
+	/** The size. */
+	SIZE;
 }

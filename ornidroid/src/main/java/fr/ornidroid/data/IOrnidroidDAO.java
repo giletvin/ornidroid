@@ -41,6 +41,9 @@ public interface IOrnidroidDAO {
 	 */
 	public static final String SEARCHED_TAXON = "searched_taxon";
 
+	/** The Constant SIZE_TABLE. */
+	public static final String SIZE_TABLE = "size_table";
+
 	/** The Constant TAXON. */
 	public static final String TAXON = "taxon";
 
@@ -128,6 +131,13 @@ public interface IOrnidroidDAO {
 	 * @return the multi search criteria count results
 	 */
 	int getMultiSearchCriteriaCountResults(MultiCriteriaSearchFormBean formBean);
+
+	/**
+	 * Gets the sizes.
+	 * 
+	 * @return the sizes
+	 */
+	Cursor getSizes();
 
 	/**
 	 * Checks for history.

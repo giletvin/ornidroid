@@ -8,6 +8,8 @@ public enum MultiCriteriaSearchFieldType {
 	BEAK_FORM,
 	/** The category. */
 	CATEGORY,
+	/** The feather colour. */
+	FEATHER_COLOUR,
 	/** The habitat. */
 	HABITAT,
 	/** The size. */

@@ -11,8 +11,11 @@ public interface IOrnidroidDAO {
 
 	/** The Constant BEAK_FORM_TABLE. */
 	public static final String BEAK_FORM_TABLE = "beak_form";
+
 	/** The Constant BIRD_TABLE. */
 	public static final String BIRD_TABLE = "bird";
+	/** The Constant COLOUR_TABLE. */
+	public static final String COLOUR_TABLE = "colour";
 	/** The Constant DESCRIPTION_COLUMN. */
 	public static final String DESCRIPTION_COLUMN = "description";
 	/** The Constant DIRECTORY_NAME_COLUMN. */
@@ -108,6 +111,13 @@ public interface IOrnidroidDAO {
 	 * @return the categories
 	 */
 	Cursor getCategories();
+
+	/**
+	 * Gets the colours.
+	 * 
+	 * @return the colours
+	 */
+	Cursor getColours();
 
 	/**
 	 * Gets the habitats.

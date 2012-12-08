@@ -102,6 +102,12 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	/** The categories map. */
 	private Map<String, Integer> categoriesMap;
 
+	/** The colours list. */
+	private List<String> coloursList;
+
+	/** The colours map. */
+	private Map<String, Integer> coloursMap;
+
 	/** The current bird. */
 	private Bird currentBird;
 
@@ -231,6 +237,31 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	public Integer getCategoryId(final String categoryName) {
 		return this.categoriesMap != null ? this.categoriesMap
 				.get(categoryName) : 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidService#getColourId(java.lang.String)
+	 */
+	public Integer getColourId(final String colourName) {
+		return this.coloursMap != null ? this.coloursMap.get(colourName) : 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidService#getColours()
+	 */
+	public List<String> getColours() {
+		if (this.coloursMap == null) {
+			final Cursor cursorQueryColours = this.ornidroidDAO.getColours();
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQueryColours);
+			this.coloursMap = sfv.getMapNameId();
+			this.coloursList = sfv.getFieldsValues();
+
+		}
+		return this.coloursList;
 	}
 
 	/*

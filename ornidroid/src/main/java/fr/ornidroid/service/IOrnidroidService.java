@@ -85,6 +85,22 @@ public interface IOrnidroidService {
 	Integer getCategoryId(String categoryName);
 
 	/**
+	 * Gets the colour id.
+	 * 
+	 * @param colourName
+	 *            the colour name
+	 * @return the feather colour id
+	 */
+	Integer getColourId(String colourName);
+
+	/**
+	 * Gets the colours.
+	 * 
+	 * @return the colours
+	 */
+	List<String> getColours();
+
+	/**
 	 * Gets the current bird. If a previous call to show bird detail was already
 	 * done, get the bird without querying the db
 	 * 

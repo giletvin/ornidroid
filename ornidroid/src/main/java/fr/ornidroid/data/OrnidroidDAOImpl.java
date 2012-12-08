@@ -206,6 +206,16 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see fr.ornidroid.data.IOrnidroidDAO#getColours()
+	 */
+	public Cursor getColours() {
+		return getCursorFromListTable(COLOUR_TABLE, NAME_COLUMN_NAME,
+				I18nHelper.getLang());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getHabitats()
 	 */
 	public Cursor getHabitats() {
@@ -333,6 +343,12 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 					.append(formBean.getHabitatId())
 					.append(" OR bird.habitat2_fk = ")
 					.append(formBean.getHabitatId()).append(")");
+		}
+		if (formBean.getFeatherColourId() != 0) {
+			whereClauses.append(" AND (bird.feather_colour_fk = ")
+					.append(formBean.getFeatherColourId())
+					.append(" OR bird.feather_colour_2_fk = ")
+					.append(formBean.getFeatherColourId()).append(")");
 		}
 		if (formBean.getBeakFormId() != 0) {
 			whereClauses.append(" AND bird.beak_form_fk = ").append(

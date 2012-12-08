@@ -92,5 +92,7 @@
     <string name="reset_form">Reset form</string>
     <string name="search_size_choose">Choose a size</string>
     <string name="search_size">Size</string>
+    <string name="search_colour_choose">Choose a colour</string>
+    <string name="search_feather_colour">Feather colour</string>
 
 </resources>

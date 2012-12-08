@@ -55,6 +55,11 @@ public class OnSpinnersItemSelected implements OnItemSelectedListener {
 					this.activity.getOrnidroidService().getSizeId(
 							parent.getItemAtPosition(pos).toString()));
 			break;
+		case FEATHER_COLOUR:
+			this.activity.getFormBean().setFeatherColourId(
+					this.activity.getOrnidroidService().getColourId(
+							parent.getItemAtPosition(pos).toString()));
+			break;
 
 		}
 

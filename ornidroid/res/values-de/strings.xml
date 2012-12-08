@@ -66,7 +66,7 @@
     <string name="credits">Nachweis</string>
     <string name="no_records">Keine Daten gefunden. Bitte nochmals prüfen und die Daten vom Internet herunterladen.</string>
     <string name="no_pictures">Kein Bild gefunden. Bitte nochmals prüfen und das Bild vom Internet herunterladen.</string>
-    <string name="about_ornidroid">Ornidroid Version 1.0.\nDiese Anwendung steht unter
+    <string name="about_ornidroid">Diese Anwendung steht unter
 		der Creative Commons BY
 		NC-Lizenz\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.de</string>
     <string name="download_in_progress">Download wird durchgeführt...</string>

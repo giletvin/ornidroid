@@ -14,6 +14,12 @@ create table bird(
 	beak_form_fk,
 	size_value,
 	size_fk,
+	feather_colour_fk,
+	feather_colour_2_fk,
+	beak_colour_fk,
+	beak_colour_2_fk,
+	paw_colour_fk,
+	paw_colour_2_fk,
 	PRIMARY KEY(id)
 );
 
@@ -52,6 +58,12 @@ create table size_table(
 );
 
 create table beak_form(
+		id integer,
+		name,
+		lang
+);
+
+create table colour(
 		id integer,
 		name,
 		lang

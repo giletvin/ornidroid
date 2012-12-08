@@ -169,9 +169,37 @@ function getSizeFk($sizeIntValue){
 		return 5;
 	}
 }
+/**
+*Retourne l'id de la colour en base de données correspondant à la data passée en prm
+*/
+function getColourFk($data){
+	$array_colours = array();
+	//INSERT INTO colour(id,name,lang) VALUES(1,"Blanc",'fr');
+	//INSERT INTO colour(id,name,lang) VALUES(2,"Bleu",'fr');
+	//INSERT INTO colour(id,name,lang) VALUES(3,"Gris",'fr');
+	//INSERT INTO colour(id,name,lang) VALUES(4,"Jaune",'fr');
+	//INSERT INTO colour(id,name,lang) VALUES(5,"Noir",'fr');
+	//INSERT INTO colour(id,name,lang) VALUES(6,"Orange",'fr');
+	//INSERT INTO colour(id,name,lang) VALUES(7,"Rose",'fr');
+	//INSERT INTO colour(id,name,lang) VALUES(8,"Rouge",'fr');
+	//INSERT INTO colour(id,name,lang) VALUES(9,"Brun",'fr');
+	//INSERT INTO colour(id,name,lang) VALUES(10,"Vert",'fr');
+	//INSERT INTO colour(id,name,lang) VALUES(11,"Roux",'fr');
+	//TODO : attention ! ce sont les valeurs en dur qu'on trouve dans le csv et qui sont dans le sql qui fait les inserts dans la table colours !
+	$array_colours= array('blanc', 'bleu', 'gris', "jaune", "noir", "orange", "rose", "rouge", "brun", "vert", "roux");
+	if ($data!=''){
+		//retrouver dans la map colours l'id qui lui a été accordé dans la table des colours
+		//id = index dans le tableau +1 car les id commencent à 1 et pas 0
+		return array_search($data,$array_colours)+1;
+	}
+	else {
+		return -1;
+	}
+}
+
 /*
 * Genere la commande insert dans la table bird
-* insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk,beak_form_fk, size) values (1,'morus bassanus','morus_bassanus',1,1,1,1,115);
+* insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk,beak_form_fk, size_value,size_fk, feather_colour_fk,feather_colour_2_fk,beak_colour_fk,beak_colour_2_fk,paw_colour_fk,paw_colour_2_fk) values (1,'morus bassanus','morus_bassanus',1,1,1,1,115,5,1,1,1,1,1,1,1);
 */
 function genereInsertTableBird($array_beak_form,$array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$id,$csvLine){
 
@@ -192,7 +220,16 @@ function genereInsertTableBird($array_beak_form,$array_habitat,$array_category,$
 	//id = index dans le tableau +1 car les id commencent à 1 et pas 0
 	$beak_form_fk=array_search($csvLine[8],$array_beak_form)+1;
 
-	$sqlQuery = "insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk, beak_form_fk,size_value,size_fk) values (".$id.",'".$scientific_name."','".$directory_name."',".$ordre.",".$famille.",".$category_fk.",".$beak_form_fk.",".$size_value.",".$size_fk.");\n";
+	//retrouver dans la map colours l'id qui lui a été accordé dans la table des colours
+	//id = index dans le tableau +1 car les id commencent à 1 et pas 0
+	$feather_colour_fk=getColourFk($csvLine[14]);
+	$feather_colour_2_fk=getColourFk($csvLine[15]);
+	$paw_colour_fk=getColourFk($csvLine[11]);
+	$paw_colour_2_fk=getColourFk($csvLine[12]);
+	$beak_colour_fk=getColourFk($csvLine[9]);
+	$beak_colour_2_fk=getColourFk($csvLine[10]);
+
+	$sqlQuery = "insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk, beak_form_fk,size_value,size_fk,feather_colour_fk,feather_colour_2_fk,beak_colour_fk,beak_colour_2_fk,paw_colour_fk,paw_colour_2_fk) values (".$id.",'".$scientific_name."','".$directory_name."',".$ordre.",".$famille.",".$category_fk.",".$beak_form_fk.",".$size_value.",".$size_fk.",".$feather_colour_fk.",".$feather_colour_2_fk.",".$beak_colour_fk.",".$beak_colour_2_fk.",".$paw_colour_fk.",".$paw_colour_2_fk.");\n";
 
 	//meme chose avec les habitats
 	$habitat1_fk='';
@@ -324,8 +361,6 @@ $array_scientific_family = array();
 $array_category = array();
 $array_habitat = array();
 $array_beak_form = array();
-
-
 //INSERT INTO beak_form(id,name,lang)
 		// VALUES(1,"autres becs droits",'fr');
 		// INSERT INTO beak_form(id,name,lang) VALUES(2,"épais et court",'fr');
@@ -339,6 +374,7 @@ $array_beak_form = array();
 
 //TODO : attention ! ce sont les valeurs en dur qu'on trouve dans le csv et qui sont dans le sql qui fait les inserts dans la table beak_form !
 $array_beak_form= array('autres becs droits', 'épais et court', 'autre', "courbé", "droit et long", "crochu", "fin et court", "canard", "mouette");
+
 
 $idBird=0;
 if (($handle = fopen("oiseaux_europe_avibase_ss_rares.csv", "r")) !== FALSE) {

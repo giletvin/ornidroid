@@ -12,6 +12,9 @@ public class MultiCriteriaSearchFormBean {
 	/** The category id. */
 	private Integer categoryId;
 
+	/** The feather colour id. */
+	private Integer featherColourId;
+
 	/** The habitat id. */
 	private Integer habitatId;
 
@@ -37,6 +40,15 @@ public class MultiCriteriaSearchFormBean {
 	}
 
 	/**
+	 * Gets the feather colour id.
+	 * 
+	 * @return the feather colour id
+	 */
+	public Integer getFeatherColourId() {
+		return this.featherColourId != null ? this.featherColourId : 0;
+	}
+
+	/**
 	 * Gets the habitat id.
 	 * 
 	 * @return the habitat id
@@ -51,7 +63,7 @@ public class MultiCriteriaSearchFormBean {
 	 * @return the size id
 	 */
 	public Integer getSizeId() {
-		return this.sizeId;
+		return this.sizeId != null ? this.sizeId : 0;
 	}
 
 	/**
@@ -74,6 +86,16 @@ public class MultiCriteriaSearchFormBean {
 	public void setCategoryId(final Integer pCategoryId) {
 		this.categoryId = pCategoryId;
 
+	}
+
+	/**
+	 * Sets the feather colour id.
+	 * 
+	 * @param featherColourId
+	 *            the new feather colour id
+	 */
+	public void setFeatherColourId(final Integer featherColourId) {
+		this.featherColourId = featherColourId;
 	}
 
 	/**

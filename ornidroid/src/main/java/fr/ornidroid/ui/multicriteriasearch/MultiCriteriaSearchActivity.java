@@ -110,6 +110,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
 		initSelectField(MultiCriteriaSearchFieldType.SIZE);
+		initSelectField(MultiCriteriaSearchFieldType.FEATHER_COLOUR);
 		initSelectField(MultiCriteriaSearchFieldType.HABITAT);
 		initSelectField(MultiCriteriaSearchFieldType.BEAK_FORM);
 
@@ -182,6 +183,13 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_beak_form_field);
 			dataAdapter = new MyCustomAdapter(this, R.layout.row_spinner_icons,
 					this.ornidroidService.getBeakForms());
+			break;
+		case FEATHER_COLOUR:
+			field = (MultiCriteriaSelectField) findViewById(R.id.search_feather_colour_field);
+			// TODO : un adapteur custom pour mettre les couleurs ?
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getColours());
 			break;
 
 		}

@@ -6,6 +6,9 @@ package fr.ornidroid.bo;
  */
 public class MultiCriteriaSearchFormBean {
 
+	/** The beak colour id. */
+	private Integer beakColourId;
+
 	/** The beak form id. */
 	private Integer beakFormId;
 
@@ -18,8 +21,20 @@ public class MultiCriteriaSearchFormBean {
 	/** The habitat id. */
 	private Integer habitatId;
 
+	/** The paw colour id. */
+	private Integer pawColourId;
+
 	/** The size id. */
 	private Integer sizeId;
+
+	/**
+	 * Gets the beak colour id.
+	 * 
+	 * @return the beak colour id
+	 */
+	public Integer getBeakColourId() {
+		return this.beakColourId != null ? this.beakColourId : 0;
+	}
 
 	/**
 	 * Gets the beak form id.
@@ -58,12 +73,32 @@ public class MultiCriteriaSearchFormBean {
 	}
 
 	/**
+	 * Gets the paw colour id.
+	 * 
+	 * @return the paw colour id
+	 */
+	public Integer getPawColourId() {
+		return this.pawColourId != null ? this.pawColourId : 0;
+
+	}
+
+	/**
 	 * Gets the size id.
 	 * 
 	 * @return the size id
 	 */
 	public Integer getSizeId() {
 		return this.sizeId != null ? this.sizeId : 0;
+	}
+
+	/**
+	 * Sets the beak colour id.
+	 * 
+	 * @param beakColourId
+	 *            the new beak colour id
+	 */
+	public void setBeakColourId(final Integer beakColourId) {
+		this.beakColourId = beakColourId;
 	}
 
 	/**
@@ -107,6 +142,16 @@ public class MultiCriteriaSearchFormBean {
 	public void setHabitatId(final Integer pHabitatId) {
 		this.habitatId = pHabitatId;
 
+	}
+
+	/**
+	 * Sets the paw colour id.
+	 * 
+	 * @param pawColourId
+	 *            the new paw colour id
+	 */
+	public void setPawColourId(final Integer pawColourId) {
+		this.pawColourId = pawColourId;
 	}
 
 	/**

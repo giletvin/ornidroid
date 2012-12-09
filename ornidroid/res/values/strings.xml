@@ -94,5 +94,7 @@
     <string name="search_size">Size</string>
     <string name="search_colour_choose">Choose a colour</string>
     <string name="search_feather_colour">Feather colour</string>
+    <string name="search_beak_colour">Beak colour</string>
+    <string name="search_paw_colour">Paw colour</string>
 
 </resources>

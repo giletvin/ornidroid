@@ -25,6 +25,12 @@ import fr.ornidroid.ui.MainActivity;
 public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		implements OnClickListener {
 
+	/** The expand collapse form button. */
+	private ImageView expandCollapseFormButton;
+
+	/** The expand form. */
+	private boolean expandForm = false;
+
 	/** The field list. */
 	private final List<MultiCriteriaSelectField> fieldList;
 
@@ -86,6 +92,20 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		if (v == this.resetFormButton) {
 			resetForm();
 		}
+		if (v == this.expandCollapseFormButton) {
+			this.expandForm = this.expandForm ? false : true;
+			if (this.expandForm) {
+				// change the icon for the next toggle
+				this.expandCollapseFormButton.setImageDrawable(this
+						.getResources().getDrawable(R.drawable.ic_up));
+			} else {
+				// change the icon for the next toggle
+				this.expandCollapseFormButton.setImageDrawable(this
+						.getResources().getDrawable(R.drawable.ic_down));
+			}
+			expandCollapseForm();
+
+		}
 	}
 
 	/*
@@ -102,7 +122,8 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		this.searchShowResultsButton.setOnClickListener(this);
 		this.resetFormButton = (ImageView) findViewById(R.id.reset_form_button);
 		this.resetFormButton.setOnClickListener(this);
-
+		this.expandCollapseFormButton = (ImageView) findViewById(R.id.expand_collapse_form_button);
+		this.expandCollapseFormButton.setOnClickListener(this);
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
 		initSelectField(MultiCriteriaSearchFieldType.SIZE);
 		initSelectField(MultiCriteriaSearchFieldType.FEATHER_COLOUR);
@@ -144,9 +165,15 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 				.getText(R.string.search_show_results)
 				+ Constants.BLANK_STRING
 				+ countResults);
-		// this.searchCountResults.setText(MultiCriteriaSearchActivity.this
-		// .getText(R.string.search_count_results)
-		// + Constants.BLANK_STRING + countResults);
+	}
+
+	/**
+	 * Expand collapse form.
+	 */
+	private void expandCollapseForm() {
+		for (final MultiCriteriaSelectField field : this.fieldList) {
+			field.expand(this.expandForm);
+		}
 	}
 
 	/**

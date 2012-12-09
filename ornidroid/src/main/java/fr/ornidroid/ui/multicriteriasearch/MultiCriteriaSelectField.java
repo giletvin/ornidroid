@@ -47,8 +47,12 @@ public class MultiCriteriaSelectField extends LinearLayout {
 
 		this.spinner = new Spinner(context);
 		this.spinner.setVisibility(View.GONE);
-		this.spinner.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.WRAP_CONTENT));
+		final LayoutParams spinnerLayoutParams = new LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		spinnerLayoutParams.setMargins(30, 10, 30, 0);
+		this.spinner.setLayoutParams(spinnerLayoutParams);
+		this.spinner.setBackgroundDrawable(context.getResources().getDrawable(
+				R.drawable.custom_spinner));
 		this.addView(layoutTextIcon);
 		this.addView(this.spinner);
 
@@ -56,15 +60,9 @@ public class MultiCriteriaSelectField extends LinearLayout {
 		layoutTextIcon.setOnClickListener(new OnClickListener() {
 			public void onClick(final View v) {
 				if (MultiCriteriaSelectField.this.spinner.getVisibility() == View.VISIBLE) {
-					MultiCriteriaSelectField.this.spinner
-							.setVisibility(View.GONE);
-					MultiCriteriaSelectField.this.icon
-							.setImageResource(R.drawable.ic_down);
+					expand(false);
 				} else {
-					MultiCriteriaSelectField.this.spinner
-							.setVisibility(View.VISIBLE);
-					MultiCriteriaSelectField.this.icon
-							.setImageResource(R.drawable.ic_up);
+					expand(true);
 				}
 			}
 		});
@@ -103,6 +101,24 @@ public class MultiCriteriaSelectField extends LinearLayout {
 		}
 		a.recycle();
 
+	}
+
+	/**
+	 * Expand or collapse the field
+	 * 
+	 * @param expand
+	 *            the expand
+	 */
+	public void expand(final boolean expand) {
+		if (expand) {
+			MultiCriteriaSelectField.this.spinner.setVisibility(View.VISIBLE);
+			MultiCriteriaSelectField.this.icon
+					.setImageResource(R.drawable.ic_up);
+		} else {
+			MultiCriteriaSelectField.this.spinner.setVisibility(View.GONE);
+			MultiCriteriaSelectField.this.icon
+					.setImageResource(R.drawable.ic_down);
+		}
 	}
 
 	/**

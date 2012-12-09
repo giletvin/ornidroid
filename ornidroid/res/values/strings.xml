@@ -96,4 +96,5 @@
     <string name="search_beak_colour">Beak colour</string>
     <string name="search_paw_colour">Paw colour</string>
 	<string name="search_show_results">Show results : </string>
+	<string name="expand_collapse_form">Expand/collapse form</string>
 </resources>

@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.helper.Constants;
@@ -37,9 +36,6 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 
 	/** The reset form button. */
 	private ImageView resetFormButton;
-
-	/** The search count results. */
-	private TextView searchCountResults;
 
 	/** The search show results button. */
 	private Button searchShowResultsButton;
@@ -106,7 +102,6 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		this.searchShowResultsButton.setOnClickListener(this);
 		this.resetFormButton = (ImageView) findViewById(R.id.reset_form_button);
 		this.resetFormButton.setOnClickListener(this);
-		this.searchCountResults = (TextView) findViewById(R.id.search_count_results);
 
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
 		initSelectField(MultiCriteriaSearchFieldType.SIZE);
@@ -115,6 +110,8 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		initSelectField(MultiCriteriaSearchFieldType.PAW_COLOUR);
 		initSelectField(MultiCriteriaSearchFieldType.HABITAT);
 		initSelectField(MultiCriteriaSearchFieldType.BEAK_FORM);
+		updateSearchCountResults(this.ornidroidService
+				.getMultiSearchCriteriaCountResults(this.formBean));
 
 	}
 
@@ -143,9 +140,13 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	 *            the count results
 	 */
 	protected void updateSearchCountResults(final int countResults) {
-		this.searchCountResults.setText(MultiCriteriaSearchActivity.this
-				.getText(R.string.search_count_results)
-				+ Constants.BLANK_STRING + countResults);
+		this.searchShowResultsButton.setText(this
+				.getText(R.string.search_show_results)
+				+ Constants.BLANK_STRING
+				+ countResults);
+		// this.searchCountResults.setText(MultiCriteriaSearchActivity.this
+		// .getText(R.string.search_count_results)
+		// + Constants.BLANK_STRING + countResults);
 	}
 
 	/**

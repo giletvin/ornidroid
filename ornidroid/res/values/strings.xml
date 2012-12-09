@@ -85,8 +85,7 @@
     <string name="search_habitat">Habitat</string>
     <string name="search_beak_form_choose">Choose a beak type</string>
     <string name="search_beak_form">Beak type</string>
-    <string name="search_count_results">Number of results : </string>
-    <string name="search_show_results">Show results </string>
+    
     <string name="search_all">All </string>
     <!-- new labels not translated yet -->
     <string name="reset_form">Reset form</string>
@@ -96,5 +95,5 @@
     <string name="search_feather_colour">Feather colour</string>
     <string name="search_beak_colour">Beak colour</string>
     <string name="search_paw_colour">Paw colour</string>
-
+	<string name="search_show_results">Show results : </string>
 </resources>

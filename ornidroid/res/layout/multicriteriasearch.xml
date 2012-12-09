@@ -6,84 +6,88 @@
     android:orientation="vertical"
     android:padding="5sp" >
 
-    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
-        android:id="@+id/search_category_field"
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="20sp"
-        custom:spinnerPrompt="@string/search_category_choose"
-        custom:text="@string/search_category" />
+        android:layout_height="0dip"
+        android:layout_weight="4.0" >
 
-    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
-        android:id="@+id/search_size_field"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="20sp"
-        custom:spinnerPrompt="@string/search_size_choose"
-        custom:text="@string/search_size" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
-        android:id="@+id/search_feather_colour_field"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="20sp"
-        custom:spinnerPrompt="@string/search_colour_choose"
-        custom:text="@string/search_feather_colour" />
+            <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+                android:id="@+id/search_category_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20sp"
+                custom:spinnerPrompt="@string/search_category_choose"
+                custom:text="@string/search_category" />
 
-    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
-        android:id="@+id/search_beak_colour_field"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="20sp"
-        custom:spinnerPrompt="@string/search_colour_choose"
-        custom:text="@string/search_beak_colour" />
+            <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+                android:id="@+id/search_size_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20sp"
+                custom:spinnerPrompt="@string/search_size_choose"
+                custom:text="@string/search_size" />
 
-    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
-        android:id="@+id/search_paw_colour_field"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="20sp"
-        custom:spinnerPrompt="@string/search_colour_choose"
-        custom:text="@string/search_paw_colour" />
+            <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+                android:id="@+id/search_feather_colour_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20sp"
+                custom:spinnerPrompt="@string/search_colour_choose"
+                custom:text="@string/search_feather_colour" />
 
-    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
-        android:id="@+id/search_habitat_field"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="20sp"
-        custom:spinnerPrompt="@string/search_habitat_choose"
-        custom:text="@string/search_habitat" />
+            <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+                android:id="@+id/search_beak_colour_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20sp"
+                custom:spinnerPrompt="@string/search_colour_choose"
+                custom:text="@string/search_beak_colour" />
 
-    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
-        android:id="@+id/search_beak_form_field"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="20sp"
-        custom:spinnerPrompt="@string/search_beak_form_choose"
-        custom:text="@string/search_beak_form" />
+            <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+                android:id="@+id/search_paw_colour_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20sp"
+                custom:spinnerPrompt="@string/search_colour_choose"
+                custom:text="@string/search_paw_colour" />
 
-    <TextView
-        android:id="@+id/search_count_results"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="20sp"
-        android:paddingTop="20sp"
-        android:text="@string/search_count_results" />
+            <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+                android:id="@+id/search_habitat_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20sp"
+                custom:spinnerPrompt="@string/search_habitat_choose"
+                custom:text="@string/search_habitat" />
 
-    <!-- centered layout -->
+            <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+                android:id="@+id/search_beak_form_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20sp"
+                custom:spinnerPrompt="@string/search_beak_form_choose"
+                custom:text="@string/search_beak_form" />
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center_horizontal"
+        android:layout_height="0dip"
+        android:layout_weight="1.0"
+        android:gravity="center_horizontal|bottom"
         android:orientation="horizontal" >
 
         <ImageView

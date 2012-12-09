@@ -32,7 +32,25 @@
         android:paddingBottom="20sp"
         custom:spinnerPrompt="@string/search_colour_choose"
         custom:text="@string/search_feather_colour" />
-    
+
+    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+        android:id="@+id/search_beak_colour_field"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="20sp"
+        custom:spinnerPrompt="@string/search_colour_choose"
+        custom:text="@string/search_beak_colour" />
+
+    <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+        android:id="@+id/search_paw_colour_field"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="20sp"
+        custom:spinnerPrompt="@string/search_colour_choose"
+        custom:text="@string/search_paw_colour" />
+
     <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
         android:id="@+id/search_habitat_field"
         android:layout_width="fill_parent"

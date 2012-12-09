@@ -350,6 +350,18 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 					.append(" OR bird.feather_colour_2_fk = ")
 					.append(formBean.getFeatherColourId()).append(")");
 		}
+		if (formBean.getBeakColourId() != 0) {
+			whereClauses.append(" AND (bird.beak_colour_fk = ")
+					.append(formBean.getBeakColourId())
+					.append(" OR bird.beak_colour_2_fk = ")
+					.append(formBean.getBeakColourId()).append(")");
+		}
+		if (formBean.getPawColourId() != 0) {
+			whereClauses.append(" AND (bird.paw_colour_fk = ")
+					.append(formBean.getPawColourId())
+					.append(" OR bird.paw_colour_2_fk = ")
+					.append(formBean.getPawColourId()).append(")");
+		}
 		if (formBean.getBeakFormId() != 0) {
 			whereClauses.append(" AND bird.beak_form_fk = ").append(
 					formBean.getBeakFormId());

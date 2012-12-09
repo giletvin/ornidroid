@@ -111,6 +111,8 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
 		initSelectField(MultiCriteriaSearchFieldType.SIZE);
 		initSelectField(MultiCriteriaSearchFieldType.FEATHER_COLOUR);
+		initSelectField(MultiCriteriaSearchFieldType.BEAK_COLOUR);
+		initSelectField(MultiCriteriaSearchFieldType.PAW_COLOUR);
 		initSelectField(MultiCriteriaSearchFieldType.HABITAT);
 		initSelectField(MultiCriteriaSearchFieldType.BEAK_FORM);
 
@@ -186,6 +188,20 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			break;
 		case FEATHER_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_feather_colour_field);
+			// TODO : un adapteur custom pour mettre les couleurs ?
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getColours());
+			break;
+		case BEAK_COLOUR:
+			field = (MultiCriteriaSelectField) findViewById(R.id.search_beak_colour_field);
+			// TODO : un adapteur custom pour mettre les couleurs ?
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getColours());
+			break;
+		case PAW_COLOUR:
+			field = (MultiCriteriaSelectField) findViewById(R.id.search_paw_colour_field);
 			// TODO : un adapteur custom pour mettre les couleurs ?
 			dataAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item,

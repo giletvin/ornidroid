@@ -24,6 +24,9 @@ public class MultiCriteriaSearchFormBean {
 	/** The paw colour id. */
 	private Integer pawColourId;
 
+	/** The remarkable sign id. */
+	private Integer remarkableSignId;
+
 	/** The size id. */
 	private Integer sizeId;
 
@@ -79,6 +82,17 @@ public class MultiCriteriaSearchFormBean {
 	 */
 	public Integer getPawColourId() {
 		return this.pawColourId != null ? this.pawColourId : 0;
+
+	}
+
+	/**
+	 * Gets the remarkable sign id.
+	 * 
+	 * @return the remarkable sign id
+	 */
+	public Integer getRemarkableSignId() {
+
+		return this.remarkableSignId != null ? this.remarkableSignId : 0;
 
 	}
 
@@ -152,6 +166,16 @@ public class MultiCriteriaSearchFormBean {
 	 */
 	public void setPawColourId(final Integer pawColourId) {
 		this.pawColourId = pawColourId;
+	}
+
+	/**
+	 * Sets the remarkable sign id.
+	 * 
+	 * @param remarkableSignId
+	 *            the new remarkable sign id
+	 */
+	public void setRemarkableSignId(final Integer remarkableSignId) {
+		this.remarkableSignId = remarkableSignId;
 	}
 
 	/**

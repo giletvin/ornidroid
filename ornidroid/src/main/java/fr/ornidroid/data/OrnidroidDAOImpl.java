@@ -255,6 +255,16 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see fr.ornidroid.data.IOrnidroidDAO#getRemarkableSigns()
+	 */
+	public Cursor getRemarkableSigns() {
+		return getCursorFromListTable(REMARKABLE_SIGN_TABLE, NAME_COLUMN_NAME,
+				I18nHelper.getLang());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getSizes()
 	 */
 	public Cursor getSizes() {
@@ -337,6 +347,10 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		if (formBean.getCategoryId() != 0) {
 			whereClauses.append(" AND bird.category_fk = ").append(
 					formBean.getCategoryId());
+		}
+		if (formBean.getRemarkableSignId() != 0) {
+			whereClauses.append(" AND bird.remarkable_sign_fk = ").append(
+					formBean.getRemarkableSignId());
 		}
 		if (formBean.getHabitatId() != 0) {
 			whereClauses.append(" AND (bird.habitat1_fk = ")

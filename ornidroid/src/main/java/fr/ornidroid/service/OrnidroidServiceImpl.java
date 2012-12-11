@@ -123,6 +123,12 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	/** The ornidroid dao. */
 	private final IOrnidroidDAO ornidroidDAO;
 
+	/** The remarkable signs list. */
+	private List<String> remarkableSignsList;
+
+	/** The remarkable signs map. */
+	private Map<String, Integer> remarkableSignsMap;
+
 	/** The sizes list. */
 	private List<String> sizesList;
 
@@ -342,6 +348,35 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 			}
 		}
 		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getRemarkableSignId(java.lang.
+	 * String)
+	 */
+	public Integer getRemarkableSignId(final String remarkableSignName) {
+		return this.remarkableSignsMap != null ? this.remarkableSignsMap
+				.get(remarkableSignName) : 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidService#getRemarkableSigns()
+	 */
+	public List<String> getRemarkableSigns() {
+		if (this.remarkableSignsMap == null) {
+			final Cursor cursorQueryHabitats = this.ornidroidDAO
+					.getRemarkableSigns();
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQueryHabitats);
+			this.remarkableSignsMap = sfv.getMapNameId();
+			this.remarkableSignsList = sfv.getFieldsValues();
+
+		}
+		return this.remarkableSignsList;
 	}
 
 	/*

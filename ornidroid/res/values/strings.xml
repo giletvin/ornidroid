@@ -97,4 +97,6 @@
     <string name="search_paw_colour">Paw colour</string>
 	<string name="search_show_results">Show results : </string>
 	<string name="expand_collapse_form">Expand/collapse form</string>
+	<string name="search_remarkable_sign_choose">Choose a remarkable sign</string>
+    <string name="search_remarkable_sign">Remarkable sign</string>
 </resources>

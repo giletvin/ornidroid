@@ -131,6 +131,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		initSelectField(MultiCriteriaSearchFieldType.PAW_COLOUR);
 		initSelectField(MultiCriteriaSearchFieldType.HABITAT);
 		initSelectField(MultiCriteriaSearchFieldType.BEAK_FORM);
+		initSelectField(MultiCriteriaSearchFieldType.REMARKABLE_SIGN);
 		updateSearchCountResults(this.ornidroidService
 				.getMultiSearchCriteriaCountResults(this.formBean));
 
@@ -234,6 +235,14 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			dataAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item,
 					this.ornidroidService.getColours());
+			break;
+		case REMARKABLE_SIGN:
+			field = (MultiCriteriaSelectField) findViewById(R.id.search_remarkable_sign_field);
+			// TODO : un adapteur custom pour mettre des icones de signes
+			// distinctifs
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getRemarkableSigns());
 			break;
 
 		}

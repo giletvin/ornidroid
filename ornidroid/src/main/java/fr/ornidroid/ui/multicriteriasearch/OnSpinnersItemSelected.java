@@ -70,6 +70,11 @@ public class OnSpinnersItemSelected implements OnItemSelectedListener {
 					this.activity.getOrnidroidService().getColourId(
 							parent.getItemAtPosition(pos).toString()));
 			break;
+		case REMARKABLE_SIGN:
+			this.activity.getFormBean().setRemarkableSignId(
+					this.activity.getOrnidroidService().getRemarkableSignId(
+							parent.getItemAtPosition(pos).toString()));
+			break;
 
 		}
 

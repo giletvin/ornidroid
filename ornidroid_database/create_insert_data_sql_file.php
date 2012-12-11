@@ -199,9 +199,9 @@ function getColourFk($data){
 
 /*
 * Genere la commande insert dans la table bird
-* insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk,beak_form_fk, size_value,size_fk, feather_colour_fk,feather_colour_2_fk,beak_colour_fk,beak_colour_2_fk,paw_colour_fk,paw_colour_2_fk) values (1,'morus bassanus','morus_bassanus',1,1,1,1,115,5,1,1,1,1,1,1,1);
+* insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk,beak_form_fk, size_value,size_fk, feather_colour_fk,feather_colour_2_fk,beak_colour_fk,beak_colour_2_fk,paw_colour_fk,paw_colour_2_fk,remarkable_sign_fk) values (1,'morus bassanus','morus_bassanus',1,1,1,1,115,5,1,1,1,1,1,1,1,1);
 */
-function genereInsertTableBird($array_beak_form,$array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$id,$csvLine){
+function genereInsertTableBird($array_sign,$array_beak_form,$array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$id,$csvLine){
 
         $directory_name = nettoie_nom($csvLine[0]);
 	$scientific_name = $csvLine[2];
@@ -241,6 +241,12 @@ function genereInsertTableBird($array_beak_form,$array_habitat,$array_category,$
 	if ($csvLine[19]!=''){
 		$habitat2_fk=array_search($csvLine[19],$array_habitat)+1;
 		$sqlQuery .="update bird set habitat2_fk=".$habitat2_fk." where id=".$id.";\n";
+	}
+	if ($csvLine[13]!=''){
+		//retrouver dans la map des forms des signs l'id qui lui a été accordé dans la table des remarkable_sign
+		//id = index dans le tableau +1 car les id commencent à 1 et pas 0
+		$sign_fk=array_search($csvLine[13],$array_sign)+1;
+		$sqlQuery .="update bird set remarkable_sign_fk=".$sign_fk." where id=".$id.";\n";
 	}
 
 	return $sqlQuery;
@@ -340,7 +346,25 @@ function genereInsertTableHabitat(&$array_habitat,$csvLine){
 		return "";
 	}
 }
-
+/*
+* Genere la commande insert dans la table des remarkable signs
+* //INSERT INTO remarkable_sign(id,name,lang) VALUES(1,'huppe','fr');
+* //14e colonne
+*/
+function genereInsertTableSign(&$array_sign,$csvLine){
+	$sign=$csvLine[13];
+	if ($sign!=''){
+		$sqlquery="";
+		if (!in_array($sign,$array_sign)){
+			$id=array_push($array_sign,$sign);
+			$sqlquery .= "INSERT INTO remarkable_sign(id,name,lang) VALUES(".$id.",\"".$sign."\",'fr');\n";
+		}
+		return $sqlquery;
+	}
+	else{
+		return "";
+	}
+}
 /*
 * MAIN
 */
@@ -354,12 +378,14 @@ $handlerTableScientificOrderAndFamily = fopen('insert_data_table_scientific_orde
 
 $handlerTableCategory = fopen('insert_data_table_category.sql', 'w');
 $handlerTableHabitat = fopen('insert_data_table_habitat.sql', 'w');
+$handlerTableSign = fopen('insert_data_table_remarkable_sign.sql', 'w');
 
 
 $array_scientific_orders = array();
 $array_scientific_family = array();
 $array_category = array();
 $array_habitat = array();
+$array_sign = array();
 $array_beak_form = array();
 //INSERT INTO beak_form(id,name,lang)
 		// VALUES(1,"autres becs droits",'fr');
@@ -382,10 +408,11 @@ if (($handle = fopen("oiseaux_europe_avibase_ss_rares.csv", "r")) !== FALSE) {
 	if ($idBird>0) {
 		if (count($data)==21){
 
+			$insertTableSign=genereInsertTableSign($array_sign,$data);
 			$insertTableHabitat=genereInsertTableHabitat($array_habitat,$data);
 			$insertTableCategory=genereInsertTableCategory($array_category,$data);
 			$insertTableScientificOrderAndFamily=genereInsertTableScientificOrderAndFamily($array_scientific_orders,$array_scientific_family,$data);
-			$insertTableBird=genereInsertTableBird($array_beak_form,$array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$idBird,$data);
+			$insertTableBird=genereInsertTableBird($array_sign,$array_beak_form,$array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$idBird,$data);
 			$insertTableTaxonomy=genereInsertTableTaxonomy($idBird,$data);
 			$insertTableDescription=genereInsertTableDescription($idBird,$data);
 			fwrite($handlerTableBird, $insertTableBird);
@@ -394,6 +421,7 @@ if (($handle = fopen("oiseaux_europe_avibase_ss_rares.csv", "r")) !== FALSE) {
 			fwrite($handlerTableScientificOrderAndFamily, $insertTableScientificOrderAndFamily);
 			fwrite($handlerTableCategory, $insertTableCategory);
 			fwrite($handlerTableHabitat, $insertTableHabitat);
+			fwrite($handlerTableSign, $insertTableSign);
 
 		}
 		else {
@@ -410,6 +438,7 @@ fclose($handlerTableDescription);
 fclose($handlerTableScientificOrderAndFamily);
 fclose($handlerTableCategory);
 fclose($handlerTableHabitat);
+fclose($handlerTableSign);
 
 
 ?>

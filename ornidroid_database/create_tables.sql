@@ -20,6 +20,7 @@ create table bird(
 	beak_colour_2_fk,
 	paw_colour_fk,
 	paw_colour_2_fk,
+	remarkable_sign_fk,
 	PRIMARY KEY(id)
 );
 
@@ -64,6 +65,12 @@ create table beak_form(
 );
 
 create table colour(
+		id integer,
+		name,
+		lang
+);
+
+create table remarkable_sign(
 		id integer,
 		name,
 		lang

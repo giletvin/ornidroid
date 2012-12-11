@@ -150,6 +150,22 @@ public interface IOrnidroidService {
 	List<Taxon> getNames(int id);
 
 	/**
+	 * Gets the remarkable sign id.
+	 * 
+	 * @param remarkableSignName
+	 *            the remarkable sign name
+	 * @return the remarkable sign id
+	 */
+	Integer getRemarkableSignId(String remarkableSignName);
+
+	/**
+	 * Gets the remarkable signs.
+	 * 
+	 * @return the remarkable signs
+	 */
+	List<String> getRemarkableSigns();
+
+	/**
 	 * Gets the size id.
 	 * 
 	 * @param sizeName

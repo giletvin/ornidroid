@@ -84,5 +84,17 @@
     <string name="search_count_results">Anzahl der Ergebnisse : </string>
     <string name="search_show_results">Zeigen die Ergebnisse </string>
     <string name="search_all">Alle </string>
+    <string name="reset_form">Reset form</string>
+    <string name="search_size_choose">Wählen Sie eine Groesse</string>
+    <string name="search_size">Groesse</string>
+    <string name="search_colour_choose">Wählen Sie eine Farbe</string>
+    <string name="search_feather_colour">Federfarbe</string>
+    <string name="search_beak_colour">Schnabelfarbe</string>
+    <!--reprendre ici-->
+    <string name="search_paw_colour">Paw colour</string>
+    <string name="search_show_results">Show results : </string>
+    <string name="expand_collapse_form">Expand/collapse form</string>
+    <string name="search_remarkable_sign_choose">Choose a remarkable sign</string>
+    <string name="search_remarkable_sign">Remarkable sign</string>
 
 </resources>

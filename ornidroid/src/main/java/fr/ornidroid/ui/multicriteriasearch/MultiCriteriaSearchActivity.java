@@ -156,16 +156,15 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	}
 
 	/**
-	 * Update the search count results textview.
+	 * Update the search count results button.
 	 * 
 	 * @param countResults
 	 *            the count results
 	 */
 	protected void updateSearchCountResults(final int countResults) {
-		this.searchShowResultsButton.setText(this
-				.getText(R.string.search_show_results)
+		this.searchShowResultsButton.setText(countResults
 				+ Constants.BLANK_STRING
-				+ countResults);
+				+ this.getText(R.string.search_show_results));
 	}
 
 	/**
@@ -190,7 +189,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		switch (selectFieldType) {
 		case CATEGORY:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_category_field);
-
+			field.setIconResource(R.drawable.ic_categories);
 			dataAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item,
 					this.ornidroidService.getCategories());
@@ -198,6 +197,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			break;
 		case SIZE:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_size_field);
+			field.setIconResource(R.drawable.ic_size);
 			dataAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item,
 					this.ornidroidService.getSizes());
@@ -205,18 +205,20 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 
 		case HABITAT:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_habitat_field);
-
+			field.setIconResource(R.drawable.ic_habitat);
 			dataAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item,
 					this.ornidroidService.getHabitats());
 			break;
 		case BEAK_FORM:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_beak_form_field);
+			field.setIconResource(R.drawable.ic_beak_type);
 			dataAdapter = new MyCustomAdapter(this, R.layout.row_spinner_icons,
 					this.ornidroidService.getBeakForms());
 			break;
 		case FEATHER_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_feather_colour_field);
+			field.setIconResource(R.drawable.ic_feather_colour);
 			// TODO : un adapteur custom pour mettre les couleurs ?
 			dataAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item,
@@ -224,6 +226,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			break;
 		case BEAK_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_beak_colour_field);
+			field.setIconResource(R.drawable.ic_beak_colour);
 			// TODO : un adapteur custom pour mettre les couleurs ?
 			dataAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item,
@@ -231,6 +234,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			break;
 		case PAW_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_paw_colour_field);
+			field.setIconResource(R.drawable.ic_feet_colour);
 			// TODO : un adapteur custom pour mettre les couleurs ?
 			dataAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item,
@@ -238,6 +242,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			break;
 		case REMARKABLE_SIGN:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_remarkable_sign_field);
+			field.setIconResource(R.drawable.ic_remarkable_sign);
 			// TODO : un adapteur custom pour mettre des icones de signes
 			// distinctifs
 			dataAdapter = new ArrayAdapter<String>(this,

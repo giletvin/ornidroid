@@ -69,7 +69,7 @@
     <string name="about_ornidroid">Diese Anwendung steht unter
 		der Creative Commons BY
 		NC-Lizenz\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.de</string>
-    <string name="download_in_progress">Download wird durchgeführt...</string>
+    <string name="download_in_progress">Download wird durchgeführt</string>
     <string name="download_please_wait">Bitte warte während des Downloads.
 		Der Bildschirm wird automatisch aktualisiert werden.</string>
     <string name="no_resources_online">Sorry, keine online-Daten gefunden.</string>
@@ -81,19 +81,17 @@
     <string name="search_habitat">Lebensraum</string>
     <string name="search_beak_form_choose">Wählen Sie eine Schnabelform</string>
     <string name="search_beak_form">Schnabelform</string>
-    <string name="search_count_results">Anzahl der Ergebnisse : </string>
-    <string name="search_show_results">Zeigen die Ergebnisse </string>
+    <string name="search_show_results">Ergebnisse</string>
     <string name="search_all">Alle </string>
     <string name="reset_form">Reset form</string>
-    <string name="search_size_choose">Wählen Sie eine Groesse</string>
+    <string name="search_size_choose">Wählen Sie eine Grösse</string>
     <string name="search_size">Groesse</string>
     <string name="search_colour_choose">Wählen Sie eine Farbe</string>
     <string name="search_feather_colour">Federfarbe</string>
     <string name="search_beak_colour">Schnabelfarbe</string>
+    <string name="search_paw_colour">Fussfarbe</string>
+    <string name="expand_collapse_form">Ofnen/Schliessen</string>
     <!--reprendre ici-->
-    <string name="search_paw_colour">Paw colour</string>
-    <string name="search_show_results">Show results : </string>
-    <string name="expand_collapse_form">Expand/collapse form</string>
     <string name="search_remarkable_sign_choose">Choose a remarkable sign</string>
     <string name="search_remarkable_sign">Remarkable sign</string>
 

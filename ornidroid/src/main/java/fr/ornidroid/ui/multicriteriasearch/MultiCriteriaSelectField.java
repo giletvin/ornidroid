@@ -17,6 +17,8 @@ import fr.ornidroid.R;
  */
 public class MultiCriteriaSelectField extends LinearLayout {
 
+	private boolean customIcon = false;
+
 	/** The field type. */
 	private MultiCriteriaSearchFieldType fieldType;
 
@@ -25,7 +27,6 @@ public class MultiCriteriaSelectField extends LinearLayout {
 
 	/** The spinner. */
 	private final Spinner spinner;
-
 	/** The text view. */
 	private final TextView textView;
 
@@ -104,7 +105,7 @@ public class MultiCriteriaSelectField extends LinearLayout {
 	}
 
 	/**
-	 * Expand or collapse the field
+	 * Expand or collapse the field.
 	 * 
 	 * @param expand
 	 *            the expand
@@ -112,12 +113,16 @@ public class MultiCriteriaSelectField extends LinearLayout {
 	public void expand(final boolean expand) {
 		if (expand) {
 			MultiCriteriaSelectField.this.spinner.setVisibility(View.VISIBLE);
-			MultiCriteriaSelectField.this.icon
-					.setImageResource(R.drawable.ic_up);
+			if (!this.customIcon) {
+				MultiCriteriaSelectField.this.icon
+						.setImageResource(R.drawable.ic_up);
+			}
 		} else {
 			MultiCriteriaSelectField.this.spinner.setVisibility(View.GONE);
-			MultiCriteriaSelectField.this.icon
-					.setImageResource(R.drawable.ic_down);
+			if (!this.customIcon) {
+				MultiCriteriaSelectField.this.icon
+						.setImageResource(R.drawable.ic_down);
+			}
 		}
 	}
 
@@ -157,22 +162,14 @@ public class MultiCriteriaSelectField extends LinearLayout {
 	}
 
 	/**
-	 * Inits the icon Laoyout.
+	 * Sets the icon resource.
 	 * 
-	 * @param context
-	 *            the context
-	 * @return the linear layout
+	 * @param resId
+	 *            the new icon resource
 	 */
-	private LinearLayout initIconLayout(final Context context) {
-		final LinearLayout layoutIcon = new LinearLayout(context);
-		final LayoutParams paramsLayoutIcon = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		paramsLayoutIcon.gravity = Gravity.RIGHT;
-		layoutIcon.setLayoutParams(paramsLayoutIcon);
-
-		this.icon.setImageResource(R.drawable.ic_down);
-		layoutIcon.addView(this.icon);
-		return layoutIcon;
+	public void setIconResource(final int resId) {
+		this.icon.setImageResource(resId);
+		this.customIcon = true;
 	}
 
 	/**
@@ -186,14 +183,28 @@ public class MultiCriteriaSelectField extends LinearLayout {
 		final LinearLayout layoutTextIcon = new LinearLayout(context);
 		final LayoutParams paramsLayoutTextIcon = new LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		paramsLayoutTextIcon.gravity = Gravity.CENTER_HORIZONTAL;
+		paramsLayoutTextIcon.gravity = Gravity.CENTER;
 		layoutTextIcon.setLayoutParams(paramsLayoutTextIcon);
 
-		final LinearLayout layoutIcon = initIconLayout(context);
+		final LayoutParams paramsLayoutIcon = new LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		paramsLayoutIcon.height = 50;
+		paramsLayoutIcon.width = 50;
+		this.icon.setLayoutParams(paramsLayoutIcon);
+		this.icon.setImageResource(R.drawable.ic_down);
+		layoutTextIcon.addView(this.icon);
 
-		layoutTextIcon.addView(this.textView);
-		layoutTextIcon.addView(layoutIcon);
+		final LinearLayout layoutText = new LinearLayout(context);
+
+		final LayoutParams paramsLayoutText = new LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		paramsLayoutText.leftMargin = 20;
+		paramsLayoutText.topMargin = 5;
+		paramsLayoutText.gravity = Gravity.CENTER;
+		layoutText.setLayoutParams(paramsLayoutText);
+		layoutText.addView(this.textView);
+		layoutTextIcon.addView(layoutText);
+
 		return layoutTextIcon;
 	}
-
 }

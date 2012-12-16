@@ -80,7 +80,7 @@
     <string name="about_ornidroid">Cette application est sous
 		licence Creative Commons BY
 		NC\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.fr</string>
-    <string name="download_in_progress">Téléchargement en cours ...</string>
+    <string name="download_in_progress">Téléchargement en cours</string>
     <string name="download_please_wait">Veuillez patienter pendant le téléchargement.
 		L\'écran va se rafraîchir automatiquement.</string>
     <string name="no_resources_online">Désolé, pas de fichier à télécharger depuis
@@ -93,8 +93,7 @@
     <string name="search_habitat">Habitat</string>
     <string name="search_beak_form_choose">Choose un type de bec</string>
     <string name="search_beak_form">Type de bec</string>
-    <string name="search_count_results">Nombre de résultats : </string>
-    <string name="search_show_results">Afficher les résultats </string>
+    <string name="search_count_results">résultats</string>
     <string name="search_all">Tous </string>
     <string name="reset_form">Réinitialiser le formulaire</string>
     <string name="search_size_choose">Choisir une taille</string>
@@ -103,7 +102,7 @@
     <string name="search_feather_colour">Couleur du plumage</string>
     <string name="search_beak_colour">Couleur du bec</string>
     <string name="search_paw_colour">Couleur des pattes</string>
-    <string name="search_show_results">Voir les résultats : </string>
+    <string name="search_show_results">résultats</string>
     <string name="expand_collapse_form">Ouvrir/Fermer le formulaire</string>
     <string name="search_remarkable_sign_choose">Choisir un signe distinctif</string>
     <string name="search_remarkable_sign">Signe distinctif</string>

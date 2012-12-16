@@ -48,16 +48,6 @@
                 custom:text="@string/search_size" />
 
             <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
-                android:id="@+id/search_remarkable_sign_field"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="20sp"
-                android:paddingLeft="10sp"
-                custom:spinnerPrompt="@string/search_remarkable_sign_choose"
-                custom:text="@string/search_remarkable_sign" />
-
-            <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
                 android:id="@+id/search_feather_colour_field"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -96,6 +86,16 @@
                 android:paddingLeft="10sp"
                 custom:spinnerPrompt="@string/search_beak_form_choose"
                 custom:text="@string/search_beak_form" />
+
+            <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+                android:id="@+id/search_remarkable_sign_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20sp"
+                android:paddingLeft="10sp"
+                custom:spinnerPrompt="@string/search_remarkable_sign_choose"
+                custom:text="@string/search_remarkable_sign" />
         </LinearLayout>
     </ScrollView>
 

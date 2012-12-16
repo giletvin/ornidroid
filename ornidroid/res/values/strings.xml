@@ -72,7 +72,7 @@
 		available on the website ? (Internet connection is required)</string>
     <string name="about_ornidroid">Licence Creative Commons BY
 		NC\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.en</string>
-    <string name="download_in_progress">Download in progress ...</string>
+    <string name="download_in_progress">Download in progress</string>
     <string name="download_please_wait">Please wait during download. The screen will
 		automatically refresh.</string>
     <string name="no_resources_online">Sorry, no files to download on the website.</string>
@@ -93,8 +93,8 @@
     <string name="search_colour_choose">Choose a colour</string>
     <string name="search_feather_colour">Feather colour</string>
     <string name="search_beak_colour">Beak colour</string>
-    <string name="search_paw_colour">Paw colour</string>
-    <string name="search_show_results">Show results : </string>
+    <string name="search_paw_colour">Feet colour</string>
+    <string name="search_show_results">results</string>
     <string name="expand_collapse_form">Expand/collapse form</string>
     <string name="search_remarkable_sign_choose">Choose a remarkable sign</string>
     <string name="search_remarkable_sign">Remarkable sign</string>

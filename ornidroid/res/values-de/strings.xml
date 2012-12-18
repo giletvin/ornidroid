@@ -85,14 +85,13 @@
     <string name="search_all">Alle </string>
     <string name="reset_form">Reset form</string>
     <string name="search_size_choose">Wählen Sie eine Grösse</string>
-    <string name="search_size">Groesse</string>
+    <string name="search_size">Grösse</string>
     <string name="search_colour_choose">Wählen Sie eine Farbe</string>
     <string name="search_feather_colour">Federfarbe</string>
     <string name="search_beak_colour">Schnabelfarbe</string>
     <string name="search_paw_colour">Fussfarbe</string>
     <string name="expand_collapse_form">Ofnen/Schliessen</string>
-    <!--reprendre ici-->
-    <string name="search_remarkable_sign_choose">Choose a remarkable sign</string>
-    <string name="search_remarkable_sign">Remarkable sign</string>
+    <string name="search_remarkable_sign_choose">Wählen Sie eine Merkwürdigkeit</string>
+    <string name="search_remarkable_sign">Merkwürdigkeit</string>
 
 </resources>

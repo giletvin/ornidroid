@@ -295,11 +295,15 @@ function genereInsertTableScientificOrderAndFamily(&$array_scientific_orders,&$a
 		if (!in_array($ordre,$array_scientific_orders)){
 			$id=array_push($array_scientific_orders,$ordre);
 			$sqlquery .= "INSERT INTO scientific_order(id,name,lang) VALUES(".$id.",\"".$ordre."\",'fr');\n";
+			$sqlquery .= "INSERT INTO scientific_order(id,name,lang) VALUES(".$id.",\"".$ordre."\",'de');\n";
+			$sqlquery .= "INSERT INTO scientific_order(id,name,lang) VALUES(".$id.",\"".$ordre."\",'en');\n";
 		}
 		if (!in_array($famille,$array_scientific_family)){
 			$id =array_push($array_scientific_family,$famille);
 
 			$sqlquery .= "INSERT INTO scientific_family(id,name,lang) VALUES(".$id.",\"".$famille."\",'fr');\n";
+			$sqlquery .= "INSERT INTO scientific_family(id,name,lang) VALUES(".$id.",\"".$famille."\",'de');\n";
+			$sqlquery .= "INSERT INTO scientific_family(id,name,lang) VALUES(".$id.",\"".$famille."\",'en');\n";
 		}
 		return $sqlquery;
 	}
@@ -308,44 +312,6 @@ function genereInsertTableScientificOrderAndFamily(&$array_scientific_orders,&$a
 	}
 }
 
-/*
-* Genere la commande insert dans la table des categories
-* //INSERT INTO category(id,name,lang) VALUES(1,'Chouettes, hiboux','fr');
-* //7eme colonne
-*/
-function genereInsertTableCategory(&$array_category,$csvLine){
-	$category=$csvLine[6];
-	if ($category!=''){
-		$sqlquery="";
-		if (!in_array($category,$array_category)){
-			$id=array_push($array_category,$category);
-			$sqlquery .= "INSERT INTO category(id,name,lang) VALUES(".$id.",\"".$category."\",'fr');\n";
-		}
-		return $sqlquery;
-	}
-	else{
-		return "";
-	}
-}
-/*
-* Genere la commande insert dans la table des categories
-* //INSERT INTO habitat(id,name,lang) VALUES(1,'Littoral','fr');
-* //19 colonne
-*/
-function genereInsertTableHabitat(&$array_habitat,$csvLine){
-	$habitat1=$csvLine[18];
-	if ($habitat1!=''){
-		$sqlquery="";
-		if (!in_array($habitat1,$array_habitat)){
-			$id=array_push($array_habitat,$habitat1);
-			$sqlquery .= "INSERT INTO habitat(id,name,lang) VALUES(".$id.",\"".$habitat1."\",'fr');\n";
-		}
-		return $sqlquery;
-	}
-	else{
-		return "";
-	}
-}
 /*
 * Genere la commande insert dans la table des remarkable signs
 * //INSERT INTO remarkable_sign(id,name,lang) VALUES(1,'huppe','fr');
@@ -366,6 +332,73 @@ function genereInsertTableSign(&$array_sign,$csvLine){
 	}
 }
 /*
+initialisation du tab des categories telles qu'elles sont stockées en bdd
+INSERT INTO category(id,name,lang) VALUES(1,"Passereaux",'fr');
+INSERT INTO category(id,name,lang) VALUES(2,"Rapaces",'fr');
+INSERT INTO category(id,name,lang) VALUES(3,"Grands échassiers",'fr');
+INSERT INTO category(id,name,lang) VALUES(4,"Cygnes, oies, canards",'fr');
+INSERT INTO category(id,name,lang) VALUES(5,"Limicoles",'fr');
+INSERT INTO category(id,name,lang) VALUES(6,"Gallinacés",'fr');
+INSERT INTO category(id,name,lang) VALUES(7,"Corvidés",'fr');
+INSERT INTO category(id,name,lang) VALUES(8,"Chouettes, hiboux",'fr');
+INSERT INTO category(id,name,lang) VALUES(9,"Fous, cormorans, pélicans",'fr');
+INSERT INTO category(id,name,lang) VALUES(10,"Autres",'fr');
+INSERT INTO category(id,name,lang) VALUES(11,"Râles, marouettes, poules d'eau",'fr');
+INSERT INTO category(id,name,lang) VALUES(12,"Mouettes, goéland, fulmars",'fr');
+INSERT INTO category(id,name,lang) VALUES(13,"Labbes",'fr');
+INSERT INTO category(id,name,lang) VALUES(14,"Grèbes",'fr');
+INSERT INTO category(id,name,lang) VALUES(15,"Sternes",'fr');
+INSERT INTO category(id,name,lang) VALUES(16,"Pingouins, guillemots, macareux",'fr');
+INSERT INTO category(id,name,lang) VALUES(17,"Martinets et hirondelles",'fr');
+INSERT INTO category(id,name,lang) VALUES(18,"Pics",'fr');
+INSERT INTO category(id,name,lang) VALUES(19,"Pigeons et tourterelles",'fr');
+INSERT INTO category(id,name,lang) VALUES(20,"Plongeons",'fr');
+*/
+function initializeCategories(){
+	return array('Passereaux', 'Rapaces', 'Grands échassiers', "Cygnes, oies, canards", "Limicoles", "Gallinacés", "Corvidés", "Chouettes, hiboux", "Fous, cormorans, pélicans","Autres","Râles, marouettes, poules d'eau","Mouettes, goéland, fulmars","Labbes","Grèbes","Sternes","Pingouins, guillemots, macareux","Martinets et hirondelles","Pics","Pigeons et tourterelles","Plongeons");
+}
+/*
+init des habitats tels que dans la bdd
+INSERT INTO habitat(id,name,lang) VALUES(1,"Montagnes et roches",'fr');
+INSERT INTO habitat(id,name,lang) VALUES(2,"Villes, villages, jardins",'fr');
+INSERT INTO habitat(id,name,lang) VALUES(3,"Milieu sec ou désertique",'fr');
+INSERT INTO habitat(id,name,lang) VALUES(4,"Forêts et landes",'fr');
+INSERT INTO habitat(id,name,lang) VALUES(5,"Champs et bocages",'fr');
+INSERT INTO habitat(id,name,lang) VALUES(6,"Littoral",'fr');
+INSERT INTO habitat(id,name,lang) VALUES(7,"Bords de rivières, zones humides",'fr');
+INSERT INTO habitat(id,name,lang) VALUES(8,"Milieu méditerranéen",'fr');
+INSERT INTO habitat(id,name,lang) VALUES(9,"Toundra",'fr');
+*/
+function initializeHabitats(){
+	return array('Montagnes et roches', 'Villes, villages, jardins', 'Milieu sec ou désertique', "Forêts et landes", "Champs et bocages", "Littoral", "Bords de rivières, zones humides", "Milieu méditerranéen", "Toundra");
+}
+/*
+init les formes de becs
+//INSERT INTO beak_form(id,name,lang) VALUES(1,"autres becs droits",'fr');
+// INSERT INTO beak_form(id,name,lang) VALUES(2,"épais et court",'fr');
+// INSERT INTO beak_form(id,name,lang) VALUES(3,"autre",'fr');
+// INSERT INTO beak_form(id,name,lang) VALUES(4,"courbé",'fr');
+// INSERT INTO beak_form(id,name,lang) VALUES(5,"droit et long",'fr');
+// INSERT INTO beak_form(id,name,lang) VALUES(6,"crochu",'fr');
+// INSERT INTO beak_form(id,name,lang) VALUES(7,"fin et court",'fr');
+// INSERT INTO beak_form(id,name,lang) VALUES(8,"canard",'fr');
+// INSERT INTO beak_form(id,name,lang) VALUES(9,"mouette",'fr');
+
+*/
+function initializeBeakForms(){
+	return array('autres becs droits', 'épais et court', 'autre', "courbé", "droit et long", "crochu", "fin et court", "canard", "mouette");
+}
+/*
+INSERT INTO remarkable_sign(id,name,lang) VALUES(1,"queue longue",'fr');
+INSERT INTO remarkable_sign(id,name,lang) VALUES(2,"huppe",'fr');
+INSERT INTO remarkable_sign(id,name,lang) VALUES(3,"moucheté",'fr');
+INSERT INTO remarkable_sign(id,name,lang) VALUES(4,"queue bifide",'fr');
+*/
+function initializeSigns(){
+	return array('queue longue', 'huppe', 'moucheté', "queue bifide");
+}
+
+/*
 * MAIN
 */
 $handlerTableBird = fopen('insert_data_table_bird.sql', 'w');
@@ -376,30 +409,14 @@ $handlerTableDescription = fopen('insert_data_table_bird_description.sql', 'w');
 
 $handlerTableScientificOrderAndFamily = fopen('insert_data_table_scientific_order_and_family.sql', 'w');
 
-$handlerTableCategory = fopen('insert_data_table_category.sql', 'w');
-$handlerTableHabitat = fopen('insert_data_table_habitat.sql', 'w');
-$handlerTableSign = fopen('insert_data_table_remarkable_sign.sql', 'w');
 
 
 $array_scientific_orders = array();
 $array_scientific_family = array();
-$array_category = array();
-$array_habitat = array();
-$array_sign = array();
-$array_beak_form = array();
-//INSERT INTO beak_form(id,name,lang)
-		// VALUES(1,"autres becs droits",'fr');
-		// INSERT INTO beak_form(id,name,lang) VALUES(2,"épais et court",'fr');
-		// INSERT INTO beak_form(id,name,lang) VALUES(3,"autre",'fr');
-		// INSERT INTO beak_form(id,name,lang) VALUES(4,"courbé",'fr');
-		// INSERT INTO beak_form(id,name,lang) VALUES(5,"droit et long",'fr');
-		// INSERT INTO beak_form(id,name,lang) VALUES(6,"crochu",'fr');
-		// INSERT INTO beak_form(id,name,lang) VALUES(7,"fin et court",'fr');
-		// INSERT INTO beak_form(id,name,lang) VALUES(8,"canard",'fr');
-		// INSERT INTO beak_form(id,name,lang) VALUES(9,"mouette",'fr');
-
-//TODO : attention ! ce sont les valeurs en dur qu'on trouve dans le csv et qui sont dans le sql qui fait les inserts dans la table beak_form !
-$array_beak_form= array('autres becs droits', 'épais et court', 'autre', "courbé", "droit et long", "crochu", "fin et court", "canard", "mouette");
+$array_category = initializeCategories();
+$array_habitat = initializeHabitats();
+$array_sign = initializeSigns();
+$array_beak_form = initializeBeakForms();
 
 
 $idBird=0;
@@ -407,10 +424,6 @@ if (($handle = fopen("oiseaux_europe_avibase_ss_rares.csv", "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
 	if ($idBird>0) {
 		if (count($data)==21){
-
-			$insertTableSign=genereInsertTableSign($array_sign,$data);
-			$insertTableHabitat=genereInsertTableHabitat($array_habitat,$data);
-			$insertTableCategory=genereInsertTableCategory($array_category,$data);
 			$insertTableScientificOrderAndFamily=genereInsertTableScientificOrderAndFamily($array_scientific_orders,$array_scientific_family,$data);
 			$insertTableBird=genereInsertTableBird($array_sign,$array_beak_form,$array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$idBird,$data);
 			$insertTableTaxonomy=genereInsertTableTaxonomy($idBird,$data);
@@ -419,9 +432,7 @@ if (($handle = fopen("oiseaux_europe_avibase_ss_rares.csv", "r")) !== FALSE) {
 			fwrite($handlerTableTaxonomy, $insertTableTaxonomy);
 			fwrite($handlerTableDescription, $insertTableDescription);
 			fwrite($handlerTableScientificOrderAndFamily, $insertTableScientificOrderAndFamily);
-			fwrite($handlerTableCategory, $insertTableCategory);
-			fwrite($handlerTableHabitat, $insertTableHabitat);
-			fwrite($handlerTableSign, $insertTableSign);
+
 
 		}
 		else {
@@ -436,9 +447,7 @@ fclose($handlerTableBird);
 fclose($handlerTableTaxonomy);
 fclose($handlerTableDescription);
 fclose($handlerTableScientificOrderAndFamily);
-fclose($handlerTableCategory);
-fclose($handlerTableHabitat);
-fclose($handlerTableSign);
+
 
 
 ?>

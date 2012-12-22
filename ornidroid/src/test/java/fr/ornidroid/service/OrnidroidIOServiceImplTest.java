@@ -14,8 +14,6 @@ import fr.ornidroid.bo.BirdFactoryImpl;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.OrnidroidException;
-import fr.ornidroid.service.IOrnidroidIOService;
-import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.tests.AbstractTest;
 
 /**
@@ -71,13 +69,13 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 	@Test
 	public void testCheckOrnidroidHomeExistingAndEmptyDirectory()
 			throws OrnidroidException {
-		File ornidroidHome = new File(TEST_DIRECTORY);
+		final File ornidroidHome = new File(TEST_DIRECTORY);
 		Assert.assertTrue(ornidroidHome.exists());
-		File ornidroidHomeImages = new File(TEST_DIRECTORY + File.separator
-				+ BasicConstants.IMAGES_DIRECTORY);
+		final File ornidroidHomeImages = new File(TEST_DIRECTORY
+				+ File.separator + BasicConstants.IMAGES_DIRECTORY);
 		Assert.assertFalse(ornidroidHomeImages.exists());
-		File ornidroidHomeAudio = new File(TEST_DIRECTORY + File.separator
-				+ BasicConstants.AUDIO_DIRECTORY);
+		final File ornidroidHomeAudio = new File(TEST_DIRECTORY
+				+ File.separator + BasicConstants.AUDIO_DIRECTORY);
 		Assert.assertFalse(ornidroidHomeAudio.exists());
 
 		this.ornidroidIOService.checkOrnidroidHome(TEST_DIRECTORY);
@@ -100,10 +98,10 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 		// first : creation
 		testCheckOrnidroidHomeExistingAndEmptyDirectory();
 
-		File ornidroidHomeImages = new File(TEST_DIRECTORY + File.separator
-				+ BasicConstants.IMAGES_DIRECTORY);
-		File ornidroidHomeAudio = new File(TEST_DIRECTORY + File.separator
-				+ BasicConstants.AUDIO_DIRECTORY);
+		final File ornidroidHomeImages = new File(TEST_DIRECTORY
+				+ File.separator + BasicConstants.IMAGES_DIRECTORY);
+		final File ornidroidHomeAudio = new File(TEST_DIRECTORY
+				+ File.separator + BasicConstants.AUDIO_DIRECTORY);
 		// second run should do anything
 		this.ornidroidIOService.checkOrnidroidHome(TEST_DIRECTORY);
 		Assert.assertTrue(ornidroidHomeImages.exists());
@@ -120,15 +118,15 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 	@Test
 	public void testCheckOrnidroidHomeNonExistingDirectory()
 			throws OrnidroidException {
-		String ornidroidHomePath = TEST_DIRECTORY + File.separator
+		final String ornidroidHomePath = TEST_DIRECTORY + File.separator
 				+ "unexistingDirectory";
-		File ornidroidHome = new File(ornidroidHomePath);
+		final File ornidroidHome = new File(ornidroidHomePath);
 		Assert.assertFalse(ornidroidHome.exists());
-		File ornidroidHomeImages = new File(ornidroidHomePath + File.separator
-				+ BasicConstants.IMAGES_DIRECTORY);
+		final File ornidroidHomeImages = new File(ornidroidHomePath
+				+ File.separator + BasicConstants.IMAGES_DIRECTORY);
 		Assert.assertFalse(ornidroidHomeImages.exists());
-		File ornidroidHomeAudio = new File(ornidroidHomePath + File.separator
-				+ BasicConstants.AUDIO_DIRECTORY);
+		final File ornidroidHomeAudio = new File(ornidroidHomePath
+				+ File.separator + BasicConstants.AUDIO_DIRECTORY);
 		Assert.assertFalse(ornidroidHomeAudio.exists());
 
 		this.ornidroidIOService.checkOrnidroidHome(ornidroidHomePath);
@@ -143,12 +141,12 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 	 */
 	@Test
 	public void testCheckOrnidroidHomeNoRightsToWrite() {
-		File ornidroidHome = new File(TEST_DIRECTORY);
+		final File ornidroidHome = new File(TEST_DIRECTORY);
 		ornidroidHome.setReadOnly();
 		try {
 			this.ornidroidIOService.checkOrnidroidHome(TEST_DIRECTORY);
 			Assert.fail("an exception should have occurred");
-		} catch (OrnidroidException e) {
+		} catch (final OrnidroidException e) {
 			Assert.assertTrue("ok, normal exception", true);
 		}
 	}
@@ -167,7 +165,7 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 		// run 1: with a bird without pictures. Should download them from
 		// internet
 		Bird bird = this.birdFactory.createBird(1, "taxon", "",
-				"barge_a_queue_noire", "", null, "", "");
+				"barge_a_queue_noire", "", null, "", "", "");
 		Assert.assertNull("list of pictures should be null", bird.getPictures());
 		Assert.assertNull("list of sounds should be null", bird.getSounds());
 		this.ornidroidIOService.downloadMediaFiles(TEST_DIRECTORY
@@ -183,13 +181,13 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 		Assert.assertNotNull(bird.getSounds());
 		Assert.assertEquals(1, bird.getNumberOfSounds());
 		Thread.sleep(1000);
-		Date date = new Date();
+		final Date date = new Date();
 		Thread.sleep(1000);
 
 		// run 2: with a bird with pictures. Should just load the files in the
 		// List of pictures
 		bird = this.birdFactory.createBird(1, "taxon", "",
-				"barge_a_queue_noire", "", null, "", "");
+				"barge_a_queue_noire", "", null, "", "", "");
 		Assert.assertNull("list of pictures should be null", bird.getPictures());
 		this.ornidroidIOService.loadMediaFiles(TEST_DIRECTORY + File.separator
 				+ "/images", bird, OrnidroidFileType.PICTURE);
@@ -210,7 +208,7 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 	 */
 	@Test
 	public void testIsDirectoryEmpty() throws IOException {
-		File testDir = new File(TEST_DIRECTORY);
+		final File testDir = new File(TEST_DIRECTORY);
 		Assert.assertTrue(this.ornidroidIOService.isDirectoryEmpty(testDir));
 		FileUtils.touch(new File(TEST_DIRECTORY + File.separator + "test.txt"));
 		Assert.assertFalse(this.ornidroidIOService.isDirectoryEmpty(testDir));
@@ -225,8 +223,8 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 	 */
 	@Test
 	public void testLoadMediaFilesBirdWithoutFiles() throws OrnidroidException {
-		Bird bird = this.birdFactory.createBird(1, "taxon", "",
-				"bird_without_pictures", "", null, "", "");
+		final Bird bird = this.birdFactory.createBird(1, "taxon", "",
+				"bird_without_pictures", "", null, "", "", "");
 		Assert.assertNull("list of pictures should be null", bird.getPictures());
 		this.ornidroidIOService.loadMediaFiles(TEST_DIRECTORY, bird,
 				OrnidroidFileType.PICTURE);

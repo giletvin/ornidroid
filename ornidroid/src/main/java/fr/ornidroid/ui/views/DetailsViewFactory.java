@@ -58,11 +58,13 @@ public class DetailsViewFactory {
 		this.description = new TextView(this.activity);
 		this.description.setPadding(5, 0, 5, 20);
 		linearLayout.addView(this.description);
+
 		this.distribution = new TextView(this.activity);
 		this.distribution.setPadding(5, 0, 5, 20);
 		linearLayout.addView(this.distribution);
 
 		if (this.ornidroidService.getCurrentBird() != null) {
+
 			printBirdOrderAndFamily(this.ornidroidService.getCurrentBird());
 			printBirdDescription(this.ornidroidService.getCurrentBird());
 			printBirdDistributionAndBehaviour(this.ornidroidService
@@ -95,15 +97,19 @@ public class DetailsViewFactory {
 	 *            the bird
 	 */
 	private void printBirdDistributionAndBehaviour(final Bird bird) {
+		final StringBuilder distributionAndBehaviour = new StringBuilder();
+		distributionAndBehaviour.append(this.activity
+				.getText(R.string.distribution));
+		distributionAndBehaviour.append(BasicConstants.COLUMN_STRING);
+		distributionAndBehaviour.append(BasicConstants.CARRIAGE_RETURN);
+		distributionAndBehaviour.append(BasicConstants.CARRIAGE_RETURN);
+		distributionAndBehaviour.append(bird.getHabitat());
 		if (StringUtils.isNotBlank(bird.getDistribution())) {
-			this.distribution.setText(this.activity
-					.getText(R.string.distribution)
-					+ BasicConstants.COLUMN_STRING
-					+ BasicConstants.CARRIAGE_RETURN
-					+ BasicConstants.CARRIAGE_RETURN + bird.getDistribution());
-
+			distributionAndBehaviour.append(BasicConstants.CARRIAGE_RETURN);
+			distributionAndBehaviour.append(BasicConstants.CARRIAGE_RETURN);
+			distributionAndBehaviour.append(bird.getDistribution());
 		}
-
+		this.distribution.setText(distributionAndBehaviour.toString());
 	}
 
 	/**

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import android.app.Activity;
 import android.app.SearchManager;
 import android.database.Cursor;
@@ -19,6 +21,7 @@ import fr.ornidroid.bo.Taxon;
 import fr.ornidroid.data.IOrnidroidDAO;
 import fr.ornidroid.data.OrnidroidDAOImpl;
 import fr.ornidroid.data.OrnidroidDatabaseOpenHelper;
+import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.OrnidroidException;
 
 /**
@@ -439,6 +442,29 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	}
 
 	/**
+	 * Gets the habitat from cursor. Concatenates habitat 1 and habitat 2
+	 * 
+	 * @param cursor
+	 *            the cursor
+	 * @return the habitat from cursor
+	 */
+	private String getHabitatFromCursor(final Cursor cursor) {
+		final int habitat1Index = cursor
+				.getColumnIndex(IOrnidroidDAO.HABITAT_1_NAME_COLUMN);
+		final int habitat2Index = cursor
+				.getColumnIndex(IOrnidroidDAO.HABITAT_2_NAME_COLUMN);
+		final StringBuilder habitat = new StringBuilder(
+				(habitat1Index == -1) ? "" : cursor.getString(habitat1Index));
+		final String habitat2 = (habitat2Index == -1) ? "" : cursor
+				.getString(habitat2Index);
+		if (StringUtils.isNotBlank(habitat2)) {
+			habitat.append(BasicConstants.SLASH_STRING);
+			habitat.append(habitat2);
+		}
+		return habitat.toString();
+	}
+
+	/**
 	 * Load bird details from cursor.
 	 * 
 	 * @param cursor
@@ -463,6 +489,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_ORDER_NAME_COLUMN);
 			final int scientificFamilyIndex = cursor
 					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_FAMILY_NAME_COLUMN);
+
 			final String description = (descriptionIndex == -1) ? "" : cursor
 					.getString(descriptionIndex);
 			final String distribution = (distributionIndex == -1) ? "" : cursor
@@ -471,12 +498,14 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					: cursor.getString(scientificOrderIndex);
 			final String scientificFamily = (scientificFamilyIndex == -1) ? ""
 					: cursor.getString(scientificFamilyIndex);
+
 			final BirdFactoryImpl birdFactory = new BirdFactoryImpl();
 			this.currentBird = birdFactory.createBird(cursor.getInt(idIndex),
 					cursor.getString(taxonIndex),
 					cursor.getString(scientificNameIndex),
 					cursor.getString(directoryNameIndex), description,
-					distribution, scientificOrder, scientificFamily);
+					distribution, scientificOrder, scientificFamily,
+					getHabitatFromCursor(cursor));
 
 		}
 		cursor.close();

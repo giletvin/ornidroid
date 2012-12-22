@@ -25,6 +25,8 @@ public class MyCustomAdapter extends ArrayAdapter<String> {
 	/** The items list. */
 	private final List<String> itemsList;
 
+	private final MultiCriteriaSearchFieldType selectFieldType;
+
 	/**
 	 * Instantiates a new my custom adapter.
 	 * 
@@ -34,12 +36,17 @@ public class MyCustomAdapter extends ArrayAdapter<String> {
 	 *            the text view resource id
 	 * @param pItemsList
 	 *            the items list
+	 * @param selectFieldType
+	 *            the select field type
 	 */
 	public MyCustomAdapter(final MultiCriteriaSearchActivity pActivity,
-			final int textViewResourceId, final List<String> pItemsList) {
+			final int textViewResourceId, final List<String> pItemsList,
+			final MultiCriteriaSearchFieldType pSelectFieldType) {
 		super(pActivity, textViewResourceId, pItemsList);
 		this.activity = pActivity;
 		this.itemsList = pItemsList;
+		this.selectFieldType = pSelectFieldType;
+
 	}
 
 	/**
@@ -63,12 +70,21 @@ public class MyCustomAdapter extends ArrayAdapter<String> {
 
 		final ImageView icon = (ImageView) row.findViewById(R.id.spinner_icon);
 
-		final int beakFormId = this.activity.getOrnidroidService()
-				.getBeakFormId(this.itemsList.get(position));
+		int idRes = 0;
+		switch (this.selectFieldType) {
+		case BEAK_FORM:
+			final int beakFormId = this.activity.getOrnidroidService()
+					.getBeakFormId(this.itemsList.get(position));
+			idRes = SpinnerIconSelector
+					.getIconResourceIdFromBeakFormId(beakFormId);
+			break;
+		default:
+			final int colourId = this.activity.getOrnidroidService()
+					.getColourId(this.itemsList.get(position));
+			idRes = SpinnerIconSelector.getIconResourceIdFromColourId(colourId);
+			break;
 
-		// TODO : dedicated to beak forms. Could be generalized to other icons
-		final int idRes = BeakFormsHelper
-				.getIconResourceIdFromBeakFormId(beakFormId);
+		}
 		icon.setImageResource(idRes);
 		return row;
 	}

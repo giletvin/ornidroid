@@ -128,7 +128,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		initSelectField(MultiCriteriaSearchFieldType.SIZE);
 		initSelectField(MultiCriteriaSearchFieldType.FEATHER_COLOUR);
 		initSelectField(MultiCriteriaSearchFieldType.BEAK_COLOUR);
-		initSelectField(MultiCriteriaSearchFieldType.PAW_COLOUR);
+		initSelectField(MultiCriteriaSearchFieldType.FEET_COLOUR);
 		initSelectField(MultiCriteriaSearchFieldType.HABITAT);
 		initSelectField(MultiCriteriaSearchFieldType.BEAK_FORM);
 		initSelectField(MultiCriteriaSearchFieldType.REMARKABLE_SIGN);
@@ -214,37 +214,31 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_beak_form_field);
 			field.setIconResource(R.drawable.ic_beak_type);
 			dataAdapter = new MyCustomAdapter(this, R.layout.row_spinner_icons,
-					this.ornidroidService.getBeakForms());
+					this.ornidroidService.getBeakForms(), selectFieldType);
 			break;
 		case FEATHER_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_feather_colour_field);
 			field.setIconResource(R.drawable.ic_feather_colour);
-			// TODO : un adapteur custom pour mettre les couleurs ?
-			dataAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_spinner_item,
-					this.ornidroidService.getColours());
+			dataAdapter = new MyCustomAdapter(this, R.layout.row_spinner_icons,
+					this.ornidroidService.getColours(), selectFieldType);
 			break;
 		case BEAK_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_beak_colour_field);
 			field.setIconResource(R.drawable.ic_beak_colour);
-			// TODO : un adapteur custom pour mettre les couleurs ?
-			dataAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_spinner_item,
-					this.ornidroidService.getColours());
+			dataAdapter = new MyCustomAdapter(this, R.layout.row_spinner_icons,
+					this.ornidroidService.getColours(), selectFieldType);
 			break;
-		case PAW_COLOUR:
+		case FEET_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_paw_colour_field);
 			field.setIconResource(R.drawable.ic_feet_colour);
-			// TODO : un adapteur custom pour mettre les couleurs ?
-			dataAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_spinner_item,
-					this.ornidroidService.getColours());
+			dataAdapter = new MyCustomAdapter(this, R.layout.row_spinner_icons,
+					this.ornidroidService.getColours(), selectFieldType);
 			break;
 		case REMARKABLE_SIGN:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_remarkable_sign_field);
 			field.setIconResource(R.drawable.ic_remarkable_sign);
 			// TODO : un adapteur custom pour mettre des icones de signes
-			// distinctifs
+			// distinctifs ?
 			dataAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item,
 					this.ornidroidService.getRemarkableSigns());

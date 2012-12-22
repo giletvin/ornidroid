@@ -15,7 +15,7 @@ public enum MultiCriteriaSearchFieldType {
 	/** The habitat. */
 	HABITAT,
 	/** The paw colour. */
-	PAW_COLOUR,
+	FEET_COLOUR,
 	/** The remarkable sign. */
 	REMARKABLE_SIGN,
 	/** The size. */

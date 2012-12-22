@@ -91,14 +91,14 @@
     <string name="search_category">Catégorie</string>
     <string name="search_habitat_choose">Choisir un habitat</string>
     <string name="search_habitat">Habitat</string>
-    <string name="search_beak_form_choose">Choose un type de bec</string>
+    <string name="search_beak_form_choose">Choisir un type de bec</string>
     <string name="search_beak_form">Type de bec</string>
     <string name="search_count_results">résultats</string>
     <string name="search_all">Tous </string>
     <string name="reset_form">Réinitialiser le formulaire</string>
     <string name="search_size_choose">Choisir une taille</string>
     <string name="search_size">Taille</string>
-    <string name="search_colour_choose">Choisir une coleur</string>
+    <string name="search_colour_choose">Choisir une couleur</string>
     <string name="search_feather_colour">Couleur du plumage</string>
     <string name="search_beak_colour">Couleur du bec</string>
     <string name="search_paw_colour">Couleur des pattes</string>

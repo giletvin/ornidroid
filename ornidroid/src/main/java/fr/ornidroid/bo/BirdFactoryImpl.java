@@ -32,12 +32,15 @@ public class BirdFactoryImpl {
 	 *            the scientific order
 	 * @param scientificFamily
 	 *            the scientific family
+	 * @param habitat
+	 *            the habitat
 	 * @return the bird
 	 */
 	public Bird createBird(final Integer id, final String taxon,
 			final String scientificName, final String birdDirectoryName,
 			final String description, final String distribution,
-			final String scientificOrder, final String scientificFamily) {
+			final String scientificOrder, final String scientificFamily,
+			final String habitat) {
 		final Bird bird = new Bird();
 		bird.setId(id);
 		bird.setTaxon(taxon);
@@ -47,6 +50,7 @@ public class BirdFactoryImpl {
 		bird.setScientificOrder(scientificOrder);
 		bird.setScientificFamily(scientificFamily);
 		bird.setBirdDirectoryName(birdDirectoryName);
+		bird.setHabitat(habitat);
 		return bird;
 	}
 

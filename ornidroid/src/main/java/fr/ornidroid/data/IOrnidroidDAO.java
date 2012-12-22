@@ -22,6 +22,10 @@ public interface IOrnidroidDAO {
 	public static final String DIRECTORY_NAME_COLUMN = "directory_name";
 	/** The Constant DISTRIBUTION_COLUMN. */
 	public static final String DISTRIBUTION_COLUMN = "distribution";
+	/** The Constant HABITAT_1_NAME_COLUMN. */
+	public static final String HABITAT_1_NAME_COLUMN = "habitat1";
+	/** The Constant HABITAT_2_NAME_COLUMN. */
+	public static final String HABITAT_2_NAME_COLUMN = "habitat2";
 	/** The Constant ID. */
 	public static final String ID = "id";
 	/** The Constant LANG_COLUMN_NAME. */
@@ -38,8 +42,10 @@ public interface IOrnidroidDAO {
 	public static final String SCIENTIFIC_NAME = "scientific_name";
 	/** The Constant SCIENTIFIC_ORDER_NAME_COLUMN. */
 	public static final String SCIENTIFIC_ORDER_NAME_COLUMN = "scientific_order";
+
 	/** The Constant SCIENTIFIC_ORDER_TABLE. */
 	public static final String SCIENTIFIC_ORDER_TABLE = "scientific_order";
+
 	/**
 	 * The Constant SEARCHED_TAXON. The taxon where diacritics are removed. Ex
 	 * taxon "Bécassine" is "Becassine" in this column

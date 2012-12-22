@@ -15,6 +15,9 @@ public class Bird extends SimpleBird {
 	/** The distribution. */
 	private String distribution;
 
+	/** The habitat. */
+	private String habitat;
+
 	/** The id. */
 	private Integer id;
 
@@ -56,6 +59,15 @@ public class Bird extends SimpleBird {
 	 */
 	public String getDistribution() {
 		return this.distribution;
+	}
+
+	/**
+	 * Gets the habitat.
+	 * 
+	 * @return the habitat
+	 */
+	public String getHabitat() {
+		return this.habitat;
 	}
 
 	/**
@@ -197,6 +209,16 @@ public class Bird extends SimpleBird {
 	 */
 	public void setDistribution(final String distribution) {
 		this.distribution = distribution;
+	}
+
+	/**
+	 * Sets the habitat.
+	 * 
+	 * @param habitat
+	 *            the new habitat
+	 */
+	public void setHabitat(final String habitat) {
+		this.habitat = habitat;
 	}
 
 	/**

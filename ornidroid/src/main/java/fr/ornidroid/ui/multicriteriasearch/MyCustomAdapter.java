@@ -79,9 +79,6 @@ public class MyCustomAdapter extends ArrayAdapter<String> {
 					.getIconResourceIdFromBeakFormId(beakFormId);
 			break;
 		default:
-			final int colourId = this.activity.getOrnidroidService()
-					.getColourId(this.itemsList.get(position));
-			idRes = SpinnerIconSelector.getIconResourceIdFromColourId(colourId);
 			break;
 
 		}

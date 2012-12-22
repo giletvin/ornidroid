@@ -429,6 +429,12 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(Constants.COMMA_STRING);
 				query.append("scientific_family.name as ");
 				query.append(SCIENTIFIC_FAMILY_NAME_COLUMN);
+				query.append(Constants.COMMA_STRING);
+				query.append("h1.name as ");
+				query.append(HABITAT_1_NAME_COLUMN);
+				query.append(Constants.COMMA_STRING);
+				query.append("h2.name as ");
+				query.append(HABITAT_2_NAME_COLUMN);
 			}
 			query.append(FROM);
 			query.append(FTS_VIRTUAL_TABLE_TAXONOMY);
@@ -442,7 +448,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(".bird_fk and ");
 				query.append(DESCRIPTION_TABLE);
 				query.append(".lang=\"");
-				query.append(Constants.getOrnidroidSearchLang());
+				query.append(I18nHelper.getLang());
 				query.append("\"");
 				// join on scientific order table
 				query.append(LEFT_OUTER_JOIN);
@@ -454,7 +460,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(".id and ");
 				query.append(SCIENTIFIC_ORDER_TABLE);
 				query.append(".lang=\"");
-				query.append(Constants.getOrnidroidSearchLang());
+				query.append(I18nHelper.getLang());
 				query.append("\"");
 				// join on scientific family table
 				query.append(LEFT_OUTER_JOIN);
@@ -466,7 +472,23 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(".id and ");
 				query.append(SCIENTIFIC_FAMILY_TABLE);
 				query.append(".lang=\"");
-				query.append(Constants.getOrnidroidSearchLang());
+				query.append(I18nHelper.getLang());
+				query.append("\"");
+				// join on habitat table
+				query.append(LEFT_OUTER_JOIN);
+				query.append(HABITAT_TABLE_NAME);
+				query.append(" h1 on ");
+				query.append(BIRD_TABLE);
+				query.append(".habitat1_fk=h1.id and h1.lang=\"");
+				query.append(I18nHelper.getLang());
+				query.append("\"");
+				// habitat 2
+				query.append(LEFT_OUTER_JOIN);
+				query.append(HABITAT_TABLE_NAME);
+				query.append(" h2 on ");
+				query.append(BIRD_TABLE);
+				query.append(".habitat2_fk=h2.id and h2.lang=\"");
+				query.append(I18nHelper.getLang());
 				query.append("\"");
 
 			}
@@ -476,8 +498,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			query.append(Constants.getOrnidroidSearchLang());
 			query.append("\"");
 			query.append(" order by taxon");
-			// Log.d(Constants.LOG_TAG, "Perform SQL query " +
-			// query.toString());
+			Log.d(Constants.LOG_TAG, "Perform SQL query " + query.toString());
 			cursor = db.rawQuery(query.toString(), selectionArgs);
 			if (cursor == null) {
 				return null;

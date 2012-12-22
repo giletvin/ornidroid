@@ -225,14 +225,16 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		case BEAK_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_beak_colour_field);
 			field.setIconResource(R.drawable.ic_beak_colour);
-			dataAdapter = new MyCustomAdapter(this, R.layout.row_spinner_icons,
-					this.ornidroidService.getColours(), selectFieldType);
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getColours());
 			break;
 		case FEET_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_paw_colour_field);
 			field.setIconResource(R.drawable.ic_feet_colour);
-			dataAdapter = new MyCustomAdapter(this, R.layout.row_spinner_icons,
-					this.ornidroidService.getColours(), selectFieldType);
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getColours());
 			break;
 		case REMARKABLE_SIGN:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_remarkable_sign_field);

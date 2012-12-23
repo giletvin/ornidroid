@@ -81,6 +81,8 @@
     <!-- strings of the multi search -->
     <string name="search_category_choose">Choose a category</string>
     <string name="search_category">Category</string>
+    <!-- TODO : ecrire le contenu de l'aide  -->
+    <string name="search_category_help">Help Category</string>
     <string name="search_habitat_choose">Choose a habitat</string>
     <string name="search_habitat">Habitat</string>
     <string name="search_beak_form_choose">Choose a beak type</string>
@@ -99,4 +101,5 @@
     <string name="expand_collapse_form">Expand/collapse form</string>
     <string name="search_remarkable_sign_choose">Choose a remarkable sign</string>
     <string name="search_remarkable_sign">Remarkable sign</string>
+    <string name="search_no_help">No help</string>
 </resources>

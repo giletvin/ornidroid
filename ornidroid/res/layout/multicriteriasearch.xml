@@ -105,30 +105,44 @@
         android:layout_height="0dip"
         android:layout_weight="1.0"
         android:gravity="center_horizontal|bottom"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
 
-        <ImageView
-            android:id="@+id/expand_collapse_form_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/expand_collapse_form"
-            android:padding="10sp"
-            android:src="@drawable/ic_down" />
-
-        <ImageView
-            android:id="@+id/reset_form_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/reset_form"
-            android:padding="10sp"
-            android:src="@drawable/ic_reset_form" />
-
-        <Button
-            android:id="@+id/search_show_results_button"
+        <TextView
+            android:id="@+id/search_nb_results"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10sp"
-            android:text="@string/search_show_results" />
+            android:layout_margin="10sp"
+            android:text="@string/search_count_results" />
+        	
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|bottom"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/reset_form_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#cccccc"
+                android:layout_marginRight="10sp"
+                android:padding="10sp"
+                android:text="@string/reset_form"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/search_show_results_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#cccccc"
+                android:layout_marginLeft="10sp"
+                android:padding="10sp"
+                android:text="@string/search_show_results"
+                android:textColor="#000000" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -9,8 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.helper.Constants;
@@ -25,26 +24,23 @@ import fr.ornidroid.ui.MainActivity;
 public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		implements OnClickListener {
 
-	/** The expand collapse form button. */
-	private ImageView expandCollapseFormButton;
-
-	/** The expand form. */
-	private boolean expandForm = false;
-
 	/** The field list. */
 	private final List<MultiCriteriaSelectField> fieldList;
 
 	/** The form bean. */
 	private final MultiCriteriaSearchFormBean formBean;
 
+	/** The nb results text view. */
+	private TextView nbResultsTextView;
+
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
 
 	/** The reset form button. */
-	private ImageView resetFormButton;
+	private TextView resetFormButton;
 
 	/** The search show results button. */
-	private Button searchShowResultsButton;
+	private TextView searchShowResultsButton;
 
 	/**
 	 * Instantiates a new multi criteria search activity.
@@ -92,20 +88,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		if (v == this.resetFormButton) {
 			resetForm();
 		}
-		if (v == this.expandCollapseFormButton) {
-			this.expandForm = this.expandForm ? false : true;
-			if (this.expandForm) {
-				// change the icon for the next toggle
-				this.expandCollapseFormButton.setImageDrawable(this
-						.getResources().getDrawable(R.drawable.ic_up));
-			} else {
-				// change the icon for the next toggle
-				this.expandCollapseFormButton.setImageDrawable(this
-						.getResources().getDrawable(R.drawable.ic_down));
-			}
-			expandCollapseForm();
 
-		}
 	}
 
 	/*
@@ -118,12 +101,11 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.multicriteriasearch);
 		setTitle(R.string.menu_search_multi);
-		this.searchShowResultsButton = (Button) findViewById(R.id.search_show_results_button);
+		this.nbResultsTextView = (TextView) findViewById(R.id.search_nb_results);
+		this.searchShowResultsButton = (TextView) findViewById(R.id.search_show_results_button);
 		this.searchShowResultsButton.setOnClickListener(this);
-		this.resetFormButton = (ImageView) findViewById(R.id.reset_form_button);
+		this.resetFormButton = (TextView) findViewById(R.id.reset_form_button);
 		this.resetFormButton.setOnClickListener(this);
-		this.expandCollapseFormButton = (ImageView) findViewById(R.id.expand_collapse_form_button);
-		this.expandCollapseFormButton.setOnClickListener(this);
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
 		initSelectField(MultiCriteriaSearchFieldType.SIZE);
 		initSelectField(MultiCriteriaSearchFieldType.FEATHER_COLOUR);
@@ -162,18 +144,8 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	 *            the count results
 	 */
 	protected void updateSearchCountResults(final int countResults) {
-		this.searchShowResultsButton.setText(countResults
-				+ Constants.BLANK_STRING
+		this.nbResultsTextView.setText(countResults + Constants.BLANK_STRING
 				+ this.getText(R.string.search_show_results));
-	}
-
-	/**
-	 * Expand collapse form.
-	 */
-	private void expandCollapseForm() {
-		for (final MultiCriteriaSelectField field : this.fieldList) {
-			field.expand(this.expandForm);
-		}
 	}
 
 	/**

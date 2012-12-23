@@ -498,7 +498,8 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			query.append(Constants.getOrnidroidSearchLang());
 			query.append("\"");
 			query.append(" order by taxon");
-			Log.d(Constants.LOG_TAG, "Perform SQL query " + query.toString());
+			// Log.d(Constants.LOG_TAG, "Perform SQL query " +
+			// query.toString());
 			cursor = db.rawQuery(query.toString(), selectionArgs);
 			if (cursor == null) {
 				return null;

@@ -81,9 +81,10 @@
     <string name="search_habitat">Lebensraum</string>
     <string name="search_beak_form_choose">Wählen Sie eine Schnabelform</string>
     <string name="search_beak_form">Schnabelform</string>
-    <string name="search_show_results">Ergebnisse</string>
+    <string name="search_show_results">Suchen</string>
+    <string name="search_count_results">Ergebnisse</string>
     <string name="search_all">Alle </string>
-    <string name="reset_form">Reset form</string>
+    <string name="reset_form">Reset</string>
     <string name="search_size_choose">Wählen Sie eine Grösse</string>
     <string name="search_size">Grösse</string>
     <string name="search_colour_choose">Wählen Sie eine Farbe</string>

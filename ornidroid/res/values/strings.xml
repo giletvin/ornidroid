@@ -87,14 +87,15 @@
     <string name="search_beak_form">Beak type</string>
     
     <string name="search_all">All </string>
-    <string name="reset_form">Reset form</string>
+    <string name="reset_form">Reset</string>
     <string name="search_size_choose">Choose a size</string>
     <string name="search_size">Size</string>
     <string name="search_colour_choose">Choose a colour</string>
     <string name="search_feather_colour">Feather colour</string>
     <string name="search_beak_colour">Beak colour</string>
     <string name="search_paw_colour">Feet colour</string>
-    <string name="search_show_results">results</string>
+    <string name="search_show_results">Show</string>
+    <string name="search_count_results">results</string>
     <string name="expand_collapse_form">Expand/collapse form</string>
     <string name="search_remarkable_sign_choose">Choose a remarkable sign</string>
     <string name="search_remarkable_sign">Remarkable sign</string>

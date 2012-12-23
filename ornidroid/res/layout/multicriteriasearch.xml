@@ -111,10 +111,9 @@
             android:id="@+id/search_nb_results"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10sp"
             android:layout_margin="10sp"
+            android:padding="10sp"
             android:text="@string/search_count_results" />
-        	
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -127,8 +126,8 @@
                 android:id="@+id/reset_form_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#cccccc"
                 android:layout_marginRight="10sp"
+                android:background="#cccccc"
                 android:padding="10sp"
                 android:text="@string/reset_form"
                 android:textColor="#000000" />
@@ -137,8 +136,8 @@
                 android:id="@+id/search_show_results_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#cccccc"
                 android:layout_marginLeft="10sp"
+                android:background="#cccccc"
                 android:padding="10sp"
                 android:text="@string/search_show_results"
                 android:textColor="#000000" />

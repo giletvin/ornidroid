@@ -468,12 +468,13 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 		resizeTabs(this.tabs);
 
-	} /*
+	}
+
+	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see android.app.Activity#onCreateDialog(int)
 	 */
-
 	@Override
 	protected Dialog onCreateDialog(final int id) {
 		switch (id) {

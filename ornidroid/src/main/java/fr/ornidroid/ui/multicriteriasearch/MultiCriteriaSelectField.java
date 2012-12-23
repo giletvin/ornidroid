@@ -17,16 +17,19 @@ import fr.ornidroid.R;
  */
 public class MultiCriteriaSelectField extends LinearLayout {
 
+	/** The custom icon. */
 	private boolean customIcon = false;
 
 	/** The field type. */
 	private MultiCriteriaSearchFieldType fieldType;
+	/** The help icon. */
+	private final ImageView helpIcon;
 
 	/** The icon. */
 	private final ImageView icon;
-
 	/** The spinner. */
 	private final Spinner spinner;
+
 	/** The text view. */
 	private final TextView textView;
 
@@ -44,6 +47,7 @@ public class MultiCriteriaSelectField extends LinearLayout {
 
 		this.textView = new TextView(context);
 		this.icon = new ImageView(context);
+		this.helpIcon = new ImageView(context);
 		final LinearLayout layoutTextIcon = initTextIconLayout(context);
 
 		this.spinner = new Spinner(context);
@@ -57,14 +61,34 @@ public class MultiCriteriaSelectField extends LinearLayout {
 		this.addView(layoutTextIcon);
 		this.addView(this.spinner);
 
-		// add click behaviour on the text and icon
-		layoutTextIcon.setOnClickListener(new OnClickListener() {
+		// add click behaviour on the text
+		this.textView.setOnClickListener(new OnClickListener() {
 			public void onClick(final View v) {
 				if (MultiCriteriaSelectField.this.spinner.getVisibility() == View.VISIBLE) {
 					expand(false);
 				} else {
 					expand(true);
 				}
+			}
+		});
+
+		// add click behaviour on the help icon
+		this.helpIcon.setOnClickListener(new OnClickListener() {
+			public void onClick(final View v) {
+				switch (MultiCriteriaSelectField.this.fieldType) {
+				case CATEGORY:
+					HelpDialog.getInstance(context).getDialogTitle()
+							.setText(R.string.search_category);
+					HelpDialog.getInstance(context).getDialogContent()
+							.setText(R.string.search_category_help);
+					break;
+				default:
+					HelpDialog.getInstance(context).getDialogTitle()
+							.setText(R.string.search_no_help);
+					HelpDialog.getInstance(context).getDialogContent()
+							.setText("");
+				}
+				HelpDialog.getInstance(context).show();
 			}
 		});
 
@@ -183,9 +207,9 @@ public class MultiCriteriaSelectField extends LinearLayout {
 		final LinearLayout layoutTextIcon = new LinearLayout(context);
 		final LayoutParams paramsLayoutTextIcon = new LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		paramsLayoutTextIcon.gravity = Gravity.CENTER;
 		layoutTextIcon.setLayoutParams(paramsLayoutTextIcon);
 
+		// add the icon on the left side
 		final LayoutParams paramsLayoutIcon = new LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		paramsLayoutIcon.height = 50;
@@ -194,10 +218,11 @@ public class MultiCriteriaSelectField extends LinearLayout {
 		this.icon.setImageResource(R.drawable.ic_down);
 		layoutTextIcon.addView(this.icon);
 
+		// add a layout for the text
 		final LinearLayout layoutText = new LinearLayout(context);
 
 		final LayoutParams paramsLayoutText = new LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+				LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT);
 		paramsLayoutText.leftMargin = 20;
 		paramsLayoutText.topMargin = 5;
 		paramsLayoutText.gravity = Gravity.CENTER;
@@ -205,6 +230,17 @@ public class MultiCriteriaSelectField extends LinearLayout {
 		layoutText.addView(this.textView);
 		layoutTextIcon.addView(layoutText);
 
+		// add the help icon
+		this.helpIcon.setImageResource(R.drawable.ic_help);
+		final LinearLayout layoutHelpIcon = new LinearLayout(context);
+		final LayoutParams paramsLayoutHelpIcon = new LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		paramsLayoutHelpIcon.setMargins(0, 0, 20, 0);
+		layoutHelpIcon.setHorizontalGravity(Gravity.RIGHT);
+
+		layoutHelpIcon.setLayoutParams(paramsLayoutHelpIcon);
+		layoutHelpIcon.addView(this.helpIcon);
+		layoutTextIcon.addView(layoutHelpIcon);
 		return layoutTextIcon;
 	}
 }

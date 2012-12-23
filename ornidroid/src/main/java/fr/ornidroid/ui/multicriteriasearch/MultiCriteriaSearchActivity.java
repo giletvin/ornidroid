@@ -101,6 +101,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.multicriteriasearch);
 		setTitle(R.string.menu_search_multi);
+
 		this.nbResultsTextView = (TextView) findViewById(R.id.search_nb_results);
 		this.searchShowResultsButton = (TextView) findViewById(R.id.search_show_results_button);
 		this.searchShowResultsButton.setOnClickListener(this);

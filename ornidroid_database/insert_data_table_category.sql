@@ -20,7 +20,7 @@ INSERT INTO category(id,name,lang) VALUES(19,"Pigeons et tourterelles",'fr');
 INSERT INTO category(id,name,lang) VALUES(20,"Plongeons",'fr');
 
 INSERT INTO category(id,name,lang) VALUES(1,"Passerines",'en');
-INSERT INTO category(id,name,lang) VALUES(2,"Birds of prey ",'en');
+INSERT INTO category(id,name,lang) VALUES(2,"Birds of prey",'en');
 INSERT INTO category(id,name,lang) VALUES(3,"Long-legged wading birds",'en');
 INSERT INTO category(id,name,lang) VALUES(4,"Swans, gooses, ducks",'en');
 INSERT INTO category(id,name,lang) VALUES(5,"Waders",'en');
@@ -42,7 +42,7 @@ INSERT INTO category(id,name,lang) VALUES(20,"Divers",'en');
 
 INSERT INTO category(id,name,lang) VALUES(1,"Sperlingsvögel",'de');
 INSERT INTO category(id,name,lang) VALUES(2,"Raubvögel",'de');
-INSERT INTO category(id,name,lang) VALUES(3,"grosse Stelzvögel",'de');
+INSERT INTO category(id,name,lang) VALUES(3,"Grosse Stelzvögel",'de');
 INSERT INTO category(id,name,lang) VALUES(4,"Schwäne, Gänse, Enten",'de');
 INSERT INTO category(id,name,lang) VALUES(5,"Schnepfenvögel",'de');
 INSERT INTO category(id,name,lang) VALUES(6,"Hühnervögel",'de');

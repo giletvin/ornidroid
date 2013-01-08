@@ -81,25 +81,26 @@
     <!-- strings of the multi search -->
     <string name="search_category_choose">Choose a category</string>
     <string name="search_category">Category</string>
-    <!-- TODO : ecrire le contenu de l'aide  -->
-    <string name="search_category_help">Help Category</string>
+    <string name="search_category_help">Examples\nPasserines : sparrows, swallows,&#8230;\nBirds of prey : eagles\nLong-legged wading birds: storks, herons,&#8230;\nWaders: woodcocks, plovers</string>
     <string name="search_habitat_choose">Choose a habitat</string>
     <string name="search_habitat">Habitat</string>
+    <string name="search_habitat_help">A bird can have up to two habitats.\nExample : the blackbird is in "Cities, villages, gardens" and "Forests and moorlands" </string>
     <string name="search_beak_form_choose">Choose a beak type</string>
     <string name="search_beak_form">Beak type</string>
-    
     <string name="search_all">All </string>
     <string name="reset_form">Reset</string>
     <string name="search_size_choose">Choose a size</string>
     <string name="search_size">Size</string>
     <string name="search_colour_choose">Choose a colour</string>
     <string name="search_feather_colour">Feather colour</string>
+    <string name="search_feather_colour_help">A bird can have up to two colours. The colour can be either the main colour of the feather, or a remarkable colour. \nExamples :\nKingfisher: orange and blue\nAvocet: black and white\nGoldfinch : brown and red</string>
     <string name="search_beak_colour">Beak colour</string>
     <string name="search_paw_colour">Feet colour</string>
+    <string name="search_results">results</string>
     <string name="search_show_results">Show</string>
-    <string name="search_count_results">results</string>
     <string name="expand_collapse_form">Expand/collapse form</string>
     <string name="search_remarkable_sign_choose">Choose a remarkable sign</string>
     <string name="search_remarkable_sign">Remarkable sign</string>
     <string name="search_no_help">No help</string>
+
 </resources>

@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:padding="10sp"
-            android:text="@string/search_count_results" />
+            android:text="@string/search_results" />
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10sp"
                 android:background="#cccccc"
-                android:padding="10sp"
+                android:padding="5sp"
                 android:text="@string/reset_form"
                 android:textColor="#000000" />
 
@@ -138,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10sp"
                 android:background="#cccccc"
-                android:padding="10sp"
+                android:padding="5sp"
                 android:text="@string/search_show_results"
                 android:textColor="#000000" />
         </LinearLayout>

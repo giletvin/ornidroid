@@ -77,18 +77,21 @@
     <!-- strings of the multi search -->
     <string name="search_category_choose">Wählen Sie eine Kategorie</string>
     <string name="search_category">Kategorie</string>
+        <string name="search_category_help">Beispiele\nSperlingsvögel: Schwalbe, Sperling,&#8230;\nRaubvögel: Adler,&#8230;\nGrosse Stelzvögel: Storch, Reiher,&#8230;\nSchnepfenvögel: Schnepfe, Kiebitz,&#8230;</string>
     <string name="search_habitat_choose">Wählen Sie einen Lebensraum</string>
     <string name="search_habitat">Lebensraum</string>
+    <!-- TODO : translate search_habitat_help-->
     <string name="search_beak_form_choose">Wählen Sie eine Schnabelform</string>
     <string name="search_beak_form">Schnabelform</string>
     <string name="search_show_results">Suchen</string>
-    <string name="search_count_results">Ergebnisse</string>
+    <string name="search_results">Ergebnisse</string>
     <string name="search_all">Alle </string>
     <string name="reset_form">Reset</string>
     <string name="search_size_choose">Wählen Sie eine Grösse</string>
     <string name="search_size">Grösse</string>
     <string name="search_colour_choose">Wählen Sie eine Farbe</string>
     <string name="search_feather_colour">Federfarbe</string>
+    <!-- TODO : translate search_feather_colour_help-->
     <string name="search_beak_colour">Schnabelfarbe</string>
     <string name="search_paw_colour">Fussfarbe</string>
     <string name="expand_collapse_form">Ofnen/Schliessen</string>

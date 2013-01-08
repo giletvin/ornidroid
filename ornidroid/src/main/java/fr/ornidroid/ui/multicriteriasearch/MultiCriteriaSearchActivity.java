@@ -146,7 +146,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	 */
 	protected void updateSearchCountResults(final int countResults) {
 		this.nbResultsTextView.setText(countResults + Constants.BLANK_STRING
-				+ this.getText(R.string.search_show_results));
+				+ this.getText(R.string.search_results));
 	}
 
 	/**
@@ -192,8 +192,9 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		case FEATHER_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_feather_colour_field);
 			field.setIconResource(R.drawable.ic_feather_colour);
-			dataAdapter = new MyCustomAdapter(this, R.layout.row_spinner_icons,
-					this.ornidroidService.getColours(), selectFieldType);
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getColours());
 			break;
 		case BEAK_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_beak_colour_field);
@@ -212,8 +213,6 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		case REMARKABLE_SIGN:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_remarkable_sign_field);
 			field.setIconResource(R.drawable.ic_remarkable_sign);
-			// TODO : un adapteur custom pour mettre des icones de signes
-			// distinctifs ?
 			dataAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item,
 					this.ornidroidService.getRemarkableSigns());

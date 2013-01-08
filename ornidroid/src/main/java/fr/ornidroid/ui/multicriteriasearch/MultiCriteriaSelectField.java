@@ -72,26 +72,6 @@ public class MultiCriteriaSelectField extends LinearLayout {
 			}
 		});
 
-		// add click behaviour on the help icon
-		this.helpIcon.setOnClickListener(new OnClickListener() {
-			public void onClick(final View v) {
-				switch (MultiCriteriaSelectField.this.fieldType) {
-				case CATEGORY:
-					HelpDialog.getInstance(context).getDialogTitle()
-							.setText(R.string.search_category);
-					HelpDialog.getInstance(context).getDialogContent()
-							.setText(R.string.search_category_help);
-					break;
-				default:
-					HelpDialog.getInstance(context).getDialogTitle()
-							.setText(R.string.search_no_help);
-					HelpDialog.getInstance(context).getDialogContent()
-							.setText("");
-				}
-				HelpDialog.getInstance(context).show();
-			}
-		});
-
 		final TypedArray a = context.obtainStyledAttributes(attrs,
 				R.styleable.MultiCriteriaSelectField);
 
@@ -176,13 +156,32 @@ public class MultiCriteriaSelectField extends LinearLayout {
 	}
 
 	/**
-	 * Sets the field type.
+	 * Sets the field type. Depending on the type, the help icon is visible or
+	 * not.
 	 * 
 	 * @param fieldType
 	 *            the new field type
 	 */
 	public void setFieldType(final MultiCriteriaSearchFieldType fieldType) {
 		this.fieldType = fieldType;
+		boolean helpEnabled;
+		switch (this.fieldType) {
+		case CATEGORY:
+			helpEnabled = true;
+			break;
+		case HABITAT:
+			helpEnabled = true;
+			break;
+		case FEATHER_COLOUR:
+			helpEnabled = true;
+			break;
+		default:
+			helpEnabled = false;
+			break;
+		}
+		if (!helpEnabled) {
+			this.helpIcon.setVisibility(View.GONE);
+		}
 	}
 
 	/**
@@ -231,6 +230,7 @@ public class MultiCriteriaSelectField extends LinearLayout {
 		layoutTextIcon.addView(layoutText);
 
 		// add the help icon
+
 		this.helpIcon.setImageResource(R.drawable.ic_help);
 		final LinearLayout layoutHelpIcon = new LinearLayout(context);
 		final LayoutParams paramsLayoutHelpIcon = new LayoutParams(
@@ -241,6 +241,38 @@ public class MultiCriteriaSelectField extends LinearLayout {
 		layoutHelpIcon.setLayoutParams(paramsLayoutHelpIcon);
 		layoutHelpIcon.addView(this.helpIcon);
 		layoutTextIcon.addView(layoutHelpIcon);
+		// add click behaviour on the help icon
+		this.helpIcon.setOnClickListener(new OnClickListener() {
+			public void onClick(final View v) {
+				switch (MultiCriteriaSelectField.this.fieldType) {
+				case CATEGORY:
+					HelpDialog.getInstance(context).getDialogTitle()
+							.setText(R.string.search_category);
+					HelpDialog.getInstance(context).getDialogContent()
+							.setText(R.string.search_category_help);
+					break;
+				case HABITAT:
+					HelpDialog.getInstance(context).getDialogTitle()
+							.setText(R.string.search_habitat);
+					HelpDialog.getInstance(context).getDialogContent()
+							.setText(R.string.search_habitat_help);
+					break;
+				case FEATHER_COLOUR:
+					HelpDialog.getInstance(context).getDialogTitle()
+							.setText(R.string.search_feather_colour);
+					HelpDialog.getInstance(context).getDialogContent()
+							.setText(R.string.search_feather_colour_help);
+					break;
+				default:
+					HelpDialog.getInstance(context).getDialogTitle()
+							.setText(R.string.search_no_help);
+					HelpDialog.getInstance(context).getDialogContent()
+							.setText("");
+				}
+				HelpDialog.getInstance(context).show();
+			}
+		});
+
 		return layoutTextIcon;
 	}
 }

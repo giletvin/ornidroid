@@ -89,8 +89,10 @@
     <!-- strings of the multi search -->
     <string name="search_category_choose">Choisir une catégorie</string>
     <string name="search_category">Catégorie</string>
+    <string name="search_category_help">Exemples\nPassereaux : moineaux, hirondelles,&#8230;\nRapaces: aigles\nGrands échassiers: cigognes, hérons,&#8230;\nLimicoles: bécasses, pluviers, &#8230;</string>
     <string name="search_habitat_choose">Choisir un habitat</string>
     <string name="search_habitat">Habitat</string>
+    <string name="search_habitat_help">Un oiseau peut avoir deux types d\'habitats.\nExemple : le merle est dans "Villes, villages, jardins" et dans "Forêts et landes"</string>
     <string name="search_beak_form_choose">Choisir un type de bec</string>
     <string name="search_beak_form">Type de bec</string>
     <string name="search_all">Tous </string>
@@ -99,13 +101,13 @@
     <string name="search_size">Taille</string>
     <string name="search_colour_choose">Choisir une couleur</string>
     <string name="search_feather_colour">Couleur du plumage</string>
+    <string name="search_feather_colour_help">Un oiseau peut avoir deux couleurs. Il s\'agit soit de la couleur principale du plumage, ou alors d\'une couleur remarquable.\nExemples :\nmartin-pêcheur: orange et bleu\nAvocette: blanc et noir\nChardonneret élégant : marron et rouge</string>
     <string name="search_beak_colour">Couleur du bec</string>
     <string name="search_paw_colour">Couleur des pattes</string>
     <string name="search_show_results">Afficher</string>
-    <string name="search_count_results">résultats</string>
+    <string name="search_results">résultats</string>
     <string name="expand_collapse_form">Ouvrir/Fermer le formulaire</string>
     <string name="search_remarkable_sign_choose">Choisir un signe distinctif</string>
     <string name="search_remarkable_sign">Signe distinctif</string>
-
 
 </resources>

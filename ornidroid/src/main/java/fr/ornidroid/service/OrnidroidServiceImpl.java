@@ -490,6 +490,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_ORDER_NAME_COLUMN);
 			final int scientificFamilyIndex = cursor
 					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_FAMILY_NAME_COLUMN);
+			final int categoryIndex = cursor
+					.getColumnIndex(IOrnidroidDAO.CATEGORY_COLUMN);
 			final int sizeIndex = cursor
 					.getColumnIndex(IOrnidroidDAO.SIZE_VALUE_COLUMN);
 
@@ -503,6 +505,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					: cursor.getString(scientificFamilyIndex);
 			final String size = (sizeIndex == -1) ? BasicConstants.EMPTY_STRING
 					: cursor.getString(sizeIndex);
+			final String category = (categoryIndex == -1) ? BasicConstants.EMPTY_STRING
+					: cursor.getString(categoryIndex);
 
 			final BirdFactoryImpl birdFactory = new BirdFactoryImpl();
 			this.currentBird = birdFactory.createBird(cursor.getInt(idIndex),
@@ -510,7 +514,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					cursor.getString(scientificNameIndex),
 					cursor.getString(directoryNameIndex), description,
 					distribution, scientificOrder, scientificFamily,
-					getHabitatFromCursor(cursor), size);
+					getHabitatFromCursor(cursor), size, category);
 
 		}
 		cursor.close();

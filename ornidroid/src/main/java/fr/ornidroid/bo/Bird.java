@@ -9,6 +9,9 @@ import java.util.Map;
  */
 public class Bird extends SimpleBird {
 
+	/** The category. */
+	private String category;
+
 	/** The description. */
 	private String description;
 
@@ -44,6 +47,15 @@ public class Bird extends SimpleBird {
 	 */
 	protected Bird() {
 		super();
+	}
+
+	/**
+	 * Gets the category.
+	 * 
+	 * @return the category
+	 */
+	public String getCategory() {
+		return this.category;
 	}
 
 	/**
@@ -281,6 +293,16 @@ public class Bird extends SimpleBird {
 	 */
 	public void setSounds(final List<AbstractOrnidroidFile> sounds) {
 		this.sounds = sounds;
+	}
+
+	/**
+	 * Sets the category.
+	 * 
+	 * @param category
+	 *            the new category
+	 */
+	protected void setCategory(final String category) {
+		this.category = category;
 	}
 
 	/**

@@ -14,6 +14,8 @@ public interface IOrnidroidDAO {
 
 	/** The Constant BIRD_TABLE. */
 	public static final String BIRD_TABLE = "bird";
+	/** The Constant CATEGORY_COLUMN. */
+	public static final String CATEGORY_COLUMN = "category";
 	/** The Constant COLOUR_TABLE. */
 	public static final String COLOUR_TABLE = "colour";
 	/** The Constant DESCRIPTION_COLUMN. */
@@ -40,6 +42,7 @@ public interface IOrnidroidDAO {
 	public static final String SCIENTIFIC_FAMILY_TABLE = "scientific_family";
 	/** The Constant SCIENTIFIC_NAME. */
 	public static final String SCIENTIFIC_NAME = "scientific_name";
+
 	/** The Constant SCIENTIFIC_ORDER_NAME_COLUMN. */
 	public static final String SCIENTIFIC_ORDER_NAME_COLUMN = "scientific_order";
 

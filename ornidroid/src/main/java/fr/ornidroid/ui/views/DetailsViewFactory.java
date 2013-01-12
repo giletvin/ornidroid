@@ -19,10 +19,13 @@ public class DetailsViewFactory {
 
 	/** The activity. */
 	private final Activity activity;
+	/** The category. */
+	private TextView category;
 	/** The description. */
 	private TextView description;
 	/** The distribution. */
 	private TextView distribution;
+
 	/** The order and family. */
 	private TextView orderAndFamily;
 
@@ -53,23 +56,26 @@ public class DetailsViewFactory {
 		final LinearLayout linearLayout = new LinearLayout(this.activity);
 
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
-
+		this.category = new TextView(this.activity);
+		this.category.setPadding(5, 0, 5, 20);
+		linearLayout.addView(this.category);
 		this.orderAndFamily = new TextView(this.activity);
 		this.orderAndFamily.setPadding(5, 0, 5, 20);
 		linearLayout.addView(this.orderAndFamily);
-		this.description = new TextView(this.activity);
-		this.description.setPadding(5, 0, 5, 20);
-		linearLayout.addView(this.description);
 		this.size = new TextView(this.activity);
 		this.size.setPadding(5, 0, 5, 20);
 		linearLayout.addView(this.size);
+
+		this.description = new TextView(this.activity);
+		this.description.setPadding(5, 0, 5, 20);
+		linearLayout.addView(this.description);
 
 		this.distribution = new TextView(this.activity);
 		this.distribution.setPadding(5, 0, 5, 20);
 		linearLayout.addView(this.distribution);
 
 		if (this.ornidroidService.getCurrentBird() != null) {
-
+			printBirdCategory(this.ornidroidService.getCurrentBird());
 			printBirdOrderAndFamily(this.ornidroidService.getCurrentBird());
 			printBirdSize(this.ornidroidService.getCurrentBird());
 			printBirdDescription(this.ornidroidService.getCurrentBird());
@@ -77,6 +83,17 @@ public class DetailsViewFactory {
 					.getCurrentBird());
 		}
 		return linearLayout;
+	}
+
+	/**
+	 * Prints the bird category.
+	 * 
+	 * @param currentBird
+	 *            the current bird
+	 */
+	private void printBirdCategory(final Bird currentBird) {
+		this.category.setText(this.activity.getText(R.string.search_category)
+				+ BasicConstants.COLUMN_STRING + currentBird.getCategory());
 	}
 
 	/**

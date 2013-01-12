@@ -47,8 +47,8 @@ public abstract class AbstractOrnidroidActivity extends Activity {
 		case R.id.preferences:
 			startActivity(new Intent(this, OrnidroidPreferenceActivity.class));
 			return (true);
-		case R.id.about:
-			startActivity(new Intent(this, AboutActivity.class));
+		case R.id.help:
+			startActivity(new Intent(this, HelpActivity.class));
 			return (true);
 		case R.id.home:
 			startActivity(new Intent(this, HomeActivity.class));

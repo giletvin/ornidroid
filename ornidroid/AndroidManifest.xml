@@ -59,8 +59,13 @@
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/about"
-            android:noHistory="true" />
+            />
 
+        <activity
+            android:name=".ui.HelpActivity"
+            android:label="@string/help"
+            />
+        
         <!-- full size image activity -->
         <activity
             android:name=".ui.FullSizeImageActivity"

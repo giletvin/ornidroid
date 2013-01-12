@@ -46,6 +46,9 @@ public class BasicConstants {
 	/** The Constant MP3_PATH. */
 	public static final String MP3_PATH = "MP3_PATH";
 
+	/** The Constant NO_MEDIA_FILENAME. */
+	public static final String NO_MEDIA_FILENAME = ".nomedia";
+
 	/** The Constant SLASH_STRING. */
 	public static final String SLASH_STRING = "/";
 }

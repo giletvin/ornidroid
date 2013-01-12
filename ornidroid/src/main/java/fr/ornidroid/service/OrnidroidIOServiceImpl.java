@@ -78,13 +78,17 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 */
 	public void checkAndCreateDirectory(final File fileDirectory)
 			throws OrnidroidException {
-		if (!fileDirectory.exists()) {
-			try {
+		try {
+			if (!fileDirectory.exists()) {
 				FileUtils.forceMkdir(fileDirectory);
-			} catch (final IOException e) {
-				throw new OrnidroidException(
-						OrnidroidError.ORNIDROID_HOME_NOT_FOUND, e);
 			}
+			// creates the .nomedia file in the root directory
+			final File noMediaFile = new File(fileDirectory,
+					BasicConstants.NO_MEDIA_FILENAME);
+			FileUtils.touch(noMediaFile);
+		} catch (final IOException e) {
+			throw new OrnidroidException(
+					OrnidroidError.ORNIDROID_HOME_NOT_FOUND, e);
 		}
 	}
 

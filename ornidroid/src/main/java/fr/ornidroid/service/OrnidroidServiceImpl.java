@@ -454,9 +454,10 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		final int habitat2Index = cursor
 				.getColumnIndex(IOrnidroidDAO.HABITAT_2_NAME_COLUMN);
 		final StringBuilder habitat = new StringBuilder(
-				(habitat1Index == -1) ? "" : cursor.getString(habitat1Index));
-		final String habitat2 = (habitat2Index == -1) ? "" : cursor
-				.getString(habitat2Index);
+				(habitat1Index == -1) ? BasicConstants.EMPTY_STRING
+						: cursor.getString(habitat1Index));
+		final String habitat2 = (habitat2Index == -1) ? BasicConstants.EMPTY_STRING
+				: cursor.getString(habitat2Index);
 		if (StringUtils.isNotBlank(habitat2)) {
 			habitat.append(BasicConstants.SLASH_STRING);
 			habitat.append(habitat2);
@@ -489,15 +490,19 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_ORDER_NAME_COLUMN);
 			final int scientificFamilyIndex = cursor
 					.getColumnIndex(IOrnidroidDAO.SCIENTIFIC_FAMILY_NAME_COLUMN);
+			final int sizeIndex = cursor
+					.getColumnIndex(IOrnidroidDAO.SIZE_VALUE_COLUMN);
 
-			final String description = (descriptionIndex == -1) ? "" : cursor
-					.getString(descriptionIndex);
-			final String distribution = (distributionIndex == -1) ? "" : cursor
-					.getString(distributionIndex);
-			final String scientificOrder = (scientificOrderIndex == -1) ? ""
+			final String description = (descriptionIndex == -1) ? BasicConstants.EMPTY_STRING
+					: cursor.getString(descriptionIndex);
+			final String distribution = (distributionIndex == -1) ? BasicConstants.EMPTY_STRING
+					: cursor.getString(distributionIndex);
+			final String scientificOrder = (scientificOrderIndex == -1) ? BasicConstants.EMPTY_STRING
 					: cursor.getString(scientificOrderIndex);
-			final String scientificFamily = (scientificFamilyIndex == -1) ? ""
+			final String scientificFamily = (scientificFamilyIndex == -1) ? BasicConstants.EMPTY_STRING
 					: cursor.getString(scientificFamilyIndex);
+			final String size = (sizeIndex == -1) ? BasicConstants.EMPTY_STRING
+					: cursor.getString(sizeIndex);
 
 			final BirdFactoryImpl birdFactory = new BirdFactoryImpl();
 			this.currentBird = birdFactory.createBird(cursor.getInt(idIndex),
@@ -505,7 +510,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					cursor.getString(scientificNameIndex),
 					cursor.getString(directoryNameIndex), description,
 					distribution, scientificOrder, scientificFamily,
-					getHabitatFromCursor(cursor));
+					getHabitatFromCursor(cursor), size);
 
 		}
 		cursor.close();

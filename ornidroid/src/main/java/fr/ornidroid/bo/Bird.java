@@ -33,6 +33,9 @@ public class Bird extends SimpleBird {
 	/** The scientific order. */
 	private String scientificOrder;
 
+	/** The size. */
+	private String size;
+
 	/** The sounds. */
 	private List<AbstractOrnidroidFile> sounds;
 
@@ -178,6 +181,15 @@ public class Bird extends SimpleBird {
 	}
 
 	/**
+	 * Gets the size.
+	 * 
+	 * @return the size
+	 */
+	public String getSize() {
+		return this.size;
+	}
+
+	/**
 	 * Gets the sound.
 	 * 
 	 * @param soundNumber
@@ -289,6 +301,16 @@ public class Bird extends SimpleBird {
 	 */
 	protected void setScientificName(final String scientificName) {
 		this.scientificName = scientificName;
+	}
+
+	/**
+	 * Sets the size.
+	 * 
+	 * @param size
+	 *            the new size
+	 */
+	protected void setSize(final String size) {
+		this.size = size;
 	}
 
 }

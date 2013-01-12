@@ -55,6 +55,9 @@ public interface IOrnidroidDAO {
 	/** The Constant SIZE_TABLE. */
 	public static final String SIZE_TABLE = "size_table";
 
+	/** The Constant SIZE_VALUE_COLUMN. */
+	public static final String SIZE_VALUE_COLUMN = "size_value";
+
 	/** The Constant TAXON. */
 	public static final String TAXON = "taxon";
 

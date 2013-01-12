@@ -23,12 +23,14 @@ public class DetailsViewFactory {
 	private TextView description;
 	/** The distribution. */
 	private TextView distribution;
-
 	/** The order and family. */
 	private TextView orderAndFamily;
 
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
+
+	/** The description. */
+	private TextView size;
 
 	/**
 	 * Instantiates a new details view factory.
@@ -58,6 +60,9 @@ public class DetailsViewFactory {
 		this.description = new TextView(this.activity);
 		this.description.setPadding(5, 0, 5, 20);
 		linearLayout.addView(this.description);
+		this.size = new TextView(this.activity);
+		this.size.setPadding(5, 0, 5, 20);
+		linearLayout.addView(this.size);
 
 		this.distribution = new TextView(this.activity);
 		this.distribution.setPadding(5, 0, 5, 20);
@@ -66,6 +71,7 @@ public class DetailsViewFactory {
 		if (this.ornidroidService.getCurrentBird() != null) {
 
 			printBirdOrderAndFamily(this.ornidroidService.getCurrentBird());
+			printBirdSize(this.ornidroidService.getCurrentBird());
 			printBirdDescription(this.ornidroidService.getCurrentBird());
 			printBirdDistributionAndBehaviour(this.ornidroidService
 					.getCurrentBird());
@@ -131,6 +137,21 @@ public class DetailsViewFactory {
 							+ BasicConstants.COLUMN_STRING
 							+ bird.getScientificFamily());
 		}
+	}
+
+	/**
+	 * Prints the bird size.
+	 * 
+	 * @param currentBird
+	 *            the current bird
+	 */
+	private void printBirdSize(final Bird currentBird) {
+
+		this.size.setText(this.activity.getText(R.string.search_size)
+				+ BasicConstants.COLUMN_STRING + currentBird.getSize()
+				+ BasicConstants.BLANK_STRING
+				+ this.activity.getText(R.string.cm));
+
 	}
 
 }

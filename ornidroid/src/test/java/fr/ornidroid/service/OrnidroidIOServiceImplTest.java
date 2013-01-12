@@ -53,10 +53,14 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 		// first : with an existing directory
 		File testDir = new File(TEST_DIRECTORY);
 		this.ornidroidIOService.checkAndCreateDirectory(testDir);
+		File noMediaFile = new File(testDir, BasicConstants.NO_MEDIA_FILENAME);
+		Assert.assertTrue(noMediaFile.exists());
 		// second : with a non existing directory
 		testDir = new File(TEST_DIRECTORY + File.separator
 				+ "unknown_directory");
 		this.ornidroidIOService.checkAndCreateDirectory(testDir);
+		noMediaFile = new File(testDir, BasicConstants.NO_MEDIA_FILENAME);
+		Assert.assertTrue(noMediaFile.exists());
 	}
 
 	/**

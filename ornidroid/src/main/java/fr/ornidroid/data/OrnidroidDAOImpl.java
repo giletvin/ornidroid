@@ -437,6 +437,9 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(HABITAT_2_NAME_COLUMN);
 				query.append(Constants.COMMA_STRING);
 				query.append(SIZE_VALUE_COLUMN);
+				query.append(Constants.COMMA_STRING);
+				query.append("category.name as ");
+				query.append(CATEGORY_COLUMN);
 			}
 			query.append(FROM);
 			query.append(FTS_VIRTUAL_TABLE_TAXONOMY);
@@ -492,7 +495,18 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(".habitat2_fk=h2.id and h2.lang=\"");
 				query.append(I18nHelper.getLang());
 				query.append("\"");
-
+				// join on category table
+				query.append(LEFT_OUTER_JOIN);
+				query.append(CATEGORY_TABLE_NAME);
+				query.append(" on ");
+				query.append(BIRD_TABLE);
+				query.append(".category_fk=");
+				query.append(CATEGORY_TABLE_NAME);
+				query.append(".id and ");
+				query.append(CATEGORY_TABLE_NAME);
+				query.append(".lang=\"");
+				query.append(I18nHelper.getLang());
+				query.append("\"");
 			}
 			query.append(whereClause);
 			query.append(" and bird.id=taxonomy.bird_fk");

@@ -28,6 +28,7 @@
     <!-- activity titles -->
     <string name="preferences">Preferences</string>
     <string name="about">About</string>
+    <string name="help">Help</string>
     <string name="sounds">Sounds</string>
     <string name="bird_info">Bird info</string>
     <string name="bird_image">Pictures</string>
@@ -60,6 +61,7 @@
 		Internet.</string>
 
     <!-- autres labels -->
+    <string name="home_stars">****</string>
     <string name="scientific_name">Scientific name</string>
     <string name="description">Description</string>
     <string name="distribution">Distribution and behaviour</string>
@@ -78,7 +80,8 @@
 		automatically refresh.</string>
     <string name="no_resources_online">Sorry, no files to download on the website.</string>
     <string name="unknown_error">Sorry, an unexpected error has occurred.</string>
-
+    <!-- Help content -->
+    <string name="help_text">Contact : ornidroid@free.fr\n\nUser\'s guide : https://github.com/giletvin/ornidroid/wiki/Help\n\nHow-to download the full images and mp3 packages : https://github.com/giletvin/ornidroid/wiki/Installation-en\n\nTo change the search engine language : go to preferences (from the menu) and change OrnidroidSearchLang value</string>
     <!-- strings of the multi search -->
     <string name="search_category_choose">Choose a category</string>
     <string name="search_category">Category</string>

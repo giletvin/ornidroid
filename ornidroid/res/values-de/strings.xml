@@ -31,6 +31,7 @@
     <!-- activity titles -->
     <string name="preferences">Einstellungen</string>
     <string name="about">Ueber</string>
+    <string name="help">Hilfe</string>
     <string name="sounds">Töne</string>
     <string name="bird_info">Vogeldaten</string>
     <string name="bird_image">Bilder</string>
@@ -74,6 +75,8 @@
 		Der Bildschirm wird automatisch aktualisiert werden.</string>
     <string name="no_resources_online">Sorry, keine online-Daten gefunden.</string>
     <string name="unknown_error">Sorry, unerwarteter Fehler.</string>
+    <!-- TODO Help content -->
+
     <!-- strings of the multi search -->
     <string name="search_category_choose">Wählen Sie eine Kategorie</string>
     <string name="search_category">Kategorie</string>

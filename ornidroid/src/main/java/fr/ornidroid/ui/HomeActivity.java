@@ -32,6 +32,7 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 
 	/** The about link. */
 	private TextView aboutLink;
+	private TextView helpLink;
 
 	/** The multi criteria search link. */
 	private TextView multiCriteriaSearchLink;
@@ -71,6 +72,8 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 		this.searchLink.setOnTouchListener(this);
 		this.aboutLink = (TextView) findViewById(R.id.menu_about);
 		this.aboutLink.setOnTouchListener(this);
+		this.helpLink = (TextView) findViewById(R.id.menu_help);
+		this.helpLink.setOnTouchListener(this);
 		this.multiCriteriaSearchLink = (TextView) findViewById(R.id.menu_search_multi);
 		this.multiCriteriaSearchLink.setOnTouchListener(this);
 	}
@@ -87,6 +90,9 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 		}
 		if (v == this.aboutLink) {
 			return launchActivity(AboutActivity.class);
+		}
+		if (v == this.helpLink) {
+			return launchActivity(HelpActivity.class);
 		}
 		if (v == this.multiCriteriaSearchLink) {
 			return launchActivity(MultiCriteriaSearchActivity.class);

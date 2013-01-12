@@ -31,6 +31,7 @@
     <!-- activity titles -->
     <string name="preferences">Préférences</string>
     <string name="about">A propos</string>
+    <string name="help">Aide</string>
     <string name="sounds">Sons</string>
     <string name="bird_info">Fiche oiseau</string>
     <string name="bird_image">Images</string>
@@ -86,6 +87,8 @@
     <string name="no_resources_online">Désolé, pas de fichier à télécharger depuis
 		Internet.</string>
     <string name="unknown_error">Désolé, une erreur inattendue est survenue.</string>
+    <!-- Help content -->
+    <string name="help_text">Contact : ornidroid@free.fr\n\nGuide d\'utilisation : https://github.com/giletvin/ornidroid/wiki/Utilisation\n\nComment installer les packages complets d\'images et de sons : https://github.com/giletvin/ornidroid/wiki/Installation\n\nPour changer la langue du moteur de recherche : aller dans les préférences (accessibles par le menu) et modifier la valeur de OrnidroidSearchLang</string>
     <!-- strings of the multi search -->
     <string name="search_category_choose">Choisir une catégorie</string>
     <string name="search_category">Catégorie</string>

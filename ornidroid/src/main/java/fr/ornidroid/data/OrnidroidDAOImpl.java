@@ -435,6 +435,8 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(Constants.COMMA_STRING);
 				query.append("h2.name as ");
 				query.append(HABITAT_2_NAME_COLUMN);
+				query.append(Constants.COMMA_STRING);
+				query.append(SIZE_VALUE_COLUMN);
 			}
 			query.append(FROM);
 			query.append(FTS_VIRTUAL_TABLE_TAXONOMY);

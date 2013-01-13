@@ -41,3 +41,33 @@ create_packages.sh  ../ornidroid_audio/ audio
 
 Placer ornidroid.sqlite dans le répertoire assets de l'application pour Android
 Placer les zip générés sur http://ornidroid.free.fr/ornidroid/packages/
+
+
+Mode opératoire pour la publication sur Google Play
+---------------------------------------------------
+
+Génération de la clé - à faire une seule fois
+----------------------
+keytool -genkey -v -keystore ornidroid_key.keystore -alias ornidroid_key -keyalg RSA -keysize 2048 -validity 10000
+
+
+
+Une fois la version commitée, testée...
+Changer le n° de version d'Ornidroid dans le fichier pom.xml
+Verifier le version code et version name dans le manifest.xml
+Vérifier que la dernière version de la db est dans le répertoire assets.
+Compiler : mvn clean install
+
+Bidouille pour le packaging
+----------------------------
+pb : dézipper, vider le répertoire meta inf et lancer la commande.
+http://stackoverflow.com/questions/5089042/jarsigner-unable-to-sign-jar-java-util-zip-zipexception-invalid-entry-compres
+zipalign -v 4 ornidroid.apk ornidroid-1.0.0.apk
+
+Signature de l'apk avec la clé
+-------------------------------
+jarsigner -verbose -sigalg MD5withRSA -digestalg SHA1 -keystore [path_to_key] ornidroid-2.0.0.apk ornidroid_key
+
+Refaire un coup la commande zipalign
+
+zipalign -v 4 ornidroid-1.0.1.apk ornidroid-1.0.1-FINAL.apk

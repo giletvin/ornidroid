@@ -202,7 +202,7 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 	@SuppressWarnings("rawtypes")
 	private boolean launchActivity(final Class activityClass) {
 		final Intent intent = new Intent(getApplicationContext(), activityClass);
-		startActivity(intent);
+		startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 		return true;
 	}
 }

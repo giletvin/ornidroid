@@ -9,7 +9,7 @@ INSERT INTO habitat(id,name,lang) VALUES(7,"Bords de rivières, zones humides",'
 INSERT INTO habitat(id,name,lang) VALUES(8,"Milieu méditerranéen",'fr');
 INSERT INTO habitat(id,name,lang) VALUES(9,"Toundra",'fr');
 
-INSERT INTO habitat(id,name,lang) VALUES(1,"Montains",'en');
+INSERT INTO habitat(id,name,lang) VALUES(1,"Mountains",'en');
 INSERT INTO habitat(id,name,lang) VALUES(2,"Cities, villages, gardens",'en');
 INSERT INTO habitat(id,name,lang) VALUES(3,"Desert or dry regions",'en');
 INSERT INTO habitat(id,name,lang) VALUES(4,"Forests and moorlands",'en');

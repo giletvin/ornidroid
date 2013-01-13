@@ -69,7 +69,8 @@ public class BirdActivityGestureListener extends SimpleOnGestureListener {
 					FullSizeImageActivity.class);
 			intentImageFullSize.putExtra(BirdActivity.DISPLAYED_PICTURE_ID,
 					displayedPictureId);
-			this.birdActivity.startActivity(intentImageFullSize);
+			this.birdActivity.startActivity(intentImageFullSize
+					.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 			return true;
 		} else {
 			return false;

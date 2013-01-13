@@ -204,7 +204,8 @@ public class FullSizeImageActivity extends Activity {
 					BirdActivity.class);
 			intentBirdInfo.putExtra(BirdActivity.DISPLAYED_PICTURE_ID,
 					FullSizeImageActivity.this.displayedPictureId);
-			startActivity(intentBirdInfo);
+			startActivity(intentBirdInfo
+					.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 			return true;
 		}
 	}

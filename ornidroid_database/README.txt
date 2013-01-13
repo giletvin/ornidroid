@@ -12,6 +12,8 @@ Audio
 -----
 dans ornidroid_sons
 compression.sh src_audio audio
+Attention ! pour des mises à jour et éviter de tout regénérer, copier les répertoires à compresser dans audio_test et lancer compression.sh audio_test /tmp/audio
+Puis generate_contents_properties.sh sur le répertoire audio
 
 Images
 ------
@@ -26,8 +28,8 @@ Génération des fichiers contents.properties
 -------------------------------------------
 
 Fichiers décrivant le contenu des répertoires pour le téléchargement des médias (images ou sons)
-generate_contents_properties.sh ../ornidroid_images/images
-generate_contents_properties.sh ../ornidroid_audio/audio
+generate_contents_properties.sh ../ornidroid_images/images jpg
+generate_contents_properties.sh ../ornidroid_audio/audio mp3
 
 Finalement, déposer les répertoires audio et images générés sur http://ornidroid.free.fr/ornidroid
 

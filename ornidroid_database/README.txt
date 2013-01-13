@@ -71,3 +71,14 @@ jarsigner -verbose -sigalg MD5withRSA -digestalg SHA1 -keystore [path_to_key] or
 Refaire un coup la commande zipalign
 
 zipalign -v 4 ornidroid-1.0.1.apk ornidroid-1.0.1-FINAL.apk
+
+
+Tag git
+-------
+
+git tag -a v2.0.0 -m 'v2.0.0'
+git push origin v2.0.0
+
+Préparer la version à venir
+----------------------------
+Modifier pom.xml et manifest pour les n° de version

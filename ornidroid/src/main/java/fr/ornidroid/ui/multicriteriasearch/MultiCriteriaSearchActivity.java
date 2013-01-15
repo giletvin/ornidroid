@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
@@ -37,10 +38,10 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	private final IOrnidroidService ornidroidService;
 
 	/** The reset form button. */
-	private TextView resetFormButton;
+	private Button resetFormButton;
 
 	/** The search show results button. */
-	private TextView searchShowResultsButton;
+	private Button searchShowResultsButton;
 
 	/**
 	 * Instantiates a new multi criteria search activity.
@@ -103,9 +104,9 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		setTitle(R.string.menu_search_multi);
 
 		this.nbResultsTextView = (TextView) findViewById(R.id.search_nb_results);
-		this.searchShowResultsButton = (TextView) findViewById(R.id.search_show_results_button);
+		this.searchShowResultsButton = (Button) findViewById(R.id.search_show_results_button);
 		this.searchShowResultsButton.setOnClickListener(this);
-		this.resetFormButton = (TextView) findViewById(R.id.reset_form_button);
+		this.resetFormButton = (Button) findViewById(R.id.reset_form_button);
 		this.resetFormButton.setOnClickListener(this);
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
 		initSelectField(MultiCriteriaSearchFieldType.SIZE);

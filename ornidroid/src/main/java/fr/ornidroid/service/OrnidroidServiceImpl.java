@@ -515,9 +515,9 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					cursor.getString(directoryNameIndex), description,
 					distribution, scientificOrder, scientificFamily,
 					getHabitatFromCursor(cursor), size, category);
-
+			cursor.close();
 		}
-		cursor.close();
+
 	}
 
 	/**

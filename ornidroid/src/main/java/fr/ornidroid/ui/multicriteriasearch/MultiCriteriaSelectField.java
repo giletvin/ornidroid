@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -15,7 +16,8 @@ import fr.ornidroid.R;
  * The Class MultiCriteriaSelectField.
  * http://kevindion.com/2011/01/custom-xml-attributes-for-android-widgets/
  */
-public class MultiCriteriaSelectField extends LinearLayout {
+public class MultiCriteriaSelectField extends LinearLayout implements
+		OnClickListener {
 
 	/** The custom icon. */
 	private boolean customIcon = false;
@@ -61,16 +63,9 @@ public class MultiCriteriaSelectField extends LinearLayout {
 		this.addView(layoutTextIcon);
 		this.addView(this.spinner);
 
-		// add click behaviour on the text
-		this.textView.setOnClickListener(new OnClickListener() {
-			public void onClick(final View v) {
-				if (MultiCriteriaSelectField.this.spinner.getVisibility() == View.VISIBLE) {
-					expand(false);
-				} else {
-					expand(true);
-				}
-			}
-		});
+		// add click behaviour on the text and icon
+		this.textView.setOnClickListener(this);
+		this.icon.setOnClickListener(this);
 
 		final TypedArray a = context.obtainStyledAttributes(attrs,
 				R.styleable.MultiCriteriaSelectField);
@@ -146,6 +141,19 @@ public class MultiCriteriaSelectField extends LinearLayout {
 	 */
 	public Spinner getSpinner() {
 		return this.spinner;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	 */
+	public void onClick(final View v) {
+		if (this.spinner.getVisibility() == View.VISIBLE) {
+			expand(false);
+		} else {
+			expand(true);
+		}
 	}
 
 	/**

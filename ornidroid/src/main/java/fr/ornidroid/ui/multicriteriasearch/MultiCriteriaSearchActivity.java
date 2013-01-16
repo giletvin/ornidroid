@@ -9,7 +9,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
@@ -37,11 +38,9 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
 
-	/** The reset form button. */
-	private Button resetFormButton;
-
-	/** The search show results button. */
-	private Button searchShowResultsButton;
+	private ImageView resetFormButton;
+	/** The show results clickable area. */
+	private LinearLayout showResultsClickableArea;
 
 	/**
 	 * Instantiates a new multi criteria search activity.
@@ -77,17 +76,19 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	public void onClick(final View v) {
-		if (v == this.searchShowResultsButton) {
-			this.ornidroidService
-					.getBirdMatchesFromMultiSearchCriteria(this.formBean);
-
-			final Intent intent = new Intent(getApplicationContext(),
-					MainActivity.class);
-			intent.putExtra(MainActivity.SHOW_SEARCH_FIELD_INTENT_PRM, false);
-			startActivity(intent);
-		}
 		if (v == this.resetFormButton) {
 			resetForm();
+		} else {
+			if (v == this.showResultsClickableArea) {
+				this.ornidroidService
+						.getBirdMatchesFromMultiSearchCriteria(this.formBean);
+
+				final Intent intent = new Intent(getApplicationContext(),
+						MainActivity.class);
+				intent.putExtra(MainActivity.SHOW_SEARCH_FIELD_INTENT_PRM,
+						false);
+				startActivity(intent);
+			}
 		}
 
 	}
@@ -104,10 +105,11 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		setTitle(R.string.menu_search_multi);
 
 		this.nbResultsTextView = (TextView) findViewById(R.id.search_nb_results);
-		this.searchShowResultsButton = (Button) findViewById(R.id.search_show_results_button);
-		this.searchShowResultsButton.setOnClickListener(this);
-		this.resetFormButton = (Button) findViewById(R.id.reset_form_button);
+		this.showResultsClickableArea = (LinearLayout) findViewById(R.id.search_show_results);
+		this.showResultsClickableArea.setOnClickListener(this);
+		this.resetFormButton = (ImageView) findViewById(R.id.reset_form);
 		this.resetFormButton.setOnClickListener(this);
+
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
 		initSelectField(MultiCriteriaSearchFieldType.SIZE);
 		initSelectField(MultiCriteriaSearchFieldType.FEATHER_COLOUR);

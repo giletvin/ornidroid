@@ -60,15 +60,6 @@ public class Constants extends BasicConstants {
 	}
 
 	/**
-	 * Gets the ornidroid db path.
-	 * 
-	 * @return the ornidroid db path
-	 */
-	public static final String getOrnidroidDbPath() {
-		return Constants.getOrnidroidHome() + File.separator + DB_NAME;
-	}
-
-	/**
 	 * Gets the ornidroid home.
 	 * 
 	 * @return the ornidroid home. Never null. If empty, returns a default value

@@ -1,38 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:weightSum="1">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1" >
 
-	<ImageView android:id="@+id/home_image" android:layout_width="fill_parent"
-		android:layout_height="200sp" android:src="@drawable/oiseauweb"
-		android:scaleType="fitCenter" />
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="horizontal" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:padding="25sp">
-		<TextView android:text="@string/home_stars" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:textSize="25sp"
-			android:gravity="center_horizontal" />
-	</LinearLayout>
+        <ImageView
+            android:id="@+id/home_image"
+            android:layout_width="fill_parent"
+            android:layout_height="200sp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitCenter"
+            android:src="@drawable/oiseauweb" />
 
-	<TextView android:id="@+id/menu_search" android:text="@string/menu_search"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:textSize="20sp" android:paddingLeft="20sp" />
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="25sp" >
 
-	<TextView android:id="@+id/menu_search_multi" android:text="@string/menu_search_multi"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:textSize="20sp" android:paddingLeft="20sp" android:paddingTop="20sp"
-		 />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/home_stars"
+                android:textSize="25sp" />
+        </LinearLayout>
 
-	<TextView android:id="@+id/menu_help" android:text="@string/help"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:textSize="20sp" android:paddingLeft="20sp" android:paddingTop="20sp" />
-	
-	<TextView android:id="@+id/menu_about" android:text="@string/menu_about"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:textSize="20sp" android:paddingLeft="20sp" android:paddingTop="20sp" />
+        <TextView
+            android:id="@+id/menu_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20sp"
+            android:paddingRight="20sp"
+            android:text="@string/menu_search"
+            android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/menu_search_multi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20sp"
+            android:paddingRight="20sp"
+            android:paddingTop="20sp"
+            android:text="@string/menu_search_multi"
+            android:textSize="20sp" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/menu_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20sp"
+            android:paddingRight="20sp"
+            android:paddingTop="20sp"
+            android:text="@string/help"
+            android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/menu_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20sp"
+            android:paddingRight="20sp"
+            android:paddingTop="20sp"
+            android:text="@string/menu_about"
+            android:textSize="20sp" />
+    </LinearLayout>
 
+</ScrollView>

@@ -4,13 +4,39 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="5sp" >
+    android:padding="5sp" android:gravity="center_horizontal" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/search_show_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/my_border"
+        android:gravity="center_horizontal"  >
+
+        <TextView
+            android:id="@+id/search_nb_results"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="30sp"
+            android:paddingTop="5sp"
+            android:paddingLeft="5sp"
+            android:paddingBottom="5sp"
+            android:text="@string/search_results" />
+
+        <ImageView
+            android:id="@+id/reset_form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/reset_form"
+            android:src="@drawable/ic_reset" />
+    </LinearLayout>
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:layout_weight="4.0" >
+        android:layout_weight="4.0" android:paddingTop="30sp" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -98,44 +124,5 @@
                 custom:text="@string/search_remarkable_sign" />
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1.0"
-        android:gravity="center_horizontal|bottom"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/search_nb_results"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:padding="5sp"
-            android:text="@string/search_results" />
-
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal|bottom"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/reset_form_button"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:minWidth="100sp"
-                android:text="@string/reset_form" />
-
-            <Button
-                android:id="@+id/search_show_results_button"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:minWidth="100sp"
-                android:text="@string/search_show_results" />
-        </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

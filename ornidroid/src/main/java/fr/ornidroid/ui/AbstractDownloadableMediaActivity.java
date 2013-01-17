@@ -167,7 +167,7 @@ public abstract class AbstractDownloadableMediaActivity extends
 		getSpecificContentLayout().setGravity(Gravity.CENTER_HORIZONTAL);
 
 		final TextView noMediaMessage = new TextView(this);
-		noMediaMessage.setPadding(5, 0, 5, 20);
+		noMediaMessage.setPadding(5, 10, 5, 20);
 
 		getSpecificContentLayout().addView(noMediaMessage);
 

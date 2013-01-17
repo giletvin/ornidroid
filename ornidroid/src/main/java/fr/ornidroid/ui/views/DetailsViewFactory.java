@@ -56,6 +56,7 @@ public class DetailsViewFactory {
 		final LinearLayout linearLayout = new LinearLayout(this.activity);
 
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		linearLayout.setPadding(5, 10, 5, 5);
 		this.category = new TextView(this.activity);
 		this.category.setPadding(5, 0, 5, 20);
 		linearLayout.addView(this.category);

@@ -61,6 +61,7 @@ public class AudioHelper implements OnClickListener {
 		final LinearLayout audioControlLayout = new LinearLayout(
 				this.birdActivity);
 		audioControlLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+		audioControlLayout.setPadding(5, 10, 5, 5);
 		if (this.birdActivity.getOrnidroidService().getCurrentBird()
 				.getNumberOfSounds() > 0) {
 			audioControlLayout.setPadding(0, 25, 0, 25);

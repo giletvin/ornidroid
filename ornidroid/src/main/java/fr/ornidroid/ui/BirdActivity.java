@@ -544,6 +544,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		this.numberOfPicturesTextView = new TextView(this);
 		taxonAndNbPicturesLayout.addView(this.taxon);
 		taxonAndNbPicturesLayout.addView(this.numberOfPicturesTextView);
+		taxonAndNbPicturesLayout.setPadding(5, 10, 5, 5);
 		taxonAndNbPicturesLayout.setLayoutParams(new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 		headerLayout.addView(taxonAndNbPicturesLayout);
@@ -554,6 +555,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			final LinearLayout infoButtonLayout = new LinearLayout(this);
 			infoButtonLayout.setOrientation(LinearLayout.HORIZONTAL);
 			infoButtonLayout.setGravity(Gravity.RIGHT);
+			infoButtonLayout.setPadding(5, 10, 5, 5);
 			this.infoButton = new ImageView(this);
 			this.infoButton.setOnClickListener(this);
 			this.infoButton.setImageResource(R.drawable.ic_info);

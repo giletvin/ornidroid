@@ -64,8 +64,7 @@ public class MultiCriteriaSelectField extends LinearLayout implements
 		this.addView(this.spinner);
 
 		// add click behaviour on the text and icon
-		this.textView.setOnClickListener(this);
-		this.icon.setOnClickListener(this);
+		layoutTextIcon.setOnClickListener(this);
 
 		final TypedArray a = context.obtainStyledAttributes(attrs,
 				R.styleable.MultiCriteriaSelectField);
@@ -234,6 +233,7 @@ public class MultiCriteriaSelectField extends LinearLayout implements
 		paramsLayoutText.topMargin = 5;
 		paramsLayoutText.gravity = Gravity.CENTER;
 		layoutText.setLayoutParams(paramsLayoutText);
+		this.textView.setPadding(0, 10, 10, 0);
 		layoutText.addView(this.textView);
 		layoutTextIcon.addView(layoutText);
 

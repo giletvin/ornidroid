@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import android.app.Activity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Bird;
@@ -53,6 +54,7 @@ public class DetailsViewFactory {
 	 * @return the view
 	 */
 	public View createContent() {
+
 		final LinearLayout linearLayout = new LinearLayout(this.activity);
 
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -83,7 +85,11 @@ public class DetailsViewFactory {
 			printBirdDistributionAndBehaviour(this.ornidroidService
 					.getCurrentBird());
 		}
-		return linearLayout;
+		// return linearLayout;
+		final ScrollView scrollView = new ScrollView(this.activity);
+		scrollView.addView(linearLayout);
+		return scrollView;
+
 	}
 
 	/**

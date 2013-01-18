@@ -75,3 +75,7 @@ create table remarkable_sign(
 		name,
 		lang
 );
+
+
+create table application_info(id integer,key,value,date);
+insert into application_info(id,key,value,date) VALUES(1,"ornidroid_version","2.0.1","18/01/2013");

@@ -11,7 +11,7 @@ INSERT INTO colour(id,name,lang) VALUES(7,"Rose",'fr');
 INSERT INTO colour(id,name,lang) VALUES(8,"Rouge",'fr');
 INSERT INTO colour(id,name,lang) VALUES(9,"Brun",'fr');
 INSERT INTO colour(id,name,lang) VALUES(10,"Vert",'fr');
-INSERT INTO colour(id,name,lang) VALUES(11,"Roux",'fr');
+
 
 INSERT INTO colour(id,name,lang) VALUES(1,"White",'en');
 INSERT INTO colour(id,name,lang) VALUES(2,"Blue",'en');
@@ -23,7 +23,7 @@ INSERT INTO colour(id,name,lang) VALUES(7,"Pink",'en');
 INSERT INTO colour(id,name,lang) VALUES(8,"Red",'en');
 INSERT INTO colour(id,name,lang) VALUES(9,"Brown",'en');
 INSERT INTO colour(id,name,lang) VALUES(10,"Green",'en');
-INSERT INTO colour(id,name,lang) VALUES(11,"Russet",'en');
+
 
 INSERT INTO colour(id,name,lang) VALUES(1,"Weiss",'de');
 INSERT INTO colour(id,name,lang) VALUES(2,"Blau",'de');
@@ -35,4 +35,4 @@ INSERT INTO colour(id,name,lang) VALUES(7,"Rosa",'de');
 INSERT INTO colour(id,name,lang) VALUES(8,"Rot",'de');
 INSERT INTO colour(id,name,lang) VALUES(9,"Braun",'de');
 INSERT INTO colour(id,name,lang) VALUES(10,"Grün",'de');
-INSERT INTO colour(id,name,lang) VALUES(11,"Fuchsig",'de');
+

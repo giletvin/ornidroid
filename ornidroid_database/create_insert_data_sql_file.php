@@ -184,9 +184,9 @@ function getColourFk($data){
 	//INSERT INTO colour(id,name,lang) VALUES(8,"Rouge",'fr');
 	//INSERT INTO colour(id,name,lang) VALUES(9,"Brun",'fr');
 	//INSERT INTO colour(id,name,lang) VALUES(10,"Vert",'fr');
-	//INSERT INTO colour(id,name,lang) VALUES(11,"Roux",'fr');
+
 	//TODO : attention ! ce sont les valeurs en dur qu'on trouve dans le csv et qui sont dans le sql qui fait les inserts dans la table colours !
-	$array_colours= array('blanc', 'bleu', 'gris', "jaune", "noir", "orange", "rose", "rouge", "brun", "vert", "roux");
+	$array_colours= array('blanc', 'bleu', 'gris', "jaune", "noir", "orange", "rose", "rouge", "brun", "vert");
 	if ($data!=''){
 		//retrouver dans la map colours l'id qui lui a été accordé dans la table des colours
 		//id = index dans le tableau +1 car les id commencent à 1 et pas 0

@@ -21,6 +21,12 @@ public class Constants extends BasicConstants {
 	/** The CONTEXT. */
 	private static Context CONTEXT;
 
+	/** The Constant ORNIDROID_DIRECTORY_NAME. */
+	private static final String ORNIDROID_DIRECTORY_NAME = "ornidroid";
+
+	/** The ornidroid home default value. */
+	private static String ORNIDROID_HOME_DEFAULT_VALUE;
+
 	/** The Constant ORNIDROID_PREFERENCES_FILE_NAME. */
 	private static final String ORNIDROID_PREFERENCES_FILE_NAME = "fr.ornidroid_preferences";
 
@@ -37,7 +43,7 @@ public class Constants extends BasicConstants {
 	}
 
 	/**
-	 * Gets the ornidroid home media of a given bird
+	 * Gets the ornidroid home media of a given bird.
 	 * 
 	 * @param bird
 	 *            the bird
@@ -62,18 +68,27 @@ public class Constants extends BasicConstants {
 	/**
 	 * Gets the ornidroid home.
 	 * 
-	 * @return the ornidroid home. Never null. If empty, returns a default value
+	 * 
+	 * @return the ornidroid home default value : directory "ornidroid" on the
+	 *         external storage
 	 */
 	public static final String getOrnidroidHome() {
-		return StringUtils
-				.defaultIfBlank(
-						Constants
-								.getOrnidroidPreferences()
-								.getString(
-										getStringFromXmlResource(R.string.preferences_home_key),
-										Constants
-												.getOrnidroidHomeDefaultValue()),
-						Constants.getOrnidroidHomeDefaultValue());
+		if (StringUtils.isBlank(ORNIDROID_HOME_DEFAULT_VALUE)) {
+			if (isExternalStorageWritable()) {
+				ORNIDROID_HOME_DEFAULT_VALUE = Environment
+						.getExternalStorageDirectory().getAbsolutePath()
+						+ File.separator + ORNIDROID_DIRECTORY_NAME;
+			} else {
+				// external storage not available. Try on the data directory of
+				// the app
+				// something like /data/data/fr.ornidroid/files/
+				ORNIDROID_HOME_DEFAULT_VALUE = CONTEXT.getFilesDir()
+						.getAbsolutePath()
+						+ File.separator
+						+ ORNIDROID_DIRECTORY_NAME;
+			}
+		}
+		return ORNIDROID_HOME_DEFAULT_VALUE;
 	}
 
 	/**
@@ -146,18 +161,6 @@ public class Constants extends BasicConstants {
 	}
 
 	/**
-	 * Gets the ornidroid home default value if the OrnidroidHomePreference is
-	 * not set by the user
-	 * 
-	 * @return the ornidroid home default value : directory "ornidroid" on the
-	 *         external storage
-	 */
-	private static final String getOrnidroidHomeDefaultValue() {
-		return Environment.getExternalStorageDirectory().getAbsolutePath()
-				+ File.separator + "ornidroid/";
-	}
-
-	/**
 	 * Gets the ornidroid preferences.
 	 * 
 	 * @return the ornidroid preferences
@@ -165,5 +168,29 @@ public class Constants extends BasicConstants {
 	private static final SharedPreferences getOrnidroidPreferences() {
 		return CONTEXT.getSharedPreferences(ORNIDROID_PREFERENCES_FILE_NAME,
 				Context.MODE_PRIVATE);
+	}
+
+	/**
+	 * Checks if is external storage writable.
+	 * 
+	 * @return true, if is external storage writable
+	 */
+	private static final boolean isExternalStorageWritable() {
+		boolean mExternalStorageWriteable;
+		final String state = Environment.getExternalStorageState();
+
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			// We can read and write the media
+			mExternalStorageWriteable = true;
+		} else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+			// We can only read the media
+			mExternalStorageWriteable = false;
+		} else {
+			// Something else is wrong. It may be one of many other states, but
+			// all we need
+			// to know is we can neither read nor write
+			mExternalStorageWriteable = false;
+		}
+		return mExternalStorageWriteable;
 	}
 }

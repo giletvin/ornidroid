@@ -48,6 +48,12 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity {
 		case R.id.preferences:
 			startActivity(new Intent(this, OrnidroidPreferenceActivity.class));
 			return (true);
+		case R.id.help:
+			startActivity(new Intent(this, HelpActivity.class));
+			return (true);
+		case R.id.home:
+			startActivity(new Intent(this, HomeActivity.class));
+			return (true);
 		default:
 			return super.onOptionsItemSelected(item);
 		}

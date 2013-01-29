@@ -36,8 +36,6 @@
     <string name="bird_names">Taxonomy</string>
 
     <!-- labes used in preferences -->
-    <string name="preferences_home_key">OrnidroidHome</string>
-    <string name="preferences_home_label">Installation directory of the database</string>
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
     <string name="preferences_lang_label">Language of the search engine</string>
 

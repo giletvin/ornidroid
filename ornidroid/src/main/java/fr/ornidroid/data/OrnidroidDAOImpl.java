@@ -1,6 +1,5 @@
 package fr.ornidroid.data;
 
-import org.apache.commons.lang.StringUtils;
 
 import android.app.SearchManager;
 import android.database.Cursor;
@@ -13,6 +12,7 @@ import android.widget.ListAdapter;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.I18nHelper;
+import fr.ornidroid.helper.StringHelper;
 
 /**
  * Contains sql queries to search for birds in the database.
@@ -316,7 +316,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				return null;
 			} else if (!cursor.moveToFirst()) {
 				cursor.close();
-				if (StringUtils.equals(lang, I18nHelper.FRENCH)) {
+				if (StringHelper.equals(lang, I18nHelper.FRENCH)) {
 					return null;
 				} else {
 					// if not found in the locale of the user, try the same

@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.commons.io.IOUtils;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -154,7 +152,7 @@ public class OrnidroidDatabaseOpenHelper extends SQLiteOpenHelper {
 
 		// Open the empty db as the output stream
 		final OutputStream myOutput = new FileOutputStream(outFile);
-		IOUtils.copy(myInput, myOutput);
+		IOHelper.copy(myInput, myOutput);
 		// Close the streams
 		myOutput.flush();
 		myOutput.close();

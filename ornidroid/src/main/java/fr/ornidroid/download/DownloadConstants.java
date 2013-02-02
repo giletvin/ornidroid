@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
 
 import fr.ornidroid.R;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
+import fr.ornidroid.helper.StringHelper;
 
 /**
  * The Class DownloadConstants.
@@ -62,7 +62,7 @@ public class DownloadConstants {
 	 * Load web site root.
 	 */
 	private static void loadWebSiteRoot() {
-		if (StringUtils.isBlank(ORNIDROID_WEB_SITE_ROOT)) {
+		if (StringHelper.isBlank(ORNIDROID_WEB_SITE_ROOT)) {
 			try {
 				final InputStream rawResource = Constants.getCONTEXT()
 						.getResources().openRawResource(R.raw.ornidroid);
@@ -74,7 +74,7 @@ public class DownloadConstants {
 				// only for junit : exception android stub
 				ORNIDROID_WEB_SITE_ROOT = JUNIT_DOWNLOAD_SITE;
 			} finally {
-				if (StringUtils.isBlank(ORNIDROID_WEB_SITE_ROOT)) {
+				if (StringHelper.isBlank(ORNIDROID_WEB_SITE_ROOT)) {
 					ORNIDROID_WEB_SITE_ROOT = DEFAULT_DOWNLOAD_SITE;
 				}
 			}

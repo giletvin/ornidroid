@@ -2,7 +2,6 @@ package fr.ornidroid.helper;
 
 import java.util.Locale;
 
-import org.apache.commons.lang.StringUtils;
 
 /**
  * The Class I18nHelper.
@@ -49,10 +48,10 @@ public class I18nHelper {
 	private I18nHelper() {
 		final String langCode = Locale.getDefault().getISO3Language();
 
-		if (StringUtils.equalsIgnoreCase(ISO3_DEU, langCode)) {
+		if (StringHelper.equalsIgnoreCase(ISO3_DEU, langCode)) {
 			this.androidLang = DEUTSCH;
 		} else {
-			if (StringUtils.equalsIgnoreCase(ISO3_FRA, langCode)) {
+			if (StringHelper.equalsIgnoreCase(ISO3_FRA, langCode)) {
 				this.androidLang = FRENCH;
 			} else {
 				this.androidLang = ENGLISH;

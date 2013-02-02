@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-
+import android.util.Log;
 import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.OrnidroidFileFactoryImpl;
@@ -19,8 +17,10 @@ import fr.ornidroid.download.DownloadHelperImpl;
 import fr.ornidroid.download.DownloadHelperInterface;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
+import fr.ornidroid.helper.FileHelper;
 import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
+import fr.ornidroid.helper.StringHelper;
 
 /**
  * The Class OrnidroidIOServiceImpl.
@@ -80,13 +80,16 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 			throws OrnidroidException {
 		try {
 			if (!fileDirectory.exists()) {
-				FileUtils.forceMkdir(fileDirectory);
+				FileHelper.forceMkdir(fileDirectory);
 			}
 			// creates the .nomedia file in the root directory
 			final File noMediaFile = new File(fileDirectory,
 					BasicConstants.NO_MEDIA_FILENAME);
-			FileUtils.touch(noMediaFile);
+			FileHelper.createEmptyFile(noMediaFile);
 		} catch (final IOException e) {
+			if (!BasicConstants.isJunitContext()) {
+				Log.e(BasicConstants.LOG_TAG, e.getMessage(), e);
+			}
 			throw new OrnidroidException(
 					OrnidroidError.ORNIDROID_HOME_NOT_FOUND, e);
 		}
@@ -138,16 +141,6 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.ornidroid.service.IOrnidroidIOService#isDirectoryEmpty(java
-	 * .io.File)
-	 */
-	public boolean isDirectoryEmpty(final File fileDirectory) {
-		return FileUtils.listFiles(fileDirectory, null, false).isEmpty();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see fr.ornidroid.service.IOrnidroidIOService#loadMediaFiles(java
 	 * .io.File, fr.ornidroid.bo.Bird)
 	 */
@@ -190,12 +183,12 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 			final OrnidroidFileType fileType, final boolean downloadFromInternet)
 			throws OrnidroidException {
 		final List<AbstractOrnidroidFile> files = new ArrayList<AbstractOrnidroidFile>();
-		if (StringUtils.isNotBlank(directoryName)) {
+		if (StringHelper.isNotBlank(directoryName)) {
 			final File filesDirectory = new File(ornidroidMediaHome
 					+ File.separator + directoryName);
 			if (!filesDirectory.exists()) {
 				try {
-					FileUtils.forceMkdir(filesDirectory);
+					FileHelper.forceMkdir(filesDirectory);
 				} catch (final IOException e) {
 					throw new OrnidroidException(
 							OrnidroidError.ORNIDROID_HOME_NOT_FOUND, e);
@@ -231,7 +224,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 					// "The directory " + filesDirectory.getPath()
 					// + " is going to be deleted");
 					try {
-						FileUtils.forceDelete(filesDirectory);
+						FileHelper.forceDelete(filesDirectory);
 					} catch (final IOException e1) {
 						// Log.e(Constants.LOG_TAG,
 						// "Unable to delete the directory "

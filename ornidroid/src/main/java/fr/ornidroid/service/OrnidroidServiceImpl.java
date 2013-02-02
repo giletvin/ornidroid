@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
 import android.app.SearchManager;
@@ -23,6 +22,7 @@ import fr.ornidroid.data.OrnidroidDAOImpl;
 import fr.ornidroid.data.OrnidroidDatabaseOpenHelper;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.OrnidroidException;
+import fr.ornidroid.helper.StringHelper;
 
 /**
  * The Class OrnidroidServiceImpl.
@@ -458,7 +458,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 						: cursor.getString(habitat1Index));
 		final String habitat2 = (habitat2Index == -1) ? BasicConstants.EMPTY_STRING
 				: cursor.getString(habitat2Index);
-		if (StringUtils.isNotBlank(habitat2)) {
+		if (StringHelper.isNotBlank(habitat2)) {
 			habitat.append(BasicConstants.SLASH_STRING);
 			habitat.append(habitat2);
 		}

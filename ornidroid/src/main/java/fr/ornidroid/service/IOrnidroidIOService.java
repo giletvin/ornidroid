@@ -35,15 +35,6 @@ public interface IOrnidroidIOService {
 			OrnidroidFileType fileType) throws OrnidroidException;
 
 	/**
-	 * Checks if is directory empty.
-	 * 
-	 * @param fileDirectory
-	 *            the file directory
-	 * @return true, if is directory empty
-	 */
-	public boolean isDirectoryEmpty(File fileDirectory);
-
-	/**
 	 * Load media files from the local directory.
 	 * 
 	 * @param mediaHomeDirectory

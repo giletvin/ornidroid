@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import fr.ornidroid.helper.StringHelper;
 
 /**
  * The Class Credits.
@@ -53,7 +53,7 @@ public class Credits {
 		List<Map<String, String>> creditList = new ArrayList<Map<String, String>>();
 		for (int i = 0; i < credits.length; i++) {
 			creditMap = new HashMap<String, String>();
-			String[] creditArray = StringUtils.split(credits[i],
+			String[] creditArray = StringHelper.split(credits[i],
 					FIELD_SEPARATOR);
 			loadCredit(CREDIT_TITLE, 0, creditArray);
 			loadCredit(CREDIT_AUTHOR, 1, creditArray);

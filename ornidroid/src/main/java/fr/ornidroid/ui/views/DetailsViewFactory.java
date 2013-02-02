@@ -1,6 +1,5 @@
 package fr.ornidroid.ui.views;
 
-import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 
@@ -110,7 +110,7 @@ public class DetailsViewFactory {
 	 *            the bird
 	 */
 	private void printBirdDescription(final Bird bird) {
-		if (StringUtils.isNotBlank(bird.getDescription())) {
+		if (StringHelper.isNotBlank(bird.getDescription())) {
 			this.description.setText(this.activity
 					.getText(R.string.description)
 					+ BasicConstants.COLUMN_STRING
@@ -134,7 +134,7 @@ public class DetailsViewFactory {
 		distributionAndBehaviour.append(BasicConstants.CARRIAGE_RETURN);
 		distributionAndBehaviour.append(BasicConstants.CARRIAGE_RETURN);
 		distributionAndBehaviour.append(bird.getHabitat());
-		if (StringUtils.isNotBlank(bird.getDistribution())) {
+		if (StringHelper.isNotBlank(bird.getDistribution())) {
 			distributionAndBehaviour.append(BasicConstants.CARRIAGE_RETURN);
 			distributionAndBehaviour.append(BasicConstants.CARRIAGE_RETURN);
 			distributionAndBehaviour.append(bird.getDistribution());
@@ -149,8 +149,8 @@ public class DetailsViewFactory {
 	 *            the bird
 	 */
 	private void printBirdOrderAndFamily(final Bird bird) {
-		if (StringUtils.isNotBlank(bird.getScientificFamily())
-				&& StringUtils.isNotBlank(bird.getScientificOrder())) {
+		if (StringHelper.isNotBlank(bird.getScientificFamily())
+				&& StringHelper.isNotBlank(bird.getScientificOrder())) {
 			this.orderAndFamily
 					.setText(this.activity.getText(R.string.scientific_order)
 							+ BasicConstants.COLUMN_STRING

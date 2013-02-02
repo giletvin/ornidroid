@@ -12,8 +12,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.ornidroid"
-    android:versionCode="5"
-    android:versionName="2.0.2" >
+    android:versionCode="6"
+    android:versionName="2.0.3-SNAPSHOT" >
 
     <uses-sdk android:minSdkVersion="8" />
 

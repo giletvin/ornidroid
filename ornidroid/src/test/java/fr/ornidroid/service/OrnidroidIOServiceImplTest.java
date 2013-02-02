@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +19,54 @@ import fr.ornidroid.tests.AbstractTest;
  * The Class OrnidroidIOServiceImplTest.
  */
 public class OrnidroidIOServiceImplTest extends AbstractTest {
+
+	/**
+	 * Tests if the specified <code>File</code> is older than the specified
+	 * <code>Date</code>.
+	 * 
+	 * @param file
+	 *            the <code>File</code> of which the modification date must be
+	 *            compared, must not be <code>null</code>
+	 * @param date
+	 *            the date reference, must not be <code>null</code>
+	 * @return true if the <code>File</code> exists and has been modified before
+	 *         the given <code>Date</code>.
+	 * @throws IllegalArgumentException
+	 *             if the file is <code>null</code>
+	 * @throws IllegalArgumentException
+	 *             if the date is <code>null</code>
+	 */
+	private static boolean isFileOlder(final File file, final Date date) {
+		if (date == null) {
+			throw new IllegalArgumentException("No specified date");
+		}
+		return isFileOlder(file, date.getTime());
+	}
+
+	/**
+	 * Tests if the specified <code>File</code> is older than the specified time
+	 * reference.
+	 * 
+	 * @param file
+	 *            the <code>File</code> of which the modification date must be
+	 *            compared, must not be <code>null</code>
+	 * @param timeMillis
+	 *            the time reference measured in milliseconds since the epoch
+	 *            (00:00:00 GMT, January 1, 1970)
+	 * @return true if the <code>File</code> exists and has been modified before
+	 *         the given time reference.
+	 * @throws IllegalArgumentException
+	 *             if the file is <code>null</code>
+	 */
+	private static boolean isFileOlder(final File file, final long timeMillis) {
+		if (file == null) {
+			throw new IllegalArgumentException("No specified file");
+		}
+		if (!file.exists()) {
+			return false;
+		}
+		return file.lastModified() < timeMillis;
+	}
 
 	/** The bird factory. */
 	private BirdFactoryImpl birdFactory;
@@ -197,25 +244,9 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 				+ "/images", bird, OrnidroidFileType.PICTURE);
 		Assert.assertNotNull(bird.getPictures());
 		Assert.assertTrue(bird.getNumberOfPictures() == 2);
-		Assert.assertTrue(FileUtils.isFileOlder(new File(TEST_DIRECTORY
-				+ File.separator + BasicConstants.IMAGES_DIRECTORY
-				+ File.separator
+		Assert.assertTrue(isFileOlder(new File(TEST_DIRECTORY + File.separator
+				+ BasicConstants.IMAGES_DIRECTORY + File.separator
 				+ "barge_a_queue_noire/barge_a_queue_noire_1.jpg"), date));
-
-	}
-
-	/**
-	 * Test is directory empty.
-	 * 
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	@Test
-	public void testIsDirectoryEmpty() throws IOException {
-		final File testDir = new File(TEST_DIRECTORY);
-		Assert.assertTrue(this.ornidroidIOService.isDirectoryEmpty(testDir));
-		FileUtils.touch(new File(TEST_DIRECTORY + File.separator + "test.txt"));
-		Assert.assertFalse(this.ornidroidIOService.isDirectoryEmpty(testDir));
 
 	}
 

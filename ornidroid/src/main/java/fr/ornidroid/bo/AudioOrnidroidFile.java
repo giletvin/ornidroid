@@ -3,7 +3,7 @@ package fr.ornidroid.bo;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import fr.ornidroid.helper.StringHelper;
 
 /**
  * The Class AudioOrnidroidFile.
@@ -32,7 +32,7 @@ public class AudioOrnidroidFile extends AbstractOrnidroidFile {
 		String ref = getProperty(AbstractOrnidroidFile.AUDIO_REF_PROPERTY);
 		String remarks = getProperty(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY);
 
-		if (StringUtils.isBlank(title)) {
+		if (StringHelper.isBlank(title)) {
 			title = extractFilenameFromPath();
 		}
 		line1.append(title);

@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
 
 import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
+import fr.ornidroid.helper.StringHelper;
 
 /**
  * The Class DownloadHelperImpl.
@@ -136,9 +136,9 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 				fis = new FileInputStream(contentFileDownloadable.getFile());
 				final Properties properties = new Properties();
 				properties.load(fis);
-				final String files = StringUtils.defaultString(properties
+				final String files = StringHelper.defaultString(properties
 						.getProperty(FILES_PROPERTY_KEY));
-				filesToDownload = StringUtils.split(files,
+				filesToDownload = StringHelper.split(files,
 						FILES_SEPARATOR_PROPERTY_VALUE);
 			}
 

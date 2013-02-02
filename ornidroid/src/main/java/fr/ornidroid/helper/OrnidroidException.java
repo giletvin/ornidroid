@@ -1,7 +1,5 @@
-/*
- * 
- */
 package fr.ornidroid.helper;
+
 
 /**
  * The Class OrnidroidException.
@@ -25,8 +23,8 @@ public class OrnidroidException extends Exception {
 	 * @param pSourceException
 	 *            the source exception
 	 */
-	public OrnidroidException(OrnidroidError pErrorType,
-			Exception pSourceException) {
+	public OrnidroidException(final OrnidroidError pErrorType,
+			final Exception pSourceException) {
 		super();
 		this.errorType = pErrorType;
 		this.sourceException = pSourceException;
@@ -50,7 +48,7 @@ public class OrnidroidException extends Exception {
 		if (null != this.sourceException) {
 			return this.sourceException.toString();
 		}
-		return "";
+		return BasicConstants.EMPTY_STRING;
 	}
 
 }

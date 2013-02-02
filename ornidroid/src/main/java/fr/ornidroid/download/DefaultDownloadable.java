@@ -33,7 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.apache.commons.lang.StringUtils;
+import fr.ornidroid.helper.StringHelper;
 
 /**
  * The Class DefaultDownloadable.
@@ -166,7 +166,7 @@ public class DefaultDownloadable extends Downloadable {
 
 					final String prefix = this.destinationPath
 							+ File.separator
-							+ StringUtils.substringAfterLast(
+							+ StringHelper.substringAfterLast(
 									normalized(this.url), File.separator);
 
 					// + "/"+ normalized(url);

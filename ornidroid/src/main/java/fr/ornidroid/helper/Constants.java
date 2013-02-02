@@ -2,7 +2,6 @@ package fr.ornidroid.helper;
 
 import java.io.File;
 
-import org.apache.commons.lang.StringUtils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -73,7 +72,7 @@ public class Constants extends BasicConstants {
 	 *         external storage
 	 */
 	public static final String getOrnidroidHome() {
-		if (StringUtils.isBlank(ORNIDROID_HOME_DEFAULT_VALUE)) {
+		if (StringHelper.isBlank(ORNIDROID_HOME_DEFAULT_VALUE)) {
 			if (isExternalStorageWritable()) {
 				ORNIDROID_HOME_DEFAULT_VALUE = Environment
 						.getExternalStorageDirectory().getAbsolutePath()

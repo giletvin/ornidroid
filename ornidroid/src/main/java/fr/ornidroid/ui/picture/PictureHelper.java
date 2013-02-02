@@ -2,7 +2,6 @@ package fr.ornidroid.ui.picture;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 
 import android.app.Dialog;
 import android.graphics.Bitmap;
@@ -15,6 +14,7 @@ import fr.ornidroid.R;
 import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.ui.BirdActivity;
 
 /**
@@ -175,7 +175,7 @@ public class PictureHelper {
 			final int textViewResId, final int labelResourceId,
 			final String propertyName) {
 		final String propertyValue = displayedPicture.getProperty(propertyName);
-		if (StringUtils.isNotBlank(propertyValue)) {
+		if (StringHelper.isNotBlank(propertyValue)) {
 			final TextView textView = (TextView) dialog
 					.findViewById(textViewResId);
 			textView.setText(this.birdActivity.getString(labelResourceId)

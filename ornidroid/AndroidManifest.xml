@@ -85,6 +85,12 @@
         
             android:theme="@android:style/Theme.NoTitleBar" />
 
+         <activity
+            android:name=".ui.FileExplorer"
+            android:label="@string/file_explorer_title"
+        
+            android:theme="@android:style/Theme.NoTitleBar" />
+         
        
 
         <!-- Provides search suggestions for words and their definitions. -->

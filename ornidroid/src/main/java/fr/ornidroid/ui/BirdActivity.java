@@ -79,9 +79,9 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 	/** The displayed picture id. */
 	private int displayedPictureId;
-
 	/** The gesture detector. */
 	private GestureDetector gestureDetector;
+
 	/** The info button. */
 	private ImageView infoButton;
 
@@ -556,13 +556,17 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			infoButtonLayout.setOrientation(LinearLayout.HORIZONTAL);
 			infoButtonLayout.setGravity(Gravity.RIGHT);
 			infoButtonLayout.setPadding(5, 10, 5, 5);
+
+			// add button
+			infoButtonLayout.addView(getAddCustomMediaButton());
+			headerLayout.addView(infoButtonLayout);
+			// info button
 			this.infoButton = new ImageView(this);
 			this.infoButton.setOnClickListener(this);
 			this.infoButton.setImageResource(R.drawable.ic_info);
 			infoButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 			infoButtonLayout.addView(this.infoButton);
-			headerLayout.addView(infoButtonLayout);
 		}
 
 		return headerLayout;

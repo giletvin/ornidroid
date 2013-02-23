@@ -13,6 +13,8 @@ public enum OrnidroidFileType {
 	/** The Constant AUDIO_EXTENSION. */
 	public final static String AUDIO_EXTENSION = ".mp3";
 
+	/** The Constant FILE_TYPE_PARAM_NAME. */
+	public final static String FILE_TYPE_INTENT_PARAM_NAME = "FILE_TYPE";
 	/** The Constant PICTURE_EXTENSION. */
 	public final static String PICTURE_EXTENSION = ".jpg";
 
@@ -23,7 +25,7 @@ public enum OrnidroidFileType {
 	 *            the type
 	 * @return the code
 	 */
-	public static int getCode(OrnidroidFileType type) {
+	public static int getCode(final OrnidroidFileType type) {
 		int code = 0;
 		if (null != type) {
 			switch (type) {
@@ -46,7 +48,7 @@ public enum OrnidroidFileType {
 	 *            the type
 	 * @return the extension
 	 */
-	public static String getExtension(OrnidroidFileType type) {
+	public static String getExtension(final OrnidroidFileType type) {
 		String extension = null;
 		switch (type) {
 		case PICTURE:

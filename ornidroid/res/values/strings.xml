@@ -24,6 +24,7 @@
     <string name="menu_about">About</string>
     <string name="home">Home</string>
     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
     <!-- activity titles -->
     <string name="preferences">Preferences</string>
@@ -34,6 +35,7 @@
     <string name="bird_image">Pictures</string>
     <string name="bird_image_big">Zoomed picture</string>
     <string name="bird_names">Taxonomy</string>
+    <string name="file_explorer_title">File browser</string>
 
     <!-- labes used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
@@ -104,5 +106,8 @@
     <string name="search_remarkable_sign_choose">Choose a remarkable sign</string>
     <string name="search_remarkable_sign">Remarkable sign</string>
     <string name="search_no_help">No help</string>
+    <string name="add_comment">Add a comment</string>
+    <string name="add_your_file">Add a your file</string>
+    
 
 </resources>

@@ -15,6 +15,55 @@ import fr.ornidroid.tests.AbstractTest;
 public class FileHelperTest extends AbstractTest {
 
 	/**
+	 * Test copy directory.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testCopyDirectory() throws IOException {
+		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY);
+		// copy in the same destination
+		try {
+			FileHelper.copyDirectory(srcDir, srcDir);
+			Assert.fail("an exception should have occurred");
+		} catch (final IOException e) {
+			Assert.assertTrue(true);
+		}
+
+	}
+
+	/**
+	 * Test copy directory.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testCopyDirectory2() throws IOException {
+
+		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/srcDir");
+		final File destDir = new File(TEST_DIRECTORY + "/destDir");
+
+		// copy in an other directory
+		try {
+			FileHelper.copyDirectory(srcDir, destDir);
+			final File[] srcDirContent = srcDir.listFiles();
+			final File[] destDirContent = destDir.listFiles();
+			Assert.assertTrue(srcDirContent.length == destDirContent.length);
+			for (int i = 0; i < srcDirContent.length; i++) {
+				Assert.assertTrue(srcDirContent[i].getName().equals(
+						destDirContent[i].getName()));
+			}
+
+		} catch (final IOException e) {
+			Assert.fail("no exception should occur");
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
 	 * Test create empty file.
 	 */
 	@Test
@@ -67,4 +116,49 @@ public class FileHelperTest extends AbstractTest {
 			Assert.fail(e.getMessage());
 		}
 	}
+
+	/**
+	 * Test move directory.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testMoveDirectory() throws IOException {
+		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY);
+		// copy in the same destination
+		try {
+			FileHelper.moveDirectory(srcDir, srcDir);
+			Assert.fail("an exception should have occurred");
+		} catch (final IOException e) {
+			Assert.assertTrue(true);
+		}
+
+	}
+
+	/**
+	 * Test move directory2.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testMoveDirectory2() throws IOException {
+
+		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/srcDir");
+		final File destDir = new File(TEST_DIRECTORY + "/destDir");
+		final File[] srcDirContent = srcDir.listFiles();
+
+		// mv in an other directory
+		try {
+			FileHelper.moveDirectory(srcDir, destDir);
+			final File[] destDirContent = destDir.listFiles();
+			Assert.assertTrue(srcDirContent.length == destDirContent.length);
+		} catch (final IOException e) {
+			Assert.fail("no exception should occur");
+			e.printStackTrace();
+		}
+
+	}
+
 }

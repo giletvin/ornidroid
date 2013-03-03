@@ -1,6 +1,7 @@
 package fr.ornidroid.helper;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,6 +52,22 @@ public class IOHelper {
 			checkOk = false;
 		}
 		return checkOk;
+	}
+
+	/**
+	 * Close quietly.
+	 * 
+	 * @param closeable
+	 *            the closeable
+	 */
+	public static void closeQuietly(final Closeable closeable) {
+		try {
+			if (closeable != null) {
+				closeable.close();
+			}
+		} catch (final IOException ioe) {
+			// ignore
+		}
 	}
 
 	// copy from InputStream
@@ -158,5 +175,4 @@ public class IOHelper {
 		}
 		return list;
 	}
-
 }

@@ -64,6 +64,39 @@ public class FileHelperTest extends AbstractTest {
 	}
 
 	/**
+	 * Test copy directory.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testCopyDirectory3() throws IOException {
+
+		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/srcDir");
+
+		final File destDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/destDir");
+
+		final File existingFileInDestDir = new File(TEST_DIRECTORY
+				+ "/destDir/audio/exiting.mp3");
+		existingFileInDestDir.createNewFile();
+
+		final File[] srcDirContent = srcDir.listFiles();
+
+		// copy in an existing directory
+		try {
+			FileHelper.copyDirectory(srcDir, destDir);
+			final File[] destDirContent = destDir.listFiles();
+			Assert.assertTrue("check merge of the directories",
+					srcDirContent.length == (destDirContent.length));
+			Assert.assertTrue(srcDir.exists());
+		} catch (final IOException e) {
+			Assert.fail("no exception should occur");
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
 	 * Test create empty file.
 	 */
 	@Test
@@ -154,6 +187,33 @@ public class FileHelperTest extends AbstractTest {
 			FileHelper.moveDirectory(srcDir, destDir);
 			final File[] destDirContent = destDir.listFiles();
 			Assert.assertTrue(srcDirContent.length == destDirContent.length);
+		} catch (final IOException e) {
+			Assert.fail("no exception should occur");
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Test move directory3.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testMoveDirectory3() throws IOException {
+
+		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/srcDir");
+
+		final File destDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/destDir");
+		final File[] srcDirContent = srcDir.listFiles();
+
+		// mv in an existing directory
+		try {
+			FileHelper.moveDirectory(srcDir, destDir);
+			final File[] destDirContent = destDir.listFiles();
+			Assert.assertTrue(srcDirContent.length == destDirContent.length);
+			Assert.assertFalse(srcDir.exists());
 		} catch (final IOException e) {
 			Assert.fail("no exception should occur");
 			e.printStackTrace();

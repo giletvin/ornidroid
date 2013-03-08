@@ -133,11 +133,12 @@ public class FileHelper {
 		if (!srcDir.isDirectory()) {
 			throw new IOException("Source '" + srcDir + "' is not a directory");
 		}
-		if (destDir.exists()) {
-			throw new IOException("Destination '" + destDir
-					+ "' already exists");
+
+		boolean rename = false;
+		if (!destDir.exists()) {
+			rename = srcDir.renameTo(destDir);
 		}
-		final boolean rename = srcDir.renameTo(destDir);
+
 		if (!rename) {
 			if (destDir.getCanonicalPath()
 					.startsWith(srcDir.getCanonicalPath())) {

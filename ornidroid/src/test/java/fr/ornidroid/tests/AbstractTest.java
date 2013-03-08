@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.junit.Before;
 
 import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.FileHelper;
 
 /**
@@ -21,6 +22,31 @@ public class AbstractTest {
 	/** The Constant TEST_DIRECTORY. */
 	public static final String TEST_DIRECTORY = System
 			.getProperty("java.io.tmpdir") + "/ornidroid_tests";
+
+	/**
+	 * Builds the ornidroid home test.
+	 * 
+	 * @param path
+	 *            the path
+	 * @return the file
+	 * @throws IOException
+	 */
+	public File buildOrnidroidHomeTest(final String path) throws IOException {
+		final File ornidroidHome = new File(path);
+		final File ornidroidHomeImages = new File(path + File.separator
+				+ Constants.IMAGES_DIRECTORY);
+		final File ornidroidHomeAudio = new File(path + File.separator
+				+ Constants.AUDIO_DIRECTORY);
+
+		ornidroidHomeImages.mkdirs();
+		ornidroidHomeAudio.mkdirs();
+		FileHelper.createEmptyFile(new File(path + File.separator
+				+ Constants.IMAGES_DIRECTORY + File.separator + "file1.jpg"));
+
+		FileHelper.createEmptyFile(new File(path + File.separator
+				+ Constants.AUDIO_DIRECTORY + File.separator + "file1.mp3"));
+		return ornidroidHome;
+	}
 
 	/**
 	 * Sets the up.

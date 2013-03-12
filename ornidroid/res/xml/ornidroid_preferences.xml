@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-	android:title="@string/preferences">
+    android:title="@string/preferences" >
 
-	<ListPreference android:title="@string/preferences_lang_key"
-		android:summary="@string/preferences_lang_label" android:key="@string/preferences_lang_key"
-		android:defaultValue="fr" android:entries="@array/lang_labels"
-		android:entryValues="@array/lang_values" android:persistent="true" />
+    <ListPreference
+        android:defaultValue="fr"
+        android:entries="@array/lang_labels"
+        android:entryValues="@array/lang_values"
+        android:key="@string/preferences_lang_key"
+        android:persistent="true"
+        android:summary="@string/preferences_lang_summary"
+        android:title="@string/preferences_lang_title" />
+
+    <fr.ornidroid.ui.components.OrnidroidHomeDialogPreference
+        android:key="@string/preferences_ornidroid_home_key"
+        android:summary="@string/preferences_ornidroid_home_summary"
+        android:title="@string/preferences_ornidroid_home_title" />
+
 </PreferenceScreen>

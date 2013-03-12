@@ -4,21 +4,26 @@ package fr.ornidroid.helper;
  * The Enum OrnidroidErrors.
  */
 public enum OrnidroidError {
+
+	/** error on changing ornidroid home. */
+	CHANGE_ORNIDROID_HOME,
 	/** The DATABAS e_ no t_ found. */
 	DATABASE_NOT_FOUND,
 	/** The N o_ error. */
 	NO_ERROR,
 	/** The ORNIDROI d_ connectio n_ problem. */
 	ORNIDROID_CONNECTION_PROBLEM,
+
 	/** The ORNIDROI d_ downloa d_ error. */
 	ORNIDROID_DOWNLOAD_ERROR,
-
 	/**
 	 * The ORNIDROI d_ downloa d_ erro r_ medi a_ doe s_ no t_ exist.<br>
 	 * if we try to download media files from a bird that doesn't have any
 	 * */
-	ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST,
-	/** The ORNIDROI d_ hom e_ no t_ found. */
+	ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST, /**
+	 * The ORNIDROI d_ hom e_ no
+	 * t_ found.
+	 */
 	ORNIDROID_HOME_NOT_FOUND;
 
 	/**
@@ -28,7 +33,7 @@ public enum OrnidroidError {
 	 *            the error
 	 * @return the error code
 	 */
-	public static int getErrorCode(OrnidroidError error) {
+	public static int getErrorCode(final OrnidroidError error) {
 		int code = 0;
 		switch (error) {
 		case NO_ERROR:
@@ -49,6 +54,9 @@ public enum OrnidroidError {
 		case ORNIDROID_HOME_NOT_FOUND:
 			code = 5;
 			break;
+		case CHANGE_ORNIDROID_HOME:
+			code = 6;
+			break;
 		}
 		return code;
 	}
@@ -60,7 +68,7 @@ public enum OrnidroidError {
 	 *            the code
 	 * @return the ornidroid error
 	 */
-	public static OrnidroidError getOrnidroidError(int code) {
+	public static OrnidroidError getOrnidroidError(final int code) {
 		OrnidroidError error = NO_ERROR;
 		switch (code) {
 		case 0:
@@ -80,6 +88,9 @@ public enum OrnidroidError {
 			break;
 		case 5:
 			error = ORNIDROID_HOME_NOT_FOUND;
+			break;
+		case 6:
+			error = CHANGE_ORNIDROID_HOME;
 			break;
 		}
 		return error;

@@ -39,7 +39,14 @@
 
     <!-- labes used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
-    <string name="preferences_lang_label">Language of the search engine</string>
+    <string name="preferences_lang_title">Language of the search engine</string>
+    <string name="preferences_lang_summary">17 languages available</string>
+    <string name="preferences_ornidroid_home_key">OrnidroidHome</string>
+    <string name="preferences_ornidroid_home_title">Ornidroid Data Folder</string>
+    <string name="preferences_ornidroid_home_summary">Choose the location where Ornidroid should put its data.</string>
+    <string name="preferences_ornidroid_home_copying_files">Copying files </string>
+    <string name="help_change_ornidroid_home_title">Modify Ornidroid Home</string>
+    <string name="help_change_ornidroid_home_content">A new directory named \"ornidroid\" will be created in the directory that you choose.\nAll the data from the previous installation directory will be moved in the new directory.</string>
 
     <!-- pictures info dialog box -->
     <string name="dialog_picture_title">Picture info</string>
@@ -108,6 +115,5 @@
     <string name="search_no_help">No help</string>
     <string name="add_comment">Add a comment</string>
     <string name="add_your_file">Add a your file</string>
-    
 
 </resources>

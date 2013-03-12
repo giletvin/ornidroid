@@ -1,6 +1,5 @@
 package fr.ornidroid.helper;
 
-
 /**
  * The Class OrnidroidException.
  */
@@ -44,7 +43,7 @@ public class OrnidroidException extends Exception {
 	 * 
 	 * @return the source exception
 	 */
-	public String getSourceException() {
+	public String getSourceExceptionMessage() {
 		if (null != this.sourceException) {
 			return this.sourceException.toString();
 		}

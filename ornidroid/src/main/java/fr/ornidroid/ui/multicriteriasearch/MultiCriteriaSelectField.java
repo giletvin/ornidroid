@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import fr.ornidroid.R;
+import fr.ornidroid.helper.BasicConstants;
 
 /**
  * The Class MultiCriteriaSelectField.
@@ -254,30 +255,39 @@ public class MultiCriteriaSelectField extends LinearLayout implements
 			public void onClick(final View v) {
 				switch (MultiCriteriaSelectField.this.fieldType) {
 				case CATEGORY:
-					HelpDialog.getInstance(context).getDialogTitle()
-							.setText(R.string.search_category);
-					HelpDialog.getInstance(context).getDialogContent()
-							.setText(R.string.search_category_help);
+					HelpDialog.showInfoDialog(
+							context,
+							context.getResources().getString(
+									R.string.search_category),
+							context.getResources().getString(
+									R.string.search_category_help));
 					break;
 				case HABITAT:
-					HelpDialog.getInstance(context).getDialogTitle()
-							.setText(R.string.search_habitat);
-					HelpDialog.getInstance(context).getDialogContent()
-							.setText(R.string.search_habitat_help);
+					HelpDialog.showInfoDialog(
+							context,
+							context.getResources().getString(
+									R.string.search_habitat),
+							context.getResources().getString(
+									R.string.search_habitat_help));
+
 					break;
 				case FEATHER_COLOUR:
-					HelpDialog.getInstance(context).getDialogTitle()
-							.setText(R.string.search_feather_colour);
-					HelpDialog.getInstance(context).getDialogContent()
-							.setText(R.string.search_feather_colour_help);
+					HelpDialog.showInfoDialog(
+							context,
+							context.getResources().getString(
+									R.string.search_feather_colour),
+							context.getResources().getString(
+									R.string.search_feather_colour_help));
+
 					break;
 				default:
-					HelpDialog.getInstance(context).getDialogTitle()
-							.setText(R.string.search_no_help);
-					HelpDialog.getInstance(context).getDialogContent()
-							.setText("");
+					HelpDialog.showInfoDialog(context, context.getResources()
+							.getString(R.string.search_no_help),
+							BasicConstants.EMPTY_STRING);
+
+					break;
 				}
-				HelpDialog.getInstance(context).show();
+
 			}
 		});
 

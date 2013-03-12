@@ -25,7 +25,7 @@ public class FileHelperTest extends AbstractTest {
 		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY);
 		// copy in the same destination
 		try {
-			FileHelper.copyDirectory(srcDir, srcDir);
+			(new FileHelper()).copyDirectory(srcDir, srcDir);
 			Assert.fail("an exception should have occurred");
 		} catch (final IOException e) {
 			Assert.assertTrue(true);
@@ -47,7 +47,7 @@ public class FileHelperTest extends AbstractTest {
 
 		// copy in an other directory
 		try {
-			FileHelper.copyDirectory(srcDir, destDir);
+			(new FileHelper()).copyDirectory(srcDir, destDir);
 			final File[] srcDirContent = srcDir.listFiles();
 			final File[] destDirContent = destDir.listFiles();
 			Assert.assertTrue(srcDirContent.length == destDirContent.length);
@@ -84,7 +84,7 @@ public class FileHelperTest extends AbstractTest {
 
 		// copy in an existing directory
 		try {
-			FileHelper.copyDirectory(srcDir, destDir);
+			(new FileHelper()).copyDirectory(srcDir, destDir);
 			final File[] destDirContent = destDir.listFiles();
 			Assert.assertTrue("check merge of the directories",
 					srcDirContent.length == (destDirContent.length));
@@ -94,6 +94,19 @@ public class FileHelperTest extends AbstractTest {
 			e.printStackTrace();
 		}
 
+	}
+
+	/**
+	 * Test count files.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testCountFiles() throws IOException {
+		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY);
+		final int nbFiles = FileHelper.countFiles(srcDir);
+		Assert.assertTrue(2 == nbFiles);
 	}
 
 	/**
@@ -161,7 +174,7 @@ public class FileHelperTest extends AbstractTest {
 		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY);
 		// copy in the same destination
 		try {
-			FileHelper.moveDirectory(srcDir, srcDir);
+			(new FileHelper()).moveDirectory(srcDir, srcDir);
 			Assert.fail("an exception should have occurred");
 		} catch (final IOException e) {
 			Assert.assertTrue(true);
@@ -184,7 +197,7 @@ public class FileHelperTest extends AbstractTest {
 
 		// mv in an other directory
 		try {
-			FileHelper.moveDirectory(srcDir, destDir);
+			(new FileHelper()).moveDirectory(srcDir, destDir);
 			final File[] destDirContent = destDir.listFiles();
 			Assert.assertTrue(srcDirContent.length == destDirContent.length);
 		} catch (final IOException e) {
@@ -210,7 +223,7 @@ public class FileHelperTest extends AbstractTest {
 
 		// mv in an existing directory
 		try {
-			FileHelper.moveDirectory(srcDir, destDir);
+			(new FileHelper()).moveDirectory(srcDir, destDir);
 			final File[] destDirContent = destDir.listFiles();
 			Assert.assertTrue(srcDirContent.length == destDirContent.length);
 			Assert.assertFalse(srcDir.exists());

@@ -177,6 +177,8 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 *         its properties file, the entire bird media directory is deleted
 	 *         and the returned list is empty : the user will be given the
 	 *         choice to try a download from the web site
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
 	 */
 	private List<AbstractOrnidroidFile> lookForOrnidroidFiles(
 			final String ornidroidMediaHome, final String directoryName,

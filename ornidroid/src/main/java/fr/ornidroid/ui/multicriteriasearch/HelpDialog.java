@@ -14,21 +14,23 @@ import fr.ornidroid.R;
  */
 public class HelpDialog extends Dialog implements OnClickListener {
 
-	/** The dialog instance. */
-	private static HelpDialog DIALOG_INSTANCE;
-
 	/**
-	 * Gets the single instance of HelpDialog.
+	 * Show info dialog.
 	 * 
 	 * @param context
 	 *            the context
-	 * @return single instance of HelpDialog
+	 * @param title
+	 *            the title
+	 * @param content
+	 *            the content
 	 */
-	public static HelpDialog getInstance(final Context context) {
-		if (DIALOG_INSTANCE == null) {
-			DIALOG_INSTANCE = new HelpDialog(context);
-		}
-		return DIALOG_INSTANCE;
+	public static void showInfoDialog(final Context context,
+			final String title, final String content) {
+		final HelpDialog dialog = new HelpDialog(context);
+		dialog.getDialogTitle().setText(title);
+		dialog.getDialogContent().setText(content);
+		dialog.show();
+
 	}
 
 	/** The dialog content. */

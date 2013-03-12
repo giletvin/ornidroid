@@ -13,15 +13,24 @@ import java.util.List;
  * The Class FileUtils. code from commons-io 2.4
  */
 public class FileHelper {
-
 	/** The Constant ONE_KB. */
 	public static final long ONE_KB = 1024;
-
 	/** The Constant ONE_MB. */
 	public static final long ONE_MB = ONE_KB * ONE_KB;
-
 	/** The Constant FILE_COPY_BUFFER_SIZE. */
 	private static final long FILE_COPY_BUFFER_SIZE = ONE_MB * 30;
+
+	/**
+	 * Count nb of files in a directory, including sub directories. The
+	 * directories are not counted
+	 * 
+	 * @param startDirectory
+	 *            the start directory
+	 * @return the nb of files
+	 */
+	public static int countFiles(final File startDirectory) {
+		return innerCountFiles(0, startDirectory);
+	}
 
 	/**
 	 * Creates the empty file if it does not exist.
@@ -99,124 +108,6 @@ public class FileHelper {
 	}
 
 	/**
-	 * Moves a directory.
-	 * <p>
-	 * When the destination directory is on another file system, do a
-	 * "copy and delete".
-	 * 
-	 * @param srcDir
-	 *            the directory to be moved
-	 * @param destDir
-	 *            the destination directory
-	 * @throws NullPointerException
-	 *             if source or destination is {@code null}
-	 * @throws FileExistsException
-	 *             if the destination directory exists
-	 * @throws IOException
-	 *             if source or destination is invalid
-	 * @throws IOException
-	 *             if an IO error occurs moving the file
-	 * @since 1.4
-	 */
-	public static void moveDirectory(final File srcDir, final File destDir)
-			throws IOException {
-		if (srcDir == null) {
-			throw new NullPointerException("Source must not be null");
-		}
-		if (destDir == null) {
-			throw new NullPointerException("Destination must not be null");
-		}
-		if (!srcDir.exists()) {
-			throw new FileNotFoundException("Source '" + srcDir
-					+ "' does not exist");
-		}
-		if (!srcDir.isDirectory()) {
-			throw new IOException("Source '" + srcDir + "' is not a directory");
-		}
-
-		boolean rename = false;
-		if (!destDir.exists()) {
-			rename = srcDir.renameTo(destDir);
-		}
-
-		if (!rename) {
-			if (destDir.getCanonicalPath()
-					.startsWith(srcDir.getCanonicalPath())) {
-				throw new IOException("Cannot move directory: " + srcDir
-						+ " to a subdirectory of itself: " + destDir);
-			}
-			copyDirectory(srcDir, destDir);
-			deleteDirectory(srcDir);
-			if (srcDir.exists()) {
-				throw new IOException("Failed to delete original directory '"
-						+ srcDir + "' after copy to '" + destDir + "'");
-			}
-		}
-	}
-
-	/**
-	 * Copies a whole directory to a new location.
-	 * <p>
-	 * This method copies the specified directory and all its child directories
-	 * and files to the specified destination. The destination is the new
-	 * location and name of the directory.
-	 * <p>
-	 * The destination directory is created if it does not exist. If the
-	 * destination directory did exist, then this method merges the source with
-	 * the destination, with the source taking precedence.
-	 * <p>
-	 * <strong>Note:</strong> This method tries to preserve the files' last
-	 * modified date/times using {@link File#setLastModified(long)}, however it
-	 * is not guaranteed that those operations will succeed. If the modification
-	 * operation fails, no indication is provided.
-	 * 
-	 * @param srcDir
-	 *            an existing directory to copy, must not be {@code null}
-	 * @param destDir
-	 *            the new directory, must not be {@code null}
-	 * @throws IOException
-	 *             if an IO error occurs during copying
-	 * @since 1.1
-	 */
-	protected static void copyDirectory(final File srcDir, final File destDir)
-			throws IOException {
-		if (srcDir == null) {
-			throw new NullPointerException("Source must not be null");
-		}
-		if (destDir == null) {
-			throw new NullPointerException("Destination must not be null");
-		}
-		if (srcDir.exists() == false) {
-			throw new FileNotFoundException("Source '" + srcDir
-					+ "' does not exist");
-		}
-		if (srcDir.isDirectory() == false) {
-			throw new IOException("Source '" + srcDir
-					+ "' exists but is not a directory");
-		}
-		if (srcDir.getCanonicalPath().equals(destDir.getCanonicalPath())) {
-			throw new IOException("Source '" + srcDir + "' and destination '"
-					+ destDir + "' are the same");
-		}
-
-		// Cater for destination being directory within the source directory
-		// (see IO-141)
-		List<String> exclusionList = null;
-		if (destDir.getCanonicalPath().startsWith(srcDir.getCanonicalPath())) {
-			final File[] srcFiles = srcDir.listFiles();
-
-			if ((srcFiles != null) && (srcFiles.length > 0)) {
-				exclusionList = new ArrayList<String>(srcFiles.length);
-				for (final File srcFile : srcFiles) {
-					final File copiedFile = new File(destDir, srcFile.getName());
-					exclusionList.add(copiedFile.getCanonicalPath());
-				}
-			}
-		}
-		doCopyDirectory(srcDir, destDir, exclusionList);
-	}
-
-	/**
 	 * Cleans a directory without deleting it.
 	 * 
 	 * @param directory
@@ -278,6 +169,186 @@ public class FileHelper {
 	}
 
 	/**
+	 * Inner count files.
+	 * 
+	 * @param nbFiles
+	 *            the nb files
+	 * @param startDirectory
+	 *            the start directory
+	 * @return the int
+	 */
+	private static int innerCountFiles(int nbFiles, final File startDirectory) {
+		final File[] found = startDirectory.listFiles();
+		if (found != null) {
+			for (final File file : found) {
+				if (file.isDirectory()) {
+					nbFiles = innerCountFiles(nbFiles, file);
+				} else {
+					nbFiles++;
+					return nbFiles;
+				}
+			}
+		}
+		return nbFiles;
+	}
+
+	/** The nb copied files. */
+	private double nbCopiedFiles;
+
+	/** The nb files to copy. */
+	private int nbFilesToCopy;
+
+	/**
+	 * Instantiates a new file helper.
+	 */
+	public FileHelper() {
+		initMoveOperation();
+	}
+
+	/**
+	 * Gets the copy percent progress.
+	 * 
+	 * @return the copy percent progress
+	 */
+	public int getCopyPercentProgress() {
+		if (this.nbFilesToCopy != 0) {
+			return (int) (this.nbCopiedFiles / this.nbFilesToCopy) * 100;
+		} else {
+			return 0;
+		}
+	}
+
+	/**
+	 * Init move.
+	 */
+	public void initMoveOperation() {
+		this.nbCopiedFiles = 0;
+		this.nbFilesToCopy = 0;
+
+	}
+
+	/**
+	 * Moves a directory.
+	 * <p>
+	 * When the destination directory is on another file system, do a
+	 * "copy and delete".
+	 * 
+	 * @param srcDir
+	 *            the directory to be moved
+	 * @param destDir
+	 *            the destination directory
+	 * @throws IOException
+	 *             if an IO error occurs moving the file
+	 * @since 1.4
+	 */
+	public void moveDirectory(final File srcDir, final File destDir)
+			throws IOException {
+		if (srcDir == null) {
+			throw new NullPointerException("Source must not be null");
+		}
+		if (destDir == null) {
+			throw new NullPointerException("Destination must not be null");
+		}
+		if (!srcDir.exists()) {
+			throw new FileNotFoundException("Source '" + srcDir
+					+ "' does not exist");
+		}
+		if (!srcDir.isDirectory()) {
+			throw new IOException("Source '" + srcDir + "' is not a directory");
+		}
+
+		boolean rename = false;
+		if (!destDir.exists()) {
+			rename = srcDir.renameTo(destDir);
+		}
+
+		if (!rename) {
+			if (destDir.getCanonicalPath()
+					.startsWith(srcDir.getCanonicalPath())) {
+				throw new IOException("Cannot move directory: " + srcDir
+						+ " to a subdirectory of itself: " + destDir);
+			}
+			copyDirectory(srcDir, destDir);
+			deleteDirectory(srcDir);
+			if (srcDir.exists()) {
+				throw new IOException("Failed to delete original directory '"
+						+ srcDir + "' after copy to '" + destDir + "'");
+			}
+		}
+	}
+
+	/**
+	 * Declare the move operation complete
+	 */
+	public void setMoveComplete() {
+		this.nbCopiedFiles = 1;
+		this.nbFilesToCopy = 1;
+	}
+
+	/**
+	 * Copies a whole directory to a new location.
+	 * <p>
+	 * This method copies the specified directory and all its child directories
+	 * and files to the specified destination. The destination is the new
+	 * location and name of the directory.
+	 * <p>
+	 * The destination directory is created if it does not exist. If the
+	 * destination directory did exist, then this method merges the source with
+	 * the destination, with the source taking precedence.
+	 * <p>
+	 * <strong>Note:</strong> This method tries to preserve the files' last
+	 * modified date/times using {@link File#setLastModified(long)}, however it
+	 * is not guaranteed that those operations will succeed. If the modification
+	 * operation fails, no indication is provided.
+	 * 
+	 * @param srcDir
+	 *            an existing directory to copy, must not be {@code null}
+	 * @param destDir
+	 *            the new directory, must not be {@code null}
+	 * @throws IOException
+	 *             if an IO error occurs during copying
+	 * @since 1.1
+	 */
+	protected void copyDirectory(final File srcDir, final File destDir)
+			throws IOException {
+		if (srcDir == null) {
+			throw new NullPointerException("Source must not be null");
+		}
+		if (destDir == null) {
+			throw new NullPointerException("Destination must not be null");
+		}
+		if (srcDir.exists() == false) {
+			throw new FileNotFoundException("Source '" + srcDir
+					+ "' does not exist");
+		}
+		if (srcDir.isDirectory() == false) {
+			throw new IOException("Source '" + srcDir
+					+ "' exists but is not a directory");
+		}
+		if (srcDir.getCanonicalPath().equals(destDir.getCanonicalPath())) {
+			throw new IOException("Source '" + srcDir + "' and destination '"
+					+ destDir + "' are the same");
+		}
+
+		initCountNbFiles(srcDir);
+		// Cater for destination being directory within the source directory
+		// (see IO-141)
+		List<String> exclusionList = null;
+		if (destDir.getCanonicalPath().startsWith(srcDir.getCanonicalPath())) {
+			final File[] srcFiles = srcDir.listFiles();
+
+			if ((srcFiles != null) && (srcFiles.length > 0)) {
+				exclusionList = new ArrayList<String>(srcFiles.length);
+				for (final File srcFile : srcFiles) {
+					final File copiedFile = new File(destDir, srcFile.getName());
+					exclusionList.add(copiedFile.getCanonicalPath());
+				}
+			}
+		}
+		doCopyDirectory(srcDir, destDir, exclusionList);
+	}
+
+	/**
 	 * Internal copy directory method.
 	 * 
 	 * @param srcDir
@@ -291,7 +362,7 @@ public class FileHelper {
 	 *             if an error occurs
 	 * @since 1.1
 	 */
-	private static void doCopyDirectory(final File srcDir, final File destDir,
+	private void doCopyDirectory(final File srcDir, final File destDir,
 
 	final List<String> exclusionList) throws IOException {
 		// recurse
@@ -339,7 +410,7 @@ public class FileHelper {
 	 * @throws IOException
 	 *             if an error occurs
 	 */
-	private static void doCopyFile(final File srcFile, final File destFile)
+	private void doCopyFile(final File srcFile, final File destFile)
 			throws IOException {
 		if (destFile.exists() && destFile.isDirectory()) {
 			throw new IOException("Destination '" + destFile
@@ -363,6 +434,7 @@ public class FileHelper {
 						: size - pos;
 				pos += output.transferFrom(input, pos, count);
 			}
+			this.nbCopiedFiles++;
 		} finally {
 			IOHelper.closeQuietly(output);
 			IOHelper.closeQuietly(fos);
@@ -374,6 +446,17 @@ public class FileHelper {
 			throw new IOException("Failed to copy full contents from '"
 					+ srcFile + "' to '" + destFile + "'");
 		}
+	}
+
+	/**
+	 * Inits the count nb files.
+	 * 
+	 * @param srcDir
+	 *            the src dir
+	 */
+	private void initCountNbFiles(final File srcDir) {
+		this.nbFilesToCopy = countFiles(srcDir);
+		this.nbCopiedFiles = 0;
 	}
 
 }

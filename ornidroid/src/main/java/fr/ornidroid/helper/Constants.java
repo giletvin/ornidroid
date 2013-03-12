@@ -2,7 +2,6 @@ package fr.ornidroid.helper;
 
 import java.io.File;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
@@ -17,11 +16,11 @@ import fr.ornidroid.bo.OrnidroidFileType;
  */
 public class Constants extends BasicConstants {
 
+	/** The Constant ORNIDROID_DIRECTORY_NAME. */
+	public static final String ORNIDROID_DIRECTORY_NAME = "ornidroid";
+
 	/** The CONTEXT. */
 	private static Context CONTEXT;
-
-	/** The Constant ORNIDROID_DIRECTORY_NAME. */
-	private static final String ORNIDROID_DIRECTORY_NAME = "ornidroid";
 
 	/** The ornidroid home default value. */
 	private static String ORNIDROID_HOME_DEFAULT_VALUE;
@@ -67,11 +66,24 @@ public class Constants extends BasicConstants {
 	/**
 	 * Gets the ornidroid home.
 	 * 
+	 * @return the ornidroid home
+	 */
+	public static final String getOrnidroidHome() {
+		return Constants
+				.getOrnidroidPreferences()
+				.getString(
+						getStringFromXmlResource(R.string.preferences_ornidroid_home_key),
+						Constants.getOrnidroidHomeDefaultValue());
+	}
+
+	/**
+	 * Gets the ornidroid home.
+	 * 
 	 * 
 	 * @return the ornidroid home default value : directory "ornidroid" on the
 	 *         external storage
 	 */
-	public static final String getOrnidroidHome() {
+	public static final String getOrnidroidHome__() {
 		if (StringHelper.isBlank(ORNIDROID_HOME_DEFAULT_VALUE)) {
 			if (isExternalStorageWritable()) {
 				ORNIDROID_HOME_DEFAULT_VALUE = Environment
@@ -121,6 +133,16 @@ public class Constants extends BasicConstants {
 	}
 
 	/**
+	 * Gets the ornidroid preferences.
+	 * 
+	 * @return the ornidroid preferences
+	 */
+	public static final SharedPreferences getOrnidroidPreferences() {
+		return CONTEXT.getSharedPreferences(ORNIDROID_PREFERENCES_FILE_NAME,
+				Context.MODE_PRIVATE);
+	}
+
+	/**
 	 * Gets the ornidroid search lang used in the search engine. It is not the
 	 * same as the UI lang!
 	 * 
@@ -160,13 +182,15 @@ public class Constants extends BasicConstants {
 	}
 
 	/**
-	 * Gets the ornidroid preferences.
+	 * Gets the ornidroid home default value if the OrnidroidHomePreference is
+	 * not set by the user.
 	 * 
-	 * @return the ornidroid preferences
+	 * @return the ornidroid home default value : directory "ornidroid" on the
+	 *         external storage
 	 */
-	private static final SharedPreferences getOrnidroidPreferences() {
-		return CONTEXT.getSharedPreferences(ORNIDROID_PREFERENCES_FILE_NAME,
-				Context.MODE_PRIVATE);
+	private static final String getOrnidroidHomeDefaultValue() {
+		return Environment.getExternalStorageDirectory().getAbsolutePath()
+				+ File.separator + ORNIDROID_DIRECTORY_NAME;
 	}
 
 	/**

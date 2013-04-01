@@ -45,6 +45,7 @@
     <string name="preferences_ornidroid_home_title">Ornidroid Data Folder</string>
     <string name="preferences_ornidroid_home_summary">Choose the location where Ornidroid should put its data.</string>
     <string name="preferences_ornidroid_home_copying_files">Copying files </string>
+    <string name="preferences_ornidroid_home_saved">Ornidroid Home change successful</string>
     <string name="help_change_ornidroid_home_title">Modify Ornidroid Home</string>
     <string name="help_change_ornidroid_home_content">A new directory named \"ornidroid\" will be created in the directory that you choose.\nAll the data from the previous installation directory will be moved in the new directory.</string>
 

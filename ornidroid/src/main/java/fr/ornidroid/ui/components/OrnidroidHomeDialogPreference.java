@@ -11,21 +11,14 @@ import android.content.SharedPreferences.Editor;
 import android.os.Environment;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
-import fr.ornidroid.helper.FileHelper;
-import fr.ornidroid.helper.OrnidroidError;
-import fr.ornidroid.helper.OrnidroidException;
-import fr.ornidroid.helper.StringHelper;
-import fr.ornidroid.ui.multicriteriasearch.HelpDialog;
 
 /**
  * The Class OrnidroidHomePreference.
@@ -34,10 +27,6 @@ import fr.ornidroid.ui.multicriteriasearch.HelpDialog;
 public class OrnidroidHomeDialogPreference extends DialogPreference implements
 		OnItemClickListener {
 
-	/** The exception caught during move. */
-	private Exception exceptionCaughtDuringMove = null;
-	/** The file helper. */
-	private final FileHelper fileHelper;
 	/** The item. */
 	private List<String> item = null;
 
@@ -53,9 +42,11 @@ public class OrnidroidHomeDialogPreference extends DialogPreference implements
 	/** The my view. */
 	private View myView;
 
+	/** The old ornidroid home. */
+	private String oldOrnidroidHome;
+
 	/** The path. */
 	private List<String> path = null;
-
 	/** The root. */
 	private String root;
 
@@ -94,7 +85,6 @@ public class OrnidroidHomeDialogPreference extends DialogPreference implements
 	public OrnidroidHomeDialogPreference(final Context context,
 			final AttributeSet attrs) {
 		super(context, attrs);
-		this.fileHelper = new FileHelper();
 		init();
 	}
 
@@ -111,8 +101,17 @@ public class OrnidroidHomeDialogPreference extends DialogPreference implements
 	public OrnidroidHomeDialogPreference(final Context context,
 			final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
-		this.fileHelper = new FileHelper();
+
 		init();
+	}
+
+	/**
+	 * Gets the old ornidroid home.
+	 * 
+	 * @return the old ornidroid home
+	 */
+	public String getOldOrnidroidHome() {
+		return this.oldOrnidroidHome;
 	}
 
 	/**
@@ -142,6 +141,21 @@ public class OrnidroidHomeDialogPreference extends DialogPreference implements
 			}
 		}
 
+	}
+
+	/**
+	 * Save ornidroid home value.
+	 * 
+	 * @param value
+	 *            the value
+	 */
+	public void saveOrnidroidHomeValue(final String value) {
+		final Editor editor = getEditor();
+		editor.putString(
+				Constants
+						.getStringFromXmlResource(R.string.preferences_ornidroid_home_key),
+				value);
+		editor.commit();
 	}
 
 	/*
@@ -193,68 +207,12 @@ public class OrnidroidHomeDialogPreference extends DialogPreference implements
 	@Override
 	protected void onDialogClosed(final boolean positiveResult) {
 		super.onDialogClosed(positiveResult);
-
+		this.oldOrnidroidHome = null;
 		if (positiveResult) {
+			this.oldOrnidroidHome = Constants.getOrnidroidHome();
 			final String newOrnidroidHome = this.mPath.getText().toString()
 					+ File.separator + Constants.ORNIDROID_DIRECTORY_NAME;
-			try {
-				setNewOrnidroidHome(Constants.getOrnidroidHome(),
-						newOrnidroidHome);
-				final Editor editor = getEditor();
-				editor.putString(
-						Constants
-								.getStringFromXmlResource(R.string.preferences_ornidroid_home_key),
-						newOrnidroidHome);
-				editor.commit();
-			} catch (final OrnidroidException e) {
-
-				Log.e(Constants.LOG_TAG, e.getSourceExceptionMessage());
-				HelpDialog
-						.showInfoDialog(
-								this.getContext(),
-								this.getContext()
-										.getResources()
-										.getString(
-												R.string.help_change_ornidroid_home_title),
-								e.getSourceExceptionMessage());
-			}
-		}
-	}
-
-	// TODO : le long toast ne fonctionne pas du tout
-	/**
-	 * Fire long toast.
-	 * 
-	 * @param toast
-	 *            the toast
-	 * @throws OrnidroidException
-	 */
-	private void fireLongToast() throws OrnidroidException {
-		try {
-			while ((OrnidroidHomeDialogPreference.this.fileHelper
-					.getCopyPercentProgress() != 100)
-					&& (OrnidroidHomeDialogPreference.this.exceptionCaughtDuringMove == null)) {
-				final Toast toast = Toast
-						.makeText(
-								OrnidroidHomeDialogPreference.this.getContext(),
-								OrnidroidHomeDialogPreference.this
-										.getContext()
-										.getResources()
-										.getString(
-												R.string.preferences_ornidroid_home_copying_files)
-										+ OrnidroidHomeDialogPreference.this.fileHelper
-												.getCopyPercentProgress() + "%",
-								Toast.LENGTH_SHORT);
-
-				toast.show();
-				Thread.sleep(1850);
-			}
-		} catch (final Exception e) {
-			Log.e(Constants.LOG_TAG, e.getMessage(), e);
-		}
-		if (this.exceptionCaughtDuringMove != null) {
-			throw new OrnidroidException(OrnidroidError.CHANGE_ORNIDROID_HOME,
-					this.exceptionCaughtDuringMove);
+			saveOrnidroidHomeValue(newOrnidroidHome);
 		}
 	}
 
@@ -306,45 +264,4 @@ public class OrnidroidHomeDialogPreference extends DialogPreference implements
 		setPersistent(true);
 	}
 
-	/**
-	 * Sets the new ornidroid home. Copy files from previous installation
-	 * directory to the new location
-	 * 
-	 * @param newOrnidroidHome
-	 *            the new new ornidroid home
-	 * @throws OrnidroidException
-	 *             the ornidroid exception
-	 */
-	private void setNewOrnidroidHome(final String oldOrnidroidHome,
-			final String newOrnidroidHome) throws OrnidroidException {
-		this.exceptionCaughtDuringMove = null;
-		if (!StringHelper.equals(oldOrnidroidHome, newOrnidroidHome)) {
-
-			final Thread t = new Thread() {
-				@Override
-				public void run() {
-					OrnidroidHomeDialogPreference.this.fileHelper
-							.initMoveOperation();
-					try {
-						final File destDir = new File(newOrnidroidHome);
-						final File srcDir = new File(
-								Constants.getOrnidroidHome());
-						OrnidroidHomeDialogPreference.this.fileHelper
-								.moveDirectory(srcDir, destDir);
-					} catch (final Exception e) {
-						OrnidroidHomeDialogPreference.this.exceptionCaughtDuringMove = e;
-						Log.e(Constants.LOG_TAG, e.getMessage(), e);
-					} finally {
-						OrnidroidHomeDialogPreference.this.fileHelper
-								.setMoveComplete();
-					}
-				}
-			};
-			t.start();
-
-			fireLongToast();
-
-		}
-
-	}
 }

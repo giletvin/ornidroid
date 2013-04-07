@@ -21,18 +21,6 @@ public class FileHelper {
 	private static final long FILE_COPY_BUFFER_SIZE = ONE_MB * 30;
 
 	/**
-	 * Count nb of files in a directory, including sub directories. The
-	 * directories are not counted
-	 * 
-	 * @param startDirectory
-	 *            the start directory
-	 * @return the nb of files
-	 */
-	public static int countFiles(final File startDirectory) {
-		return innerCountFiles(0, startDirectory);
-	}
-
-	/**
 	 * Creates the empty file if it does not exist.
 	 * 
 	 * @param file
@@ -105,6 +93,18 @@ public class FileHelper {
 				throw new IOException(message);
 			}
 		}
+	}
+
+	/**
+	 * Count nb of files in a directory, including sub directories. The
+	 * directories are not counted
+	 * 
+	 * @param startDirectory
+	 *            the start directory
+	 * @return the nb of files
+	 */
+	protected static int countFiles(final File startDirectory) {
+		return innerCountFiles(0, startDirectory);
 	}
 
 	/**
@@ -212,7 +212,8 @@ public class FileHelper {
 	 */
 	public int getCopyPercentProgress() {
 		if (this.nbFilesToCopy != 0) {
-			return (int) (this.nbCopiedFiles / this.nbFilesToCopy) * 100;
+			final double percentage = (this.nbCopiedFiles / this.nbFilesToCopy) * 100;
+			return (int) percentage;
 		} else {
 			return 0;
 		}
@@ -257,9 +258,9 @@ public class FileHelper {
 			throw new IOException("Source '" + srcDir + "' is not a directory");
 		}
 
-		boolean rename = false;
+		final boolean rename = false;
 		if (!destDir.exists()) {
-			rename = srcDir.renameTo(destDir);
+			// TODO : juste pour le debug rename = srcDir.renameTo(destDir);
 		}
 
 		if (!rename) {

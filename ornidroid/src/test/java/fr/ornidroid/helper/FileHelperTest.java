@@ -234,4 +234,13 @@ public class FileHelperTest extends AbstractTest {
 
 	}
 
+	@Test
+	public void testTest() {
+
+		final int i = 523;
+		final int j = 523;
+		final double k = ((double) i / j) * 100;
+		final int l = (int) k;
+		System.out.println(l);
+	}
 }

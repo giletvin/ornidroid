@@ -38,9 +38,17 @@
     <string name="bird_image_big">Photo zoomée</string>
     <string name="bird_names">Taxonomie</string>
 
-    <!-- labes used in preferences -->
+     <!-- labes used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
-    <string name="preferences_lang_label">Langue utilisée pour la recherche</string>
+    <string name="preferences_lang_title">Language utilisée pour la recherche</string>
+    <string name="preferences_lang_summary">17 langues disponibles</string>
+    <string name="preferences_ornidroid_home_key">OrnidroidHome</string>
+    <string name="preferences_ornidroid_home_title">Répertoire des données d\'Ornidroid</string>
+    <string name="preferences_ornidroid_home_summary">Choisir le répertoire où Ornidroid doit placer ses données.</string>
+    <string name="preferences_ornidroid_home_copying_files">Copie de fichiers en cours</string>
+    <string name="preferences_ornidroid_home_saved">Modification du répertoire de données réussie</string>
+    <string name="help_change_ornidroid_home_title">Modification du répertoire de données</string>
+    <string name="help_change_ornidroid_home_content">Un nouveau répertoire \"ornidroid\" sera créé à l\'intérieur du répertoire que vous choisissez.\nToutes les données de l\'emplacement précédent vont être déplacées dans le nouveau.</string>
 
     <!-- pictures info dialog box -->
     <string name="dialog_picture_title">Informations sur l\'image</string>

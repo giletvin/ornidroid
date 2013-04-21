@@ -258,9 +258,9 @@ public class FileHelper {
 			throw new IOException("Source '" + srcDir + "' is not a directory");
 		}
 
-		final boolean rename = false;
+		boolean rename = false;
 		if (!destDir.exists()) {
-			// TODO : juste pour le debug rename = srcDir.renameTo(destDir);
+			rename = srcDir.renameTo(destDir);
 		}
 
 		if (!rename) {

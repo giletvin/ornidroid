@@ -1,6 +1,5 @@
 package fr.ornidroid.ui.preferences;
 
-import fr.ornidroid.helper.FileHelper;
 
 /**
  * The Interface MoveDirectoryHandler. source code found :
@@ -13,13 +12,6 @@ public interface MoveDirectoryHandler {
 	 * 
 	 */
 	public static interface MoveDirectoryCallback {
-
-		/**
-		 * Gets the file helper.
-		 * 
-		 * @return the file helper
-		 */
-		FileHelper getFileHelper();
 
 		/**
 		 * On move ended.

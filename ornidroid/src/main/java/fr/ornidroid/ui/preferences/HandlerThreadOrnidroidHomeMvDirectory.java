@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
 import fr.ornidroid.helper.Constants;
+import fr.ornidroid.helper.FileHelper;
 
 /**
  * The Class HandlerThreadOrnidroidHomeMvDirectory.
@@ -46,12 +47,9 @@ public class HandlerThreadOrnidroidHomeMvDirectory extends HandlerThread
 				}
 
 				try {
-
-					loaderInfo.callback.getFileHelper().initMoveOperation();
 					final File srcDir = new File(loaderInfo.fromDirectory);
 					final File destDir = new File(loaderInfo.toDirectory);
-					loaderInfo.callback.getFileHelper().moveDirectory(srcDir,
-							destDir);
+					FileHelper.moveDirectory(srcDir, destDir);
 				} catch (final Exception e) {
 					// Error occured : keep the exception in the loader info
 					loaderInfo.setException(e);

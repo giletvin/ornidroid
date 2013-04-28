@@ -54,9 +54,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 	/** The Constant PROGRESS_BAR_MAX. */
 	private static final int PROGRESS_BAR_MAX = 100;
 
-	/** The add custom media button. */
-	private ImageView addCustomMediaButton;
-
 	/** The bird. */
 	private Bird bird;
 
@@ -99,15 +96,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 		super();
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 		this.ornidroidIOService = new OrnidroidIOServiceImpl();
-	}
-
-	/**
-	 * Gets the adds the custom media button.
-	 * 
-	 * @return the adds the custom media button
-	 */
-	public ImageView getAddCustomMediaButton() {
-		return this.addCustomMediaButton;
 	}
 
 	/**
@@ -167,13 +155,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 			this.downloadInfoText.setPadding(5, 10, 5, 20);
 			getSpecificContentLayout().addView(this.downloadInfoText);
 			startDownload();
-		}
-		if (v == this.addCustomMediaButton) {
-			final Intent intent = new Intent(getApplicationContext(),
-					FileExplorer.class);
-			intent.putExtra(OrnidroidFileType.FILE_TYPE_INTENT_PARAM_NAME,
-					getFileType());
-			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 		}
 
 	}
@@ -339,16 +320,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 		this.ornidroidDownloadErrorCode = getIntent().getIntExtra(
 				DOWNLOAD_ERROR_INTENT_PARAM, 0);
 
-		this.addCustomMediaButton = new ImageView(this);
-		this.addCustomMediaButton.setOnClickListener(this);
-		this.addCustomMediaButton.setImageResource(R.drawable.ic_add);
-
-		// try {
-		// loadMediaFilesLocally();
-		// } catch (final OrnidroidException e) {
-		// // Log.e(Constants.LOG_TAG, "Error reading media files of bird "
-		// // + this.bird.getTaxon() + " e");
-		// }
 		hookOnCreate();
 	}
 

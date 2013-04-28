@@ -35,7 +35,6 @@
     <string name="bird_image">Pictures</string>
     <string name="bird_image_big">Zoomed picture</string>
     <string name="bird_names">Taxonomy</string>
-    <string name="file_explorer_title">File browser</string>
 
     <!-- labes used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>

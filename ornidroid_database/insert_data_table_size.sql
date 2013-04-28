@@ -10,7 +10,7 @@ INSERT INTO size_table(id,name,lang) VALUES(5,"Plus grand que le canard colvert"
 INSERT INTO size_table(id,name,lang) VALUES(1,"Sparrow-sized or smaller",'en');
 INSERT INTO size_table(id,name,lang) VALUES(2,"Between sparrow and blackbird",'en');
 INSERT INTO size_table(id,name,lang) VALUES(3,"Between blackbird and pigeon",'en');
-INSERT INTO size_table(id,name,lang) VALUES(4,"Between pigeon and mallard",'fr');
+INSERT INTO size_table(id,name,lang) VALUES(4,"Between pigeon and mallard",'en');
 INSERT INTO size_table(id,name,lang) VALUES(5,"Bigger than mallard",'en');
 
 INSERT INTO size_table(id,name,lang) VALUES(1,"Wie Spatz oder kleiner",'de');

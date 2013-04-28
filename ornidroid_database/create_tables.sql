@@ -79,3 +79,6 @@ create table remarkable_sign(
 
 create table application_info(id integer,key,value,date);
 insert into application_info(id,key,value,date) VALUES(1,"ornidroid_version","2.0.1","18/01/2013");
+insert into application_info(id,key,value,date) VALUES(2,"ornidroid_version","3.0.0","28/04/2013");
+
+create table temp(id integer,key,value,date);

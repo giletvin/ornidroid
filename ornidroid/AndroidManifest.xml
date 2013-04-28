@@ -52,7 +52,7 @@
 
         <!-- Preferences activity -->
         <activity
-            android:name=".ui.OrnidroidPreferenceActivity"
+            android:name=".ui.preferences.OrnidroidPreferenceActivity"
             android:label="@string/preferences"
             android:noHistory="true" />
         <!-- about activity -->

@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
+import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 
 /**
  * The Class AbstractOrnidroidActivity. Extending this class enables the menu.

@@ -1,4 +1,4 @@
-package fr.ornidroid.ui;
+package fr.ornidroid.ui.preferences;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,10 +16,11 @@ import android.view.MenuItem;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.FileHelper;
-import fr.ornidroid.ui.HandlerThreadOrnidroidHomeMvDirectory.LoaderInfo;
-import fr.ornidroid.ui.MoveDirectoryHandler.MoveDirectoryCallback;
+import fr.ornidroid.ui.HelpActivity;
+import fr.ornidroid.ui.HomeActivity;
 import fr.ornidroid.ui.components.OrnidroidHomeDialogPreference;
 import fr.ornidroid.ui.multicriteriasearch.HelpDialog;
+import fr.ornidroid.ui.preferences.MoveDirectoryHandler.MoveDirectoryCallback;
 
 /**
  * The Class OrnidroidPreferenceActivity.

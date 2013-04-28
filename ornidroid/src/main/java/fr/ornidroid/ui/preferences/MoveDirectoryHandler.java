@@ -1,7 +1,6 @@
-package fr.ornidroid.ui;
+package fr.ornidroid.ui.preferences;
 
 import fr.ornidroid.helper.FileHelper;
-import fr.ornidroid.ui.HandlerThreadOrnidroidHomeMvDirectory.LoaderInfo;
 
 /**
  * The Interface MoveDirectoryHandler. source code found :

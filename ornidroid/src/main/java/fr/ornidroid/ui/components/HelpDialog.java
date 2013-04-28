@@ -1,4 +1,4 @@
-package fr.ornidroid.ui.multicriteriasearch;
+package fr.ornidroid.ui.components;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -53,7 +53,7 @@ public class HelpDialog extends Dialog implements OnClickListener {
 		/** 'Window.FEATURE_NO_TITLE' - Used to hide the title */
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		/** Design the dialog in main.xml file */
-		setContentView(R.layout.multicriteriasearch_help_dialog);
+		setContentView(R.layout.help_dialog);
 		this.dialogTitle = (TextView) findViewById(R.id.mcs_help_dialog_title);
 		this.dialogContent = (TextView) findViewById(R.id.mcs_help_dialog_content);
 		this.okButton = (Button) findViewById(R.id.multicriteriasearch_help_dialog_ok_button);

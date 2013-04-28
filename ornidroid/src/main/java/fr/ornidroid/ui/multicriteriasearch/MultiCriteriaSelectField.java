@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.ui.components.HelpDialog;
 
 /**
  * The Class MultiCriteriaSelectField.

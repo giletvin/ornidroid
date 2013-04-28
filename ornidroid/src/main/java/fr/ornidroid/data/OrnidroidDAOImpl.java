@@ -1,6 +1,5 @@
 package fr.ornidroid.data;
 
-
 import android.app.SearchManager;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -513,7 +512,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			query.append(" and taxonomy.lang=\"");
 			query.append(Constants.getOrnidroidSearchLang());
 			query.append("\"");
-			query.append(" order by taxon");
+			query.append(" order by searched_taxon");
 			// Log.d(Constants.LOG_TAG, "Perform SQL query " +
 			// query.toString());
 			cursor = db.rawQuery(query.toString(), selectionArgs);

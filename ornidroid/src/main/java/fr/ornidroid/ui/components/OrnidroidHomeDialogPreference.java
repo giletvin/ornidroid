@@ -23,6 +23,8 @@ import fr.ornidroid.helper.Constants;
 /**
  * The Class OrnidroidHomePreference.
  * http://alexfu.tumblr.com/post/23683149440/android-dev-custom-dialogpreference
+ * http
+ * ://android-er.blogspot.fr/2012/07/example-of-file-explorer-in-android.html
  */
 public class OrnidroidHomeDialogPreference extends DialogPreference implements
 		OnItemClickListener {

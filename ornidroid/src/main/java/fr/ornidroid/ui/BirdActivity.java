@@ -557,8 +557,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			infoButtonLayout.setGravity(Gravity.RIGHT);
 			infoButtonLayout.setPadding(5, 10, 5, 5);
 
-			// add button
-			infoButtonLayout.addView(getAddCustomMediaButton());
 			headerLayout.addView(infoButtonLayout);
 			// info button
 			this.infoButton = new ImageView(this);

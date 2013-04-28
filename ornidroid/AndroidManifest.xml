@@ -13,7 +13,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.ornidroid"
     android:versionCode="6"
-    android:versionName="2.0.3-SNAPSHOT" >
+    android:versionName="3.0.0-SNAPSHOT" >
 
     <uses-sdk android:minSdkVersion="8" />
 
@@ -85,13 +85,7 @@
         
             android:theme="@android:style/Theme.NoTitleBar" />
 
-         <activity
-            android:name=".ui.FileExplorer"
-            android:label="@string/file_explorer_title"
-        
-            android:theme="@android:style/Theme.NoTitleBar" />
-         
-       
+
 
         <!-- Provides search suggestions for words and their definitions. -->
         <provider

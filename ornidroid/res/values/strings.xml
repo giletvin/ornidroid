@@ -46,7 +46,7 @@
     <string name="preferences_ornidroid_home_copying_files">Copying files </string>
     <string name="preferences_ornidroid_home_saved">Ornidroid Home change successful</string>
     <string name="help_change_ornidroid_home_title">Modify Ornidroid Home</string>
-    <string name="help_change_ornidroid_home_content">A new directory named \"ornidroid\" will be created in the directory that you choose.\nAll the data from the previous installation directory will be moved in the new directory.</string>
+    <string name="help_change_ornidroid_home_content">A directory named \"ornidroid\" will be created in the directory that you choose.\nAll the data from the previous installation directory will be moved in the new directory and the previous directory will be deleted. This operation can last up to 10 minutes.</string>
 
     <!-- pictures info dialog box -->
     <string name="dialog_picture_title">Picture info</string>

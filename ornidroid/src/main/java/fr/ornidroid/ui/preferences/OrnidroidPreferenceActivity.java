@@ -15,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
-import fr.ornidroid.helper.FileHelper;
 import fr.ornidroid.ui.HelpActivity;
 import fr.ornidroid.ui.HomeActivity;
 import fr.ornidroid.ui.components.HelpDialog;
@@ -28,9 +27,6 @@ import fr.ornidroid.ui.preferences.MoveDirectoryHandler.MoveDirectoryCallback;
 public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 		OnPreferenceClickListener, OnSharedPreferenceChangeListener,
 		MoveDirectoryCallback {
-
-	/** The file helper. */
-	private final FileHelper fileHelper;
 
 	/** The m loader. */
 	private HandlerThreadOrnidroidHomeMvDirectory mLoader;
@@ -50,18 +46,7 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	public OrnidroidPreferenceActivity() {
 		super();
 		Constants.initializeConstants(this);
-		this.fileHelper = new FileHelper();
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.ornidroid.ui.MoveDirectoryHandler.MoveDirectoryCallback#getFileHelper
-	 * ()
-	 */
-	public FileHelper getFileHelper() {
-		return this.fileHelper;
 	}
 
 	/*

@@ -77,8 +77,9 @@ create table remarkable_sign(
 );
 
 
-create table application_info(id integer,key,value,date);
-insert into application_info(id,key,value,date) VALUES(1,"ornidroid_version","2.0.1","18/01/2013");
-insert into application_info(id,key,value,date) VALUES(2,"ornidroid_version","3.0.0","28/04/2013");
+create table application_info(id integer,key,value,date,comments);
+insert into application_info(id,key,value,date,comments) VALUES(1,"ornidroid_version","2.0.1","18/01/2013","");
+insert into application_info(id,key,value,date,comments) VALUES(2,"ornidroid_version","3.0.0","28/04/2013","correction habitat du tétras lyre");
+insert into application_info(id,key,value,date,comments) VALUES(3,"ornidroid_version","3.0.1","01/05/2013","orange et rouge fusionnés en rouge/orange");
 
-create table temp(id integer,key,value,date);
+--create table temp(id integer,key,value,date);

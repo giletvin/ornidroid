@@ -2,10 +2,10 @@ package fr.ornidroid.ui.picture;
 
 import java.util.List;
 
-
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +14,7 @@ import fr.ornidroid.R;
 import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.ui.BirdActivity;
 
@@ -79,10 +80,27 @@ public class PictureHelper {
 		final LinearLayout imageAndDescription = (LinearLayout) this.birdActivity
 				.getViewFlipper().getChildAt(index);
 		final ImageView imagePicture = new ImageView(this.birdActivity);
-		final Bitmap bMap = BitmapFactory.decodeFile(this.birdActivity
-				.getBird().getPicture(index).getPath());
-		imagePicture.setImageBitmap(bMap);
-		imageAndDescription.addView(imagePicture);
+		Bitmap bMap;
+
+		try {
+			bMap = BitmapFactory.decodeFile(this.birdActivity.getBird()
+					.getPicture(index).getPath());
+			imagePicture.setImageBitmap(bMap);
+			imageAndDescription.addView(imagePicture);
+
+		} catch (final OutOfMemoryError e) {
+			// http://stackoverflow.com/questions/7138645/catching-outofmemoryerror-in-decoding-bitmap
+			// try to load another time after a gc
+			Log.e(Constants.LOG_TAG, e.getMessage());
+			System.gc();
+			try {
+				bMap = BitmapFactory.decodeFile(this.birdActivity.getBird()
+						.getPicture(index).getPath());
+			} catch (final OutOfMemoryError e2) {
+				Log.e(Constants.LOG_TAG, e.getMessage());
+			}
+		}
+
 	}
 
 	/**

@@ -198,6 +198,9 @@ public class FullSizeImageActivity extends Activity {
 		@Override
 		public boolean onDoubleTap(final MotionEvent e) {
 			// deallocate the bitmap and request for a gc.
+			if (null != FullSizeImageActivity.this.bmLargeImage) {
+				FullSizeImageActivity.this.bmLargeImage.recycle();
+			}
 			FullSizeImageActivity.this.bmLargeImage = null;
 			System.gc();
 			final Intent intentBirdInfo = new Intent(this.context,

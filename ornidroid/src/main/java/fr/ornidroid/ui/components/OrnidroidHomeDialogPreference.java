@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
+import fr.ornidroid.helper.StringHelper;
 
 /**
  * The Class OrnidroidHomePreference.
@@ -134,12 +135,14 @@ public class OrnidroidHomeDialogPreference extends DialogPreference implements
 	 */
 	public void onItemClick(final AdapterView<?> arg0, final View arg1,
 			final int position, final long arg3) {
+		final String clickedFilePath = this.path.get(position);
+		if (StringHelper.isNotBlank(clickedFilePath)) {
+			final File file = new File(clickedFilePath);
 
-		final File file = new File(this.path.get(position));
-
-		if (file.isDirectory()) {
-			if (file.canRead()) {
-				getDir(this.path.get(position));
+			if (file.isDirectory()) {
+				if (file.canRead()) {
+					getDir(this.path.get(position));
+				}
 			}
 		}
 
@@ -175,7 +178,6 @@ public class OrnidroidHomeDialogPreference extends DialogPreference implements
 		// find the stored value and print it
 		this.mPath.setText(Constants.getOrnidroidHome());
 
-		// TODO : a changer ?
 		this.root = Environment.getExternalStorageDirectory().getPath();
 
 		// start point : current ornidroid home

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -20,6 +19,7 @@ import fr.ornidroid.bo.Bird;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
+import fr.ornidroid.ui.picture.PictureHelper;
 
 /**
  * Displays a full sized image. Mainly inspired by
@@ -258,7 +258,8 @@ public class FullSizeImageActivity extends Activity {
 		final AbstractOrnidroidFile picture = bird
 				.getPicture(this.displayedPictureId);
 		if (null != picture) {
-			this.bmLargeImage = BitmapFactory.decodeFile(picture.getPath());
+			this.bmLargeImage = PictureHelper.tryDecodeBitmap(
+					picture.getPath(), getResources());
 		}
 		final Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE))
 				.getDefaultDisplay();

@@ -3,6 +3,7 @@ package fr.ornidroid.ui.picture;
 import java.util.List;
 
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -22,6 +23,40 @@ import fr.ornidroid.ui.BirdActivity;
  * This class handles the view flipper, updates the number of pictures text view
  */
 public class PictureHelper {
+
+	/**
+	 * Try decode bitmap.
+	 * 
+	 * @param bitmapPath
+	 *            the bitmap path
+	 * @param resource
+	 *            the resource
+	 * @return the bitmap. If an OutOfMemoryError occurs, returns a default
+	 *         error image to avoid NullPointerExceptions
+	 */
+	public static Bitmap tryDecodeBitmap(final String bitmapPath,
+			final Resources resource) {
+		Bitmap bMap = null;
+		try {
+			bMap = BitmapFactory.decodeFile(bitmapPath);
+		} catch (final OutOfMemoryError e) {
+			// http://stackoverflow.com/questions/7138645/catching-outofmemoryerror-in-decoding-bitmap
+			// try to load another time after a gc
+			Log.e(Constants.LOG_TAG, e.getMessage());
+			System.gc();
+			try {
+				bMap = BitmapFactory.decodeFile(bitmapPath);
+			} catch (final OutOfMemoryError e2) {
+				Log.e(Constants.LOG_TAG, e2.getMessage());
+			}
+		}
+		if (null == bMap) {
+			// error image
+			bMap = BitmapFactory.decodeResource(resource,
+					R.drawable.error_image);
+		}
+		return bMap;
+	}
 
 	/** The bird activity. */
 	private final BirdActivity birdActivity;
@@ -80,25 +115,11 @@ public class PictureHelper {
 		final LinearLayout imageAndDescription = (LinearLayout) this.birdActivity
 				.getViewFlipper().getChildAt(index);
 		final ImageView imagePicture = new ImageView(this.birdActivity);
-		Bitmap bMap;
-
-		try {
-			bMap = BitmapFactory.decodeFile(this.birdActivity.getBird()
-					.getPicture(index).getPath());
+		final Bitmap bMap = tryDecodeBitmap(this.birdActivity.getBird()
+				.getPicture(index).getPath(), this.birdActivity.getResources());
+		if (bMap != null) {
 			imagePicture.setImageBitmap(bMap);
 			imageAndDescription.addView(imagePicture);
-
-		} catch (final OutOfMemoryError e) {
-			// http://stackoverflow.com/questions/7138645/catching-outofmemoryerror-in-decoding-bitmap
-			// try to load another time after a gc
-			Log.e(Constants.LOG_TAG, e.getMessage());
-			System.gc();
-			try {
-				bMap = BitmapFactory.decodeFile(this.birdActivity.getBird()
-						.getPicture(index).getPath());
-			} catch (final OutOfMemoryError e2) {
-				Log.e(Constants.LOG_TAG, e.getMessage());
-			}
 		}
 
 	}

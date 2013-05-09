@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,7 +14,6 @@ import fr.ornidroid.R;
 import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
-import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.ui.BirdActivity;
 
@@ -42,12 +40,11 @@ public class PictureHelper {
 		} catch (final OutOfMemoryError e) {
 			// http://stackoverflow.com/questions/7138645/catching-outofmemoryerror-in-decoding-bitmap
 			// try to load another time after a gc
-			Log.e(Constants.LOG_TAG, e.getMessage());
 			System.gc();
 			try {
 				bMap = BitmapFactory.decodeFile(bitmapPath);
 			} catch (final OutOfMemoryError e2) {
-				Log.e(Constants.LOG_TAG, e2.getMessage());
+				bMap = null;
 			}
 		}
 		if (null == bMap) {

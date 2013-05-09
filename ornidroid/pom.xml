@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.ornidroid</groupId>
 	<artifactId>ornidroid</artifactId>
-	<version>3.0.1</version>
+	<version>3.0.2</version>
 	<packaging>apk</packaging>
 	<name>Ornidroid</name>
 

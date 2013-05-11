@@ -199,12 +199,13 @@ function getColourFk($data){
 
 /*
 * Genere la commande insert dans la table bird
-* insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk,beak_form_fk, size_value,size_fk, feather_colour_fk,feather_colour_2_fk,beak_colour_fk,beak_colour_2_fk,paw_colour_fk,paw_colour_2_fk,remarkable_sign_fk) values (1,'morus bassanus','morus_bassanus',1,1,1,1,115,5,1,1,1,1,1,1,1,1);
+* insert into bird (id,scientific_name,scientific_name2,directory_name,scientific_order_fk,scientific_family_fk, category_fk,beak_form_fk, size_value,size_fk, feather_colour_fk,feather_colour_2_fk,beak_colour_fk,beak_colour_2_fk,paw_colour_fk,paw_colour_2_fk,remarkable_sign_fk) values (1,'morus bassanus','morus_bassanus',1,1,1,1,115,5,1,1,1,1,1,1,1,1);
 */
 function genereInsertTableBird($array_sign,$array_beak_form,$array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$id,$csvLine){
 
         $directory_name = nettoie_nom($csvLine[0]);
 	$scientific_name = $csvLine[2];
+	$scientific_name2 = $csvLine[20];
 	$data = explode(": ",$csvLine[4]);
 	//id = index dans le tableau +1 car les id commencent à 1 et pas 0
 	$ordre= array_search(normalizeString($data[0]),$array_scientific_orders)+1;
@@ -229,7 +230,7 @@ function genereInsertTableBird($array_sign,$array_beak_form,$array_habitat,$arra
 	$beak_colour_fk=getColourFk($csvLine[9]);
 	$beak_colour_2_fk=getColourFk($csvLine[10]);
 
-	$sqlQuery = "insert into bird (id,scientific_name,directory_name,scientific_order_fk,scientific_family_fk, category_fk, beak_form_fk,size_value,size_fk,feather_colour_fk,feather_colour_2_fk,beak_colour_fk,beak_colour_2_fk,paw_colour_fk,paw_colour_2_fk) values (".$id.",'".$scientific_name."','".$directory_name."',".$ordre.",".$famille.",".$category_fk.",".$beak_form_fk.",".$size_value.",".$size_fk.",".$feather_colour_fk.",".$feather_colour_2_fk.",".$beak_colour_fk.",".$beak_colour_2_fk.",".$paw_colour_fk.",".$paw_colour_2_fk.");\n";
+	$sqlQuery = "insert into bird (id,scientific_name,scientific_name2,directory_name,scientific_order_fk,scientific_family_fk, category_fk, beak_form_fk,size_value,size_fk,feather_colour_fk,feather_colour_2_fk,beak_colour_fk,beak_colour_2_fk,paw_colour_fk,paw_colour_2_fk) values (".$id.",'".$scientific_name."','".$scientific_name2."','".$directory_name."',".$ordre.",".$famille.",".$category_fk.",".$beak_form_fk.",".$size_value.",".$size_fk.",".$feather_colour_fk.",".$feather_colour_2_fk.",".$beak_colour_fk.",".$beak_colour_2_fk.",".$paw_colour_fk.",".$paw_colour_2_fk.");\n";
 
 	//meme chose avec les habitats
 	$habitat1_fk='';
@@ -423,7 +424,8 @@ $idBird=0;
 if (($handle = fopen("oiseaux_europe_avibase_ss_rares.csv", "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
 	if ($idBird>0) {
-		if (count($data)==21){
+		//attention : si on ajoute une colonne dans le csv, changer ce test !
+		if (count($data)==22){
 			$insertTableScientificOrderAndFamily=genereInsertTableScientificOrderAndFamily($array_scientific_orders,$array_scientific_family,$data);
 			$insertTableBird=genereInsertTableBird($array_sign,$array_beak_form,$array_habitat,$array_category,$array_scientific_orders,$array_scientific_family,$idBird,$data);
 			$insertTableTaxonomy=genereInsertTableTaxonomy($idBird,$data);

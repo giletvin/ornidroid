@@ -93,6 +93,8 @@
     <string name="search_category_choose">Choose a category</string>
     <string name="search_category">Category</string>
     <string name="search_category_help">Examples\nPasserines : sparrows, swallows,&#8230;\nBirds of prey : eagles\nLong-legged wading birds: storks, herons,&#8230;\nWaders: woodcocks, plovers</string>
+    <string name="search_country">Country</string>
+    <string name="search_country_choose">Choose a country</string>
     <string name="search_habitat_choose">Choose a habitat</string>
     <string name="search_habitat">Habitat</string>
     <string name="search_habitat_help">A bird can have up to two habitats.\nExample : the blackbird is in "Cities, villages, gardens" and "Forests and moorlands" </string>

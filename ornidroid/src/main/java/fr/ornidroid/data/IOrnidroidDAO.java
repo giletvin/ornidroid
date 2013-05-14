@@ -12,12 +12,19 @@ public interface IOrnidroidDAO {
 	/** The Constant BEAK_FORM_TABLE. */
 	public static final String BEAK_FORM_TABLE = "beak_form";
 
+	/** The Constant BIRD_COUNTRY_TABLE. */
+	public static final String BIRD_COUNTRY_TABLE = "bird_country";
 	/** The Constant BIRD_TABLE. */
 	public static final String BIRD_TABLE = "bird";
+
 	/** The Constant CATEGORY_COLUMN. */
 	public static final String CATEGORY_COLUMN = "category";
+
 	/** The Constant COLOUR_TABLE. */
 	public static final String COLOUR_TABLE = "colour";
+
+	/** The Constant COUNTRY_TABLE. */
+	public static final String COUNTRY_TABLE = "country";
 	/** The Constant DESCRIPTION_COLUMN. */
 	public static final String DESCRIPTION_COLUMN = "description";
 	/** The Constant DIRECTORY_NAME_COLUMN. */
@@ -132,6 +139,13 @@ public interface IOrnidroidDAO {
 	 * @return the colours
 	 */
 	Cursor getColours();
+
+	/**
+	 * Gets the countries.
+	 * 
+	 * @return the countries
+	 */
+	Cursor getCountries();
 
 	/**
 	 * Gets the habitats.

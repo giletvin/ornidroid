@@ -101,6 +101,22 @@ public interface IOrnidroidService {
 	List<String> getColours();
 
 	/**
+	 * Gets the countries.
+	 * 
+	 * @return the countries
+	 */
+	List<String> getCountries();
+
+	/**
+	 * Gets the country code.
+	 * 
+	 * @param countryName
+	 *            the country name
+	 * @return the country code
+	 */
+	String getCountryCode(String countryName);
+
+	/**
 	 * Gets the current bird. If a previous call to show bird detail was already
 	 * done, get the bird without querying the db
 	 * 

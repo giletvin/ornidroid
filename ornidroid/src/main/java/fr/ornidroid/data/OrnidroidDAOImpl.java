@@ -18,11 +18,60 @@ import fr.ornidroid.helper.StringHelper;
  */
 public class OrnidroidDAOImpl implements IOrnidroidDAO {
 
+	/**
+	 * The Class SqlDynamicFragments. Contains the sql code snippets where and
+	 * from
+	 */
+	private class SqlDynamicFragments {
+
+		/** The from clause. */
+		private final String fromClause;
+
+		/** The where clause. */
+		private final String whereClause;
+
+		/**
+		 * Instantiates a new sql dynamic fragments.
+		 * 
+		 * @param pWhereClause
+		 *            the where clause
+		 * @param pFromClause
+		 *            the from clause
+		 */
+		public SqlDynamicFragments(final String pWhereClause,
+				final String pFromClause) {
+			this.whereClause = pWhereClause;
+			this.fromClause = pFromClause;
+		}
+
+		/**
+		 * Gets the from clause.
+		 * 
+		 * @return the from clause
+		 */
+		public String getFromClause() {
+			return this.fromClause;
+		}
+
+		/**
+		 * Gets the where clause.
+		 * 
+		 * @return the where clause
+		 */
+		public String getWhereClause() {
+			return this.whereClause;
+		}
+
+	}
+
+	/** The Constant AS. */
+	private static final String AS = " as ";
+
 	/** The Constant CATEGORY_TABLE_NAME. */
 	private static final String CATEGORY_TABLE_NAME = "category";
 
-	/** The Constant COUNT. */
-	private static final String COUNT = " count(*) ";
+	/** The Constant COUNT_STAR. */
+	private static final String COUNT_STAR = " count(*) ";
 
 	/** The Constant DESCRIPTION_TABLE. */
 	private static final String DESCRIPTION_TABLE = "bird_description";
@@ -35,6 +84,9 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 
 	/** The Constant HABITAT_TABLE_NAME. */
 	private static final String HABITAT_TABLE_NAME = "habitat";
+
+	/** The Constant INNER_JOIN. */
+	private static final String INNER_JOIN = " inner join ";
 
 	/** The Constant LEFT_OUTER_JOIN. */
 	private static final String LEFT_OUTER_JOIN = " LEFT OUTER JOIN ";
@@ -114,7 +166,8 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		final String whereClause = WHERE + "bird.id = ?";
 		final String[] selectionArgs = new String[] { rowId };
 
-		return query(whereClause, selectionArgs, true);
+		return query(new SqlDynamicFragments(whereClause,
+				Constants.EMPTY_STRING), selectionArgs, true);
 	}
 
 	/*
@@ -135,8 +188,9 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		final StringBuffer whereClause = new StringBuffer().append(WHERE)
 				.append(SEARCHED_TAXON).append(" MATCH ?");
 		final String[] selectionArgs = new String[] { query + "*" };
-		final Cursor cursor = query(whereClause.toString(), selectionArgs,
-				false);
+		final Cursor cursor = query(
+				new SqlDynamicFragments(whereClause.toString(),
+						Constants.EMPTY_STRING), selectionArgs, false);
 		this.historyHelper.setHistory(cursor);
 		return cursor;
 
@@ -151,7 +205,8 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 */
 	public void getBirdMatchesFromMultiSearchCriteria(
 			final MultiCriteriaSearchFormBean formBean) {
-		final Cursor cursor = query(getWhereSqlClauses(formBean), null, false);
+		final Cursor cursor = query(getSqlDynamicFragments(formBean), null,
+				false);
 		this.historyHelper.setHistory(cursor);
 	}
 
@@ -215,6 +270,45 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see fr.ornidroid.data.IOrnidroidDAO#getCountries()
+	 */
+	public Cursor getCountries() {
+		Cursor cursor = null;
+		try {
+			final String nameColumnWithLangSuffix = NAME_COLUMN_NAME + "_"
+					+ I18nHelper.getLang();
+			final SQLiteDatabase db = this.dataBaseOpenHelper
+					.getReadableDatabase();
+			final StringBuilder query = new StringBuilder();
+			query.append(SELECT);
+			query.append("code as id");
+			query.append(Constants.COMMA_STRING);
+			query.append(nameColumnWithLangSuffix);
+			query.append(AS);
+			query.append(NAME_COLUMN_NAME);
+			query.append(FROM);
+			query.append(COUNTRY_TABLE);
+			query.append(ORDER_BY);
+			query.append(NAME_COLUMN_NAME);
+			final String[] selectionArgs = null;
+			cursor = db.rawQuery(query.toString(), selectionArgs);
+			if (cursor == null) {
+				return null;
+			} else if (!cursor.moveToFirst()) {
+				cursor.close();
+			}
+		} catch (final SQLException e) {
+			Log.e(Constants.LOG_TAG, "Exception sql " + e);
+		} finally {
+			this.dataBaseOpenHelper.close();
+		}
+		return cursor;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getHabitats()
 	 */
 	public Cursor getHabitats() {
@@ -242,8 +336,10 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	public int getMultiSearchCriteriaCountResults(
 			final MultiCriteriaSearchFormBean formBean) {
 		final StringBuilder countQuery = new StringBuilder();
-		countQuery.append(SELECT).append(COUNT).append(FROM).append(BIRD_TABLE)
-				.append(getWhereSqlClauses(formBean));
+		final SqlDynamicFragments sqlFragments = getSqlDynamicFragments(formBean);
+		countQuery.append(SELECT).append(COUNT_STAR).append(FROM)
+				.append(BIRD_TABLE).append(sqlFragments.getFromClause())
+				.append(sqlFragments.getWhereClause());
 		final SQLiteDatabase db = this.dataBaseOpenHelper.getReadableDatabase();
 		final int countResults = (int) DatabaseUtils.longForQuery(db,
 				countQuery.toString(), null);
@@ -340,8 +436,10 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 *            the form bean
 	 * @return the where sql clauses
 	 */
-	private String getWhereSqlClauses(final MultiCriteriaSearchFormBean formBean) {
+	private SqlDynamicFragments getSqlDynamicFragments(
+			final MultiCriteriaSearchFormBean formBean) {
 		final StringBuffer whereClauses = new StringBuffer();
+		final StringBuffer fromClauses = new StringBuffer();
 		whereClauses.append(WHERE).append("1=1");
 		if (formBean.getCategoryId() != 0) {
 			whereClauses.append(" AND bird.category_fk = ").append(
@@ -383,15 +481,24 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			whereClauses.append(" AND bird.size_fk = ").append(
 					formBean.getSizeId());
 		}
-		return whereClauses.toString();
+		if (StringHelper.isNotBlank(formBean.getCountryCode())) {
+			fromClauses.append(", bird_country");
+			// fromClauses.append(INNER_JOIN).append(BIRD_COUNTRY_TABLE)
+			// .append(" on bird_country.bird_fk=bird.id");
+			whereClauses.append(" AND bird_country.country_code MATCH '")
+					.append(formBean.getCountryCode()).append("'")
+					.append(" AND bird_country.bird_fk=bird.id");
+		}
+
+		return new SqlDynamicFragments(whereClauses.toString(),
+				fromClauses.toString());
 	}
 
 	/**
 	 * Performs a database query.
 	 * 
-	 * @param whereClause
-	 *            The selection where clause of the sql query, containing the
-	 *            WHERE keyword
+	 * @param sqlDynamicFragments
+	 *            the sql dynamic fragments
 	 * @param selectionArgs
 	 *            Selection arguments for "?" components in the selection
 	 * @param fullBirdInfo
@@ -399,9 +506,11 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 *            stored in the cursor
 	 * @return A Cursor over all rows matching the query
 	 */
-	private Cursor query(final String whereClause,
+	private Cursor query(final SqlDynamicFragments sqlDynamicFragments,
 			final String[] selectionArgs, final boolean fullBirdInfo) {
-
+		// TODO : filtre sur les pays : select count(*) from bird b inner join
+		// bird_country bc on bc.bird_fk=b.id inner join country c on
+		// c.id=bc.country_fk where c.code='FRA'
 		Cursor cursor = null;
 		try {
 			final SQLiteDatabase db = this.dataBaseOpenHelper
@@ -444,6 +553,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			query.append(FTS_VIRTUAL_TABLE_TAXONOMY);
 			query.append(" ,");
 			query.append(BIRD_TABLE);
+			query.append(sqlDynamicFragments.getFromClause());
 			if (fullBirdInfo) {
 				query.append(LEFT_OUTER_JOIN);
 				query.append(DESCRIPTION_TABLE);
@@ -507,7 +617,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(I18nHelper.getLang());
 				query.append("\"");
 			}
-			query.append(whereClause);
+			query.append(sqlDynamicFragments.getWhereClause());
 			query.append(" and bird.id=taxonomy.bird_fk");
 			query.append(" and taxonomy.lang=\"");
 			query.append(Constants.getOrnidroidSearchLang());

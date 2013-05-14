@@ -54,6 +54,16 @@
                 custom:text="@string/search_category" />
 
             <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
+                android:id="@+id/search_country_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20sp"
+                android:paddingLeft="10sp"
+                custom:spinnerPrompt="@string/search_country_choose"
+                custom:text="@string/search_country" />
+            
+            <fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField
                 android:id="@+id/search_habitat_field"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

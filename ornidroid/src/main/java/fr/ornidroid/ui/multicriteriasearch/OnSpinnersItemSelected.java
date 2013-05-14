@@ -40,6 +40,11 @@ public class OnSpinnersItemSelected implements OnItemSelectedListener {
 					this.activity.getOrnidroidService().getCategoryId(
 							parent.getItemAtPosition(pos).toString()));
 			break;
+		case COUNTRY:
+			this.activity.getFormBean().setCountryCode(
+					this.activity.getOrnidroidService().getCountryCode(
+							parent.getItemAtPosition(pos).toString()));
+			break;
 		case HABITAT:
 			this.activity.getFormBean().setHabitatId(
 					this.activity.getOrnidroidService().getHabitatId(

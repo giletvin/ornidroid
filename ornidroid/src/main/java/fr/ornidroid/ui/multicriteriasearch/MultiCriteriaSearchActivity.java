@@ -111,6 +111,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		this.resetFormButton.setOnClickListener(this);
 
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
+		initSelectField(MultiCriteriaSearchFieldType.COUNTRY);
 		initSelectField(MultiCriteriaSearchFieldType.SIZE);
 		initSelectField(MultiCriteriaSearchFieldType.FEATHER_COLOUR);
 		initSelectField(MultiCriteriaSearchFieldType.BEAK_COLOUR);
@@ -170,6 +171,13 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 					android.R.layout.simple_spinner_item,
 					this.ornidroidService.getCategories());
 
+			break;
+		case COUNTRY:
+			field = (MultiCriteriaSelectField) findViewById(R.id.search_country_field);
+			field.setIconResource(R.drawable.ic_countries);
+			dataAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item,
+					this.ornidroidService.getCountries());
 			break;
 		case SIZE:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_size_field);

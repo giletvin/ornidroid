@@ -1,5 +1,7 @@
 package fr.ornidroid.bo;
 
+import fr.ornidroid.helper.BasicConstants;
+
 /**
  * The Class MultiCriteriaSearchFormBean. This class handles the values selected
  * by the user in the multi criteria search screen.
@@ -14,6 +16,9 @@ public class MultiCriteriaSearchFormBean {
 
 	/** The category id. */
 	private Integer categoryId;
+
+	/** The country id. */
+	private String countryCode;
 
 	/** The feather colour id. */
 	private Integer featherColourId;
@@ -55,6 +60,16 @@ public class MultiCriteriaSearchFormBean {
 	 */
 	public Integer getCategoryId() {
 		return this.categoryId != null ? this.categoryId : 0;
+	}
+
+	/**
+	 * Gets the country code.
+	 * 
+	 * @return the country code
+	 */
+	public String getCountryCode() {
+		return this.countryCode != null ? this.countryCode
+				: BasicConstants.EMPTY_STRING;
 	}
 
 	/**
@@ -135,6 +150,16 @@ public class MultiCriteriaSearchFormBean {
 	public void setCategoryId(final Integer pCategoryId) {
 		this.categoryId = pCategoryId;
 
+	}
+
+	/**
+	 * Sets the country code.
+	 * 
+	 * @param pCountryCode
+	 *            the new country code
+	 */
+	public void setCountryCode(final String pCountryCode) {
+		this.countryCode = pCountryCode;
 	}
 
 	/**

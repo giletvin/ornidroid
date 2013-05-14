@@ -78,10 +78,10 @@ create table remarkable_sign(
 );
 
 
-create table bird_country(
+create VIRTUAL TABLE bird_country USING fts3(
 		bird_fk,
-		country_fk,
-		PRIMARY KEY(bird_fk,country_fk)
+		country_code,
+		PRIMARY KEY(bird_fk,country_code)
 );
 
 create table country(

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import android.app.Activity;
 import android.app.SearchManager;
 import android.database.Cursor;
@@ -38,6 +37,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		/** The fields values. */
 		private final List<String> fieldsValues;
 
+		/** The map name code. */
+		private final Map<String, String> mapNameCode;
 		/** The map name id. */
 		private final Map<String, Integer> mapNameId;
 
@@ -50,9 +51,20 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		 *            the field values
 		 */
 		public SelectFieldsValue(final Map<String, Integer> pMapNameId,
+				final Map<String, String> pMapNameCode,
 				final List<String> pFieldValues) {
 			this.mapNameId = pMapNameId;
 			this.fieldsValues = pFieldValues;
+			this.mapNameCode = pMapNameCode;
+		}
+
+		/**
+		 * Gets the map name code.
+		 * 
+		 * @return the map name code
+		 */
+		public Map<String, String> getMapNameCode() {
+			return this.mapNameCode;
 		}
 
 		/**
@@ -110,6 +122,12 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 
 	/** The colours map. */
 	private Map<String, Integer> coloursMap;
+
+	/** The countries list. */
+	private List<String> countriesList;
+
+	/** The countries map. France --> FRA */
+	private Map<String, String> countriesMap;
 
 	/** The current bird. */
 	private Bird currentBird;
@@ -180,7 +198,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		if (this.beakFormsMaps == null) {
 			// Find the names of the beak forms in the selected language
 			final Cursor cursorQueryHabitats = this.ornidroidDAO.getBeakForms();
-			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQueryHabitats);
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
+					cursorQueryHabitats, true);
 			this.beakFormsMaps = sfv.getMapNameId();
 			this.beakFormsList = sfv.getFieldsValues();
 
@@ -229,7 +248,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		if (this.categoriesMap == null) {
 			final Cursor cursorQueryHabitats = this.ornidroidDAO
 					.getCategories();
-			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQueryHabitats);
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
+					cursorQueryHabitats, true);
 			this.categoriesMap = sfv.getMapNameId();
 			this.categoriesList = sfv.getFieldsValues();
 
@@ -265,12 +285,41 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	public List<String> getColours() {
 		if (this.coloursMap == null) {
 			final Cursor cursorQueryColours = this.ornidroidDAO.getColours();
-			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQueryColours);
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
+					cursorQueryColours, true);
 			this.coloursMap = sfv.getMapNameId();
 			this.coloursList = sfv.getFieldsValues();
 
 		}
 		return this.coloursList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidService#getCountries()
+	 */
+	public List<String> getCountries() {
+		if (this.countriesMap == null) {
+			final Cursor cursorCountries = this.ornidroidDAO.getCountries();
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
+					cursorCountries, false);
+			this.countriesMap = sfv.getMapNameCode();
+			this.countriesList = sfv.getFieldsValues();
+
+		}
+		return this.countriesList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getCountryCode(java.lang.String)
+	 */
+	public String getCountryCode(final String countryName) {
+		return this.countriesMap != null ? this.countriesMap.get(countryName)
+				: BasicConstants.EMPTY_STRING;
 	}
 
 	/*
@@ -300,7 +349,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	public List<String> getHabitats() {
 		if (this.habitatsMap == null) {
 			final Cursor cursorQueryHabitats = this.ornidroidDAO.getHabitats();
-			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQueryHabitats);
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
+					cursorQueryHabitats, true);
 			this.habitatsMap = sfv.getMapNameId();
 			this.habitatsList = sfv.getFieldsValues();
 
@@ -374,7 +424,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		if (this.remarkableSignsMap == null) {
 			final Cursor cursorQueryHabitats = this.ornidroidDAO
 					.getRemarkableSigns();
-			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQueryHabitats);
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
+					cursorQueryHabitats, true);
 			this.remarkableSignsMap = sfv.getMapNameId();
 			this.remarkableSignsList = sfv.getFieldsValues();
 
@@ -399,7 +450,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	public List<String> getSizes() {
 		if (this.sizesMap == null) {
 			final Cursor cursorQuerySizes = this.ornidroidDAO.getSizes();
-			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(cursorQuerySizes);
+			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
+					cursorQuerySizes, true);
 			this.sizesMap = sfv.getMapNameId();
 			this.sizesList = sfv.getFieldsValues();
 
@@ -526,13 +578,22 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * @param cursor
 	 *            the cursor from the DAO, from a select query on the fields ID
 	 *            and NAME
+	 * @param intId
+	 *            true if the id to map from the database is an integer. If
+	 *            false, the id is a String (like in the country table)
 	 * @return the map, NAME (String)-> ID (Integer)
 	 */
-	private SelectFieldsValue loadSelectFieldsFromCursor(final Cursor cursor) {
+	private SelectFieldsValue loadSelectFieldsFromCursor(final Cursor cursor,
+			final boolean intId) {
 		final Map<String, Integer> mapNameId = new HashMap<String, Integer>();
-		final List<String> fieldsValues = new ArrayList<String>();
+		final Map<String, String> mapNameCode = new HashMap<String, String>();
 		// init the map and the list with "ALL" with id = 0
 		mapNameId.put(this.activity.getString(R.string.search_all), 0);
+		mapNameCode.put(this.activity.getString(R.string.search_all),
+				BasicConstants.EMPTY_STRING);
+
+		final List<String> fieldsValues = new ArrayList<String>();
+
 		fieldsValues.add(this.activity.getString(R.string.search_all));
 		if (cursor != null) {
 			final int nbResults = cursor.getCount();
@@ -542,14 +603,21 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 						.getColumnIndexOrThrow(IOrnidroidDAO.ID);
 				final int nameIndex = cursor
 						.getColumnIndexOrThrow(IOrnidroidDAO.NAME_COLUMN_NAME);
-				mapNameId.put(cursor.getString(nameIndex),
-						cursor.getInt(idIndex));
+
+				if (intId) {
+					mapNameId.put(cursor.getString(nameIndex),
+							cursor.getInt(idIndex));
+				} else {
+					// in this case, if the id is a string (country code)
+					mapNameCode.put(cursor.getString(nameIndex),
+							cursor.getString(idIndex));
+				}
 				fieldsValues.add(cursor.getString(nameIndex));
 			}
 			cursor.close();
 		}
 		final SelectFieldsValue sfv = new SelectFieldsValue(mapNameId,
-				fieldsValues);
+				mapNameCode, fieldsValues);
 		return sfv;
 	}
 }

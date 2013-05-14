@@ -126,11 +126,10 @@ function removeDiacritics($str) {
 /*
 //INSERT INTO bird_country(bird_fk,country_fk) VALUES(?,?);
 */
-function insertCountry($dbh,$birdId,$country_id){
-	$query = "INSERT INTO bird_country(bird_fk,country_fk) VALUES(".intval($birdId).",".intval($country_id).");";
-	echo $query." \n";
+function insertCountry($dbh,$birdId,$country_code){
+echo 'INSERT INTO bird_country(bird_fk,country_code) VALUES('.intval($birdId).',"'.$country_code.'")'."\n";
 	$qry = $dbh->prepare(
-    		'INSERT INTO bird_country(bird_fk,country_fk) VALUES('.intval($birdId).','.intval($country_id).');');
+    		'INSERT INTO bird_country(bird_fk,country_code) VALUES('.intval($birdId).',"'.$country_code.'");');
 	$qry->execute(array());
 
 }
@@ -148,6 +147,7 @@ $country_code_index=4;
 try {
 	$sqliteFile = "ornidroid.jpg";
 	$dbh = new PDO('sqlite:'.$sqliteFile); // success
+	//requete gardée pour filtrer uniquement sur les pays insérés dans la table country
 	$initCoutriesQuery = "select id,code from country";
 	$countryMap=array();
 	foreach ($dbh->query($initCoutriesQuery) as $row){
@@ -158,19 +158,20 @@ try {
 
 	if (($handle = fopen("species_by_countries_Europe.csv", "r")) !== FALSE) {
 	    while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-		$findBirdIdQuery = "select id from bird where lower(scientific_name)='".$data[$scientific_name_index]."' or lower(scientific_name2)='".$data[$scientific_name_index]."'";
+		if (array_key_exists($data[$country_code_index],$countryMap)){
+			$findBirdIdQuery = "select id from bird where lower(scientific_name)='".$data[$scientific_name_index]."' or lower(scientific_name2)='".$data[$scientific_name_index]."'";
 
-		$birdId=-1;
-		foreach ($dbh->query($findBirdIdQuery) as $row){
-			$birdId = $row["id"];
-		}
-		if ($birdId>=1){
-			echo "######insertion des pays pour : " . $data[$scientific_name_index]." ".$data[$country_code_index]."\n";
-			insertCountry($dbh,$birdId,$countryMap[$data[$country_code_index]]);
-
-		}
-		else {
-			echo "nom latin non référencé : " . $data[$scientific_name_index]."\n";
+			$birdId=-1;
+			foreach ($dbh->query($findBirdIdQuery) as $row){
+				$birdId = $row["id"];
+			}
+			if ($birdId>=1){
+					echo "######insertion des pays pour : " . $data[$scientific_name_index]." ".$data[$country_code_index]."\n";
+					insertCountry($dbh,$birdId,$data[$country_code_index]);
+			}
+			else {
+				echo "nom latin non référencé : " . $data[$scientific_name_index]."\n";
+			}
 		}
 
 	    }

@@ -482,12 +482,19 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 					formBean.getSizeId());
 		}
 		if (StringHelper.isNotBlank(formBean.getCountryCode())) {
-			fromClauses.append(", bird_country");
+			// and exists (select 1 from bird_country bc where
+			// bc.bird_fk=bird.id and bc.country_code MATCH 'DEU')
+			whereClauses
+					.append(" and exists (select 1 from ")
+					.append(BIRD_COUNTRY_TABLE)
+					.append(" bc where bc.bird_fk=bird.id and bc.country_code MATCH '")
+					.append(formBean.getCountryCode()).append("')");
+			// fromClauses.append(", bird_country");
 			// fromClauses.append(INNER_JOIN).append(BIRD_COUNTRY_TABLE)
 			// .append(" on bird_country.bird_fk=bird.id");
-			whereClauses.append(" AND bird_country.country_code MATCH '")
-					.append(formBean.getCountryCode()).append("'")
-					.append(" AND bird_country.bird_fk=bird.id");
+			// whereClauses.append(" AND bird_country.country_code MATCH '")
+			// .append(formBean.getCountryCode()).append("'")
+			// .append(" AND bird_country.bird_fk=bird.id");
 		}
 
 		return new SqlDynamicFragments(whereClauses.toString(),
@@ -619,9 +626,11 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			}
 			query.append(sqlDynamicFragments.getWhereClause());
 			query.append(" and bird.id=taxonomy.bird_fk");
-			query.append(" and taxonomy.lang=\"");
+			// query.append(" and taxonomy.lang=\"");
+			query.append(" and taxonomy.lang MATCH '");
 			query.append(Constants.getOrnidroidSearchLang());
-			query.append("\"");
+			query.append("'");
+			// query.append("\"");
 			query.append(" order by searched_taxon");
 			// Log.d(Constants.LOG_TAG, "Perform SQL query " +
 			// query.toString());

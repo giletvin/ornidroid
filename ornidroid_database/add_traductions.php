@@ -127,16 +127,18 @@ function removeDiacritics($str) {
 //INSERT INTO taxonomy(lang,taxon,searched_taxon,bird_fk) VALUES(?,?,?,?);
 */
 function insertTraduction($dbh,$birdId,$birdName,$lang){
-	$qry = $dbh->prepare(
-    		'INSERT INTO taxonomy(lang,taxon,searched_taxon,bird_fk) VALUES(?,?,?,'.intval($birdId).');');
-	$qry->execute(array($lang, $birdName,removeDiacritics($birdName)));
+	//$qry = $dbh->prepare(
+    	//	'INSERT INTO taxonomy(lang,taxon,searched_taxon,bird_fk) VALUES(?,?,?,'.intval($birdId).');');
+//	$qry->execute(array($lang, $birdName,removeDiacritics($birdName)));
 //	$dbh->exec('INSERT INTO taxonomy(lang,taxon,searched_taxon,bird_fk) VALUES($lang,$birdName,removeDiacritics($birdName),intval($birdId))')
+
+	return "INSERT INTO taxonomy(lang,taxon,searched_taxon,bird_fk) VALUES('".$lang."',\"".$birdName."\",\"".removeDiacritics($birdName)."\",".intval($birdId).");\n";
 }
 
 /*
 * MAIN
 */
-
+$handlerFileInsertTraductions = fopen('generate_insert_data_traductions.sql', 'w');
 
 
 
@@ -216,23 +218,23 @@ try {
 			}
 			if ($birdId>=1){
 				echo "######insertion des traductions pour : " . $data[$la]."\n";
-				insertTraduction($dbh,$birdId,$data[$la],$la_code);
-				insertTraduction($dbh,$birdId,$data[$de],$de_code);
-				insertTraduction($dbh,$birdId,$data[$es],$es_code);
-				insertTraduction($dbh,$birdId,$data[$is],$is_code);
-				insertTraduction($dbh,$birdId,$data[$dk],$dk_code);
-				insertTraduction($dbh,$birdId,$data[$cz],$cz_code);
-				insertTraduction($dbh,$birdId,$data[$fi],$fi_code);
-				insertTraduction($dbh,$birdId,$data[$it],$it_code);
-				insertTraduction($dbh,$birdId,$data[$jp],$jp_code);
-				insertTraduction($dbh,$birdId,$data[$nl],$nl_code);
-				insertTraduction($dbh,$birdId,$data[$no],$no_code);
-				insertTraduction($dbh,$birdId,$data[$po],$po_code);
-				insertTraduction($dbh,$birdId,$data[$pt],$pt_code);
-				insertTraduction($dbh,$birdId,$data[$ru],$ru_code);
-				insertTraduction($dbh,$birdId,$data[$sk],$sk_code);
-				insertTraduction($dbh,$birdId,$data[$se],$se_code);
-				insertTraduction($dbh,$birdId,$data[$zh],$zh_code);
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$la],$la_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$de],$de_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$es],$es_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$is],$is_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$dk],$dk_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$cz],$cz_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$fi],$fi_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$it],$it_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$jp],$jp_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$nl],$nl_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$no],$no_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$po],$po_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$pt],$pt_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$ru],$ru_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$sk],$sk_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$se],$se_code));
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,$data[$zh],$zh_code));
 			}
 			else {
 				echo "nom latin non référencé : " . $data[$la]."\n";
@@ -247,5 +249,5 @@ try {
 catch(PDOException $e) {
     echo $e->getMessage();
 }
-
+fclose($handlerFileInsertTraductions);
 ?>

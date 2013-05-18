@@ -17,8 +17,9 @@ cat insert_data_table_size.sql | sqlite3 $DATABASE_NAME
 cat insert_data_table_colours.sql | sqlite3 $DATABASE_NAME
 
 php add_countries.php
+cat generate_insert_data_traductions.sql | sqlite3 $DATABASE_NAME
 php add_traductions.php
-
+cat generate_insert_data_bird_country.sql | sqlite3 $DATABASE_NAME
 #generation du fichier .size pour le controle de mise a jour dans l appli
 cat $DATABASE_NAME | wc -c > $DATABASE_NAME.size
 

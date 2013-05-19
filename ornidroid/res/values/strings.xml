@@ -90,6 +90,7 @@
     <!-- Help content -->
     <string name="help_text">Contact : ornidroid@free.fr\n\nUser\'s guide : https://github.com/giletvin/ornidroid/wiki/Help\n\nHow-to download the full images and mp3 packages : https://github.com/giletvin/ornidroid/wiki/Installation-en\n\nTo change the search engine language : go to preferences (from the menu) and change OrnidroidSearchLang value</string>
     <!-- strings of the multi search -->
+    <string name="search_please_wait">Searching. Please wait</string>
     <string name="search_category_choose">Choose a category</string>
     <string name="search_category">Category</string>
     <string name="search_category_help">Examples\nPasserines : sparrows, swallows,&#8230;\nBirds of prey : eagles\nLong-legged wading birds: storks, herons,&#8230;\nWaders: woodcocks, plovers</string>

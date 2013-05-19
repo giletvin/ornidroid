@@ -3,6 +3,7 @@ package fr.ornidroid.ui.multicriteriasearch;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,26 +20,36 @@ import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.AbstractOrnidroidActivity;
 import fr.ornidroid.ui.MainActivity;
+import fr.ornidroid.ui.components.progressbar.ProgressActionLoaderInfo;
+import fr.ornidroid.ui.components.progressbar.ProgressActionHandler;
+import fr.ornidroid.ui.components.progressbar.ProgressActionHandler.ProgressActionCallback;
+import fr.ornidroid.ui.components.progressbar.ProgressActionHandlerThread;
 
 /**
  * The Class MultiCriteriaSearchActivity.
  */
 public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
-		implements OnClickListener {
-
+		implements OnClickListener, ProgressActionCallback {
 	/** The field list. */
 	private final List<MultiCriteriaSelectField> fieldList;
 
 	/** The form bean. */
 	private final MultiCriteriaSearchFormBean formBean;
 
+	/** The m loader. */
+	private ProgressActionHandlerThread mLoader;
 	/** The nb results text view. */
 	private TextView nbResultsTextView;
 
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
 
+	/** The progress bar. */
+	private ProgressDialog progressBar;
+
+	/** The reset form button. */
 	private ImageView resetFormButton;
+
 	/** The show results clickable area. */
 	private LinearLayout showResultsClickableArea;
 
@@ -50,6 +61,17 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 		this.formBean = new MultiCriteriaSearchFormBean();
 		this.fieldList = new ArrayList<MultiCriteriaSelectField>();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.ui.multicriteriasearch.ProgressActionHandler.
+	 * ProgressActionCallback#doAction()
+	 */
+	public void doAction() {
+		this.ornidroidService
+				.getBirdMatchesFromMultiSearchCriteria(this.formBean);
 	}
 
 	/**
@@ -73,6 +95,25 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see fr.ornidroid.ui.components.progressbar.ProgressActionHandler.
+	 * ProgressActionCallback
+	 * #onActionEnded(fr.ornidroid.ui.components.progressbar
+	 * .ProgressActionHandler,
+	 * fr.ornidroid.ui.components.progressbar.LoaderInfoMCS)
+	 */
+	public void onActionEnded(final ProgressActionHandler loader,
+			final ProgressActionLoaderInfo info) {
+		killLoader();
+		final Intent intent = new Intent(getApplicationContext(),
+				MainActivity.class);
+		intent.putExtra(MainActivity.SHOW_SEARCH_FIELD_INTENT_PRM, false);
+		startActivity(intent);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	public void onClick(final View v) {
@@ -80,14 +121,21 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			resetForm();
 		} else {
 			if (v == this.showResultsClickableArea) {
-				this.ornidroidService
-						.getBirdMatchesFromMultiSearchCriteria(this.formBean);
 
-				final Intent intent = new Intent(getApplicationContext(),
-						MainActivity.class);
-				intent.putExtra(MainActivity.SHOW_SEARCH_FIELD_INTENT_PRM,
-						false);
-				startActivity(intent);
+				if (this.mLoader == null) {
+					this.mLoader = new ProgressActionHandlerThread();
+					this.mLoader.start();
+				}
+
+				this.mLoader.startAction(this);
+				this.progressBar = new ProgressDialog(this);
+				this.progressBar.setCancelable(false);
+				this.progressBar.setMessage(this.getResources().getText(
+						R.string.search_please_wait));
+				this.progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+				this.progressBar.show();
+
 			}
 		}
 
@@ -238,6 +286,15 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 				new OnSpinnersItemSelected(this));
 		this.fieldList.add(field);
 
+	}
+
+	/**
+	 * Kill loader.
+	 */
+	private void killLoader() {
+		this.mLoader.quit();
+		this.mLoader = null;
+		this.progressBar.dismiss();
 	}
 
 	/**

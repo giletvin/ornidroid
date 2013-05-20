@@ -189,6 +189,11 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 		this.ornidroidHomeDialogPreference.setOnPreferenceClickListener(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.preference.PreferenceActivity#onDestroy()
+	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -203,7 +208,9 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	private void killLoader() {
 		this.mLoader.quit();
 		this.mLoader = null;
-		this.progressBar.dismiss();
+		if (this.progressBar != null) {
+			this.progressBar.dismiss();
+		}
 		this.moveEnded = true;
 	}
 

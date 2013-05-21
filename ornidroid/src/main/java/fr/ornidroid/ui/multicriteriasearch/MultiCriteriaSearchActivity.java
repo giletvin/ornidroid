@@ -20,10 +20,10 @@ import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.AbstractOrnidroidActivity;
 import fr.ornidroid.ui.MainActivity;
-import fr.ornidroid.ui.components.progressbar.ProgressActionLoaderInfo;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandler;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandler.ProgressActionCallback;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandlerThread;
+import fr.ornidroid.ui.components.progressbar.ProgressActionLoaderInfo;
 
 /**
  * The Class MultiCriteriaSearchActivity.
@@ -223,9 +223,11 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		case COUNTRY:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_country_field);
 			field.setIconResource(R.drawable.ic_countries);
-			dataAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_spinner_item,
-					this.ornidroidService.getCountries());
+			// dataAdapter = new ArrayAdapter<String>(this,
+			// android.R.layout.simple_spinner_item,
+			// this.ornidroidService.getCountries());
+			dataAdapter = new MyCustomAdapter(this, R.layout.row_spinner_icons,
+					this.ornidroidService.getCountries(), selectFieldType);
 			break;
 		case SIZE:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_size_field);

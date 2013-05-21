@@ -140,12 +140,12 @@ BEL, NLD et LUX --> BNL pour BENELUX
 EST, LVA et LTU --> BLT pour Pays Baltes
 */
 function getCountryCode($countryCodeFromCsv){
-	if ($countryCodeFromCsv=='BEL'||$countryCodeFromCsv=='NLD'||$countryCodeFromCsv=='LUX'){
-		return 'BNL';
-	}
-	if ($countryCodeFromCsv=='EST'||$countryCodeFromCsv=='LVA'||$countryCodeFromCsv=='LTU'){
-		return 'BLT';
-	}
+//	if ($countryCodeFromCsv=='BEL'||$countryCodeFromCsv=='NLD'||$countryCodeFromCsv=='LUX'){
+//		return 'BNL';
+//	}
+//	if ($countryCodeFromCsv=='EST'||$countryCodeFromCsv=='LVA'||$countryCodeFromCsv=='LTU'){
+//		return 'BLT';
+//	}
 	return $countryCodeFromCsv;
 }
 /*

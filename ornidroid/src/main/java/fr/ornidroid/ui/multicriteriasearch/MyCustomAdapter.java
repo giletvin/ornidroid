@@ -78,6 +78,12 @@ public class MyCustomAdapter extends ArrayAdapter<String> {
 			idRes = SpinnerIconSelector
 					.getIconResourceIdFromBeakFormId(beakFormId);
 			break;
+		case COUNTRY:
+			final String countrycode = this.activity.getOrnidroidService()
+					.getCountryCode(this.itemsList.get(position));
+			idRes = SpinnerIconSelector
+					.getIconResourceIdFromCountryCode(countrycode);
+			break;
 		default:
 			break;
 

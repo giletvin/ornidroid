@@ -7,8 +7,8 @@
 
 INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(3,"AUT","Autriche","Austria","Oesterreich");
 
---INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(4,"BEL","Belgique","Belgium","Belgien");
-INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(4,"BLX","Benelux","Benelux","Benelux");
+INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(4,"BEL","Belgique","Belgium","Belgien");
+--INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(4,"BLX","Benelux","Benelux","Benelux");
 
 INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(5,"BGR","Bulgarie","Bulgaria","Bulgarien");
 
@@ -26,8 +26,8 @@ INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(11,"DNK","Danemark",
 
 INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(12,"ESP","Espagne","Spain","Spanien");
 
---INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(13,"EST","Estonie","Estonia","Estland");
-INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(13,"BLT","Pays Baltes","Baltic states","Baltische Staaten");
+INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(13,"EST","Estonie","Estonia","Estland");
+--INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(13,"BLT","Pays Baltes","Baltic states","Baltische Staaten");
 
 INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(14,"FIN","Finlande","Finland","Finnland");
 
@@ -51,11 +51,11 @@ INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(23,"ITA","Italie","I
 
 --INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(24,"LIE","Liechtenstein","Liechtenstein","Liechtenstein");
 
---INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(25,"LTU","Lituanie","Lithuania","Litauen");
+INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(25,"LTU","Lituanie","Lithuania","Litauen");
 
---INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(44,"LUX","Luxembourg","Luxembourg","Luxemburg");
+INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(44,"LUX","Luxembourg","Luxembourg","Luxemburg");
 
---INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(26,"LVA","Lettonie","Latvia","Lettland");
+INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(26,"LVA","Lettonie","Latvia","Lettland");
 
 --INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(27,"MCO","Monaco","Monaco","Monaco");
 
@@ -63,7 +63,7 @@ INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(23,"ITA","Italie","I
 
 INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(29,"MKD","Macédoine","Macedonia","Mazedonien");
 
---INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(30,"NLD","Pays-Bas","Netherlands","Niederlande");
+INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(30,"NLD","Pays-Bas","Netherlands","Niederlande");
 
 INSERT INTO country(id,code,name_fr,name_en,name_de) VALUES(31,"NOR","Norvège","Norway","Norwegen");
 

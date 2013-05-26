@@ -84,9 +84,12 @@
     <!-- TODO Help content -->
 
     <!-- strings of the multi search -->
+    <string name="search_please_wait">Bitte warten. Die Suche läuft</string>
     <string name="search_category_choose">Wählen Sie eine Kategorie</string>
     <string name="search_category">Kategorie</string>
-        <string name="search_category_help">Beispiele\nSperlingsvögel: Schwalbe, Sperling,&#8230;\nRaubvögel: Adler,&#8230;\nGrosse Stelzvögel: Storch, Reiher,&#8230;\nSchnepfenvögel: Schnepfe, Kiebitz,&#8230;</string>
+    <string name="search_category_help">Beispiele\nSperlingsvögel: Schwalbe, Sperling,&#8230;\nRaubvögel: Adler,&#8230;\nGrosse Stelzvögel: Storch, Reiher,&#8230;\nSchnepfenvögel: Schnepfe, Kiebitz,&#8230;</string>
+    <string name="search_country">Land</string>
+    <string name="search_country_choose">Wählen Sie ein Land</string>
     <string name="search_habitat_choose">Wählen Sie einen Lebensraum</string>
     <string name="search_habitat">Lebensraum</string>
     <!-- TODO : translate search_habitat_help-->

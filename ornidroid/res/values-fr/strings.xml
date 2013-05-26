@@ -95,9 +95,12 @@
     <!-- Help content -->
     <string name="help_text">Contact : ornidroid@free.fr\n\nGuide d\'utilisation : https://github.com/giletvin/ornidroid/wiki/Utilisation\n\nComment installer les packages complets d\'images et de sons : https://github.com/giletvin/ornidroid/wiki/Installation\n\nPour changer la langue du moteur de recherche : aller dans les préférences (accessibles par le menu) et modifier la valeur de OrnidroidSearchLang</string>
     <!-- strings of the multi search -->
+    <string name="search_please_wait">Recherche en cours.</string>
     <string name="search_category_choose">Choisir une catégorie</string>
     <string name="search_category">Catégorie</string>
     <string name="search_category_help">Exemples\nPassereaux : moineaux, hirondelles,&#8230;\nRapaces: aigles\nGrands échassiers: cigognes, hérons,&#8230;\nLimicoles: bécasses, pluviers, &#8230;</string>
+    <string name="search_country">Pays</string>
+    <string name="search_country_choose">Choisir un pays</string>
     <string name="search_habitat_choose">Choisir un habitat</string>
     <string name="search_habitat">Habitat</string>
     <string name="search_habitat_help">Un oiseau peut avoir deux types d\'habitats.\nExemple : le merle est dans "Villes, villages, jardins" et dans "Forêts et landes"</string>

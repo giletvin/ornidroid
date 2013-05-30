@@ -50,6 +50,9 @@ public interface IOrnidroidDAO {
 	/** The Constant SCIENTIFIC_NAME. */
 	public static final String SCIENTIFIC_NAME = "scientific_name";
 
+	/** The Constant SCIENTIFIC_NAME_2_COLUMN. */
+	public static final String SCIENTIFIC_NAME_2_COLUMN = "scientific_name2";
+
 	/** The Constant SCIENTIFIC_ORDER_NAME_COLUMN. */
 	public static final String SCIENTIFIC_ORDER_NAME_COLUMN = "scientific_order";
 

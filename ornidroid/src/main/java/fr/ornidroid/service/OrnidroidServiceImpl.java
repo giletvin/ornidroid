@@ -532,6 +532,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					.getColumnIndexOrThrow(SearchManager.SUGGEST_COLUMN_TEXT_1);
 			final int scientificNameIndex = cursor
 					.getColumnIndexOrThrow(SearchManager.SUGGEST_COLUMN_TEXT_2);
+			final int scientificName2Index = cursor
+					.getColumnIndexOrThrow(IOrnidroidDAO.SCIENTIFIC_NAME_2_COLUMN);
 			final int directoryNameIndex = cursor
 					.getColumnIndexOrThrow(IOrnidroidDAO.DIRECTORY_NAME_COLUMN);
 			final int descriptionIndex = cursor
@@ -564,6 +566,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 			this.currentBird = birdFactory.createBird(cursor.getInt(idIndex),
 					cursor.getString(taxonIndex),
 					cursor.getString(scientificNameIndex),
+					cursor.getString(scientificName2Index),
 					cursor.getString(directoryNameIndex), description,
 					distribution, scientificOrder, scientificFamily,
 					getHabitatFromCursor(cursor), size, category);

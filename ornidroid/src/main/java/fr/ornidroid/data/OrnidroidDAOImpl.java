@@ -562,6 +562,8 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(Constants.COMMA_STRING);
 				query.append("category.name as ");
 				query.append(CATEGORY_COLUMN);
+				query.append(Constants.COMMA_STRING);
+				query.append(IOrnidroidDAO.SCIENTIFIC_NAME_2_COLUMN);
 			}
 			query.append(FROM);
 			query.append(FTS_VIRTUAL_TABLE_TAXONOMY);
@@ -633,9 +635,10 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			}
 			query.append(sqlDynamicFragments.getWhereClause());
 			query.append(" and bird.id=taxonomy.bird_fk");
-			query.append(" and taxonomy.lang MATCH '");
+
+			query.append(" and taxonomy.lang=\"");
 			query.append(Constants.getOrnidroidSearchLang());
-			query.append("'");
+			query.append("\"");
 			query.append(" order by searched_taxon");
 			// Log.d(Constants.LOG_TAG, "Perform SQL query " +
 			// query.toString());

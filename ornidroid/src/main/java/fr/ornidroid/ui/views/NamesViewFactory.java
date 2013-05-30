@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Taxon;
+import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 
@@ -59,11 +61,18 @@ public class NamesViewFactory {
 		linearLayout.addView(this.mListView);
 
 		if (null != this.ornidroidService.getCurrentBird()) {
-			this.scientificName.setText(this.activity
-					.getText(R.string.scientific_name)
-					+ ": "
-					+ this.ornidroidService.getCurrentBird()
-							.getScientificName());
+			final StringBuilder sb = new StringBuilder();
+			final String scientificName2 = StringHelper
+					.isBlank(this.ornidroidService.getCurrentBird()
+							.getScientificName2()) ? BasicConstants.EMPTY_STRING
+					: " - "
+							+ this.ornidroidService.getCurrentBird()
+									.getScientificName2();
+			sb.append(this.activity.getText(R.string.scientific_name))
+					.append(BasicConstants.COLUMN_STRING)
+					.append(this.ornidroidService.getCurrentBird()
+							.getScientificName()).append(scientificName2);
+			this.scientificName.setText(sb.toString());
 			printBirdNames();
 		}
 		return linearLayout;

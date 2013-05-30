@@ -33,6 +33,9 @@ public class Bird extends SimpleBird {
 	/** The scientific name. */
 	private String scientificName;
 
+	/** The scientific name2. */
+	private String scientificName2;
+
 	/** The scientific order. */
 	private String scientificOrder;
 
@@ -184,6 +187,15 @@ public class Bird extends SimpleBird {
 	}
 
 	/**
+	 * Gets the scientific name2.
+	 * 
+	 * @return the scientific name2
+	 */
+	public String getScientificName2() {
+		return this.scientificName2;
+	}
+
+	/**
 	 * Gets the scientific order.
 	 * 
 	 * @return the scientific order
@@ -273,6 +285,16 @@ public class Bird extends SimpleBird {
 	 */
 	public void setScientificFamily(final String scientificFamily) {
 		this.scientificFamily = scientificFamily;
+	}
+
+	/**
+	 * Sets the scientific name2.
+	 * 
+	 * @param scientificName2
+	 *            the new scientific name2
+	 */
+	public void setScientificName2(final String scientificName2) {
+		this.scientificName2 = scientificName2;
 	}
 
 	/**

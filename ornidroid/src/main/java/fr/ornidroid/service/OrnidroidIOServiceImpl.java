@@ -13,11 +13,13 @@ import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.OrnidroidFileFactoryImpl;
 import fr.ornidroid.bo.OrnidroidFileType;
+import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.download.DownloadHelperImpl;
 import fr.ornidroid.download.DownloadHelperInterface;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.FileHelper;
+import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.helper.StringHelper;
@@ -68,6 +70,42 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	public OrnidroidIOServiceImpl() {
 
 		this.downloadHelper = new DownloadHelperImpl();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidIOService#addCustomMediaFile(java.lang
+	 * .String, fr.ornidroid.bo.OrnidroidFileType, java.lang.String,
+	 * java.io.File, java.lang.String)
+	 */
+	public void addCustomMediaFile(final String birdDirectory,
+			final OrnidroidFileType fileType, final String selectedFileName,
+			final File selectedFile, final String comment)
+			throws OrnidroidException {
+		String destinationDirectory;
+		switch (fileType) {
+		case AUDIO:
+			destinationDirectory = Constants.getOrnidroidHomeAudio()
+					+ File.separator + birdDirectory;
+			break;
+		case PICTURE:
+			destinationDirectory = Constants.getOrnidroidHomeImages()
+					+ File.separator + birdDirectory;
+			break;
+		default:
+			destinationDirectory = BasicConstants.EMPTY_STRING;
+		}
+		final String destFileName = BasicConstants.CUSTOM_MEDIA_FILE_PREFIX
+				+ selectedFileName;
+		final File destFile = new File(destinationDirectory + File.separator
+				+ destFileName);
+		final File propertiesFile = new File(destFile.getAbsolutePath()
+				+ AbstractOrnidroidFile.PROPERTIES_SUFFIX);
+		doAddCustomMediaFiles(fileType, selectedFile, destFile, propertiesFile,
+				comment);
+
 	}
 
 	/*
@@ -158,6 +196,75 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 					bird.getBirdDirectoryName(), OrnidroidFileType.AUDIO, false));
 			break;
 		}
+	}
+
+	/**
+	 * Do add custom media files.
+	 * 
+	 * @param fileType
+	 *            the file type
+	 * @param selectedFile
+	 *            the selected file
+	 * @param destFile
+	 *            the dest file
+	 * @param propertiesFile
+	 *            the properties file
+	 * @param comment
+	 *            the comment
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
+	 */
+	protected void doAddCustomMediaFiles(final OrnidroidFileType fileType,
+			final File selectedFile, final File destFile,
+			final File propertiesFile, final String comment)
+			throws OrnidroidException {
+		try {
+			FileHelper.doCopyFile(selectedFile, destFile);
+
+			FileHelper.writeStringToFile(propertiesFile,
+					getCustomPropertiesString(fileType, comment), null, false);
+		} catch (final IOException e) {
+			try {
+				FileHelper.forceDelete(destFile);
+				FileHelper.forceDelete(propertiesFile);
+			} catch (final IOException e1) {
+			}
+			throw new OrnidroidException(OrnidroidError.ADD_CUSTOM_MEDIA_ERROR,
+					e);
+
+		}
+
+	}
+
+	/**
+	 * Gets the custom properties string.
+	 * 
+	 * @param fileType
+	 *            the file type
+	 * @param comment
+	 *            the comment
+	 * @return the custom properties string
+	 */
+	private String getCustomPropertiesString(final OrnidroidFileType fileType,
+			final String comment) {
+		String data = null;
+		switch (fileType) {
+		case AUDIO:
+			data = AbstractOrnidroidFile.AUDIO_TITLE_PROPERTY
+					+ BasicConstants.EQUALS_STRING + comment;
+			break;
+		case PICTURE:
+			data = PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY
+					+ AbstractOrnidroidFile.LANGUAGE_SEPARATOR
+					+ I18nHelper.FRENCH + BasicConstants.EQUALS_STRING
+					+ comment + BasicConstants.CARRIAGE_RETURN
+					+ PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY
+					+ AbstractOrnidroidFile.LANGUAGE_SEPARATOR
+					+ I18nHelper.ENGLISH + BasicConstants.EQUALS_STRING
+					+ comment;
+			break;
+		}
+		return data;
 	}
 
 	/**

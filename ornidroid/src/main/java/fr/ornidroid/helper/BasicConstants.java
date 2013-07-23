@@ -6,11 +6,13 @@ package fr.ornidroid.helper;
 public class BasicConstants {
 	/** The Constant AUDIO Directory. */
 	public static final String AUDIO_DIRECTORY = "audio";
+	/** The Constant BIRD_PARAMETER_NAME. */
+	public static final String BIRD_DIRECTORY_PARAMETER_NAME = "BIRD_DIRECTORY";
 	/** The Constant BIRD_ICONS_DIRECTORY. */
 	public static final String BIRD_ICONS_DIRECTORY = "bird_icons";
+
 	/** The Constant BIRD_ID_PARAMETER_NAME. */
 	public static final String BIRD_ID_PARAMETER_NAME = "BIRD_ID";
-
 	/** The Constant BLANK_STRING. */
 	public static final String BLANK_STRING = " ";
 
@@ -21,6 +23,9 @@ public class BasicConstants {
 	public static final String COLUMN_STRING = ": ";
 	/** The Constant COMMA. */
 	public static final String COMMA_STRING = ",";
+
+	/** The Constant CUSTOM_MEDIA_FILE_PREFIX. */
+	public static final String CUSTOM_MEDIA_FILE_PREFIX = "custom_";
 	/**
 	 * The Constant DB_CHECKSIZE_NAME. This file contains the size ot the
 	 * database file. It is used to detect a new version of the database. If a
@@ -37,9 +42,12 @@ public class BasicConstants {
 
 	/** The Constant EMPTY_STRING. */
 	public static final String EMPTY_STRING = "";
+
+	/** The Constant EQUALS_STRING. */
+	public static final String EQUALS_STRING = "=";
+
 	/** The Constant IMAGES_DIRECTORY. */
 	public static final String IMAGES_DIRECTORY = "images";
-
 	/** The Constant LOG_TAG. */
 	public static final String LOG_TAG = "Ornidroid";
 
@@ -47,7 +55,6 @@ public class BasicConstants {
 	public static final String MP3_PATH = "MP3_PATH";
 	/** The Constant NO_MEDIA_FILENAME. */
 	public static final String NO_MEDIA_FILENAME = ".nomedia";
-
 	/** The Constant SLASH_STRING. */
 	public static final String SLASH_STRING = "/";
 

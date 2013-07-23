@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,5 +175,30 @@ public class IOHelper {
 			line = reader.readLine();
 		}
 		return list;
+	}
+
+	/**
+	 * Writes chars from a <code>String</code> to bytes on an
+	 * <code>OutputStream</code> using the specified character encoding.
+	 * <p>
+	 * This method uses {@link String#getBytes(String)}.
+	 * 
+	 * @param data
+	 *            the <code>String</code> to write, null ignored
+	 * @param output
+	 *            the <code>OutputStream</code> to write to
+	 * @param encoding
+	 *            the encoding to use, null means platform default
+	 * @throws NullPointerException
+	 *             if output is null
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 * @since 2.3
+	 */
+	public static void write(final String data, final OutputStream output,
+			final Charset encoding) throws IOException {
+		if (data != null) {
+			output.write(data.getBytes(Charsets.toCharset(encoding).name()));
+		}
 	}
 }

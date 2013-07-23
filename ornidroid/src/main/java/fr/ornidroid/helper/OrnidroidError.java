@@ -5,24 +5,26 @@ package fr.ornidroid.helper;
  */
 public enum OrnidroidError {
 
+	/** The add custom media error. */
+	ADD_CUSTOM_MEDIA_ERROR,
 	/** error on changing ornidroid home. */
 	CHANGE_ORNIDROID_HOME,
 	/** The DATABAS e_ no t_ found. */
 	DATABASE_NOT_FOUND,
 	/** The N o_ error. */
 	NO_ERROR,
+
 	/** The ORNIDROI d_ connectio n_ problem. */
 	ORNIDROID_CONNECTION_PROBLEM,
-
 	/** The ORNIDROI d_ downloa d_ error. */
-	ORNIDROID_DOWNLOAD_ERROR,
-	/**
-	 * The ORNIDROI d_ downloa d_ erro r_ medi a_ doe s_ no t_ exist.<br>
+	ORNIDROID_DOWNLOAD_ERROR, /**
+	 * The ORNIDROI d_ downloa d_ erro r_ medi a_ doe
+	 * s_ no t_ exist.<br>
 	 * if we try to download media files from a bird that doesn't have any
 	 * */
-	ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST, /**
-	 * The ORNIDROI d_ hom e_ no
-	 * t_ found.
+	ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST,
+	/**
+	 * The ORNIDROI d_ hom e_ no t_ found.
 	 */
 	ORNIDROID_HOME_NOT_FOUND;
 
@@ -56,6 +58,9 @@ public enum OrnidroidError {
 			break;
 		case CHANGE_ORNIDROID_HOME:
 			code = 6;
+			break;
+		case ADD_CUSTOM_MEDIA_ERROR:
+			code = 7;
 			break;
 		}
 		return code;
@@ -91,6 +96,9 @@ public enum OrnidroidError {
 			break;
 		case 6:
 			error = CHANGE_ORNIDROID_HOME;
+			break;
+		case 7:
+			error = ADD_CUSTOM_MEDIA_ERROR;
 			break;
 		}
 		return error;

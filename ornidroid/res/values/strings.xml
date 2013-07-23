@@ -35,8 +35,11 @@
     <string name="bird_image">Pictures</string>
     <string name="bird_image_big">Zoomed picture</string>
     <string name="bird_names">Taxonomy</string>
-
-    <!-- labes used in preferences -->
+    <string name="add_custom_media_title">Add custom files</string>
+    
+	
+	
+    <!-- labels used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
     <string name="preferences_lang_title">Language of the search engine</string>
     <string name="preferences_lang_summary">17 languages available</string>
@@ -48,6 +51,12 @@
     <string name="help_change_ornidroid_home_title">Modify Ornidroid Home</string>
     <string name="help_change_ornidroid_home_content">A directory named \"ornidroid\" will be created in the directory that you choose.\nAll the data from the previous installation directory will be moved in the new directory and the previous directory will be deleted. This operation can last up to 10 minutes.</string>
 
+    <!-- labels for add custom media -->
+    <string name="add_custom_media_error">The operation failed</string>
+    <string name="add_custom_media_success">Your file has been successfully added</string>
+    <string name="add_custom_media_go_back">Go back to the bird</string>
+    
+    
     <!-- pictures info dialog box -->
     <string name="dialog_picture_title">Picture info</string>
     <string name="dialog_picture_description">Description</string>

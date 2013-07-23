@@ -8,10 +8,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.ornidroid.bo.AbstractOrnidroidFile;
+import fr.ornidroid.bo.AudioOrnidroidFile;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.BirdFactoryImpl;
+import fr.ornidroid.bo.OrnidroidFileFactoryImpl;
 import fr.ornidroid.bo.OrnidroidFileType;
+import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.helper.I18nHelper;
+import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.tests.AbstractTest;
 
@@ -203,6 +209,90 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 	}
 
 	/**
+	 * Test do add custom media files.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
+	 */
+	@Test
+	public void testDoAddCustomMediaFiles() throws IOException,
+			OrnidroidException {
+		final OrnidroidIOServiceImpl serviceImpl = (OrnidroidIOServiceImpl) this.ornidroidIOService;
+		// SET UP : src and dest dirs
+		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/srcDir");
+		final File destDir = new File(TEST_DIRECTORY + "/destDir");
+		destDir.mkdirs();
+		Assert.assertEquals("directory should be empty before the test", 0,
+				destDir.list().length);
+
+		// 1st case : add an image from src dir to dest dir
+		File selectedFile = new File(srcDir.getAbsolutePath() + "/images/"
+				+ "file1.jpg");
+		File destFile = new File(destDir.getAbsolutePath()
+				+ "/custom_file1.jpg");
+		File propertiesFile = new File(TEST_DIRECTORY
+				+ "/destDir/custom_file1.jpg.properties");
+		serviceImpl.doAddCustomMediaFiles(OrnidroidFileType.PICTURE,
+				selectedFile, destFile, propertiesFile, "comment");
+		// assertions to check the final state
+		Assert.assertEquals("directory should have 2 files after the test", 2,
+				destDir.list().length);
+		final OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
+				.getFactory();
+		AbstractOrnidroidFile ornidroidFile = factory.createOrnidroidFile(
+				destFile.getAbsolutePath(), OrnidroidFileType.PICTURE,
+				I18nHelper.ENGLISH);
+		Assert.assertEquals("comment", ornidroidFile
+				.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
+
+		// 2nd case : add a mp3 file from src dir to dest dir
+		selectedFile = new File(srcDir.getAbsolutePath() + "/audio/"
+				+ "file1.mp3");
+		destFile = new File(destDir.getAbsolutePath() + "/custom_file1.mp3");
+		propertiesFile = new File(TEST_DIRECTORY
+				+ "/destDir/custom_file1.mp3.properties");
+		serviceImpl.doAddCustomMediaFiles(OrnidroidFileType.AUDIO,
+				selectedFile, destFile, propertiesFile, "comment");
+		// assertions to check the final state
+		Assert.assertEquals("directory should have 4 files after the test", 4,
+				destDir.list().length);
+
+		ornidroidFile = factory.createOrnidroidFile(destFile.getAbsolutePath(),
+				OrnidroidFileType.AUDIO, I18nHelper.ENGLISH);
+		Assert.assertEquals("comment", ornidroidFile
+				.getProperty(AudioOrnidroidFile.AUDIO_TITLE_PROPERTY));
+
+		// other cases : try to copy an unknown file
+		selectedFile = new File(srcDir.getAbsolutePath() + "/images/"
+				+ "unknown_file1.jpg");
+		try {
+			serviceImpl.doAddCustomMediaFiles(OrnidroidFileType.PICTURE,
+					selectedFile, destFile, propertiesFile, "comment");
+			Assert.fail("an exception should have occurred");
+		} catch (final OrnidroidException e) {
+			Assert.assertTrue(e.getErrorType().equals(
+					OrnidroidError.ADD_CUSTOM_MEDIA_ERROR));
+		}
+
+		// copy to a directory that doesn't exist
+		selectedFile = new File(srcDir.getAbsolutePath() + "/images/"
+				+ "file1.jpg");
+		destFile = new File(destDir.getAbsolutePath()
+				+ "/unknownDir/custom_file1.jpg");
+		try {
+			serviceImpl.doAddCustomMediaFiles(OrnidroidFileType.PICTURE,
+					selectedFile, destFile, propertiesFile, "comment");
+			Assert.fail("an exception should have occurred");
+		} catch (final OrnidroidException e) {
+			Assert.assertTrue(e.getErrorType().equals(
+					OrnidroidError.ADD_CUSTOM_MEDIA_ERROR));
+		}
+
+	}
+
+	/**
 	 * Test load media files.
 	 * 
 	 * @throws InterruptedException
@@ -215,8 +305,8 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 			OrnidroidException {
 		// run 1: with a bird without pictures. Should download them from
 		// internet
-		Bird bird = this.birdFactory.createBird(1, "taxon", "",
-				null, "barge_a_queue_noire", "", null, "", "", "", null, null);
+		Bird bird = this.birdFactory.createBird(1, "taxon", "", null,
+				"barge_a_queue_noire", "", null, "", "", "", null, null);
 		Assert.assertNull("list of pictures should be null", bird.getPictures());
 		Assert.assertNull("list of sounds should be null", bird.getSounds());
 		this.ornidroidIOService.downloadMediaFiles(TEST_DIRECTORY
@@ -237,8 +327,8 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 
 		// run 2: with a bird with pictures. Should just load the files in the
 		// List of pictures
-		bird = this.birdFactory.createBird(1, "taxon", "",
-				null, "barge_a_queue_noire", "", null, "", "", "", null, null);
+		bird = this.birdFactory.createBird(1, "taxon", "", null,
+				"barge_a_queue_noire", "", null, "", "", "", null, null);
 		Assert.assertNull("list of pictures should be null", bird.getPictures());
 		this.ornidroidIOService.loadMediaFiles(TEST_DIRECTORY + File.separator
 				+ "/images", bird, OrnidroidFileType.PICTURE);
@@ -258,8 +348,8 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 	 */
 	@Test
 	public void testLoadMediaFilesBirdWithoutFiles() throws OrnidroidException {
-		final Bird bird = this.birdFactory.createBird(1, "taxon", "",
-				null, "bird_without_pictures", "", null, "", "", "", null, null);
+		final Bird bird = this.birdFactory.createBird(1, "taxon", "", null,
+				"bird_without_pictures", "", null, "", "", "", null, null);
 		Assert.assertNull("list of pictures should be null", bird.getPictures());
 		this.ornidroidIOService.loadMediaFiles(TEST_DIRECTORY, bird,
 				OrnidroidFileType.PICTURE);

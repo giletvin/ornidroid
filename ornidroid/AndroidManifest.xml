@@ -12,8 +12,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.ornidroid"
-    android:versionCode="9"
-    android:versionName="4.0.0" android:installLocation="auto" >
+    android:versionCode="10"
+    android:versionName="5.0.0-SNAPSHOT" android:installLocation="auto" >
 
     <uses-sdk android:minSdkVersion="8" />
 
@@ -85,7 +85,11 @@
         
             android:theme="@android:style/Theme.NoTitleBar" />
 
-
+		 <activity
+            android:name=".ui.AddCustomMediaActivity"
+            android:label="@string/add_custom_media_title"
+        
+            android:theme="@android:style/Theme.NoTitleBar" />
 
         <!-- Provides search suggestions for words and their definitions. -->
         <provider

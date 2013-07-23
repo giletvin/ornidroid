@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-
 import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.StringHelper;
 
@@ -20,18 +19,8 @@ public class OrnidroidFileFactoryImpl {
 	/** The Constant DEFAULT_VALUE. */
 	private static final String DEFAULT_VALUE = "";
 
-	/** The LANGUAG e_ separator. Ex image_description_fr */
-	private static String LANGUAGE_SEPARATOR = "_";
-
 	/** The factory. */
 	private static OrnidroidFileFactoryImpl factory;
-
-	/**
-	 * Instantiates a new ornidroid file factory impl.
-	 */
-	private OrnidroidFileFactoryImpl() {
-
-	}
 
 	/**
 	 * Gets the OrnidroidFileFactoryImpl factory.
@@ -43,6 +32,13 @@ public class OrnidroidFileFactoryImpl {
 			factory = new OrnidroidFileFactoryImpl();
 		}
 		return factory;
+	}
+
+	/**
+	 * Instantiates a new ornidroid file factory impl.
+	 */
+	private OrnidroidFileFactoryImpl() {
+
 	}
 
 	/**
@@ -59,8 +55,8 @@ public class OrnidroidFileFactoryImpl {
 	 *             if the file has no properties file: this reveals a bad
 	 *             installation or a pb in the downloading of the files
 	 */
-	public AbstractOrnidroidFile createOrnidroidFile(String path,
-			OrnidroidFileType fileType, String lang)
+	public AbstractOrnidroidFile createOrnidroidFile(final String path,
+			final OrnidroidFileType fileType, final String lang)
 			throws FileNotFoundException {
 		AbstractOrnidroidFile file = null;
 		switch (fileType) {
@@ -91,8 +87,9 @@ public class OrnidroidFileFactoryImpl {
 	 * @throws FileNotFoundException
 	 *             if the file has no properties file
 	 */
-	private Map<String, String> handleProperties(AbstractOrnidroidFile file,
-			String lang) throws FileNotFoundException {
+	private Map<String, String> handleProperties(
+			final AbstractOrnidroidFile file, final String lang)
+			throws FileNotFoundException {
 		Map<String, String> properties = new HashMap<String, String>();
 		switch (file.getType()) {
 		case AUDIO:
@@ -107,6 +104,58 @@ public class OrnidroidFileFactoryImpl {
 	}
 
 	/**
+	 * Inits the audio properties.
+	 * 
+	 * @param file
+	 *            the file
+	 * @param lang
+	 *            the lang
+	 * @return the map
+	 * @throws FileNotFoundException
+	 *             if the file has no properties file
+	 */
+	private Map<String, String> initAudioProperties(
+			final AbstractOrnidroidFile file, final String lang)
+			throws FileNotFoundException {
+		final Properties properties = loadPropertiesFile(file);
+		final Map<String, String> ornidroidFileProperties = new HashMap<String, String>();
+		if (properties != null) {
+			final String recordist = (String) properties
+					.get(AbstractOrnidroidFile.AUDIO_RECORDIST_PROPERTY);
+			ornidroidFileProperties.put(
+					AbstractOrnidroidFile.AUDIO_RECORDIST_PROPERTY, recordist);
+			final String duration = (String) properties
+					.get(AbstractOrnidroidFile.AUDIO_DURATION_PROPERTY);
+			ornidroidFileProperties.put(
+					AbstractOrnidroidFile.AUDIO_DURATION_PROPERTY, duration);
+			final String title = (String) properties
+					.get(AbstractOrnidroidFile.AUDIO_TITLE_PROPERTY);
+			ornidroidFileProperties.put(
+					AbstractOrnidroidFile.AUDIO_TITLE_PROPERTY, title);
+			final String ref = (String) properties
+					.get(AbstractOrnidroidFile.AUDIO_REF_PROPERTY);
+			ornidroidFileProperties.put(
+					AbstractOrnidroidFile.AUDIO_REF_PROPERTY, ref);
+			String remarks = (String) properties
+					.get(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY
+							+ AbstractOrnidroidFile.LANGUAGE_SEPARATOR + lang);
+			if (StringHelper.isBlank(remarks)
+					&& !I18nHelper.ENGLISH.equals(lang)) {
+				// english is the default language for audio remarks (mainly
+				// from xeno canto)
+				remarks = (String) properties
+						.get(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY
+								+ AbstractOrnidroidFile.LANGUAGE_SEPARATOR
+								+ I18nHelper.ENGLISH);
+			}
+			ornidroidFileProperties.put(
+					AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY, remarks);
+		}
+
+		return ornidroidFileProperties;
+	}
+
+	/**
 	 * Inits the image properties.
 	 * 
 	 * @param file
@@ -117,26 +166,28 @@ public class OrnidroidFileFactoryImpl {
 	 * @throws FileNotFoundException
 	 *             if the file has no properties file
 	 */
-	private Map<String, String> initImageProperties(AbstractOrnidroidFile file,
-			String lang) throws FileNotFoundException {
-		Map<String, String> ornidroidFileProperties = new HashMap<String, String>();
-		Properties properties = loadPropertiesFile(file);
+	private Map<String, String> initImageProperties(
+			final AbstractOrnidroidFile file, final String lang)
+			throws FileNotFoundException {
+		final Map<String, String> ornidroidFileProperties = new HashMap<String, String>();
+		final Properties properties = loadPropertiesFile(file);
 		if (properties != null) {
-			String description = (String) properties.getProperty(
+			final String description = properties.getProperty(
 					PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY
-							+ LANGUAGE_SEPARATOR + lang, DEFAULT_VALUE);
+							+ AbstractOrnidroidFile.LANGUAGE_SEPARATOR + lang,
+					DEFAULT_VALUE);
 			ornidroidFileProperties.put(
 					PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY,
 					description);
-			String source = (String) properties.getProperty(
+			final String source = properties.getProperty(
 					PictureOrnidroidFile.IMAGE_SOURCE_PROPERTY, DEFAULT_VALUE);
 			ornidroidFileProperties.put(
 					PictureOrnidroidFile.IMAGE_SOURCE_PROPERTY, source);
-			String author = (String) properties.getProperty(
+			final String author = properties.getProperty(
 					PictureOrnidroidFile.IMAGE_AUTHOR_PROPERTY, DEFAULT_VALUE);
 			ornidroidFileProperties.put(
 					PictureOrnidroidFile.IMAGE_AUTHOR_PROPERTY, author);
-			String licence = (String) properties.getProperty(
+			final String licence = properties.getProperty(
 					PictureOrnidroidFile.IMAGE_LICENCE_PROPERTY, DEFAULT_VALUE);
 			ornidroidFileProperties.put(
 					PictureOrnidroidFile.IMAGE_LICENCE_PROPERTY, licence);
@@ -153,20 +204,20 @@ public class OrnidroidFileFactoryImpl {
 	 * @throws FileNotFoundException
 	 *             if the file has no properties file
 	 */
-	private Properties loadPropertiesFile(AbstractOrnidroidFile file)
+	private Properties loadPropertiesFile(final AbstractOrnidroidFile file)
 			throws FileNotFoundException {
 		Properties properties = null;
-		File propertiesFile = new File(file.getPath()
+		final File propertiesFile = new File(file.getPath()
 				+ AbstractOrnidroidFile.PROPERTIES_SUFFIX);
 		if (propertiesFile.exists()) {
 			try {
-				FileInputStream fis = new FileInputStream(propertiesFile);
+				final FileInputStream fis = new FileInputStream(propertiesFile);
 				properties = new Properties();
 				properties.load(fis);
-			} catch (FileNotFoundException e) {
+			} catch (final FileNotFoundException e) {
 				// should not occur
 				throw new RuntimeException(e);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new RuntimeException(e);
 			}
 		} else {
@@ -174,56 +225,6 @@ public class OrnidroidFileFactoryImpl {
 					+ file.getPath() + AbstractOrnidroidFile.PROPERTIES_SUFFIX);
 		}
 		return properties;
-	}
-
-	/**
-	 * Inits the audio properties.
-	 * 
-	 * @param file
-	 *            the file
-	 * @param lang
-	 *            the lang
-	 * @return the map
-	 * @throws FileNotFoundException
-	 *             if the file has no properties file
-	 */
-	private Map<String, String> initAudioProperties(AbstractOrnidroidFile file,
-			String lang) throws FileNotFoundException {
-		Properties properties = loadPropertiesFile(file);
-		Map<String, String> ornidroidFileProperties = new HashMap<String, String>();
-		if (properties != null) {
-			String recordist = (String) properties
-					.get(AbstractOrnidroidFile.AUDIO_RECORDIST_PROPERTY);
-			ornidroidFileProperties.put(
-					AbstractOrnidroidFile.AUDIO_RECORDIST_PROPERTY, recordist);
-			String duration = (String) properties
-					.get(AbstractOrnidroidFile.AUDIO_DURATION_PROPERTY);
-			ornidroidFileProperties.put(
-					AbstractOrnidroidFile.AUDIO_DURATION_PROPERTY, duration);
-			String title = (String) properties
-					.get(AbstractOrnidroidFile.AUDIO_TITLE_PROPERTY);
-			ornidroidFileProperties.put(
-					AbstractOrnidroidFile.AUDIO_TITLE_PROPERTY, title);
-			String ref = (String) properties
-					.get(AbstractOrnidroidFile.AUDIO_REF_PROPERTY);
-			ornidroidFileProperties.put(
-					AbstractOrnidroidFile.AUDIO_REF_PROPERTY, ref);
-			String remarks = (String) properties
-					.get(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY
-							+ LANGUAGE_SEPARATOR + lang);
-			if (StringHelper.isBlank(remarks)
-					&& !I18nHelper.ENGLISH.equals(lang)) {
-				// english is the default language for audio remarks (mainly
-				// from xeno canto)
-				remarks = (String) properties
-						.get(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY
-								+ LANGUAGE_SEPARATOR + I18nHelper.ENGLISH);
-			}
-			ornidroidFileProperties.put(
-					AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY, remarks);
-		}
-
-		return ornidroidFileProperties;
 	}
 
 }

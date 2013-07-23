@@ -12,6 +12,26 @@ import fr.ornidroid.helper.OrnidroidException;
 public interface IOrnidroidIOService {
 
 	/**
+	 * Adds the custom media file.
+	 * 
+	 * @param birdDirectory
+	 *            the bird directory
+	 * @param fileType
+	 *            the file type
+	 * @param selectedFileName
+	 *            the selected file name
+	 * @param selectedFile
+	 *            the selected file
+	 * @param comment
+	 *            the comment
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
+	 */
+	public void addCustomMediaFile(String birdDirectory,
+			OrnidroidFileType fileType, String selectedFileName,
+			File selectedFile, String comment) throws OrnidroidException;
+
+	/**
 	 * Check and create directory if necessary.
 	 * 
 	 * @param fileDirectory

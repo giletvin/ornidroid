@@ -112,18 +112,6 @@ public class Constants extends BasicConstants {
 	}
 
 	/**
-	 * Gets the ornidroid audio directory of a given bird.
-	 * 
-	 * @param bird
-	 *            the bird
-	 * @return the ornidroid audio directory
-	 */
-	public static final String getOrnidroidHomeAudio(final Bird bird) {
-		return Constants.getOrnidroidHomeAudio() + File.separator
-				+ bird.getBirdDirectoryName();
-	}
-
-	/**
 	 * Gets the ornidroid images directory.
 	 * 
 	 * @return the ornidroid images directory

@@ -264,6 +264,10 @@ function genereInsertTableTaxonomy($id,$csvLine){
 		//deuxieme nom francais si existe
 		$insertTaxons=$insertTaxons."INSERT INTO taxonomy(lang,taxon,searched_taxon,bird_fk) VALUES('fr',\"".$csvLine[1]."\",\"".removeDiacritics($csvLine[1])."\",".$id.");\n";
 	}
+	if ($csvLine[20]!=''){
+		//deuxieme nom latin si existe
+		$insertTaxons=$insertTaxons."INSERT INTO taxonomy(lang,taxon,searched_taxon,bird_fk) VALUES('la',\"".$csvLine[20]."\",\"".removeDiacritics($csvLine[20])."\",".$id.");\n";
+	}
 	//nom anglais
 	$insertTaxons=$insertTaxons."INSERT INTO taxonomy(lang,taxon,searched_taxon,bird_fk) VALUES('en',\"".$csvLine[3]."\",\"".removeDiacritics($csvLine[3])."\",".$id.");\n";
 	return $insertTaxons;

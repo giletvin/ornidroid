@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,54 @@ public class FileHelper {
 	public static void createEmptyFile(final File file) throws IOException {
 		if (!file.exists()) {
 			file.createNewFile();
+		}
+	}
+
+	/**
+	 * Internal copy file method.
+	 * 
+	 * @param srcFile
+	 *            the validated source file, must not be {@code null}
+	 * @param destFile
+	 *            the validated destination file, must not be {@code null}
+	 * @throws IOException
+	 *             if an error occurs
+	 */
+	public static void doCopyFile(final File srcFile, final File destFile)
+			throws IOException {
+		if (destFile.exists() && destFile.isDirectory()) {
+			throw new IOException("Destination '" + destFile
+					+ "' exists but is a directory");
+		}
+
+		FileInputStream fis = null;
+		FileOutputStream fos = null;
+		FileChannel input = null;
+		FileChannel output = null;
+		try {
+			fis = new FileInputStream(srcFile);
+			fos = new FileOutputStream(destFile);
+			input = fis.getChannel();
+			output = fos.getChannel();
+			final long size = input.size();
+			long pos = 0;
+			long count = 0;
+			while (pos < size) {
+				count = (size - pos) > FILE_COPY_BUFFER_SIZE ? FILE_COPY_BUFFER_SIZE
+						: size - pos;
+				pos += output.transferFrom(input, pos, count);
+			}
+
+		} finally {
+			IOHelper.closeQuietly(output);
+			IOHelper.closeQuietly(fos);
+			IOHelper.closeQuietly(input);
+			IOHelper.closeQuietly(fis);
+		}
+
+		if (srcFile.length() != destFile.length()) {
+			throw new IOException("Failed to copy full contents from '"
+					+ srcFile + "' to '" + destFile + "'");
 		}
 	}
 
@@ -142,6 +192,35 @@ public class FileHelper {
 				throw new IOException("Failed to delete original directory '"
 						+ srcDir + "' after copy to '" + destDir + "'");
 			}
+		}
+	}
+
+	/**
+	 * Writes a String to a file creating the file if it does not exist.
+	 * 
+	 * @param file
+	 *            the file to write
+	 * @param data
+	 *            the content to write to the file
+	 * @param encoding
+	 *            the encoding to use, {@code null} means platform default
+	 * @param append
+	 *            if {@code true}, then the String will be added to the end of
+	 *            the file rather than overwriting
+	 * @throws IOException
+	 *             in case of an I/O error
+	 * @since 2.3
+	 */
+	public static void writeStringToFile(final File file, final String data,
+			final Charset encoding, final boolean append) throws IOException {
+		OutputStream out = null;
+		try {
+			out = openOutputStream(file, append);
+			IOHelper.write(data, out, encoding);
+			out.close(); // don't swallow close Exception if copy completes
+							// normally
+		} finally {
+			IOHelper.closeQuietly(out);
 		}
 	}
 
@@ -321,51 +400,53 @@ public class FileHelper {
 	}
 
 	/**
-	 * Internal copy file method.
+	 * Opens a {@link FileOutputStream} for the specified file, checking and
+	 * creating the parent directory if it does not exist.
+	 * <p>
+	 * At the end of the method either the stream will be successfully opened,
+	 * or an exception will have been thrown.
+	 * <p>
+	 * The parent directory will be created if it does not exist. The file will
+	 * be created if it does not exist. An exception is thrown if the file
+	 * object exists but is a directory. An exception is thrown if the file
+	 * exists but cannot be written to. An exception is thrown if the parent
+	 * directory cannot be created.
 	 * 
-	 * @param srcFile
-	 *            the validated source file, must not be {@code null}
-	 * @param destFile
-	 *            the validated destination file, must not be {@code null}
+	 * @param file
+	 *            the file to open for output, must not be {@code null}
+	 * @param append
+	 *            if {@code true}, then bytes will be added to the end of the
+	 *            file rather than overwriting
+	 * @return a new {@link FileOutputStream} for the specified file
 	 * @throws IOException
-	 *             if an error occurs
+	 *             if the file object is a directory
+	 * @throws IOException
+	 *             if the file cannot be written to
+	 * @throws IOException
+	 *             if a parent directory needs creating but that fails
+	 * @since 2.1
 	 */
-	private static void doCopyFile(final File srcFile, final File destFile)
-			throws IOException {
-		if (destFile.exists() && destFile.isDirectory()) {
-			throw new IOException("Destination '" + destFile
-					+ "' exists but is a directory");
-		}
-
-		FileInputStream fis = null;
-		FileOutputStream fos = null;
-		FileChannel input = null;
-		FileChannel output = null;
-		try {
-			fis = new FileInputStream(srcFile);
-			fos = new FileOutputStream(destFile);
-			input = fis.getChannel();
-			output = fos.getChannel();
-			final long size = input.size();
-			long pos = 0;
-			long count = 0;
-			while (pos < size) {
-				count = (size - pos) > FILE_COPY_BUFFER_SIZE ? FILE_COPY_BUFFER_SIZE
-						: size - pos;
-				pos += output.transferFrom(input, pos, count);
+	private static FileOutputStream openOutputStream(final File file,
+			final boolean append) throws IOException {
+		if (file.exists()) {
+			if (file.isDirectory()) {
+				throw new IOException("File '" + file
+						+ "' exists but is a directory");
 			}
-
-		} finally {
-			IOHelper.closeQuietly(output);
-			IOHelper.closeQuietly(fos);
-			IOHelper.closeQuietly(input);
-			IOHelper.closeQuietly(fis);
+			if (file.canWrite() == false) {
+				throw new IOException("File '" + file
+						+ "' cannot be written to");
+			}
+		} else {
+			final File parent = file.getParentFile();
+			if (parent != null) {
+				if (!parent.mkdirs() && !parent.isDirectory()) {
+					throw new IOException("Directory '" + parent
+							+ "' could not be created");
+				}
+			}
 		}
-
-		if (srcFile.length() != destFile.length()) {
-			throw new IOException("Failed to copy full contents from '"
-					+ srcFile + "' to '" + destFile + "'");
-		}
+		return new FileOutputStream(file, append);
 	}
 
 	/**
@@ -373,5 +454,4 @@ public class FileHelper {
 	 */
 	private FileHelper() {
 	}
-
 }

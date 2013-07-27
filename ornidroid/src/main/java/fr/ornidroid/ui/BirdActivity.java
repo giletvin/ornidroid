@@ -3,11 +3,9 @@ package fr.ornidroid.ui;
 import android.app.Dialog;
 import android.media.MediaPlayer;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -192,7 +190,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 			this.pictureLayout.setOrientation(LinearLayout.VERTICAL);
 
-			this.pictureLayout.addView(createHeaderView());
+			this.pictureLayout.addView(this.pictureHelper.getHeaderView());
 
 			this.taxon.setText(getBird().getTaxon());
 
@@ -253,6 +251,10 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		}
 	}
 
+	public ImageView getInfoButton() {
+		return this.infoButton;
+	}
+
 	/**
 	 * Gets the media player.
 	 * 
@@ -307,6 +309,10 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		return this.playPauseButton;
 	}
 
+	public TextView getTaxon() {
+		return this.taxon;
+	}
+
 	/**
 	 * Gets the view flipper.
 	 * 
@@ -358,6 +364,15 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		this.displayedPictureId = displayedPictureId;
 	}
 
+	public void setInfoButton(final ImageView infoButton) {
+		this.infoButton = infoButton;
+	}
+
+	public void setNumberOfPicturesTextView(
+			final TextView numberOfPicturesTextView) {
+		this.numberOfPicturesTextView = numberOfPicturesTextView;
+	}
+
 	/**
 	 * Sets the ok dialog button.
 	 * 
@@ -376,6 +391,10 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	 */
 	public void setPlayPauseButton(final ImageView playPauseButton) {
 		this.playPauseButton = playPauseButton;
+	}
+
+	public void setTaxon(final TextView taxon) {
+		this.taxon = taxon;
 	}
 
 	/**
@@ -521,57 +540,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	protected void onStop() {
 		super.onStop();
 		this.mediaPlayer.release();
-	}
-
-	/**
-	 * Creates the header view with the taxon, the nb of pictures and the info
-	 * button.
-	 * 
-	 * @return the view
-	 */
-	private View createHeaderView() {
-		// creation of the main header layout
-		final LinearLayout headerLayout = new LinearLayout(this);
-		headerLayout.setOrientation(LinearLayout.HORIZONTAL);
-		headerLayout.setHorizontalGravity(Gravity.RIGHT);
-		headerLayout.setWeightSum(2);
-
-		// vertical layout on the left side which contains the name of the bird
-		// and the nb of pictures
-		final LinearLayout taxonAndNbPicturesLayout = new LinearLayout(this);
-		taxonAndNbPicturesLayout.setOrientation(LinearLayout.VERTICAL);
-		this.taxon = new TextView(this);
-		this.numberOfPicturesTextView = new TextView(this);
-		taxonAndNbPicturesLayout.addView(this.taxon);
-		taxonAndNbPicturesLayout.addView(this.numberOfPicturesTextView);
-		taxonAndNbPicturesLayout.setPadding(5, 10, 5, 5);
-		taxonAndNbPicturesLayout.setLayoutParams(new LinearLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
-		headerLayout.addView(taxonAndNbPicturesLayout);
-
-		if (getBird().getNumberOfPictures() > 0) {
-			// a layout with a gravity on the right which contains the info
-			// button
-			final LinearLayout infoButtonLayout = new LinearLayout(this);
-			infoButtonLayout.setOrientation(LinearLayout.HORIZONTAL);
-			infoButtonLayout.setGravity(Gravity.RIGHT);
-			infoButtonLayout.setPadding(5, 10, 5, 5);
-
-			// add button to add custom media files
-			infoButtonLayout.addView(getAddCustomMediaButton());
-
-			// info button
-			this.infoButton = new ImageView(this);
-			this.infoButton.setOnClickListener(this);
-			this.infoButton.setImageResource(R.drawable.ic_info);
-			infoButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
-					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
-			infoButtonLayout.addView(this.infoButton);
-
-			headerLayout.addView(infoButtonLayout);
-		}
-
-		return headerLayout;
 	}
 
 	/**

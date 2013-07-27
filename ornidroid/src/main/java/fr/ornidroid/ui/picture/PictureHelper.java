@@ -6,6 +6,9 @@ import android.app.Dialog;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -99,6 +102,64 @@ public class PictureHelper {
 		this.birdActivity.getOkDialogButton().setOnClickListener(
 				this.birdActivity);
 
+	}
+
+	/**
+	 * Creates the header view with the taxon, the nb of pictures and the info
+	 * button.
+	 * 
+	 * @return the view
+	 */
+	public View getHeaderView() {
+		// creation of the main header layout
+		final LinearLayout headerLayout = new LinearLayout(this.birdActivity);
+		headerLayout.setOrientation(LinearLayout.HORIZONTAL);
+		headerLayout.setHorizontalGravity(Gravity.RIGHT);
+		headerLayout.setWeightSum(2);
+
+		// vertical layout on the left side which contains the name of the bird
+		// and the nb of pictures
+		final LinearLayout taxonAndNbPicturesLayout = new LinearLayout(
+				this.birdActivity);
+		taxonAndNbPicturesLayout.setOrientation(LinearLayout.VERTICAL);
+		this.birdActivity.setTaxon(new TextView(this.birdActivity));
+		this.birdActivity.setNumberOfPicturesTextView(new TextView(
+				this.birdActivity));
+		taxonAndNbPicturesLayout.addView(this.birdActivity.getTaxon());
+		taxonAndNbPicturesLayout.addView(this.birdActivity
+				.getNumberOfPicturesTextView());
+		taxonAndNbPicturesLayout.setPadding(5, 10, 5, 5);
+		taxonAndNbPicturesLayout.setLayoutParams(new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+		headerLayout.addView(taxonAndNbPicturesLayout);
+
+		if (this.birdActivity.getBird().getNumberOfPictures() > 0) {
+			// a layout with a gravity on the right which contains the info
+			// button
+			final LinearLayout infoButtonLayout = new LinearLayout(
+					this.birdActivity);
+			infoButtonLayout.setOrientation(LinearLayout.HORIZONTAL);
+			infoButtonLayout.setGravity(Gravity.RIGHT);
+			infoButtonLayout.setPadding(5, 10, 5, 5);
+
+			// add button to add custom media files
+			infoButtonLayout.addView(this.birdActivity
+					.getAddCustomMediaButton());
+
+			// info button
+			this.birdActivity.setInfoButton(new ImageView(this.birdActivity));
+			this.birdActivity.getInfoButton().setOnClickListener(
+					this.birdActivity);
+			this.birdActivity.getInfoButton().setImageResource(
+					R.drawable.ic_info);
+			infoButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+			infoButtonLayout.addView(this.birdActivity.getInfoButton());
+
+			headerLayout.addView(infoButtonLayout);
+		}
+
+		return headerLayout;
 	}
 
 	/**

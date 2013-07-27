@@ -14,6 +14,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.OrnidroidFileType;
@@ -54,9 +55,9 @@ public abstract class AbstractDownloadableMediaActivity extends
 	/** The Constant PROGRESS_BAR_MAX. */
 	private static final int PROGRESS_BAR_MAX = 100;
 
-	/** The add custom media button. */
-	private ImageView addCustomMediaButton;
-
+	private ImageView addCustomAudioButton;
+	/** The add custom picture button. */
+	private ImageView addCustomPictureButton;
 	/** The bird. */
 	private Bird bird;
 
@@ -68,9 +69,9 @@ public abstract class AbstractDownloadableMediaActivity extends
 
 	/** The download progress. */
 	private final int downloadProgress = 0;
+
 	/** The download status. */
 	private int downloadStatus;
-
 	/** The ornidroid download error. */
 	private int ornidroidDownloadErrorCode;
 
@@ -89,6 +90,11 @@ public abstract class AbstractDownloadableMediaActivity extends
 	/** The progress bar status. */
 	private int progressBarStatus = 0;
 
+	/** The remove custom picture button. */
+	private ImageView removeCustomAudioButton;
+	/** The remove custom picture button. */
+	private ImageView removeCustomPictureButton;
+
 	/** The uri. */
 	private Uri uri;
 
@@ -102,12 +108,23 @@ public abstract class AbstractDownloadableMediaActivity extends
 	}
 
 	/**
-	 * Gets the adds the custom media button.
+	 * Gets the custom audio button.
 	 * 
-	 * @return the adds the custom media button
+	 * @return the adds the custom audio button
 	 */
-	public ImageView getAddCustomMediaButton() {
-		return this.addCustomMediaButton;
+	public ImageView getAddCustomAudioButton() {
+
+		return this.addCustomAudioButton;
+	}
+
+	/**
+	 * Gets the add the custom picture button.
+	 * 
+	 * @return the adds the custom picture button
+	 */
+	public ImageView getAddCustomPictureButton() {
+
+		return this.addCustomPictureButton;
 	}
 
 	/**
@@ -134,6 +151,26 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * @return the file type
 	 */
 	public abstract OrnidroidFileType getFileType();
+
+	/**
+	 * Gets the removes the custom audio button
+	 * 
+	 * @return the removes the custom audio button
+	 */
+	public ImageView getRemoveCustomAudioButton() {
+
+		return this.removeCustomAudioButton;
+	}
+
+	/**
+	 * Gets the removes the custom picture button
+	 * 
+	 * @return the removes the custom picture button
+	 */
+	public ImageView getRemoveCustomPictureButton() {
+
+		return this.removeCustomPictureButton;
+	}
 
 	/**
 	 * Load media files locally.
@@ -168,7 +205,8 @@ public abstract class AbstractDownloadableMediaActivity extends
 			getSpecificContentLayout().addView(this.downloadInfoText);
 			startDownload();
 		}
-		if (v == this.addCustomMediaButton) {
+		if ((v == this.addCustomPictureButton)
+				|| (v == this.addCustomAudioButton)) {
 			final Intent intent = new Intent(getApplicationContext(),
 					AddCustomMediaActivity.class);
 			intent.putExtra(OrnidroidFileType.FILE_TYPE_INTENT_PARAM_NAME,
@@ -176,6 +214,11 @@ public abstract class AbstractDownloadableMediaActivity extends
 			intent.putExtra(Constants.BIRD_DIRECTORY_PARAMETER_NAME, getBird()
 					.getBirdDirectoryName());
 			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+		}
+		if ((v == this.removeCustomPictureButton)
+				|| (v == this.removeCustomAudioButton)) {
+			// TODO :
+			Toast.makeText(this, "Remove !!", Toast.LENGTH_LONG).show();
 		}
 
 	}
@@ -341,16 +384,21 @@ public abstract class AbstractDownloadableMediaActivity extends
 		this.ornidroidDownloadErrorCode = getIntent().getIntExtra(
 				DOWNLOAD_ERROR_INTENT_PARAM, 0);
 
-		this.addCustomMediaButton = new ImageView(this);
-		this.addCustomMediaButton.setOnClickListener(this);
-		this.addCustomMediaButton.setImageResource(R.drawable.ic_add);
+		this.addCustomPictureButton = new ImageView(this);
+		this.addCustomPictureButton.setOnClickListener(this);
+		this.addCustomPictureButton.setImageResource(R.drawable.ic_add);
 
-		// try {
-		// loadMediaFilesLocally();
-		// } catch (final OrnidroidException e) {
-		// // Log.e(Constants.LOG_TAG, "Error reading media files of bird "
-		// // + this.bird.getTaxon() + " e");
-		// }
+		this.removeCustomPictureButton = new ImageView(this);
+		this.removeCustomPictureButton.setOnClickListener(this);
+		this.removeCustomPictureButton.setImageResource(R.drawable.ic_remove);
+		this.addCustomAudioButton = new ImageView(this);
+		this.addCustomAudioButton.setOnClickListener(this);
+		this.addCustomAudioButton.setImageResource(R.drawable.ic_add);
+
+		this.removeCustomAudioButton = new ImageView(this);
+		this.removeCustomAudioButton.setOnClickListener(this);
+		this.removeCustomAudioButton.setImageResource(R.drawable.ic_remove);
+
 		hookOnCreate();
 	}
 

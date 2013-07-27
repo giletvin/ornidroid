@@ -144,7 +144,9 @@ public class PictureHelper {
 
 			// add button to add custom media files
 			infoButtonLayout.addView(this.birdActivity
-					.getAddCustomMediaButton());
+					.getRemoveCustomPictureButton());
+			infoButtonLayout.addView(this.birdActivity
+					.getAddCustomPictureButton());
 
 			// info button
 			this.birdActivity.setInfoButton(new ImageView(this.birdActivity));

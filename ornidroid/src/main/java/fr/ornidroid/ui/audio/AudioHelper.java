@@ -58,13 +58,26 @@ public class AudioHelper implements OnClickListener {
 	 * @return the layout which displays play/pause stop buttons
 	 */
 	public View createAudioControlView() {
+		final LinearLayout audioLayout = new LinearLayout(this.birdActivity);
+		audioLayout.setOrientation(LinearLayout.VERTICAL);
+		audioLayout.setPadding(0, 25, 0, 10);
+		final LinearLayout customMediaButtonsLayout = new LinearLayout(
+				this.birdActivity);
+		customMediaButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
+		customMediaButtonsLayout.setGravity(Gravity.RIGHT);
+
 		final LinearLayout audioControlLayout = new LinearLayout(
 				this.birdActivity);
 		audioControlLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-		audioControlLayout.setPadding(5, 10, 5, 5);
+
 		if (this.birdActivity.getOrnidroidService().getCurrentBird()
 				.getNumberOfSounds() > 0) {
-			audioControlLayout.setPadding(0, 25, 0, 25);
+			customMediaButtonsLayout.addView(this.birdActivity
+					.getRemoveCustomAudioButton());
+			customMediaButtonsLayout.addView(this.birdActivity
+					.getAddCustomAudioButton());
+
+			audioControlLayout.setPadding(0, 5, 0, 5);
 			audioControlLayout.setOrientation(LinearLayout.HORIZONTAL);
 
 			final ImageView playPauseButton = new ImageView(this.birdActivity);
@@ -83,7 +96,9 @@ public class AudioHelper implements OnClickListener {
 		} else {
 			this.birdActivity.printDownloadButtonAndInfo();
 		}
-		return audioControlLayout;
+		audioLayout.addView(customMediaButtonsLayout);
+		audioLayout.addView(audioControlLayout);
+		return audioLayout;
 	}
 
 	/*

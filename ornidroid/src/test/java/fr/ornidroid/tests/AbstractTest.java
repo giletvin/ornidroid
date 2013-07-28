@@ -24,7 +24,9 @@ public class AbstractTest {
 			.getProperty("java.io.tmpdir") + "/ornidroid_tests";
 
 	/**
-	 * Builds the ornidroid home test.
+	 * Builds the ornidroid home test, with audio and images directory and one
+	 * empty file in each directory named file1.jpg and file1.mp3 and their
+	 * corresponding properties files
 	 * 
 	 * @param path
 	 *            the path
@@ -44,7 +46,15 @@ public class AbstractTest {
 				+ Constants.IMAGES_DIRECTORY + File.separator + "file1.jpg"));
 
 		FileHelper.createEmptyFile(new File(path + File.separator
+				+ Constants.IMAGES_DIRECTORY + File.separator
+				+ "file1.jpg.properties"));
+
+		FileHelper.createEmptyFile(new File(path + File.separator
 				+ Constants.AUDIO_DIRECTORY + File.separator + "file1.mp3"));
+
+		FileHelper.createEmptyFile(new File(path + File.separator
+				+ Constants.AUDIO_DIRECTORY + File.separator
+				+ "file1.mp3.properties"));
 		return ornidroidHome;
 	}
 

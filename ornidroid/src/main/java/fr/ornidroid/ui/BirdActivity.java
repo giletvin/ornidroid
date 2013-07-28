@@ -74,9 +74,9 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 	/** The dialog. */
 	private Dialog dialog;
-
 	/** The displayed picture id. */
 	private int displayedPictureId;
+
 	/** The gesture detector. */
 	private GestureDetector gestureDetector;
 
@@ -251,6 +251,11 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		}
 	}
 
+	/**
+	 * Gets the info button.
+	 * 
+	 * @return the info button
+	 */
 	public ImageView getInfoButton() {
 		return this.infoButton;
 	}
@@ -309,6 +314,11 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		return this.playPauseButton;
 	}
 
+	/**
+	 * Gets the taxon.
+	 * 
+	 * @return the taxon
+	 */
 	public TextView getTaxon() {
 		return this.taxon;
 	}
@@ -364,10 +374,22 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		this.displayedPictureId = displayedPictureId;
 	}
 
+	/**
+	 * Sets the info button.
+	 * 
+	 * @param infoButton
+	 *            the new info button
+	 */
 	public void setInfoButton(final ImageView infoButton) {
 		this.infoButton = infoButton;
 	}
 
+	/**
+	 * Sets the number of pictures text view.
+	 * 
+	 * @param numberOfPicturesTextView
+	 *            the new number of pictures text view
+	 */
 	public void setNumberOfPicturesTextView(
 			final TextView numberOfPicturesTextView) {
 		this.numberOfPicturesTextView = numberOfPicturesTextView;
@@ -393,6 +415,12 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		this.playPauseButton = playPauseButton;
 	}
 
+	/**
+	 * Sets the taxon.
+	 * 
+	 * @param taxon
+	 *            the new taxon
+	 */
 	public void setTaxon(final TextView taxon) {
 		this.taxon = taxon;
 	}

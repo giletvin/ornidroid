@@ -54,6 +54,7 @@
     <!-- labels for add custom media -->
     <string name="add_custom_media_error">The operation failed</string>
     <string name="add_custom_media_success">Your file has been successfully added</string>
+    <string name="remove_custom_media_success">Your file has been successfully deleted</string>
     <string name="add_custom_media_go_back">Go back to the bird</string>
     
     

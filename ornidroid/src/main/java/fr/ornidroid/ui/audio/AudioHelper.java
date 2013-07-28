@@ -155,6 +155,7 @@ public class AudioHelper implements OnClickListener {
 		// Log.i(Constants.LOG_TAG, "Reading mp3 number " + position);
 		final AbstractOrnidroidFile mp3File = this.birdActivity
 				.getOrnidroidService().getCurrentBird().getSound(position);
+		this.birdActivity.setCurrentMediaFile(mp3File);
 		if (null != mp3File) {
 			try {
 				this.birdActivity.getMediaPlayer().reset();

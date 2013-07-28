@@ -6,24 +6,30 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import fr.ornidroid.bo.AbstractOrnidroidFile;
-import fr.ornidroid.bo.AudioOrnidroidFile;
-import fr.ornidroid.bo.PictureOrnidroidFile;
-
 /**
  * The Class AbstractOrnidroidFileTest.
  */
 public class AbstractOrnidroidFileTest {
 
 	/**
+	 * Test extract filename from path.
+	 */
+	@Test
+	public void testExtractFilenameFromPath() {
+		final AbstractOrnidroidFile file = new AudioOrnidroidFile();
+		file.setPath("/tmp/file.mp3");
+		Assert.assertEquals("file.mp3", file.extractFilenameFromPath());
+	}
+
+	/**
 	 * Test get property.
 	 */
 	@Test
 	public void testGetProperty() {
-		AbstractOrnidroidFile file = new AudioOrnidroidFile();
+		final AbstractOrnidroidFile file = new AudioOrnidroidFile();
 		Assert.assertNotNull("getProperty should not be null",
 				file.getProperty(PictureOrnidroidFile.IMAGE_AUTHOR_PROPERTY));
-		Map<String, String> props = new HashMap<String, String>();
+		final Map<String, String> props = new HashMap<String, String>();
 		props.put(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY,
 				"description");
 		file.setProperties(props);

@@ -198,6 +198,30 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidIOService#removeCustomMediaFile(fr.ornidroid
+	 * .bo.AbstractOrnidroidFile)
+	 */
+	public void removeCustomMediaFile(final AbstractOrnidroidFile ornidroidFile)
+			throws OrnidroidException {
+		if (ornidroidFile.extractFilenameFromPath().startsWith(
+				BasicConstants.CUSTOM_MEDIA_FILE_PREFIX)) {
+			final File mediaFile = new File(ornidroidFile.getPath());
+			final File mediaPropertiesFile = new File(ornidroidFile.getPath()
+					+ AbstractOrnidroidFile.PROPERTIES_SUFFIX);
+			try {
+				FileHelper.forceDelete(mediaFile);
+				FileHelper.forceDelete(mediaPropertiesFile);
+			} catch (final IOException e) {
+				throw new OrnidroidException(
+						OrnidroidError.ADD_CUSTOM_MEDIA_ERROR, e);
+			}
+		}
+	}
+
 	/**
 	 * Do add custom media files.
 	 * 

@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.ornidroid.R;
+import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.Constants;
@@ -61,6 +62,12 @@ public abstract class AbstractDownloadableMediaActivity extends
 	/** The bird. */
 	private Bird bird;
 
+	/**
+	 * Gets the current (selected) media file if picture : the displayed image,
+	 * if sound, the played mp3.
+	 */
+	private AbstractOrnidroidFile currentMediaFile;
+
 	/** The download from internet button. */
 	private ImageView downloadFromInternetButton;
 
@@ -69,9 +76,9 @@ public abstract class AbstractDownloadableMediaActivity extends
 
 	/** The download progress. */
 	private final int downloadProgress = 0;
-
 	/** The download status. */
 	private int downloadStatus;
+
 	/** The ornidroid download error. */
 	private int ornidroidDownloadErrorCode;
 
@@ -89,12 +96,10 @@ public abstract class AbstractDownloadableMediaActivity extends
 
 	/** The progress bar status. */
 	private int progressBarStatus = 0;
-
 	/** The remove custom picture button. */
 	private ImageView removeCustomAudioButton;
 	/** The remove custom picture button. */
 	private ImageView removeCustomPictureButton;
-
 	/** The uri. */
 	private Uri uri;
 
@@ -217,8 +222,31 @@ public abstract class AbstractDownloadableMediaActivity extends
 		}
 		if ((v == this.removeCustomPictureButton)
 				|| (v == this.removeCustomAudioButton)) {
-			// TODO :
-			Toast.makeText(this, "Remove !!", Toast.LENGTH_LONG).show();
+			try {
+				this.ornidroidIOService
+						.removeCustomMediaFile(this.currentMediaFile);
+				Toast.makeText(
+						this,
+						this.getResources().getString(
+								R.string.remove_custom_media_success),
+						Toast.LENGTH_LONG).show();
+				final Intent intent = new Intent(this, BirdActivity.class);
+				// put the uri so that the BirdInfoActivity reloads correctly
+				// the bird
+				intent.setData(getIntent().getData());
+				// put an extra info to let the BirdInfoActivity know which tab
+				// to open
+				intent.putExtra(BirdActivity.INTENT_TAB_TO_OPEN,
+						OrnidroidFileType.getCode(getFileType()));
+				startActivity(intent);
+				finish();
+			} catch (final OrnidroidException e) {
+				Toast.makeText(
+						this,
+						this.getResources().getString(
+								R.string.add_custom_media_error)
+								+ e.getMessage(), Toast.LENGTH_LONG).show();
+			}
 		}
 
 	}
@@ -345,6 +373,16 @@ public abstract class AbstractDownloadableMediaActivity extends
 			finish();
 		}
 
+	}
+
+	/**
+	 * Sets the selected file.
+	 * 
+	 * @param selectedFile
+	 *            the new selected file
+	 */
+	public void setCurrentMediaFile(final AbstractOrnidroidFile selectedFile) {
+		this.currentMediaFile = selectedFile;
 	}
 
 	/**

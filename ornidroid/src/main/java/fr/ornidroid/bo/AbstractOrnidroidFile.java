@@ -2,6 +2,8 @@ package fr.ornidroid.bo;
 
 import java.util.Map;
 
+import fr.ornidroid.helper.BasicConstants;
+
 /**
  * The Class OrnidroidFile.
  */
@@ -53,8 +55,9 @@ public abstract class AbstractOrnidroidFile {
 	 * @return the string
 	 */
 	public String extractFilenameFromPath() {
-		final int lastSlash = getPath().lastIndexOf("/");
-		return getPath().substring(lastSlash);
+		final int lastSlash = getPath()
+				.lastIndexOf(BasicConstants.SLASH_STRING);
+		return getPath().substring(lastSlash).substring(1);
 	}
 
 	/**

@@ -16,6 +16,8 @@ import fr.ornidroid.bo.OrnidroidFileFactoryImpl;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.helper.Constants;
+import fr.ornidroid.helper.FileHelper;
 import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
@@ -355,5 +357,49 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 				OrnidroidFileType.PICTURE);
 		Assert.assertNotNull(bird.getPictures());
 		Assert.assertTrue(bird.getNumberOfPictures() == 0);
+	}
+
+	@Test
+	public void testRemoveCustomMediaFile() throws OrnidroidException,
+			IOException {
+
+		// SET up the test : ornidroid home with file1.jpg official file and
+		// custom_file1.jpg custom file
+		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/srcDir");
+		final File imagesDir = new File(srcDir.getAbsolutePath()
+				+ File.separator + Constants.IMAGES_DIRECTORY);
+		FileHelper.createEmptyFile(new File(imagesDir.getAbsolutePath()
+				+ File.separator + BasicConstants.CUSTOM_MEDIA_FILE_PREFIX
+				+ "file1.jpg"));
+		FileHelper.createEmptyFile(new File(imagesDir.getAbsolutePath()
+				+ File.separator + BasicConstants.CUSTOM_MEDIA_FILE_PREFIX
+				+ "file1.jpg.properties"));
+
+		final OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
+				.getFactory();
+		final AbstractOrnidroidFile officialOrnidroidFile = factory
+				.createOrnidroidFile(
+						imagesDir.getAbsolutePath() + "/file1.jpg",
+						OrnidroidFileType.PICTURE, I18nHelper.ENGLISH);
+		final AbstractOrnidroidFile customOrnidroidFile = factory
+				.createOrnidroidFile(imagesDir.getAbsolutePath()
+						+ "/custom_file1.jpg", OrnidroidFileType.PICTURE,
+						I18nHelper.ENGLISH);
+		Assert.assertEquals(
+				"there should be 4 files in the test directory : file1.jpg, custom_file1.jpg and their properties files",
+				4, imagesDir.list().length);
+		// SET UP FINISHED
+
+		// TESTS
+		// try to remove an official file : this should not remove anything
+		this.ornidroidIOService.removeCustomMediaFile(officialOrnidroidFile);
+		Assert.assertEquals(
+				"there should be still 4 files in the test directory : file1.jpg, custom_file1.jpg and their properties files",
+				4, imagesDir.list().length);
+
+		this.ornidroidIOService.removeCustomMediaFile(customOrnidroidFile);
+		Assert.assertEquals(
+				"there should be 2 files in the test directory : file1.jpg,  and its properties file",
+				2, imagesDir.list().length);
 	}
 }

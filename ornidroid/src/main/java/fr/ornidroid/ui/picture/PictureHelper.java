@@ -175,8 +175,11 @@ public class PictureHelper {
 		final LinearLayout imageAndDescription = (LinearLayout) this.birdActivity
 				.getViewFlipper().getChildAt(index);
 		final ImageView imagePicture = new ImageView(this.birdActivity);
-		final Bitmap bMap = tryDecodeBitmap(this.birdActivity.getBird()
-				.getPicture(index).getPath(), this.birdActivity.getResources());
+		final AbstractOrnidroidFile picture = this.birdActivity.getBird()
+				.getPicture(index);
+		this.birdActivity.setCurrentMediaFile(picture);
+		final Bitmap bMap = tryDecodeBitmap(picture.getPath(),
+				this.birdActivity.getResources());
 		if (bMap != null) {
 			imagePicture.setImageBitmap(bMap);
 			imageAndDescription.addView(imagePicture);

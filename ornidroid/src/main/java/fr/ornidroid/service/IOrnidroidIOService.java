@@ -2,6 +2,7 @@ package fr.ornidroid.service;
 
 import java.io.File;
 
+import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.OrnidroidException;
@@ -79,5 +80,16 @@ public interface IOrnidroidIOService {
 	 *             the ornidroid exception
 	 */
 	void checkOrnidroidHome(String ornidroidHome) throws OrnidroidException;
+
+	/**
+	 * Removes the custom media file.
+	 * 
+	 * @param ornidroidFile
+	 *            the file name
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
+	 */
+	void removeCustomMediaFile(AbstractOrnidroidFile ornidroidFile)
+			throws OrnidroidException;
 
 }

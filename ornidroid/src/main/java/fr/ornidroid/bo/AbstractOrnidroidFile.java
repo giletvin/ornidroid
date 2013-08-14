@@ -95,6 +95,16 @@ public abstract class AbstractOrnidroidFile {
 	}
 
 	/**
+	 * Checks if is custom media file.
+	 * 
+	 * @return true, if is custom media file
+	 */
+	public boolean isCustomMediaFile() {
+		return extractFilenameFromPath().startsWith(
+				BasicConstants.CUSTOM_MEDIA_FILE_PREFIX);
+	}
+
+	/**
 	 * Sets the path.
 	 * 
 	 * @param path

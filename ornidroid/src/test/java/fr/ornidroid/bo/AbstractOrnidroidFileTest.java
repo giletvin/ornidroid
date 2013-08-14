@@ -6,6 +6,8 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
+import fr.ornidroid.helper.BasicConstants;
+
 /**
  * The Class AbstractOrnidroidFileTest.
  */
@@ -38,6 +40,20 @@ public class AbstractOrnidroidFileTest {
 		Assert.assertEquals("wrong property value", "description", file
 				.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
 
+	}
+
+	/**
+	 * Test is custom media file.
+	 */
+	@Test
+	public void testIsCustomMediaFile() {
+		final AbstractOrnidroidFile file = new AudioOrnidroidFile();
+		file.setPath("/tmp/file.mp3");
+		Assert.assertFalse(file.isCustomMediaFile());
+		final AbstractOrnidroidFile file2 = new AudioOrnidroidFile();
+		file2.setPath("/tmp/" + BasicConstants.CUSTOM_MEDIA_FILE_PREFIX
+				+ "file.mp3");
+		Assert.assertTrue(file2.isCustomMediaFile());
 	}
 
 }

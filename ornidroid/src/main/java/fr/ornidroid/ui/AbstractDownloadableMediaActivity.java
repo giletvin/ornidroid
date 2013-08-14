@@ -376,13 +376,33 @@ public abstract class AbstractDownloadableMediaActivity extends
 	}
 
 	/**
-	 * Sets the selected file.
+	 * Sets the currently selected media file and makes the remove media button
+	 * appear or disappear accordingly.
 	 * 
 	 * @param selectedFile
 	 *            the new selected file
 	 */
 	public void setCurrentMediaFile(final AbstractOrnidroidFile selectedFile) {
 		this.currentMediaFile = selectedFile;
+		if (this.currentMediaFile != null) {
+			ImageView removeButton = null;
+			switch (selectedFile.getType()) {
+			case AUDIO:
+				removeButton = this.removeCustomAudioButton;
+				break;
+			case PICTURE:
+				removeButton = this.removeCustomPictureButton;
+				break;
+			}
+			if (this.currentMediaFile.isCustomMediaFile()) {
+				removeButton.setVisibility(View.VISIBLE);
+			} else {
+				removeButton.setVisibility(View.GONE);
+			}
+		} else {
+			this.removeCustomAudioButton.setVisibility(View.GONE);
+			this.removeCustomPictureButton.setVisibility(View.GONE);
+		}
 	}
 
 	/**

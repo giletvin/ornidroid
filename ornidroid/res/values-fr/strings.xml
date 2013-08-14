@@ -37,8 +37,9 @@
     <string name="bird_image">Images</string>
     <string name="bird_image_big">Photo zoomée</string>
     <string name="bird_names">Taxonomie</string>
+    <string name="add_custom_media_title">Ajout de fichiers personnalisés</string>
 
-     <!-- labes used in preferences -->
+     <!-- labels used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
     <string name="preferences_lang_title">Language utilisée pour la recherche</string>
     <string name="preferences_lang_summary">17 langues disponibles</string>
@@ -50,6 +51,13 @@
     <string name="help_change_ornidroid_home_title">Modification du répertoire de données</string>
     <string name="help_change_ornidroid_home_content">Un répertoire \"ornidroid\" sera créé à l\'emplacement que vous choisissez.\nToutes les données de l\'ancien répertoire vont être déplacées dans le nouveau et l\'ancien répertoire sera ensuite supprimé. Cette opération peut prendre environ 10 minutes.</string>
 
+    <!-- labels for add custom media -->
+    <string name="add_custom_media_error">L\'opération a échoué</string>
+    <string name="add_custom_media_success">Le fichier a été correctement ajouté</string>
+    <string name="remove_custom_media_success">Le fichier a été correctement supprimé</string>
+    <string name="add_custom_media_go_back">Retour vers l\'oiseau</string>
+    
+    
     <!-- pictures info dialog box -->
     <string name="dialog_picture_title">Informations sur l\'image</string>
     <string name="dialog_picture_description">Description</string>

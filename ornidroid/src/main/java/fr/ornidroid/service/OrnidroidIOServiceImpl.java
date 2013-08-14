@@ -207,8 +207,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 */
 	public void removeCustomMediaFile(final AbstractOrnidroidFile ornidroidFile)
 			throws OrnidroidException {
-		if (ornidroidFile.extractFilenameFromPath().startsWith(
-				BasicConstants.CUSTOM_MEDIA_FILE_PREFIX)) {
+		if (ornidroidFile.isCustomMediaFile()) {
 			final File mediaFile = new File(ornidroidFile.getPath());
 			final File mediaPropertiesFile = new File(ornidroidFile.getPath()
 					+ AbstractOrnidroidFile.PROPERTIES_SUFFIX);

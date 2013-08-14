@@ -466,6 +466,10 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		this.tabs.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 			public void onTabChanged(final String tabId) {
 				BirdActivity.this.setOrnidroidDownloadErrorCode(0);
+				if (tabId.equals(AUDIO_TAB_NAME)) {
+					// no audio file selected by default when opening the tab
+					BirdActivity.this.setCurrentMediaFile(null);
+				}
 
 			}
 		});

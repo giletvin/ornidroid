@@ -176,6 +176,10 @@ $ru_code='ru';
 $sk_code='sk';
 $se_code='se';
 $zh_code='zh';
+$gr_code='gr';
+
+$latin_index_in_greek_file=1;
+$greek_index_in_greek_file=2;
 
 try {
 	$sqliteFile = "ornidroid.jpg";
@@ -238,6 +242,29 @@ try {
 			}
 			else {
 				echo "nom latin non référencé : " . $data[$la]."\n";
+			}
+		}
+	    }
+	    fclose($handle);
+	}
+
+	//greek
+	if (($handle = fopen("traductions_greek.csv", "r")) !== FALSE) {
+	    while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
+		//si latin non vide et 4 colonnes = un oiseau !
+		if (""!=$data[$latin_index_in_greek_file]&&count($data)==4){
+			$findBirdIdQuery = "select id from bird where scientific_name='".trim($data[$latin_index_in_greek_file])."'";
+			echo $findBirdIdQuery."\n";
+			$birdId=-1;
+			foreach ($dbh->query($findBirdIdQuery) as $row){
+				$birdId = $row["id"];
+			}
+			if ($birdId>=1){
+				echo "######insertion du grec pour : " . $data[$latin_index_in_greek_file]."\n";
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,trim($data[$greek_index_in_greek_file]),$gr_code));
+			}
+			else {
+				echo "GREC : nom latin non référencé : " . $data[$latin_index_in_greek_file]."\n";
 			}
 		}
 	    }

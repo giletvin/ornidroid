@@ -198,6 +198,16 @@ public interface IOrnidroidService {
 	List<String> getSizes();
 
 	/**
+	 * Gets the wikipedia link of the bird, using the gui language en, fr or de
+	 * .wikipedia.org
+	 * 
+	 * @param currentBird
+	 *            the current bird
+	 * @return the wikipedia link
+	 */
+	String getWikipediaLink(Bird currentBird);
+
+	/**
 	 * Checks for history.
 	 * 
 	 * @return true, if successful

@@ -12,6 +12,7 @@ import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.StringHelper;
+import fr.ornidroid.helper.SupportedLanguage;
 
 /**
  * Contains sql queries to search for birds in the database.
@@ -276,7 +277,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		Cursor cursor = null;
 		try {
 			final String nameColumnWithLangSuffix = NAME_COLUMN_NAME + "_"
-					+ I18nHelper.getLang();
+					+ I18nHelper.getLang().getCode();
 			final SQLiteDatabase db = this.dataBaseOpenHelper
 					.getReadableDatabase();
 			final StringBuilder query = new StringBuilder();
@@ -389,7 +390,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 * @return the cursor from list table
 	 */
 	private Cursor getCursorFromListTable(final String tableName,
-			final String orderBy, final String lang) {
+			final String orderBy, final SupportedLanguage lang) {
 		Cursor cursor = null;
 		try {
 			final SQLiteDatabase db = this.dataBaseOpenHelper
@@ -402,7 +403,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			query.append(FROM);
 			query.append(tableName);
 			query.append(WHERE).append("lang=\"");
-			query.append(lang);
+			query.append(lang.getCode());
 			query.append("\"");
 			query.append(ORDER_BY);
 			query.append(orderBy);
@@ -411,14 +412,15 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			if (cursor == null) {
 				return null;
 			} else if (!cursor.moveToFirst()) {
+				// no results
 				cursor.close();
-				if (StringHelper.equals(lang, I18nHelper.FRENCH)) {
+				if (lang.equals(SupportedLanguage.FRENCH)) {
 					return null;
 				} else {
 					// if not found in the locale of the user, try the same
 					// search in FRENCH
 					return getCursorFromListTable(tableName, orderBy,
-							I18nHelper.FRENCH);
+							SupportedLanguage.FRENCH);
 				}
 			}
 		} catch (final SQLException e) {
@@ -578,7 +580,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(".bird_fk and ");
 				query.append(DESCRIPTION_TABLE);
 				query.append(".lang=\"");
-				query.append(I18nHelper.getLang());
+				query.append(I18nHelper.getLang().getCode());
 				query.append("\"");
 				// join on scientific order table
 				query.append(LEFT_OUTER_JOIN);
@@ -590,7 +592,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(".id and ");
 				query.append(SCIENTIFIC_ORDER_TABLE);
 				query.append(".lang=\"");
-				query.append(I18nHelper.getLang());
+				query.append(I18nHelper.getLang().getCode());
 				query.append("\"");
 				// join on scientific family table
 				query.append(LEFT_OUTER_JOIN);
@@ -602,7 +604,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(".id and ");
 				query.append(SCIENTIFIC_FAMILY_TABLE);
 				query.append(".lang=\"");
-				query.append(I18nHelper.getLang());
+				query.append(I18nHelper.getLang().getCode());
 				query.append("\"");
 				// join on habitat table
 				query.append(LEFT_OUTER_JOIN);
@@ -610,7 +612,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(" h1 on ");
 				query.append(BIRD_TABLE);
 				query.append(".habitat1_fk=h1.id and h1.lang=\"");
-				query.append(I18nHelper.getLang());
+				query.append(I18nHelper.getLang().getCode());
 				query.append("\"");
 				// habitat 2
 				query.append(LEFT_OUTER_JOIN);
@@ -618,7 +620,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(" h2 on ");
 				query.append(BIRD_TABLE);
 				query.append(".habitat2_fk=h2.id and h2.lang=\"");
-				query.append(I18nHelper.getLang());
+				query.append(I18nHelper.getLang().getCode());
 				query.append("\"");
 				// join on category table
 				query.append(LEFT_OUTER_JOIN);
@@ -630,7 +632,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(".id and ");
 				query.append(CATEGORY_TABLE_NAME);
 				query.append(".lang=\"");
-				query.append(I18nHelper.getLang());
+				query.append(I18nHelper.getLang().getCode());
 				query.append("\"");
 			}
 			query.append(sqlDynamicFragments.getWhereClause());

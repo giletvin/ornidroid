@@ -127,6 +127,8 @@
     <string name="search_remarkable_sign">Remarkable sign</string>
     <string name="search_no_help">No help</string>
     <string name="add_comment">Add a comment</string>
-    <string name="add_your_file">Add a your file</string>
+    <string name="add_your_file">Add your file</string>
+    <string name="wikipedia">Wikipedia:</string>
+    
 
 </resources>

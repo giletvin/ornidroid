@@ -29,7 +29,8 @@ public class Constants extends BasicConstants {
 	private static final String ORNIDROID_PREFERENCES_FILE_NAME = "fr.ornidroid_preferences";
 
 	/** The Constant ORNIDROID_SEARCH_LANG_DEFAULT_VALUE. */
-	private static final String ORNIDROID_SEARCH_LANG_DEFAULT_VALUE = I18nHelper.FRENCH;
+	private static final String ORNIDROID_SEARCH_LANG_DEFAULT_VALUE = SupportedLanguage.FRENCH
+			.getCode();
 
 	/**
 	 * Gets the cONTEXT.

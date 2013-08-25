@@ -2,37 +2,21 @@ package fr.ornidroid.helper;
 
 import java.util.Locale;
 
-
 /**
  * The Class I18nHelper.
  */
 public class I18nHelper {
 
-	/** The Constant DEUTSCH. */
-	public static final String DEUTSCH = "de";
-
-	/** The Constant ENGLISH. */
-	public static final String ENGLISH = "en";
-
-	/** The Constant FRENCH. */
-	public static final String FRENCH = "fr";
-
-	/** The Constant ISO3_DEU. */
-	public static final String ISO3_DEU = "deu";
-
-	/** The Constant ISO3_FRA. */
-	public static final String ISO3_FRA = "fra";
-
 	/** The singleton. */
 	private static I18nHelper SINGLETON;
 
 	/**
-	 * Gets the lang.
+	 * Gets the lang : en, fr or de
 	 * 
 	 * 
 	 * @return the lang
 	 */
-	public static String getLang() {
+	public static SupportedLanguage getLang() {
 		if (SINGLETON == null) {
 			SINGLETON = new I18nHelper();
 		}
@@ -40,24 +24,15 @@ public class I18nHelper {
 	}
 
 	/** The android lang. */
-	private final String androidLang;
+	private final SupportedLanguage androidLang;
 
 	/**
 	 * Instantiates a new i18n helper.
 	 */
 	private I18nHelper() {
 		final String langCode = Locale.getDefault().getISO3Language();
-
-		if (StringHelper.equalsIgnoreCase(ISO3_DEU, langCode)) {
-			this.androidLang = DEUTSCH;
-		} else {
-			if (StringHelper.equalsIgnoreCase(ISO3_FRA, langCode)) {
-				this.androidLang = FRENCH;
-			} else {
-				this.androidLang = ENGLISH;
-			}
-		}
-
+		this.androidLang = SupportedLanguage
+				.getSupportedLanguageFromIso3Code(langCode);
 	}
 
 	/**
@@ -65,7 +40,7 @@ public class I18nHelper {
 	 * 
 	 * @return the android lang
 	 */
-	private String getAndroidLang() {
+	private SupportedLanguage getAndroidLang() {
 		return this.androidLang;
 	}
 }

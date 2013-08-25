@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.StringHelper;
+import fr.ornidroid.helper.SupportedLanguage;
 
 /**
  * The Class OrnidroidFileFactoryImpl.
@@ -140,13 +140,13 @@ public class OrnidroidFileFactoryImpl {
 					.get(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY
 							+ AbstractOrnidroidFile.LANGUAGE_SEPARATOR + lang);
 			if (StringHelper.isBlank(remarks)
-					&& !I18nHelper.ENGLISH.equals(lang)) {
+					&& !SupportedLanguage.ENGLISH.getCode().equals(lang)) {
 				// english is the default language for audio remarks (mainly
 				// from xeno canto)
 				remarks = (String) properties
 						.get(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY
 								+ AbstractOrnidroidFile.LANGUAGE_SEPARATOR
-								+ I18nHelper.ENGLISH);
+								+ SupportedLanguage.ENGLISH.getCode());
 			}
 			ornidroidFileProperties.put(
 					AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY, remarks);

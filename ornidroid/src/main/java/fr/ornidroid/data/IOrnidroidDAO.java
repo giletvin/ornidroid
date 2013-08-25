@@ -41,12 +41,16 @@ public interface IOrnidroidDAO {
 	public static final String LANG_COLUMN_NAME = "lang";
 	/** The Constant NAME_FIELD_NAME. */
 	public static final String NAME_COLUMN_NAME = "name";
+
+	/** The Constant OISEAUX_NET_COLUMN. */
+	public static final String OISEAUX_NET_COLUMN = "oiseaux_net_link";
 	/** The Constant REMARKABLE_SIGN_TABLE. */
 	public static final String REMARKABLE_SIGN_TABLE = "remarkable_sign";
 	/** The Constant SCIENTIFIC_FAMILY_NAME_COLUMN. */
 	public static final String SCIENTIFIC_FAMILY_NAME_COLUMN = "scientific_family";
 	/** The Constant SCIENTIFIC_FAMILY_TABLE. */
 	public static final String SCIENTIFIC_FAMILY_TABLE = "scientific_family";
+
 	/** The Constant SCIENTIFIC_NAME. */
 	public static final String SCIENTIFIC_NAME = "scientific_name";
 

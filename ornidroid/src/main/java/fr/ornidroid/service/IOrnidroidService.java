@@ -166,6 +166,15 @@ public interface IOrnidroidService {
 	List<Taxon> getNames(int id);
 
 	/**
+	 * Gets the oiseaux net link.
+	 * 
+	 * @param currentBird
+	 *            the current bird
+	 * @return the oiseaux net link
+	 */
+	String getOiseauxNetLink(Bird currentBird);
+
+	/**
 	 * Gets the remarkable sign id.
 	 * 
 	 * @param remarkableSignName

@@ -40,6 +40,8 @@ public class BirdFactoryImpl {
 	 *            the size
 	 * @param category
 	 *            the category
+	 * @param pOiseauxNetUrl
+	 *            the oiseaux net url
 	 * @return the bird
 	 */
 	public Bird createBird(final Integer id, final String taxon,
@@ -47,7 +49,8 @@ public class BirdFactoryImpl {
 			final String birdDirectoryName, final String description,
 			final String distribution, final String scientificOrder,
 			final String scientificFamily, final String habitat,
-			final String size, final String category) {
+			final String size, final String category,
+			final String pOiseauxNetUrl) {
 		final Bird bird = new Bird();
 		bird.setId(id);
 		bird.setTaxon(taxon);
@@ -61,6 +64,7 @@ public class BirdFactoryImpl {
 		bird.setHabitat(habitat);
 		bird.setSize(size);
 		bird.setCategory(category);
+		bird.setOiseauxNetUrl(pOiseauxNetUrl);
 		return bird;
 	}
 

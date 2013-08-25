@@ -410,6 +410,29 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getOiseauxNetLink(fr.ornidroid
+	 * .bo.Bird)
+	 */
+	public String getOiseauxNetLink(final Bird currentBird) {
+		if (StringHelper.isNotBlank(currentBird.getOiseauxNetUrl())) {
+			final StringBuffer sbuf = new StringBuffer();
+			sbuf.append("<a href=\"");
+			sbuf.append(currentBird.getOiseauxNetUrl());
+			sbuf.append("\">");
+			sbuf.append(Constants.getCONTEXT().getResources()
+					.getString(R.string.oiseaux_net));
+			sbuf.append(currentBird.getTaxon());
+			sbuf.append("</a>");
+			return sbuf.toString();
+		} else {
+			return BasicConstants.EMPTY_STRING;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
 	 * fr.ornidroid.service.IOrnidroidService#getRemarkableSignId(java.lang.
 	 * String)
 	 */
@@ -573,6 +596,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					.getColumnIndex(IOrnidroidDAO.CATEGORY_COLUMN);
 			final int sizeIndex = cursor
 					.getColumnIndex(IOrnidroidDAO.SIZE_VALUE_COLUMN);
+			final int oiseauxNetIndex = cursor
+					.getColumnIndex(IOrnidroidDAO.OISEAUX_NET_COLUMN);
 
 			final String description = (descriptionIndex == -1) ? BasicConstants.EMPTY_STRING
 					: cursor.getString(descriptionIndex);
@@ -586,15 +611,19 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 					: cursor.getString(sizeIndex);
 			final String category = (categoryIndex == -1) ? BasicConstants.EMPTY_STRING
 					: cursor.getString(categoryIndex);
+			final String oiseauxNetUrl = (oiseauxNetIndex == -1) ? BasicConstants.EMPTY_STRING
+					: cursor.getString(oiseauxNetIndex);
 
 			final BirdFactoryImpl birdFactory = new BirdFactoryImpl();
-			this.currentBird = birdFactory.createBird(cursor.getInt(idIndex),
-					cursor.getString(taxonIndex),
-					cursor.getString(scientificNameIndex),
-					cursor.getString(scientificName2Index),
-					cursor.getString(directoryNameIndex), description,
-					distribution, scientificOrder, scientificFamily,
-					getHabitatFromCursor(cursor), size, category);
+			this.currentBird = birdFactory
+					.createBird(cursor.getInt(idIndex),
+							cursor.getString(taxonIndex),
+							cursor.getString(scientificNameIndex),
+							cursor.getString(scientificName2Index),
+							cursor.getString(directoryNameIndex), description,
+							distribution, scientificOrder, scientificFamily,
+							getHabitatFromCursor(cursor), size, category,
+							oiseauxNetUrl);
 			cursor.close();
 		}
 

@@ -22,6 +22,7 @@ create table bird(
 	paw_colour_fk,
 	paw_colour_2_fk,
 	remarkable_sign_fk,
+	oiseaux_net_link,
 	PRIMARY KEY(id)
 );
 

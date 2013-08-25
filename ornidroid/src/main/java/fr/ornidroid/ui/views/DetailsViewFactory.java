@@ -28,14 +28,18 @@ public class DetailsViewFactory {
 	/** The distribution. */
 	private TextView distribution;
 
+	/** The oiseaux net link. */
+	private TextView oiseauxNetLink;
 	/** The order and family. */
 	private TextView orderAndFamily;
+
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
 
 	/** The description. */
 	private TextView size;
 
+	/** The wikipedia link. */
 	private TextView wikipediaLink;
 
 	/**
@@ -83,6 +87,10 @@ public class DetailsViewFactory {
 		this.wikipediaLink.setPadding(5, 0, 5, 20);
 
 		linearLayout.addView(this.wikipediaLink);
+		this.oiseauxNetLink = new TextView(this.activity);
+		this.oiseauxNetLink.setPadding(5, 0, 5, 20);
+
+		linearLayout.addView(this.oiseauxNetLink);
 
 		if (this.ornidroidService.getCurrentBird() != null) {
 			printBirdCategory(this.ornidroidService.getCurrentBird());
@@ -195,6 +203,13 @@ public class DetailsViewFactory {
 
 		this.wikipediaLink.setText(Html.fromHtml(wikipedia));
 		this.wikipediaLink.setMovementMethod(LinkMovementMethod.getInstance());
+		final String oiseauxNet = this.ornidroidService
+				.getOiseauxNetLink(this.ornidroidService.getCurrentBird());
+		if (StringHelper.isNotBlank(oiseauxNet)) {
+			this.oiseauxNetLink.setText(Html.fromHtml(oiseauxNet));
+			this.oiseauxNetLink.setMovementMethod(LinkMovementMethod
+					.getInstance());
+		}
 	}
 
 }

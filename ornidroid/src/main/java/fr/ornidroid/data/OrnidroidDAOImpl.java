@@ -566,6 +566,8 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 				query.append(CATEGORY_COLUMN);
 				query.append(Constants.COMMA_STRING);
 				query.append(IOrnidroidDAO.SCIENTIFIC_NAME_2_COLUMN);
+				query.append(Constants.COMMA_STRING);
+				query.append(IOrnidroidDAO.OISEAUX_NET_COLUMN);
 			}
 			query.append(FROM);
 			query.append(FTS_VIRTUAL_TABLE_TAXONOMY);

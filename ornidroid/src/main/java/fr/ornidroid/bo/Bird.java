@@ -24,6 +24,9 @@ public class Bird extends SimpleBird {
 	/** The id. */
 	private Integer id;
 
+	/** The oiseaux net url. */
+	private String oiseauxNetUrl;
+
 	/** The pictures. */
 	private List<AbstractOrnidroidFile> pictures;
 
@@ -139,6 +142,15 @@ public class Bird extends SimpleBird {
 			return this.sounds.size();
 		}
 		return 0;
+	}
+
+	/**
+	 * Gets the oiseaux net url.
+	 * 
+	 * @return the oiseaux net url
+	 */
+	public String getOiseauxNetUrl() {
+		return this.oiseauxNetUrl;
 	}
 
 	/**
@@ -335,6 +347,16 @@ public class Bird extends SimpleBird {
 	 */
 	protected void setDescription(final String description) {
 		this.description = description;
+	}
+
+	/**
+	 * Sets the oiseaux net url.
+	 * 
+	 * @param oiseauxNetUrl
+	 *            the new oiseaux net url
+	 */
+	protected void setOiseauxNetUrl(final String oiseauxNetUrl) {
+		this.oiseauxNetUrl = oiseauxNetUrl;
 	}
 
 	/**

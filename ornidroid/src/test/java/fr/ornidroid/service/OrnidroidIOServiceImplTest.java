@@ -308,7 +308,7 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 		// run 1: with a bird without pictures. Should download them from
 		// internet
 		Bird bird = this.birdFactory.createBird(1, "taxon", "", null,
-				"barge_a_queue_noire", "", null, "", "", "", null, null);
+				"barge_a_queue_noire", "", null, "", "", "", null, null, null);
 		Assert.assertNull("list of pictures should be null", bird.getPictures());
 		Assert.assertNull("list of sounds should be null", bird.getSounds());
 		this.ornidroidIOService.downloadMediaFiles(TEST_DIRECTORY
@@ -330,7 +330,7 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 		// run 2: with a bird with pictures. Should just load the files in the
 		// List of pictures
 		bird = this.birdFactory.createBird(1, "taxon", "", null,
-				"barge_a_queue_noire", "", null, "", "", "", null, null);
+				"barge_a_queue_noire", "", null, "", "", "", null, null, null);
 		Assert.assertNull("list of pictures should be null", bird.getPictures());
 		this.ornidroidIOService.loadMediaFiles(TEST_DIRECTORY + File.separator
 				+ "/images", bird, OrnidroidFileType.PICTURE);
@@ -350,8 +350,9 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 	 */
 	@Test
 	public void testLoadMediaFilesBirdWithoutFiles() throws OrnidroidException {
-		final Bird bird = this.birdFactory.createBird(1, "taxon", "", null,
-				"bird_without_pictures", "", null, "", "", "", null, null);
+		final Bird bird = this.birdFactory
+				.createBird(1, "taxon", "", null, "bird_without_pictures", "",
+						null, "", "", "", null, null, null);
 		Assert.assertNull("list of pictures should be null", bird.getPictures());
 		this.ornidroidIOService.loadMediaFiles(TEST_DIRECTORY, bird,
 				OrnidroidFileType.PICTURE);

@@ -5,11 +5,7 @@ import java.io.FileNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import fr.ornidroid.bo.AbstractOrnidroidFile;
-import fr.ornidroid.bo.OrnidroidFileFactoryImpl;
-import fr.ornidroid.bo.OrnidroidFileType;
-import fr.ornidroid.bo.PictureOrnidroidFile;
-import fr.ornidroid.helper.I18nHelper;
+import fr.ornidroid.helper.SupportedLanguage;
 
 /**
  * The Class OrnidroidFileFactoryImplTest.
@@ -22,7 +18,7 @@ public class OrnidroidFileFactoryImplTest {
 	 */
 	@Test
 	public void testCreateImageFile() {
-		OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
+		final OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
 				.getFactory();
 
 		AbstractOrnidroidFile ornidroidFile;
@@ -30,7 +26,8 @@ public class OrnidroidFileFactoryImplTest {
 		try {
 			ornidroidFile = factory.createOrnidroidFile(
 					"./src/test/resources/images/bird_1/1.jpg",
-					OrnidroidFileType.PICTURE, I18nHelper.FRENCH);
+					OrnidroidFileType.PICTURE,
+					SupportedLanguage.FRENCH.getCode());
 			Assert.assertNotNull(ornidroidFile);
 			Assert.assertEquals(
 					"wrong description",
@@ -46,7 +43,7 @@ public class OrnidroidFileFactoryImplTest {
 			Assert.assertEquals("wrong author", "", ornidroidFile
 					.getProperty(PictureOrnidroidFile.IMAGE_AUTHOR_PROPERTY));
 
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			Assert.fail("should not occur");
 		}
 
@@ -54,48 +51,12 @@ public class OrnidroidFileFactoryImplTest {
 		try {
 			ornidroidFile = factory.createOrnidroidFile(
 					"./src/test/resources/images/bird_1/2.jpg",
-					OrnidroidFileType.PICTURE, I18nHelper.FRENCH);
+					OrnidroidFileType.PICTURE,
+					SupportedLanguage.FRENCH.getCode());
 			Assert.fail("an exception should have occurred");
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			Assert.assertTrue("exception caught, ok", true);
 		}
-
-	}
-
-	/**
-	 * Test load lang properties.
-	 * 
-	 * @throws FileNotFoundException
-	 */
-	@Test
-	public void testLoadLangProperties() throws FileNotFoundException {
-		OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
-				.getFactory();
-
-		AbstractOrnidroidFile ornidroidFile;
-		// file with a properties file fr
-		ornidroidFile = factory.createOrnidroidFile(
-				"./src/test/resources/images/bird_1/1.jpg",
-				OrnidroidFileType.PICTURE, I18nHelper.FRENCH);
-		Assert.assertNotNull(ornidroidFile);
-		Assert.assertEquals("description inattendue", "mâle", ornidroidFile
-				.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
-		// file with a properties file en
-		ornidroidFile = factory.createOrnidroidFile(
-				"./src/test/resources/images/bird_1/1.jpg",
-				OrnidroidFileType.PICTURE, I18nHelper.ENGLISH);
-		Assert.assertNotNull(ornidroidFile);
-		Assert.assertEquals(
-				"description inattendue",
-				"english description",
-				ornidroidFile
-						.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
-		ornidroidFile = factory.createOrnidroidFile(
-				"./src/test/resources/images/bird_1/1.jpg",
-				OrnidroidFileType.PICTURE, "unknownLang");
-		Assert.assertNotNull(ornidroidFile);
-		Assert.assertEquals("description inattendue", "", ornidroidFile
-				.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
 
 	}
 
@@ -106,7 +67,7 @@ public class OrnidroidFileFactoryImplTest {
 	 */
 	@Test
 	public void testLoadAudioProperties() throws FileNotFoundException {
-		OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
+		final OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
 				.getFactory();
 
 		AbstractOrnidroidFile ornidroidFile;
@@ -116,7 +77,8 @@ public class OrnidroidFileFactoryImplTest {
 		ornidroidFile = factory
 				.createOrnidroidFile(
 						"./src/test/resources/audio/morus_bassanus/Gannet%20colony%20Hermaness%20July%202010.mp3",
-						OrnidroidFileType.AUDIO, I18nHelper.FRENCH);
+						OrnidroidFileType.AUDIO,
+						SupportedLanguage.FRENCH.getCode());
 		Assert.assertNotNull(ornidroidFile);
 
 		Assert.assertEquals("wrong recordist", "Dougie Preston", ornidroidFile
@@ -135,7 +97,8 @@ public class OrnidroidFileFactoryImplTest {
 		ornidroidFile = factory
 				.createOrnidroidFile(
 						"./src/test/resources/audio/morus_bassanus/Morus_bassanus_Helgoland_09_10_2009.mp3",
-						OrnidroidFileType.AUDIO, I18nHelper.ENGLISH);
+						OrnidroidFileType.AUDIO,
+						SupportedLanguage.ENGLISH.getCode());
 		Assert.assertNotNull(ornidroidFile);
 		Assert.assertNotNull("recordist should not be null", ornidroidFile
 				.getProperty(AbstractOrnidroidFile.AUDIO_RECORDIST_PROPERTY));
@@ -149,7 +112,7 @@ public class OrnidroidFileFactoryImplTest {
 		// file 3. Remarks in french
 		ornidroidFile = factory.createOrnidroidFile(
 				"./src/test/resources/audio/morus_bassanus/file3.mp3",
-				OrnidroidFileType.AUDIO, I18nHelper.FRENCH);
+				OrnidroidFileType.AUDIO, SupportedLanguage.FRENCH.getCode());
 		Assert.assertNotNull(ornidroidFile);
 
 		Assert.assertEquals(
@@ -161,7 +124,7 @@ public class OrnidroidFileFactoryImplTest {
 		// same file, remarks in english
 		ornidroidFile = factory.createOrnidroidFile(
 				"./src/test/resources/audio/morus_bassanus/file3.mp3",
-				OrnidroidFileType.AUDIO, I18nHelper.ENGLISH);
+				OrnidroidFileType.AUDIO, SupportedLanguage.ENGLISH.getCode());
 		Assert.assertNotNull(ornidroidFile);
 
 		Assert.assertEquals(
@@ -169,6 +132,43 @@ public class OrnidroidFileFactoryImplTest {
 				"english remarks",
 				ornidroidFile
 						.getProperty(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY));
+
+	}
+
+	/**
+	 * Test load lang properties.
+	 * 
+	 * @throws FileNotFoundException
+	 */
+	@Test
+	public void testLoadLangProperties() throws FileNotFoundException {
+		final OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
+				.getFactory();
+
+		AbstractOrnidroidFile ornidroidFile;
+		// file with a properties file fr
+		ornidroidFile = factory.createOrnidroidFile(
+				"./src/test/resources/images/bird_1/1.jpg",
+				OrnidroidFileType.PICTURE, SupportedLanguage.FRENCH.getCode());
+		Assert.assertNotNull(ornidroidFile);
+		Assert.assertEquals("description inattendue", "mâle", ornidroidFile
+				.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
+		// file with a properties file en
+		ornidroidFile = factory.createOrnidroidFile(
+				"./src/test/resources/images/bird_1/1.jpg",
+				OrnidroidFileType.PICTURE, SupportedLanguage.ENGLISH.getCode());
+		Assert.assertNotNull(ornidroidFile);
+		Assert.assertEquals(
+				"description inattendue",
+				"english description",
+				ornidroidFile
+						.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
+		ornidroidFile = factory.createOrnidroidFile(
+				"./src/test/resources/images/bird_1/1.jpg",
+				OrnidroidFileType.PICTURE, "unknownLang");
+		Assert.assertNotNull(ornidroidFile);
+		Assert.assertEquals("description inattendue", "", ornidroidFile
+				.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
 
 	}
 

@@ -20,8 +20,11 @@ import fr.ornidroid.data.IOrnidroidDAO;
 import fr.ornidroid.data.OrnidroidDAOImpl;
 import fr.ornidroid.data.OrnidroidDatabaseOpenHelper;
 import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.helper.Constants;
+import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.helper.StringHelper;
+import fr.ornidroid.helper.SupportedLanguage;
 
 /**
  * The Class OrnidroidServiceImpl.
@@ -457,6 +460,28 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 
 		}
 		return this.sizesList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getWikipediaLink(fr.ornidroid.
+	 * bo.Bird)
+	 */
+	public String getWikipediaLink(final Bird currentBird) {
+		final SupportedLanguage lang = I18nHelper.getLang();
+		final StringBuffer sbuf = new StringBuffer();
+		sbuf.append("<a href=\"http://");
+		sbuf.append(lang.getCode());
+		sbuf.append(".wikipedia.org/wiki/");
+		sbuf.append(currentBird.getScientificName().replaceAll(" ", "%20"));
+		sbuf.append("\">");
+		sbuf.append(Constants.getCONTEXT().getResources()
+				.getString(R.string.wikipedia));
+		sbuf.append(currentBird.getTaxon());
+		sbuf.append("</a>");
+		return sbuf.toString();
 	}
 
 	/*

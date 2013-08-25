@@ -18,9 +18,9 @@ import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.FileHelper;
-import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
+import fr.ornidroid.helper.SupportedLanguage;
 import fr.ornidroid.tests.AbstractTest;
 
 /**
@@ -245,7 +245,7 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 				.getFactory();
 		AbstractOrnidroidFile ornidroidFile = factory.createOrnidroidFile(
 				destFile.getAbsolutePath(), OrnidroidFileType.PICTURE,
-				I18nHelper.ENGLISH);
+				SupportedLanguage.ENGLISH.getCode());
 		Assert.assertEquals("comment", ornidroidFile
 				.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
 
@@ -262,7 +262,7 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 				destDir.list().length);
 
 		ornidroidFile = factory.createOrnidroidFile(destFile.getAbsolutePath(),
-				OrnidroidFileType.AUDIO, I18nHelper.ENGLISH);
+				OrnidroidFileType.AUDIO, SupportedLanguage.ENGLISH.getCode());
 		Assert.assertEquals("comment", ornidroidFile
 				.getProperty(AudioOrnidroidFile.AUDIO_TITLE_PROPERTY));
 
@@ -380,11 +380,12 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 		final AbstractOrnidroidFile officialOrnidroidFile = factory
 				.createOrnidroidFile(
 						imagesDir.getAbsolutePath() + "/file1.jpg",
-						OrnidroidFileType.PICTURE, I18nHelper.ENGLISH);
+						OrnidroidFileType.PICTURE,
+						SupportedLanguage.ENGLISH.getCode());
 		final AbstractOrnidroidFile customOrnidroidFile = factory
 				.createOrnidroidFile(imagesDir.getAbsolutePath()
 						+ "/custom_file1.jpg", OrnidroidFileType.PICTURE,
-						I18nHelper.ENGLISH);
+						SupportedLanguage.ENGLISH.getCode());
 		Assert.assertEquals(
 				"there should be 4 files in the test directory : file1.jpg, custom_file1.jpg and their properties files",
 				4, imagesDir.list().length);

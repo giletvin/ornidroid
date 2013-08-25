@@ -19,10 +19,10 @@ import fr.ornidroid.download.DownloadHelperInterface;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.FileHelper;
-import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.helper.StringHelper;
+import fr.ornidroid.helper.SupportedLanguage;
 
 /**
  * The Class OrnidroidIOServiceImpl.
@@ -279,12 +279,13 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		case PICTURE:
 			data = PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY
 					+ AbstractOrnidroidFile.LANGUAGE_SEPARATOR
-					+ I18nHelper.FRENCH + BasicConstants.EQUALS_STRING
-					+ comment + BasicConstants.CARRIAGE_RETURN
+					+ SupportedLanguage.FRENCH.getCode()
+					+ BasicConstants.EQUALS_STRING + comment
+					+ BasicConstants.CARRIAGE_RETURN
 					+ PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY
 					+ AbstractOrnidroidFile.LANGUAGE_SEPARATOR
-					+ I18nHelper.ENGLISH + BasicConstants.EQUALS_STRING
-					+ comment;
+					+ SupportedLanguage.ENGLISH.getCode()
+					+ BasicConstants.EQUALS_STRING + comment;
 			break;
 		}
 		return data;

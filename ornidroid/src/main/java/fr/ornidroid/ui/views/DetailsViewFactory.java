@@ -1,7 +1,8 @@
 package fr.ornidroid.ui.views;
 
-
 import android.app.Activity;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -29,12 +30,13 @@ public class DetailsViewFactory {
 
 	/** The order and family. */
 	private TextView orderAndFamily;
-
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
 
 	/** The description. */
 	private TextView size;
+
+	private TextView wikipediaLink;
 
 	/**
 	 * Instantiates a new details view factory.
@@ -77,6 +79,11 @@ public class DetailsViewFactory {
 		this.distribution.setPadding(5, 0, 5, 20);
 		linearLayout.addView(this.distribution);
 
+		this.wikipediaLink = new TextView(this.activity);
+		this.wikipediaLink.setPadding(5, 0, 5, 20);
+
+		linearLayout.addView(this.wikipediaLink);
+
 		if (this.ornidroidService.getCurrentBird() != null) {
 			printBirdCategory(this.ornidroidService.getCurrentBird());
 			printBirdOrderAndFamily(this.ornidroidService.getCurrentBird());
@@ -84,6 +91,7 @@ public class DetailsViewFactory {
 			printBirdDescription(this.ornidroidService.getCurrentBird());
 			printBirdDistributionAndBehaviour(this.ornidroidService
 					.getCurrentBird());
+			printHttpLinks();
 		}
 		// return linearLayout;
 		final ScrollView scrollView = new ScrollView(this.activity);
@@ -176,6 +184,17 @@ public class DetailsViewFactory {
 				+ BasicConstants.BLANK_STRING
 				+ this.activity.getText(R.string.cm));
 
+	}
+
+	/**
+	 * Prints the http links.
+	 */
+	private void printHttpLinks() {
+		final String wikipedia = this.ornidroidService
+				.getWikipediaLink(this.ornidroidService.getCurrentBird());
+
+		this.wikipediaLink.setText(Html.fromHtml(wikipedia));
+		this.wikipediaLink.setMovementMethod(LinkMovementMethod.getInstance());
 	}
 
 }

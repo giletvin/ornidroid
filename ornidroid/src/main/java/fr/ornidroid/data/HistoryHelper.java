@@ -77,6 +77,7 @@ public class HistoryHelper {
 
 			this.resultsBirdIds = new ArrayList<Integer>();
 			final List<Map<String, SimpleBird>> data = new ArrayList<Map<String, SimpleBird>>();
+			final List<String> scientificNamesList = new ArrayList<String>();
 			final int nbRouws = cursor.getCount();
 			for (int i = 0; i < nbRouws; i++) {
 				cursor.moveToPosition(i);
@@ -86,17 +87,19 @@ public class HistoryHelper {
 						.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1));
 				final String directoryName = cursor.getString(cursor
 						.getColumnIndex(IOrnidroidDAO.DIRECTORY_NAME_COLUMN));
-				final String column_2 = cursor.getString(cursor
+				final String scientificName = cursor.getString(cursor
 						.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
-
-				final Map<String, SimpleBird> map = new HashMap<String, SimpleBird>();
-				final SimpleBird birdLine1 = this.birdFactory.createSimpleBird(
-						column_1, directoryName);
-				final SimpleBird birdLine2 = this.birdFactory.createSimpleBird(
-						column_2, null);
-				map.put(SearchManager.SUGGEST_COLUMN_TEXT_1, birdLine1);
-				map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, birdLine2);
-				data.add(map);
+				if (!scientificNamesList.contains(scientificName)) {
+					scientificNamesList.add(scientificName);
+					final Map<String, SimpleBird> map = new HashMap<String, SimpleBird>();
+					final SimpleBird birdLine1 = this.birdFactory
+							.createSimpleBird(column_1, directoryName);
+					final SimpleBird birdLine2 = this.birdFactory
+							.createSimpleBird(scientificName, null);
+					map.put(SearchManager.SUGGEST_COLUMN_TEXT_1, birdLine1);
+					map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, birdLine2);
+					data.add(map);
+				}
 			}
 			this.resultsAdapter = new SimpleAdapter(Constants.getCONTEXT(),
 					data, R.layout.result, this.from, this.to);

@@ -81,8 +81,6 @@ public class HistoryHelper {
 			final int nbRouws = cursor.getCount();
 			for (int i = 0; i < nbRouws; i++) {
 				cursor.moveToPosition(i);
-				this.resultsBirdIds.add(cursor.getInt(cursor
-						.getColumnIndex(BaseColumns._ID)));
 				final String column_1 = cursor.getString(cursor
 						.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1));
 				final String directoryName = cursor.getString(cursor
@@ -90,6 +88,8 @@ public class HistoryHelper {
 				final String scientificName = cursor.getString(cursor
 						.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
 				if (!scientificNamesList.contains(scientificName)) {
+					this.resultsBirdIds.add(cursor.getInt(cursor
+							.getColumnIndex(BaseColumns._ID)));
 					scientificNamesList.add(scientificName);
 					final Map<String, SimpleBird> map = new HashMap<String, SimpleBird>();
 					final SimpleBird birdLine1 = this.birdFactory

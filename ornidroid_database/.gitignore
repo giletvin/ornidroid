@@ -15,3 +15,5 @@
 /insert_data_table_remarkable_sign.sql
 /generate_insert_data_bird_country.sql
 /generate_insert_data_traductions.sql
+/fiches.xml
+/generate_update_oiseaux_net_links.sql

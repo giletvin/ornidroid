@@ -14,7 +14,7 @@
     package="fr.ornidroid"
     android:installLocation="auto"
     android:versionCode="10"
-    android:versionName="5.0.0-SNAPSHOT" >
+    android:versionName="5.0.0" >
 
     <uses-sdk android:minSdkVersion="8" />
 

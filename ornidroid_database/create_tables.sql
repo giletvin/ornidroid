@@ -102,5 +102,6 @@ insert into application_info(id,key,value,date,comments) VALUES(2,"ornidroid_ver
 insert into application_info(id,key,value,date,comments) VALUES(3,"ornidroid_version","3.0.1","01/05/2013","orange et rouge fusionnés en rouge/orange");
 insert into application_info(id,key,value,date,comments) VALUES(4,"ornidroid_version","4.0.0","28/05/2013","ajout de la recherche par pays");
 insert into application_info(id,key,value,date,comments) VALUES(5,"ornidroid_version","5.0.0","25/08/2013","trad grec + liens oiseaux.net");
+insert into application_info(id,key,value,date,comments) VALUES(5,"ornidroid_version","5.0.1","14/09/2013","correction issue 79");
 
---create table temp(id integer,key,value,date);
+create table temp(id integer,key,value,date);

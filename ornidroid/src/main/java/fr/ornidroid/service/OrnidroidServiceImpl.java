@@ -554,7 +554,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		final int habitat2Index = cursor
 				.getColumnIndex(IOrnidroidDAO.HABITAT_2_NAME_COLUMN);
 		final StringBuilder habitat = new StringBuilder(
-				(habitat1Index == -1) ? BasicConstants.EMPTY_STRING
+				(habitat1Index == -1)
+						|| (cursor.getString(habitat1Index) == null) ? BasicConstants.EMPTY_STRING
 						: cursor.getString(habitat1Index));
 		final String habitat2 = (habitat2Index == -1) ? BasicConstants.EMPTY_STRING
 				: cursor.getString(habitat2Index);

@@ -3038,6 +3038,8 @@ coccothraustes coccothraustes;coccothraustes;coccothraustes;Switzerland;CHE
 coccothraustes coccothraustes;coccothraustes;coccothraustes;Ukraine;UKR
 coccothraustes coccothraustes;coccothraustes;coccothraustes;United Kingdom;GBR
 coccothraustes coccothraustes;coccothraustes;coccothraustes;Yugoslavia;YUG
+columba bollii;columba;bollii;Spain;ESP
+columba junoniae;columba;junoniae;Spain;ESP
 columba livia;columba;livia;Albania;ALB
 columba livia;columba;livia;Andorra;AND
 columba livia;columba;livia;Austria;AUT
@@ -4533,6 +4535,7 @@ fringilla montifringilla;fringilla;montifringilla;Switzerland;CHE
 fringilla montifringilla;fringilla;montifringilla;Ukraine;UKR
 fringilla montifringilla;fringilla;montifringilla;United Kingdom;GBR
 fringilla montifringilla;fringilla;montifringilla;Yugoslavia;YUG
+fringilla teydea;fringilla;teydea;Spain;ESP
 fulica atra;fulica;atra;Albania;ALB
 fulica atra;fulica;atra;Austria;AUT
 fulica atra;fulica;atra;Belgium;BEL
@@ -7713,6 +7716,7 @@ phylloscopus borealis;phylloscopus;borealis;Finland;FIN
 phylloscopus borealis;phylloscopus;borealis;Norway;NOR
 phylloscopus borealis;phylloscopus;borealis;Russia;RUS
 phylloscopus borealis;phylloscopus;borealis;Sweden;SWE
+phylloscopus canariensis;phylloscopus;canariensis;Russia;RUS
 phylloscopus collybita;phylloscopus;collybita;Albania;ALB
 phylloscopus collybita;phylloscopus;collybita;Andorra;AND
 phylloscopus collybita;phylloscopus;collybita;Austria;AUT
@@ -7754,6 +7758,7 @@ phylloscopus collybita;phylloscopus;collybita;Switzerland;CHE
 phylloscopus collybita;phylloscopus;collybita;Ukraine;UKR
 phylloscopus collybita;phylloscopus;collybita;United Kingdom;GBR
 phylloscopus collybita;phylloscopus;collybita;Yugoslavia;YUG
+phylloscopus fuscatus;phylloscopus;fuscatus;Russia;RUS
 phylloscopus ibericus;phylloscopus;ibericus;France;FRA
 phylloscopus ibericus;phylloscopus;ibericus;Portugal;PRT
 phylloscopus ibericus;phylloscopus;ibericus;Spain;ESP
@@ -8516,6 +8521,7 @@ puffinus mauretanicus;puffinus;mauretanicus;Portugal;PRT
 puffinus mauretanicus;puffinus;mauretanicus;Slovenia;SVN
 puffinus mauretanicus;puffinus;mauretanicus;Spain;ESP
 puffinus mauretanicus;puffinus;mauretanicus;United Kingdom;GBR
+puffinus mauretanicus;puffinus;mauretanicus;Russia;RUS
 puffinus mauretanicus;puffinus;mauretanicus;Yugoslavia;YUG
 puffinus puffinus;puffinus;puffinus;Belgium;BEL
 puffinus puffinus;puffinus;puffinus;Denmark;DNK
@@ -8827,6 +8833,7 @@ riparia riparia;riparia;riparia;Switzerland;CHE
 riparia riparia;riparia;riparia;Ukraine;UKR
 riparia riparia;riparia;riparia;United Kingdom;GBR
 riparia riparia;riparia;riparia;Yugoslavia;YUG
+saxicola dacotiae;saxicola;dacotiae;Russia;RUS
 saxicola rubetra;saxicola;rubetra;Albania;ALB
 saxicola rubetra;saxicola;rubetra;Andorra;AND
 saxicola rubetra;saxicola;rubetra;Austria;AUT

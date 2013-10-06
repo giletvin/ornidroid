@@ -107,7 +107,7 @@ public class AddCustomMediaActivity extends ListActivity {
 		setContentView(R.layout.add_custom_media);
 		this.myPath = (TextView) findViewById(R.id.path);
 
-		this.root = Environment.getExternalStorageDirectory().getPath();
+		this.root = BasicConstants.SLASH_STRING;
 		this.fileType = (OrnidroidFileType) getIntent().getSerializableExtra(
 				OrnidroidFileType.FILE_TYPE_INTENT_PARAM_NAME);
 		this.birdDirectory = (String) getIntent().getSerializableExtra(
@@ -118,7 +118,7 @@ public class AddCustomMediaActivity extends ListActivity {
 						goBackToBirdActivity();
 					}
 				});
-		getDir(this.root);
+		getDir(Environment.getExternalStorageDirectory().getPath());
 	}
 
 	/*

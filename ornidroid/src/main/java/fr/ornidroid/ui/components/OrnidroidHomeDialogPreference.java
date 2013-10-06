@@ -8,7 +8,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
-import android.os.Environment;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import fr.ornidroid.R;
+import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.StringHelper;
 
@@ -178,7 +178,7 @@ public class OrnidroidHomeDialogPreference extends DialogPreference implements
 		// find the stored value and print it
 		this.mPath.setText(Constants.getOrnidroidHome());
 
-		this.root = Environment.getExternalStorageDirectory().getPath();
+		this.root = BasicConstants.SLASH_STRING;// Environment.getExternalStorageDirectory().getPath();
 
 		// start point : current ornidroid home
 		getDir(Constants.getOrnidroidHome());

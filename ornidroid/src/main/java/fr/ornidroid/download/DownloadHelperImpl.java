@@ -8,28 +8,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
 
 import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
+import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.helper.FileHelper;
 import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
-import fr.ornidroid.helper.StringHelper;
 
 /**
  * The Class DownloadHelperImpl.
  */
 public class DownloadHelperImpl implements DownloadHelperInterface {
-
-	/** The Constant CONTENTS_PROPERTIES. */
-	private static final String CONTENTS_PROPERTIES = "contents.properties";
-
-	/** The Constant FILES_PROPERTY_KEY. */
-	private static final String FILES_PROPERTY_KEY = "files";
-
-	/** The Constant FILES_SEPARATOR_PROPERTY_VALUE. */
-	private static final String FILES_SEPARATOR_PROPERTY_VALUE = ",";
 
 	/*
 	 * (non-Javadoc)
@@ -78,25 +68,9 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 	public List<File> downloadFiles(final String ornidroidMediaHome,
 			final String directoryName, final OrnidroidFileType fileType)
 			throws OrnidroidException {
-		String baseUrl = null;
-		String destinationPath = null;
-
-		switch (fileType) {
-		case PICTURE:
-			baseUrl = DownloadConstants.getOrnidroidWebSiteImages()
-					+ File.separator + directoryName;
-			destinationPath = ornidroidMediaHome + File.separator
-					+ directoryName;
-			break;
-		case AUDIO:
-			baseUrl = DownloadConstants.getOrnidroidWebSiteAudio()
-					+ File.separator + directoryName;
-			destinationPath = ornidroidMediaHome + File.separator
-					+ directoryName;
-			break;
-		default:
-			break;
-		}
+		final String destinationPath = ornidroidMediaHome + File.separator
+				+ directoryName;
+		final String baseUrl = getBaseUrl(directoryName, fileType);
 
 		final String[] filesToDownload = readContentFile(baseUrl,
 				destinationPath);
@@ -117,6 +91,33 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see
+	 * fr.ornidroid.download.DownloadHelperInterface#getBaseUrl(java.lang.String
+	 * , fr.ornidroid.bo.OrnidroidFileType)
+	 */
+	public String getBaseUrl(final String directoryName,
+			final OrnidroidFileType fileType) {
+		String baseUrl = null;
+
+		switch (fileType) {
+		case PICTURE:
+			baseUrl = DownloadConstants.getOrnidroidWebSiteImages()
+					+ File.separator + directoryName;
+
+			break;
+		case AUDIO:
+			baseUrl = DownloadConstants.getOrnidroidWebSiteAudio()
+					+ File.separator + directoryName;
+			break;
+		default:
+			break;
+		}
+		return baseUrl;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.ornidroid.download.DownloadHelperInterface#readContentFile
 	 * (java.lang.String, java.lang.String)
 	 */
@@ -126,32 +127,23 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 		String[] filesToDownload = null;
 		FileInputStream fis = null;
 		try {
-			url = new URL(baseUrl + File.separator + CONTENTS_PROPERTIES);
+			url = new URL(baseUrl + File.separator
+					+ BasicConstants.CONTENTS_PROPERTIES);
 			final DefaultDownloadable contentFileDownloadable = new DefaultDownloadable(
 					url, destinationPath);
-			contentFileDownloadable.download();
+			contentFileDownloadable.refresh();
 			checkDownloadErrors(contentFileDownloadable);
 			if (contentFileDownloadable.getFile().exists()) {
-				// contentFileDownloadable.getFile();
-				fis = new FileInputStream(contentFileDownloadable.getFile());
-				final Properties properties = new Properties();
-				properties.load(fis);
-				final String files = StringHelper.defaultString(properties
-						.getProperty(FILES_PROPERTY_KEY));
-				filesToDownload = StringHelper.split(files,
-						FILES_SEPARATOR_PROPERTY_VALUE);
+				filesToDownload = FileHelper
+						.parseContentFile(contentFileDownloadable.getFile());
 			}
-
 		} catch (final MalformedURLException e) {
-
 			throw new OrnidroidException(
 					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 		} catch (final FileNotFoundException e) {
-
 			throw new OrnidroidException(
 					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 		} catch (final IOException e) {
-
 			throw new OrnidroidException(
 					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 		} finally {
@@ -166,9 +158,7 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 			}
 
 		}
-
 		return filesToDownload;
-
 	}
 
 	/**

@@ -10,19 +10,21 @@ public class BasicConstants {
 	public static final String BIRD_DIRECTORY_PARAMETER_NAME = "BIRD_DIRECTORY";
 	/** The Constant BIRD_ICONS_DIRECTORY. */
 	public static final String BIRD_ICONS_DIRECTORY = "bird_icons";
-
 	/** The Constant BIRD_ID_PARAMETER_NAME. */
 	public static final String BIRD_ID_PARAMETER_NAME = "BIRD_ID";
+
 	/** The Constant BLANK_STRING. */
 	public static final String BLANK_STRING = " ";
-
 	/** The Constant CARRIAGE_RETURN. */
 	public static final String CARRIAGE_RETURN = "\n";
 
 	/** The Constant COLUMN_STRING. */
 	public static final String COLUMN_STRING = ": ";
+
 	/** The Constant COMMA. */
 	public static final String COMMA_STRING = ",";
+	/** The Constant CONTENTS_PROPERTIES. */
+	public static final String CONTENTS_PROPERTIES = "contents.properties";
 
 	/** The Constant CUSTOM_MEDIA_FILE_PREFIX. */
 	public static final String CUSTOM_MEDIA_FILE_PREFIX = "custom_";

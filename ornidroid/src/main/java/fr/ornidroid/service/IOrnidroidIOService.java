@@ -1,6 +1,7 @@
 package fr.ornidroid.service;
 
 import java.io.File;
+import java.util.List;
 
 import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.Bird;
@@ -80,6 +81,23 @@ public interface IOrnidroidIOService {
 	 *             the ornidroid exception
 	 */
 	void checkOrnidroidHome(String ornidroidHome) throws OrnidroidException;
+
+	/**
+	 * Checks if there are updates for the given bird and file type. This
+	 * methods only checks for new files - it doesn't detect any file deletion.
+	 * 
+	 * @param mediaHomeDirectory
+	 *            the media home directory
+	 * @param bird
+	 *            the bird
+	 * @param fileType
+	 *            the file type
+	 * @return the list of files to download
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
+	 */
+	List<String> filesToUpdate(String mediaHomeDirectory, Bird bird,
+			OrnidroidFileType fileType) throws OrnidroidException;
 
 	/**
 	 * Removes the custom media file.

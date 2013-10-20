@@ -12,6 +12,34 @@ import fr.ornidroid.helper.OrnidroidException;
 public interface DownloadHelperInterface {
 
 	/**
+	 * Gets the base url with a given directory and a file type
+	 * 
+	 * @param directoryName
+	 *            the directory name
+	 * @param fileType
+	 *            the file type
+	 * @return the base url
+	 */
+	public String getBaseUrl(final String directoryName,
+			final OrnidroidFileType fileType);
+
+	/**
+	 * Download a file (whatever : sound, picture, database).
+	 * 
+	 * @param baseUrl
+	 *            the base url containing the file
+	 * @param fileName
+	 *            the file name
+	 * @param destinationPath
+	 *            : local directory where the file is to be put.
+	 * @return the file, can be null if the file doesnt not exist
+	 * @throws OrnidroidException
+	 *             if an exception occurs
+	 */
+	File downloadFile(String baseUrl, String fileName, String destinationPath)
+			throws OrnidroidException;
+
+	/**
 	 * Download files from ornidroid web site for a given bird.
 	 * 
 	 * @param ornidroidMediaHome
@@ -45,21 +73,5 @@ public interface DownloadHelperInterface {
 	 *             if an exception occurs
 	 */
 	String[] readContentFile(String baseUrl, String destinationPath)
-			throws OrnidroidException;
-
-	/**
-	 * Download a file (whatever : sound, picture, database).
-	 * 
-	 * @param baseUrl
-	 *            the base url containing the file
-	 * @param fileName
-	 *            the file name
-	 * @param destinationPath
-	 *            : local directory where the file is to be put.
-	 * @return the file, can be null if the file doesnt not exist
-	 * @throws OrnidroidException
-	 *             if an exception occurs
-	 */
-	File downloadFile(String baseUrl, String fileName, String destinationPath)
 			throws OrnidroidException;
 }

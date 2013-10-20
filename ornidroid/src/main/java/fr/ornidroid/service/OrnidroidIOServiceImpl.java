@@ -179,6 +179,31 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidIOService#areThereUpdates(java.lang.String
+	 * , fr.ornidroid.bo.Bird, fr.ornidroid.bo.OrnidroidFileType)
+	 */
+	public List<String> filesToUpdate(final String mediaHomeDirectory,
+			final Bird bird, final OrnidroidFileType fileType)
+			throws OrnidroidException {
+		final List<String> filesToUpdate = new ArrayList<String>();
+
+		final List<String> localFilesList = loadContentFile(true,
+				mediaHomeDirectory, bird, fileType);
+		final List<String> remoteFilesList = loadContentFile(false,
+				mediaHomeDirectory, bird, fileType);
+
+		for (final String remoteFile : remoteFilesList) {
+			if (!localFilesList.contains(remoteFile)) {
+				filesToUpdate.add(remoteFile);
+			}
+		}
+		return filesToUpdate;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.ornidroid.service.IOrnidroidIOService#loadMediaFiles(java
 	 * .io.File, fr.ornidroid.bo.Bird)
 	 */
@@ -289,6 +314,56 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 			break;
 		}
 		return data;
+	}
+
+	/**
+	 * Load contents.properties file.
+	 * 
+	 * @param localContent
+	 *            : if true parse the local file, otherwise download the remote
+	 *            file from web site
+	 * 
+	 * @param mediaHomeDirectory
+	 *            the media home directory
+	 * @param bird
+	 *            the bird
+	 * @param fileType
+	 *            the file type
+	 * @return the list of files parsed from contents.properties file
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
+	 */
+	private List<String> loadContentFile(final boolean localContent,
+			final String mediaHomeDirectory, final Bird bird,
+			final OrnidroidFileType fileType) {
+		String[] filesFromContentFile = null;
+		if ((!localContent)) {
+			// from web site
+			final String birdDirectoryUrl = this.downloadHelper.getBaseUrl(
+					bird.getBirdDirectoryName(), fileType);
+			final String destinationPath = mediaHomeDirectory + File.separator
+					+ bird.getBirdDirectoryName();
+			try {
+				filesFromContentFile = this.downloadHelper.readContentFile(
+						birdDirectoryUrl, destinationPath);
+			} catch (final OrnidroidException e) {
+				// no problemo
+			}
+		} else {
+			// local
+			try {
+				final File localContentFile = new File(mediaHomeDirectory
+						+ File.separator + bird.getBirdDirectoryName()
+						+ File.separator + BasicConstants.CONTENTS_PROPERTIES);
+				filesFromContentFile = FileHelper
+						.parseContentFile(localContentFile);
+
+			} catch (final IOException e) {
+				// there is no contents.properties files locally
+			}
+		}
+		return filesFromContentFile == null ? new ArrayList<String>() : Arrays
+				.asList(filesFromContentFile);
 	}
 
 	/**

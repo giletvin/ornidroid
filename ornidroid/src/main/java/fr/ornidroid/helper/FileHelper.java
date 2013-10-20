@@ -10,6 +10,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * The Class FileUtils. code from commons-io 2.4
@@ -21,6 +22,11 @@ public class FileHelper {
 	public static final long ONE_MB = ONE_KB * ONE_KB;
 	/** The Constant FILE_COPY_BUFFER_SIZE. */
 	private static final long FILE_COPY_BUFFER_SIZE = ONE_MB * 30;
+	/** The Constant FILES_PROPERTY_KEY. */
+	private static final String FILES_PROPERTY_KEY = "files";
+
+	/** The Constant FILES_SEPARATOR_PROPERTY_VALUE. */
+	private static final String FILES_SEPARATOR_PROPERTY_VALUE = ",";
 
 	/**
 	 * Creates the empty file if it does not exist.
@@ -193,6 +199,27 @@ public class FileHelper {
 						+ srcDir + "' after copy to '" + destDir + "'");
 			}
 		}
+	}
+
+	/**
+	 * Parses the contents.properties file.
+	 * 
+	 * @param contentFile
+	 *            the content file
+	 * @return the files contained in the contents.properties file
+	 * @throws FileNotFoundException
+	 *             the file not found exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static String[] parseContentFile(final File contentFile)
+			throws FileNotFoundException, IOException {
+		final FileInputStream fis = new FileInputStream(contentFile);
+		final Properties properties = new Properties();
+		properties.load(fis);
+		final String files = StringHelper.defaultString(properties
+				.getProperty(FILES_PROPERTY_KEY));
+		return StringHelper.split(files, FILES_SEPARATOR_PROPERTY_VALUE);
 	}
 
 	/**

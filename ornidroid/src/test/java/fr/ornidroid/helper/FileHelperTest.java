@@ -221,4 +221,22 @@ public class FileHelperTest extends AbstractTest {
 
 	}
 
+	/**
+	 * Test parse content file.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testParseContentFile() throws IOException {
+
+		final File contentFile = new File(
+				"./src/test/resources/images/bird_1/contents.properties");
+		final String[] files = FileHelper.parseContentFile(contentFile);
+		Assert.assertEquals("2 files expected", 2, files.length);
+		Assert.assertEquals("1.jpg", files[0]);
+		Assert.assertEquals("2.jpg", files[1]);
+
+	}
+
 }

@@ -3,6 +3,7 @@ package fr.ornidroid.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,10 +40,6 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 	 *            the date reference, must not be <code>null</code>
 	 * @return true if the <code>File</code> exists and has been modified before
 	 *         the given <code>Date</code>.
-	 * @throws IllegalArgumentException
-	 *             if the file is <code>null</code>
-	 * @throws IllegalArgumentException
-	 *             if the date is <code>null</code>
 	 */
 	private static boolean isFileOlder(final File file, final Date date) {
 		if (date == null) {
@@ -63,8 +60,6 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 	 *            (00:00:00 GMT, January 1, 1970)
 	 * @return true if the <code>File</code> exists and has been modified before
 	 *         the given time reference.
-	 * @throws IllegalArgumentException
-	 *             if the file is <code>null</code>
 	 */
 	private static boolean isFileOlder(final File file, final long timeMillis) {
 		if (file == null) {
@@ -343,6 +338,60 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 	}
 
 	/**
+	 * Test files to update.
+	 * 
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
+	 * @throws IOException
+	 */
+	@Test
+	public void testFilesToUpdate() throws OrnidroidException, IOException {
+		// set up test dir
+		final File testDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/testDir");
+		final File imagesDir = new File(testDir.getAbsolutePath()
+				+ File.separator + Constants.IMAGES_DIRECTORY);
+		FileHelper.forceMkdir(new File(imagesDir.getAbsolutePath()
+				+ File.separator + "bird_1"));
+		FileHelper.doCopyFile(new File(
+				"./src/test/resources/images/bird_1/contents.properties"),
+				new File(imagesDir.getAbsolutePath() + File.separator
+						+ "bird_1" + File.separator + "contents.properties"));
+
+		// bird 1 has one image to download
+		final Bird bird1 = new BirdFactoryImpl().createBird(1, null, null,
+				null, "bird_1", null, null, null, null, null, null, null, null);
+
+		List<String> filesToUpdate = this.ornidroidIOService.filesToUpdate(
+				imagesDir.getAbsolutePath(), bird1, OrnidroidFileType.PICTURE);
+		Assert.assertEquals("bird 1 has one image to download", 1,
+				filesToUpdate.size());
+		Assert.assertEquals("3.jpg", filesToUpdate.get(0));
+
+		// bird 2 doesn't have a online directory : this checks if exceptions
+		// are handled correctly
+		FileHelper.forceMkdir(new File(imagesDir.getAbsolutePath()
+				+ File.separator + "bird_2"));
+		final Bird bird2 = new BirdFactoryImpl().createBird(1, null, null,
+				null, "bird_2", null, null, null, null, null, null, null, null);
+		filesToUpdate = this.ornidroidIOService.filesToUpdate(
+				imagesDir.getAbsolutePath(), bird2, OrnidroidFileType.PICTURE);
+		Assert.assertEquals(0, filesToUpdate.size());
+
+		// bird 3 is uptodate
+		FileHelper.forceMkdir(new File(imagesDir.getAbsolutePath()
+				+ File.separator + "bird_3"));
+		FileHelper.doCopyFile(new File(
+				"./src/test/resources/images/bird_3/contents.properties"),
+				new File(imagesDir.getAbsolutePath() + File.separator
+						+ "bird_3" + File.separator + "contents.properties"));
+		final Bird bird3 = new BirdFactoryImpl().createBird(1, null, null,
+				null, "bird_3", null, null, null, null, null, null, null, null);
+		filesToUpdate = this.ornidroidIOService.filesToUpdate(
+				imagesDir.getAbsolutePath(), bird3, OrnidroidFileType.PICTURE);
+		Assert.assertEquals("bird 3 is uptodate", 0, filesToUpdate.size());
+	}
+
+	/**
 	 * Test load media files bird without files on internet.
 	 * 
 	 * @throws OrnidroidException
@@ -360,6 +409,14 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 		Assert.assertTrue(bird.getNumberOfPictures() == 0);
 	}
 
+	/**
+	 * Test remove custom media file.
+	 * 
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
 	@Test
 	public void testRemoveCustomMediaFile() throws OrnidroidException,
 			IOException {

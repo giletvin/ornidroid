@@ -92,7 +92,7 @@ public interface IOrnidroidIOService {
 	 *            the bird
 	 * @param fileType
 	 *            the file type
-	 * @return the list of files to download
+	 * @return the list of files to download, never null
 	 * @throws OrnidroidException
 	 *             the ornidroid exception
 	 */

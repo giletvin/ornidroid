@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,8 +63,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 	/** The Constant DOWNLOAD_NOT_STARTED. */
 	private static final int DOWNLOAD_NOT_STARTED = 1;
 
-	/** The Constant PROGRESS_BAR_MAX. */
-	private static final int PROGRESS_BAR_MAX = 100;
 	/** The add custom audio button. */
 	private ImageView addCustomAudioButton;
 
@@ -85,11 +82,8 @@ public abstract class AbstractDownloadableMediaActivity extends
 
 	/** The download from internet button. */
 	private ImageView downloadFromInternetButton;
-
 	/** The download info text. */
 	private TextView downloadInfoText;
-	/** The download progress. */
-	private final int downloadProgress = 0;
 
 	/** The download status. */
 	private int downloadStatus;
@@ -105,19 +99,14 @@ public abstract class AbstractDownloadableMediaActivity extends
 
 	/** The ornidroid download error. */
 	private int ornidroidDownloadErrorCode;
-
 	/** The ornidroid io service. */
 	private final IOrnidroidIOService ornidroidIOService;
+
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
 
 	/** The progress bar. */
 	private ProgressDialog progressBar;
-	/** The progress bar handler. */
-	private final Handler progressBarHandler = new Handler();
-
-	/** The progress bar status. */
-	private int progressBarStatus = 0;
 
 	/** The remove custom picture button. */
 	private ImageView removeCustomAudioButton;
@@ -392,10 +381,9 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 */
 	public void run() {
 
-		while (this.progressBarStatus < 100) {
+		while (this.downloadStatus != DOWNLOAD_FINISHED) {
 
-			// process some tasks
-			this.progressBarStatus = startDownloadThreadAndComputeDownloadProgress();
+			startDownloadThreadAndComputeDownloadProgress();
 
 			// your computer is too fast, sleep 1 second
 			try {
@@ -408,17 +396,10 @@ public abstract class AbstractDownloadableMediaActivity extends
 
 			}
 
-			// Update the progress bar
-			this.progressBarHandler.post(new Runnable() {
-				public void run() {
-					AbstractDownloadableMediaActivity.this.progressBar
-							.setProgress(AbstractDownloadableMediaActivity.this.progressBarStatus);
-				}
-			});
 		}
 
 		// ok, file is downloaded,
-		if (this.progressBarStatus >= 100) {
+		if (this.downloadStatus == DOWNLOAD_FINISHED) {
 
 			// sleep 2 seconds, so that you can see the 100%
 			try {
@@ -658,13 +639,11 @@ public abstract class AbstractDownloadableMediaActivity extends
 		this.progressBar.setCancelable(true);
 		this.progressBar.setMessage(this.getResources().getText(
 				R.string.download_in_progress));
-		this.progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		this.progressBar.setProgress(0);
-		this.progressBar.setMax(100);
+		this.progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		this.progressBar.show();
 
-		// reset progress bar status
-		this.progressBarStatus = 0;
+		// reset download status
+		this.downloadStatus = DOWNLOAD_NOT_STARTED;
 
 		new Thread(this).start();
 	}
@@ -685,16 +664,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 					Toast.LENGTH_LONG).show();
 		}
 		return updatesToDo;
-	}
-
-	/**
-	 * Compute download progress.
-	 * 
-	 * @return the int
-	 */
-	private int computeDownloadProgress() {
-		return (int) Math.floor(this.downloadProgress
-				+ ((PROGRESS_BAR_MAX - this.downloadProgress) / 5));
 	}
 
 	/**
@@ -728,10 +697,10 @@ public abstract class AbstractDownloadableMediaActivity extends
 	/**
 	 * Start download thread and compute download progress.
 	 * 
-	 * @return the int : this method is periodically called by the progress bar
-	 *         thread. When the download is finished, the return is 100%.
+	 * @return this method is periodically called by the progress bar thread.
+	 *         When the download is finished, the return is true.
 	 */
-	private int startDownloadThreadAndComputeDownloadProgress() {
+	private void startDownloadThreadAndComputeDownloadProgress() {
 		if (this.downloadStatus == DOWNLOAD_NOT_STARTED) {
 			// if download is not started, start it in a new thread
 			this.downloadStatus = DOWNLOAD_STARTED;
@@ -761,10 +730,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 				}
 			}).start();
 		}
-		if (this.downloadStatus != DOWNLOAD_FINISHED) {
-			return computeDownloadProgress();
-		} else {
-			return PROGRESS_BAR_MAX;
-		}
+
 	}
 }

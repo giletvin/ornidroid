@@ -147,6 +147,7 @@ public class PictureHelper {
 					.getRemoveCustomPictureButton());
 			infoButtonLayout.addView(this.birdActivity
 					.getAddCustomPictureButton());
+			infoButtonLayout.addView(this.birdActivity.getUpdateFilesButton());
 
 			// info button
 			this.birdActivity.setInfoButton(new ImageView(this.birdActivity));

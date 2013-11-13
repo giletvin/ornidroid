@@ -23,10 +23,8 @@
     <string name="menu_search_multi">Recherche multicritères</string>
     <string name="menu_about">A propos</string>
     <string name="home">Accueil</string>
-
-    <!-- Search failure message. -->
-
     <string name="ok">OK</string>
+    <string name="cancel">Annuler</string>
 
     <!-- activity titles -->
     <string name="preferences">Préférences</string>
@@ -38,6 +36,7 @@
     <string name="bird_image_big">Photo zoomée</string>
     <string name="bird_names">Taxonomie</string>
     <string name="add_custom_media_title">Ajout de fichiers personnalisés</string>
+
 
      <!-- labels used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
@@ -128,5 +127,9 @@
     <string name="expand_collapse_form">Ouvrir/Fermer le formulaire</string>
     <string name="search_remarkable_sign_choose">Choisir un signe distinctif</string>
     <string name="search_remarkable_sign">Signe distinctif</string>
+    <!-- labels for the updates -->
+    <string name="updates_available">Mises à jour disponibles.\nTélécharger ?</string>
+    <string name="updates_check_error">Echec de la vérification des mises à jour.\nMerci de vérifier votre connexion internet.</string>
+    <string name="updates_none">Aucune mise à jour disponible.</string>
 
 </resources>

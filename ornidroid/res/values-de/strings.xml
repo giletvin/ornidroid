@@ -23,10 +23,8 @@
     <string name="menu_search_multi">Mehrkriterien-Suche</string>
     <string name="menu_about">Ueber</string>
     <string name="home">Home</string>
-
-    <!-- Search failure message. -->
-
     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
     <!-- activity titles -->
     <string name="preferences">Einstellungen</string>
@@ -38,6 +36,7 @@
     <string name="bird_image_big">Vergrößtes Bild</string>
     <string name="bird_names">Taxonomie</string>
     <string name="add_custom_media_title">Add custom files</string>
+
 
     <!-- labes used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
@@ -116,5 +115,7 @@
     <string name="expand_collapse_form">Ofnen/Schliessen</string>
     <string name="search_remarkable_sign_choose">Wählen Sie eine Merkwürdigkeit</string>
     <string name="search_remarkable_sign">Merkwürdigkeit</string>
-
+	<string name="updates_available">Updates available. Download ?</string>
+	<string name="updates_check_error">Updates check went wrong. Please check your internet connectivity.</string>
+	<string name="updates_none">No updates available.</string>
 </resources>

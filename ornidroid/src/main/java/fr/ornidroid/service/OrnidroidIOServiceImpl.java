@@ -405,14 +405,12 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 			if (filesDirectory.isDirectory()) {
 				List<File> filesList = Arrays.asList(filesDirectory
 						.listFiles(new OrnidroidFileFilter(fileType)));
-				// no files in the local directory. Try to download from
-				// internet
-				if ((filesList.size() == 0) && downloadFromInternet) {
+				// Try to download from internet
+				if (downloadFromInternet) {
 					filesList = this.downloadHelper.downloadFiles(
 							ornidroidMediaHome, directoryName, fileType);
 				}
 				try {
-					// TODO : getOrnidroidSearchLang ??
 					for (final File file : filesList) {
 						final AbstractOrnidroidFile ornidroidFile = OrnidroidFileFactoryImpl
 								.getFactory().createOrnidroidFile(

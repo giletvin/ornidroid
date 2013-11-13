@@ -1,8 +1,12 @@
 package fr.ornidroid.ui;
 
 import java.io.File;
+import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,6 +40,12 @@ public abstract class AbstractDownloadableMediaActivity extends
 	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
 	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
 
+	/** The Constant DIALOG_PICTURE_INFO_ID. */
+	protected static final int DIALOG_PICTURE_INFO_ID = 0;
+
+	/** The Constant DIALOG_UPDATES_AVAILABLE. */
+	protected static final int DIALOG_UPDATES_AVAILABLE = 1;
+
 	/** The Constant DOWNLOAD_FINISHED. */
 	protected static final int DOWNLOAD_FINISHED = 2;
 
@@ -55,8 +66,9 @@ public abstract class AbstractDownloadableMediaActivity extends
 
 	/** The Constant PROGRESS_BAR_MAX. */
 	private static final int PROGRESS_BAR_MAX = 100;
-
+	/** The add custom audio button. */
 	private ImageView addCustomAudioButton;
+
 	/** The add custom picture button. */
 	private ImageView addCustomPictureButton;
 	/** The bird. */
@@ -68,38 +80,54 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 */
 	private AbstractOrnidroidFile currentMediaFile;
 
+	/** The dialog. */
+	private Dialog dialog;
+
 	/** The download from internet button. */
 	private ImageView downloadFromInternetButton;
 
 	/** The download info text. */
 	private TextView downloadInfoText;
-
 	/** The download progress. */
 	private final int downloadProgress = 0;
+
 	/** The download status. */
 	private int downloadStatus;
+
+	/** The files to download. */
+	private List<String> filesToDownload;
+
+	/** The info button. */
+	private ImageView infoButton;
+
+	/** The ok dialog button. */
+	private Button okDialogButton;
 
 	/** The ornidroid download error. */
 	private int ornidroidDownloadErrorCode;
 
 	/** The ornidroid io service. */
 	private final IOrnidroidIOService ornidroidIOService;
-
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
 
 	/** The progress bar. */
 	private ProgressDialog progressBar;
-
 	/** The progress bar handler. */
 	private final Handler progressBarHandler = new Handler();
 
 	/** The progress bar status. */
 	private int progressBarStatus = 0;
+
 	/** The remove custom picture button. */
 	private ImageView removeCustomAudioButton;
+
 	/** The remove custom picture button. */
 	private ImageView removeCustomPictureButton;
+
+	/** The update files button. */
+	private ImageView updateFilesButton;
+
 	/** The uri. */
 	private Uri uri;
 
@@ -142,6 +170,15 @@ public abstract class AbstractDownloadableMediaActivity extends
 	}
 
 	/**
+	 * Gets the dialog.
+	 * 
+	 * @return the dialog
+	 */
+	public Dialog getDialog() {
+		return this.dialog;
+	}
+
+	/**
 	 * Gets the download status.
 	 * 
 	 * @return the download status
@@ -158,7 +195,25 @@ public abstract class AbstractDownloadableMediaActivity extends
 	public abstract OrnidroidFileType getFileType();
 
 	/**
-	 * Gets the removes the custom audio button
+	 * Gets the info button.
+	 * 
+	 * @return the info button
+	 */
+	public ImageView getInfoButton() {
+		return this.infoButton;
+	}
+
+	/**
+	 * Gets the ok dialog button.
+	 * 
+	 * @return the ok dialog button
+	 */
+	public Button getOkDialogButton() {
+		return this.okDialogButton;
+	}
+
+	/**
+	 * Gets the removes the custom audio button.
 	 * 
 	 * @return the removes the custom audio button
 	 */
@@ -168,13 +223,26 @@ public abstract class AbstractDownloadableMediaActivity extends
 	}
 
 	/**
-	 * Gets the removes the custom picture button
+	 * Gets the removes the custom picture button.
 	 * 
 	 * @return the removes the custom picture button
 	 */
 	public ImageView getRemoveCustomPictureButton() {
 
 		return this.removeCustomPictureButton;
+	}
+
+	/**
+	 * Gets the update files button.
+	 * 
+	 * @return the update files button
+	 */
+	public ImageView getUpdateFilesButton() {
+		this.updateFilesButton = new ImageView(this);
+		this.updateFilesButton.setOnClickListener(this);
+		this.updateFilesButton
+				.setImageResource(R.drawable.ic_check_for_updates);
+		return this.updateFilesButton;
 	}
 
 	/**
@@ -201,13 +269,13 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	public void onClick(final View v) {
-
+		if (v == this.infoButton) {
+			this.showDialog(DIALOG_PICTURE_INFO_ID);
+		}
+		if (v == this.okDialogButton) {
+			this.dialog.dismiss();
+		}
 		if (v.getId() == DOWNLOAD_BUTTON_ID) {
-			getSpecificContentLayout().removeAllViews();
-			this.downloadInfoText = new TextView(this);
-			this.downloadInfoText.setText(R.string.download_please_wait);
-			this.downloadInfoText.setPadding(5, 10, 5, 20);
-			getSpecificContentLayout().addView(this.downloadInfoText);
 			startDownload();
 		}
 		if ((v == this.addCustomPictureButton)
@@ -246,6 +314,14 @@ public abstract class AbstractDownloadableMediaActivity extends
 						this.getResources().getString(
 								R.string.add_custom_media_error)
 								+ e.getMessage(), Toast.LENGTH_LONG).show();
+			}
+		}
+		if (v == this.updateFilesButton) {
+			if (checkForUpdates()) {
+				this.showDialog(DIALOG_UPDATES_AVAILABLE);
+			} else {
+				Toast.makeText(this, R.string.updates_none, Toast.LENGTH_LONG)
+						.show();
 			}
 		}
 
@@ -406,6 +482,16 @@ public abstract class AbstractDownloadableMediaActivity extends
 	}
 
 	/**
+	 * Sets the dialog.
+	 * 
+	 * @param dialog
+	 *            the new dialog
+	 */
+	public void setDialog(final Dialog dialog) {
+		this.dialog = dialog;
+	}
+
+	/**
 	 * Sets the download status.
 	 * 
 	 * @param downloadStatus
@@ -413,6 +499,26 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 */
 	public void setDownloadStatus(final int downloadStatus) {
 		this.downloadStatus = downloadStatus;
+	}
+
+	/**
+	 * Sets the info button.
+	 * 
+	 * @param infoButton
+	 *            the new info button
+	 */
+	public void setInfoButton(final ImageView infoButton) {
+		this.infoButton = infoButton;
+	}
+
+	/**
+	 * Sets the ok dialog button.
+	 * 
+	 * @param okDialogButton
+	 *            the new ok dialog button
+	 */
+	public void setOkDialogButton(final Button okDialogButton) {
+		this.okDialogButton = okDialogButton;
 	}
 
 	/**
@@ -427,6 +533,25 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * Hook on create. Here is the specific onCreate stuff for the subclasses.
 	 */
 	protected abstract void hookOnCreate();
+
+	/**
+	 * Hook on create dialog.
+	 * 
+	 * @param id
+	 *            the id
+	 */
+	protected abstract void hookOnCreateDialog(final int id);
+
+	/**
+	 * Hook on prepare dialog.
+	 * 
+	 * @param id
+	 *            the id
+	 * @param dialog
+	 *            the dialog
+	 */
+	protected abstract void hookOnPrepareDialog(final int id,
+			final Dialog dialog);
 
 	/*
 	 * (non-Javadoc)
@@ -460,6 +585,53 @@ public abstract class AbstractDownloadableMediaActivity extends
 		hookOnCreate();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreateDialog(int)
+	 */
+	@Override
+	protected Dialog onCreateDialog(final int id) {
+		hookOnCreateDialog(id);
+		if (this.dialog == null) {
+			switch (id) {
+			case DIALOG_UPDATES_AVAILABLE:
+				this.dialog = new AlertDialog.Builder(this)
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(R.string.updates_available)
+						.setNegativeButton(R.string.cancel,
+								new DialogInterface.OnClickListener() {
+									public void onClick(
+											final DialogInterface dialog,
+											final int whichButton) {
+									}
+								})
+						.setPositiveButton(R.string.ok,
+								new DialogInterface.OnClickListener() {
+									public void onClick(
+											final DialogInterface dialog,
+											final int whichButton) {
+										startDownload();
+									}
+								}).create();
+				break;
+			default:
+				this.dialog = null;
+			}
+		}
+		return this.dialog;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onPrepareDialog(int, android.app.Dialog)
+	 */
+	@Override
+	protected void onPrepareDialog(final int id, final Dialog dialog) {
+		hookOnPrepareDialog(id, dialog);
+	}
+
 	/**
 	 * Sets the ornidroid download error code.
 	 * 
@@ -475,6 +647,11 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * Start download.
 	 */
 	protected void startDownload() {
+		getSpecificContentLayout().removeAllViews();
+		this.downloadInfoText = new TextView(this);
+		this.downloadInfoText.setText(R.string.download_please_wait);
+		this.downloadInfoText.setPadding(5, 10, 5, 20);
+		getSpecificContentLayout().addView(this.downloadInfoText);
 		this.downloadStatus = DOWNLOAD_NOT_STARTED;
 		// prepare for a progress bar dialog
 		this.progressBar = new ProgressDialog(this);
@@ -490,6 +667,24 @@ public abstract class AbstractDownloadableMediaActivity extends
 		this.progressBarStatus = 0;
 
 		new Thread(this).start();
+	}
+
+	/**
+	 * Check for updates.
+	 * 
+	 * @return true, if there are updates to download
+	 */
+	private boolean checkForUpdates() {
+		boolean updatesToDo = false;
+		try {
+			this.filesToDownload = this.ornidroidIOService.filesToUpdate(
+					getMediaHomeDirectory(), getBird(), getFileType());
+			updatesToDo = (this.filesToDownload.size() > 0);
+		} catch (final OrnidroidException e) {
+			Toast.makeText(this, R.string.updates_check_error,
+					Toast.LENGTH_LONG).show();
+		}
+		return updatesToDo;
 	}
 
 	/**

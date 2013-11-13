@@ -76,6 +76,8 @@ public class AudioHelper implements OnClickListener {
 					.getRemoveCustomAudioButton());
 			customMediaButtonsLayout.addView(this.birdActivity
 					.getAddCustomAudioButton());
+			customMediaButtonsLayout.addView(this.birdActivity
+					.getUpdateFilesButton());
 
 			audioControlLayout.setPadding(0, 5, 0, 5);
 			audioControlLayout.setOrientation(LinearLayout.HORIZONTAL);

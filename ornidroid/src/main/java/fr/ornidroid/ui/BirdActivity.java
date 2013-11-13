@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -60,9 +59,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/** The Constant DETAIL_TAB_NAME. */
 	private static final String DETAIL_TAB_NAME = "detailTab";
 
-	/** The Constant DIALOG_PICTURE_INFO_ID. */
-	private static final int DIALOG_PICTURE_INFO_ID = 0;
-
 	/** The Constant TAB_HEIGHT. */
 	private static final int TAB_HEIGHT = 50;
 
@@ -72,16 +68,11 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/** The audio layout. */
 	private LinearLayout audioLayout;
 
-	/** The dialog. */
-	private Dialog dialog;
 	/** The displayed picture id. */
 	private int displayedPictureId;
 
 	/** The gesture detector. */
 	private GestureDetector gestureDetector;
-
-	/** The info button. */
-	private ImageView infoButton;
 
 	/** The media player. */
 	private MediaPlayer mediaPlayer;
@@ -91,9 +82,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 	/** The number of pictures text view. */
 	private TextView numberOfPicturesTextView;
-
-	/** The ok dialog button. */
-	private Button okDialogButton;
 
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
@@ -252,15 +240,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	}
 
 	/**
-	 * Gets the info button.
-	 * 
-	 * @return the info button
-	 */
-	public ImageView getInfoButton() {
-		return this.infoButton;
-	}
-
-	/**
 	 * Gets the media player.
 	 * 
 	 * @return the media player
@@ -276,15 +255,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	 */
 	public TextView getNumberOfPicturesTextView() {
 		return this.numberOfPicturesTextView;
-	}
-
-	/**
-	 * Gets the ok dialog button.
-	 * 
-	 * @return the ok dialog button
-	 */
-	public Button getOkDialogButton() {
-		return this.okDialogButton;
 	}
 
 	/**
@@ -335,24 +305,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * fr.ornidroid.ui.AbstractDownloadableMediaActivity#onClick(android.view
-	 * .View)
-	 */
-	@Override
-	public void onClick(final View v) {
-		super.onClick(v);
-		if (v == this.infoButton) {
-			this.showDialog(DIALOG_PICTURE_INFO_ID);
-		}
-		if (v == this.okDialogButton) {
-			this.dialog.dismiss();
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see android.app.Activity#onTouchEvent(android.view.MotionEvent)
 	 */
 	@Override
@@ -375,16 +327,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	}
 
 	/**
-	 * Sets the info button.
-	 * 
-	 * @param infoButton
-	 *            the new info button
-	 */
-	public void setInfoButton(final ImageView infoButton) {
-		this.infoButton = infoButton;
-	}
-
-	/**
 	 * Sets the number of pictures text view.
 	 * 
 	 * @param numberOfPicturesTextView
@@ -393,16 +335,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	public void setNumberOfPicturesTextView(
 			final TextView numberOfPicturesTextView) {
 		this.numberOfPicturesTextView = numberOfPicturesTextView;
-	}
-
-	/**
-	 * Sets the ok dialog button.
-	 * 
-	 * @param okDialogButton
-	 *            the new ok dialog button
-	 */
-	public void setOkDialogButton(final Button okDialogButton) {
-		this.okDialogButton = okDialogButton;
 	}
 
 	/**
@@ -524,27 +456,27 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onCreateDialog(int)
+	 * @see
+	 * fr.ornidroid.ui.AbstractDownloadableMediaActivity#hookOnCreateDialog(int)
 	 */
 	@Override
-	protected Dialog onCreateDialog(final int id) {
+	protected void hookOnCreateDialog(final int id) {
 		switch (id) {
 		case DIALOG_PICTURE_INFO_ID:
-			this.dialog = new Dialog(this);
+			setDialog(new Dialog(this));
 			break;
-		default:
-			this.dialog = null;
 		}
-		return this.dialog;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onPrepareDialog(int, android.app.Dialog)
+	 * @see
+	 * fr.ornidroid.ui.AbstractDownloadableMediaActivity#hookOnPrepareDialog
+	 * (int, android.app.Dialog)
 	 */
 	@Override
-	protected void onPrepareDialog(final int id, final Dialog dialog) {
+	protected void hookOnPrepareDialog(final int id, final Dialog dialog) {
 		switch (id) {
 		case DIALOG_PICTURE_INFO_ID:
 			this.pictureHelper.displayPictureInfoInDialog(dialog);

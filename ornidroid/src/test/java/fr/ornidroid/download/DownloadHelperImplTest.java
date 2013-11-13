@@ -9,8 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.ornidroid.bo.OrnidroidFileType;
-import fr.ornidroid.download.DownloadHelperImpl;
-import fr.ornidroid.download.DownloadHelperInterface;
+import fr.ornidroid.helper.FileHelper;
 import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.tests.AbstractTest;
@@ -44,7 +43,7 @@ public class DownloadHelperImplTest extends AbstractTest {
 	 */
 	@Test
 	public void testDownloadFile() throws OrnidroidException {
-		File downloadedFile = this.downloadHelper.downloadFile(
+		final File downloadedFile = this.downloadHelper.downloadFile(
 				ORNIDROID_TEST_WEB_BASE_IMAGE_URL + "/barge_a_queue_noire",
 				"barge_a_queue_noire_1.jpg", TEST_DIRECTORY);
 
@@ -61,8 +60,8 @@ public class DownloadHelperImplTest extends AbstractTest {
 	@Test
 	public void testDownloadFiles() throws OrnidroidException {
 		// test with a correct directory value, containing 2 pictures
-		List<File> downloadedFiles = this.downloadHelper.downloadFiles("/tmp/",
-				"barge_a_queue_noire", OrnidroidFileType.PICTURE);
+		final List<File> downloadedFiles = this.downloadHelper.downloadFiles(
+				"/tmp/", "barge_a_queue_noire", OrnidroidFileType.PICTURE);
 		Assert.assertTrue(downloadedFiles.size() == 2);
 	}
 
@@ -78,16 +77,48 @@ public class DownloadHelperImplTest extends AbstractTest {
 			this.downloadHelper.downloadFiles("/tmp/", "unknown_bird",
 					OrnidroidFileType.PICTURE);
 			Assert.fail("an exception should have occurred");
-		} catch (OrnidroidException e) {
+		} catch (final OrnidroidException e) {
 			Assert.assertEquals(
 					0,
 					e.getErrorType()
 							.compareTo(
 									OrnidroidError.ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST));
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			Assert.fail("no other exception should occur");
 		}
 
+	}
+
+	/**
+	 * Test download files with a file already downloaded before.
+	 * 
+	 * 
+	 */
+	@Test
+	public void testDownloadFilesWithDelta() throws Exception {
+		final File testDir = new File(TEST_DIRECTORY + File.separator
+				+ "barge_a_queue_noire");
+		File existingFile = new File(testDir.getAbsolutePath() + File.separator
+				+ "barge_a_queue_noire_1.jpg");
+		FileHelper.forceMkdir(testDir);
+		// create the already existing file
+		FileHelper.createEmptyFile(existingFile);
+		FileHelper.createEmptyFile(new File(existingFile.getAbsolutePath()
+				+ ".properties"));
+
+		Assert.assertEquals(0, existingFile.length());
+		// we should only download the second file
+		// test with a correct directory value, containing 2 pictures
+		final List<File> downloadedFiles = this.downloadHelper.downloadFiles(
+				TEST_DIRECTORY, "barge_a_queue_noire",
+				OrnidroidFileType.PICTURE);
+		Assert.assertTrue(downloadedFiles.size() == 2);
+		existingFile = new File(existingFile.getAbsolutePath());
+		Assert.assertEquals(0, existingFile.length());
+
+		final File newFile = new File(testDir + File.separator
+				+ "barge_a_queue_noire_2.jpg");
+		Assert.assertTrue(newFile.length() > 0);
 	}
 
 	/**
@@ -104,7 +135,7 @@ public class DownloadHelperImplTest extends AbstractTest {
 					+ "/unknown_directory", "unknownFile.jpg", TEST_DIRECTORY);
 			Assert.fail("an exception should have occurred");
 
-		} catch (OrnidroidException e) {
+		} catch (final OrnidroidException e) {
 			Assert.assertTrue(
 					"Error is of type link broken",
 					e.getErrorType()
@@ -126,13 +157,13 @@ public class DownloadHelperImplTest extends AbstractTest {
 							+ "/barge_a_queue_noire", "unknownFile.jpg",
 							TEST_DIRECTORY);
 			Assert.fail("an exception should have occurred");
-		} catch (OrnidroidException e) {
+		} catch (final OrnidroidException e) {
 			Assert.assertEquals(
 					0,
 					e.getErrorType()
 							.compareTo(
 									OrnidroidError.ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST));
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			Assert.fail("no other exception should occur");
 		}
 
@@ -146,7 +177,7 @@ public class DownloadHelperImplTest extends AbstractTest {
 	 */
 	@Test
 	public void testReadContents() throws OrnidroidException {
-		String[] filesToDownload = this.downloadHelper.readContentFile(
+		final String[] filesToDownload = this.downloadHelper.readContentFile(
 				ORNIDROID_TEST_WEB_BASE_IMAGE_URL + "/barge_a_queue_noire",
 				TEST_DIRECTORY);
 		Assert.assertEquals(2, filesToDownload.length);
@@ -168,7 +199,7 @@ public class DownloadHelperImplTest extends AbstractTest {
 					ORNIDROID_TEST_WEB_BASE_IMAGE_URL + "/unknown_bird",
 					TEST_DIRECTORY);
 			Assert.fail("an exception should have occurred");
-		} catch (OrnidroidException e) {
+		} catch (final OrnidroidException e) {
 			Assert.assertTrue(true);
 		}
 	}

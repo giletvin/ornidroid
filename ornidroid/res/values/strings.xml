@@ -130,6 +130,8 @@
     <string name="add_your_file">Add your file</string>
     <string name="wikipedia">Wikipedia: </string>
     <string name="oiseaux_net">Oiseaux.net: </string>
-    
-
+    <!-- labels for the updates -->
+    <string name="updates_available">Updates available. Download ?</string>
+    <string name="updates_check_error">Updates check went wrong. Please check your internet connectivity.</string>
+	<string name="updates_none">No updates available.</string>
 </resources>

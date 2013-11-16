@@ -17,6 +17,7 @@ import fr.ornidroid.R;
 import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.ui.BirdActivity;
 
@@ -147,7 +148,12 @@ public class PictureHelper {
 					.getRemoveCustomPictureButton());
 			infoButtonLayout.addView(this.birdActivity
 					.getAddCustomPictureButton());
-			infoButtonLayout.addView(this.birdActivity.getUpdateFilesButton());
+			if (!Constants.getAutomaticUpdateCheckPreference()) {
+				infoButtonLayout.addView(this.birdActivity
+						.getUpdateFilesButton());
+			} else {
+				this.birdActivity.checkForUpdates(false);
+			}
 
 			// info button
 			this.birdActivity.setInfoButton(new ImageView(this.birdActivity));

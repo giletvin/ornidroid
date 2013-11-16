@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.AbstractOrnidroidFile;
+import fr.ornidroid.helper.Constants;
 import fr.ornidroid.ui.BirdActivity;
 
 /**
@@ -76,8 +77,12 @@ public class AudioHelper implements OnClickListener {
 					.getRemoveCustomAudioButton());
 			customMediaButtonsLayout.addView(this.birdActivity
 					.getAddCustomAudioButton());
-			customMediaButtonsLayout.addView(this.birdActivity
-					.getUpdateFilesButton());
+			if (!Constants.getAutomaticUpdateCheckPreference()) {
+				customMediaButtonsLayout.addView(this.birdActivity
+						.getUpdateFilesButton());
+			} else {
+				this.birdActivity.checkForUpdates(false);
+			}
 
 			audioControlLayout.setPadding(0, 5, 0, 5);
 			audioControlLayout.setOrientation(LinearLayout.HORIZONTAL);

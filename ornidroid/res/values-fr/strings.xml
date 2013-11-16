@@ -47,6 +47,9 @@
     <string name="preferences_ornidroid_home_summary">Choisir le répertoire où Ornidroid doit placer ses données.</string>
     <string name="preferences_ornidroid_home_copying_files">Copie de fichiers en cours</string>
     <string name="preferences_ornidroid_home_saved">Modification du répertoire de données réussie</string>
+    <string name="preferences_automatic_update_check_key">AutomaticUpdateCheck</string>
+    <string name="preferences_automatic_update_check_title">Vérification automatique de mise à jour</string>
+    <string name="preferences_automatic_update_check_summary">Effectuer une vérification automatique pour savoir si de nouvelles images ou sons sont disponibles.</string>
     <string name="help_change_ornidroid_home_title">Modification du répertoire de données</string>
     <string name="help_change_ornidroid_home_content">Un répertoire \"ornidroid\" sera créé à l\'emplacement que vous choisissez.\nToutes les données de l\'ancien répertoire vont être déplacées dans le nouveau et l\'ancien répertoire sera ensuite supprimé. Cette opération peut prendre environ 10 minutes.</string>
 

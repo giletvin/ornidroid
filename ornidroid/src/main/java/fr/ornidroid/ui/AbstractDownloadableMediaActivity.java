@@ -130,6 +130,33 @@ public abstract class AbstractDownloadableMediaActivity extends
 	}
 
 	/**
+	 * Check for updates. Fires a dialog box if updates are found. If manual
+	 * check, let the user know that no updates are found.
+	 * 
+	 * @param manualCheck
+	 *            true if the user checks manually.
+	 * 
+	 */
+	public void checkForUpdates(final boolean manualCheck) {
+		boolean updatesToDo = false;
+		try {
+			this.filesToDownload = this.ornidroidIOService.filesToUpdate(
+					getMediaHomeDirectory(), getBird(), getFileType());
+			updatesToDo = (this.filesToDownload.size() > 0);
+		} catch (final OrnidroidException e) {
+			Toast.makeText(this, R.string.updates_check_error,
+					Toast.LENGTH_LONG).show();
+		}
+		if (updatesToDo) {
+			this.showDialog(DIALOG_UPDATES_AVAILABLE);
+		} else if (manualCheck) {
+			Toast.makeText(this, R.string.updates_none, Toast.LENGTH_LONG)
+					.show();
+		}
+
+	}
+
+	/**
 	 * Gets the custom audio button.
 	 * 
 	 * @return the adds the custom audio button
@@ -306,12 +333,7 @@ public abstract class AbstractDownloadableMediaActivity extends
 			}
 		}
 		if (v == this.updateFilesButton) {
-			if (checkForUpdates()) {
-				this.showDialog(DIALOG_UPDATES_AVAILABLE);
-			} else {
-				Toast.makeText(this, R.string.updates_none, Toast.LENGTH_LONG)
-						.show();
-			}
+			checkForUpdates(true);
 		}
 
 	}
@@ -646,24 +668,6 @@ public abstract class AbstractDownloadableMediaActivity extends
 		this.downloadStatus = DOWNLOAD_NOT_STARTED;
 
 		new Thread(this).start();
-	}
-
-	/**
-	 * Check for updates.
-	 * 
-	 * @return true, if there are updates to download
-	 */
-	private boolean checkForUpdates() {
-		boolean updatesToDo = false;
-		try {
-			this.filesToDownload = this.ornidroidIOService.filesToUpdate(
-					getMediaHomeDirectory(), getBird(), getFileType());
-			updatesToDo = (this.filesToDownload.size() > 0);
-		} catch (final OrnidroidException e) {
-			Toast.makeText(this, R.string.updates_check_error,
-					Toast.LENGTH_LONG).show();
-		}
-		return updatesToDo;
 	}
 
 	/**

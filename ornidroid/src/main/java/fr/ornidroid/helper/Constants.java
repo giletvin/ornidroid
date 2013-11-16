@@ -33,6 +33,19 @@ public class Constants extends BasicConstants {
 			.getCode();
 
 	/**
+	 * Gets the automatic update check preference.
+	 * 
+	 * @return the automatic update check preference
+	 */
+	public static final boolean getAutomaticUpdateCheckPreference() {
+		return Constants
+				.getOrnidroidPreferences()
+				.getBoolean(
+						getStringFromXmlResource(R.string.preferences_automatic_update_check_key),
+						false);
+	}
+
+	/**
 	 * Gets the cONTEXT.
 	 * 
 	 * @return the cONTEXT

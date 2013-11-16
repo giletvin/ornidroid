@@ -16,4 +16,10 @@
         android:summary="@string/preferences_ornidroid_home_summary"
         android:title="@string/preferences_ornidroid_home_title" />
 
+    <CheckBoxPreference
+        android:key="@string/preferences_automatic_update_check_key"
+        android:persistent="true"
+        android:summary="@string/preferences_automatic_update_check_summary"
+        android:title="@string/preferences_automatic_update_check_title" />
+
 </PreferenceScreen>

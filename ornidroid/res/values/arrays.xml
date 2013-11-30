@@ -4,6 +4,7 @@
 <resources>
 
 	<string-array name="lang_labels">
+	    <item>bg - Български</item>
 		<item>cz - Čeština</item>
 		<item>de - Deutsch</item>
 		<item>dk - Dansk</item>
@@ -12,6 +13,7 @@
 		<item>fi - Suomi</item>
 		<item>fr - Français</item>
 		<item>gr - ελληνικά</item>
+		<item>hu - Magyar</item>
 		<item>is - Íslenska</item>
 		<item>it - Italiano</item>
 		<item>jp - 日本語</item>
@@ -20,13 +22,15 @@
 		<item>no - Norsk</item>
 		<item>po - Polski</item>
 		<item>pt - Português</item>
-		<item>ru - Русский язык</item>
+		<item>ro - Română</item>
+		<item>ru - Русский</item>
 		<item>se - Svenska</item>
 		<item>sk - Slovenčina</item>
 		<item>zh - 普通话</item>
 	</string-array>
 
 	<string-array name="lang_values">
+	    <item>bg</item>
 		<item>cz</item>
 		<item>de</item>
 		<item>dk</item>
@@ -35,6 +39,7 @@
 		<item>fi</item>
 		<item>fr</item>
 		<item>gr</item>
+		<item>hu</item>
 		<item>is</item>
 		<item>it</item>
 		<item>jp</item>
@@ -43,6 +48,7 @@
 		<item>no</item>
 		<item>po</item>
 		<item>pt</item>
+		<item>ro</item>
 		<item>ru</item>
 		<item>se</item>
 		<item>sk</item>

@@ -1,0 +1,795 @@
+Mute Swan|Cygnus olor |Bütykös hattyú
+2||
+Tundra (aka Bewick's) Swan|Cygnus columbianus bewickii|Kis hattyú 
+3||
+Whooper Swan|Cygnus cygnus |Énekes hattyú
+4||
+Bean Goose|Anser fabalis |Vetési lúd
+5||
+Pink-footed Goose |Anser brachyrhynchus |Rövidcsőrű lúd 
+6||
+(Greater) White-fronted Goose|Anser albifrons |Nagy lilik
+7||
+Lesser White-fronted Goose |Anser erythropus |Kis lilik 
+8||
+Greylag Goose|Anser anser |Nyári lúd
+9||
+Bar-headed Goose|Anser indicus|Indiai lúd
+10||
+Canada Goose |Branta canadensis |Kanadai lúd 
+11||
+Barnacle Goose|Branta leucopsis |Apácalúd
+12||
+Brant (aka Brent) Goose |Branta bernicla |Örvös lúd 
+13||
+Red-breasted Goose|Branta ruficollis |Vörösnyakú lúd
+14||
+Egyptian Goose |Alopochen aegyptiaca|Nílusi lúd 
+15||
+Ruddy Shelduck |Tadorna ferruginea |Vörös ásólúd 
+16||
+(Common) Shelduck|Tadorna tadorna |Bütykös ásólúd
+17||
+(Eurasian) Wigeon|Anas penelope |Fütyülő réce
+18||
+American Wigeon|Anas americana|Álarcos réce
+19||
+Gadwall|Anas strepera |Kendermagos réce
+20||
+(Eurasian) Teal|Anas crecca |Csörgő réce
+21||
+Green-winged Teal |Anas carolinensis |Zöldszárnyú réce 
+22||
+Mallard|Anas platyrhynchos |Tőkés réce
+23||
+(Northern) Pintail|Anas acuta |Nyílfarkú réce
+24||
+Garganey|Anas querquedula |Böjti réce
+25||
+Blue-winged Teal |Anas discors |Kékszárnyú réce 
+26||
+(Northern) Shoveler|Anas clypeata |Kanalas réce
+27||
+Marbled Duck |Marmaronetta angustirostris |Márványos réce 
+28||
+Red-crested Pochard|Netta rufina |Üstökösréce
+29||
+(Common) Pochard|Aythya ferina |Barátréce
+30||
+Ring-necked Duck |Aythya collaris |Örvös réce 
+31||
+Ferruginous Duck|Aythya nyroca |Cigányréce
+32||
+Tufted Duck|Aythya fuligula |Kontyos réce
+33||
+(Greater) Scaup|Aythya marila |Hegyi réce
+34||
+Lesser Scaup |Aythya affinis |Búbos réce 
+35||
+Common Eider |Somateria mollissima |Pehelyréce 
+36||
+King Eider |Somateria spectabilis |Cifra pehelyréce 
+37||
+Steller's Eider |Polysticta stelleri |Steller-pehelyréce 
+38||
+Long-tailed Duck|Clangula hyemalis |Jegesréce
+39||
+Black (aka Common) Scoter|Melanitta nigra |Fekete réce
+40||
+Velvet Scoter|Melanitta fusca |Füstös réce
+41||
+(Common) Goldeneye|Bucephala clangula |Kerceréce
+42||
+Smew|Mergus albellus |Kis bukó
+43||
+Red-breasted Merganser|Mergus serrator |Örvös bukó
+44||
+(Common) Merganser (aka Goosander)|Mergus merganser |Nagy bukó
+45||
+Ruddy Duck |Oxyura jamaicensis |Halcsontfarkú réce 
+46||
+White-headed Duck |Oxyura leucocephala |Kékcsőrű réce 
+47||
+Hazel Grouse|Bonasa bonasia |Császármadár
+48||
+Black Grouse |Tetrao tetrix |Nyírfajd 
+49||
+(Western) Capercaillie |Tetrao urogallus |Siketfajd 
+50||
+(Grey) Partridge|Perdix perdix |Fogoly
+51||
+(Common) Quail|Coturnix coturnix |Fürj
+52||
+(Common) Pheasant|Phasianus colchicus |Fácán
+53||
+Red-throated Diver|Gavia stellata |Északi búvár
+54||
+Black-throated Diver|Gavia arctica |Sarki búvár
+55||
+Great Northern Diver |Gavia immer |Jeges búvár 
+56||
+Little Grebe|Tachybaptus ruficollis |Kis vöcsök
+57||
+Great Crested Grebe|Podiceps cristatus |Búbos vöcsök
+58||
+Red-necked Grebe|Podiceps grisegena |Vörösnyakú vöcsök
+59||
+Horned (aka Slavonian) Grebe|Podiceps auritus |Füles vöcsök
+60||
+Black-necked Grebe|Podiceps nigricollis |Feketenyakú vöcsök
+61||
+(Great) Cormorant|Phalacrocorax carbo |Kárókatona
+62||
+Pygmy Cormorant|Phalacrocorax pygmeus |Kis kárókatona
+63||
+(Great) White Pelican |Pelecanus onocrotalus |Rózsás gödény 
+64||
+Dalmatian Pelican |Pelecanus crispus |Borzas gödény 
+65||
+(Eurasian) Bittern|Botaurus stellaris |Bölömbika
+66||
+Little Bittern|Ixobrychus minutus |Törpegém
+67||
+(Black-crowned) Night Heron|Nycticorax nycticorax |Bakcsó
+68||
+Squacco Heron|Ardeola ralloides |Üstökösgém
+69||
+Chinese Pond-heron|Ardeola bacchus|Kínai üstökösgém
+70||
+Cattle Egret |Bubulcus ibis |Pásztorgém 
+71||
+Western Reef Egret |Egretta gularis |Zátonykócsag 
+72||
+Little Egret|Egretta garzetta |Kis kócsag
+73||
+Great (aka Great White) Egret|Ardea alba|Nagy kócsag
+74||
+Grey Heron|Ardea cinerea |Szürke gém
+75||
+Purple Heron|Ardea purpurea |Vörös gém
+76||
+Black Stork|Ciconia nigra |Fekete gólya
+77||
+White Stork|Ciconia ciconia |Fehér gólya
+78||
+Marabou Stork|Leptoptilos crumeniferus|Afrikai marabu
+79||
+Glossy Ibis|Plegadis falcinellus |Batla
+80||
+Eurasian Spoonbill|Platalea leucorodia |Kanalasgém
+81||
+Greater Flamingo |Phoenicopterus roseus |Rózsás flamingó 
+82||
+(European) Honey Buzzard|Pernis apivorus |Darázsölyv
+83||
+Black Kite|Milvus migrans |Barna kánya
+84||
+Red Kite|Milvus milvus |Vörös kánya
+85||
+White-tailed Eagle|Haliaeetus albicilla |Rétisas
+86||
+Egyptian Vulture |Neophron percnopterus |Dögkeselyű 
+87||
+Griffon Vulture |Gyps fulvus |Fakó keselyű 
+88||
+Cinereous (aka Black) Vulture|Aegypius monachus |Barátkeselyű 
+89||
+Short-toed (Snake) Eagle|Circaetus gallicus |Kígyászölyv
+90||
+(Western) Marsh Harrier|Circus aeruginosus |Barna rétihéja
+91||
+Northern (aka Hen) Harrier|Circus cyaneus |Kékes rétihéja
+92||
+Pallid Harrier |Circus macrourus |Fakó rétihéja 
+93||
+Montagu's Harrier|Circus pygargus |Hamvas rétihéja
+94||
+(Northern) Goshawk|Accipiter gentilis |Héja
+95||
+(Eurasian) Sparrowhawk|Accipiter nisus |Karvaly
+96||
+Levant Sparrowhawk |Accipiter brevipes |Kis héja 
+97||
+(Common) Buzzard|Buteo buteo |Egerészölyv
+98||
+Long-legged Buzzard|Buteo rufinus |Pusztai ölyv
+99||
+Roughleg (aka Rough-legged Buzzard)|Buteo lagopus |Gatyás ölyv
+100||
+Lesser Spotted Eagle|Aquila pomarina |Békászó sas
+101||
+(Greater) Spotted Eagle |Aquila clanga |Fekete sas 
+102||
+Steppe Eagle |Aquila nipalensis |Pusztai sas 
+103||
+(Asian) Imperial Eagle|Aquila heliaca |Parlagi sas
+104||
+Golden Eagle|Aquila chrysaetos |Szirti sas
+105||
+Booted Eagle |Aquila fasciata |Törpesas 
+106||
+Bonelli's Eagle |Aquila pennata |Héjasas 
+107||
+Osprey|Pandion haliaetus |Halászsas
+108||
+Lesser Kestrel |Falco naumanni |Fehérkarmú vércse 
+109||
+(Common) Kestrel|Falco tinnunculus |Vörös vércse
+110||
+Red-footed Falcon|Falco vespertinus |Kék vércse
+111||
+Amur Falcon |Falco amurensis |Amuri vércse 
+112||
+Merlin|Falco columbarius |Kis sólyom
+113||
+(Eurasian) Hobby|Falco subbuteo |Kabasólyom
+114||
+Eleonora's Falcon |Falco eleonorae |Eleonóra-sólyom 
+115||
+Saker (Falcon)|Falco cherrug |Kerecsensólyom
+116||
+Peregrine (Falcon)|Falco peregrinus |Vándorsólyom
+117||
+Water Rail|Rallus aquaticus |Guvat
+118||
+Spotted Crake|Porzana porzana |Pettyes vízicsibe
+119||
+Little Crake|Porzana parva |Kis vízicsibe
+120||
+Baillon's Crake |Porzana pusilla |Törpevízicsibe 
+121||
+Corn Crake|Crex crex |Haris
+122||
+(Common) Moorhen|Gallinula chloropus |Vízityúk
+123||
+Purple Swamphen (aka Purple Gallinule)|Porphyrio porphyrio |Kék fú 
+124||
+(Eurasian) Coot|Fulica atra |Szárcsa
+125||
+Common (aka Eurasian) Crane|Grus grus |Daru
+126||
+Demoiselle Crane |Grus virgo|Pártásdaru 
+127||
+Little Bustard |Tetrax tetrax |Reznek 
+128||
+Great Bustard|Otis tarda |Túzok
+129||
+(Eurasian) Oystercatcher|Haematopus ostralegus |Csigaforgató
+130||
+Black-winged Stilt|Himantopus himantopus |Gólyatöcs
+131||
+(Pied) Avocet|Recurvirostra avosetta |Gulipán
+132||
+(Eurasian) Stone-curlew|Burhinus oedicnemus |Ugartyúk
+133||
+Collared Pratincole|Glareola pratincola |Székicsér
+134||
+Black-winged Pratincole |Glareola nordmanni |Feketeszárnyú székicsér 
+135||
+Little Ringed Plover|Charadrius dubius |Kis lile
+136||
+(Common) Ringed Plover|Charadrius hiaticula |Parti lile
+137||
+Killdeer (aka Killdeer Plover)|Charadrius vociferus |Ékfarkú lile 
+138||
+Kentish Plover|Charadrius alexandrinus |Széki lile
+139||
+Greater Sand Plover |Charadrius leschenaultii |Sivatagi lile 
+140||
+(Eurasian) Dotterel|Charadrius morinellus |Havasi lile
+141||
+American Golden Plover |Pluvialis dominicus |Amerikai pettyeslile 
+142||
+Pacific Golden Plover |Pluvialis fulva |Ázsiai pettyeslile 
+143||
+(European) Golden Plover|Pluvialis apricaria |Aranylile
+144||
+Grey Plover|Pluvialis squatarola |Ezüstlile
+145||
+Spur-winged Lapwing  (aka Spur-winged Plover)|Vanellus spinosus |Tüskés bíbic 
+146||
+Sociable Lapwing  (aka Sociable Plover)|Vanellus gregarius |Lilebíbic 
+147||
+White-tailed Lapwing (aka White-tailed Plover)|Vanellus leucurus |Fehérfarkú lilebíbic 
+148||
+(Northern) Lapwing|Vanellus vanellus |Bíbic
+149||
+(Red) Knot|Calidris canutus |Sarki partfutó
+150||
+Sanderling|Calidris alba |Fenyérfutó
+151||
+Semipalmated Sandpiper |Calidris pusilla |Kis partfutó 
+152||
+Little Stint|Calidris minuta |Apró partfutó
+153||
+Temminck's Stint|Calidris temminckii |Temminck-partfutó
+154||
+White-rumped Sandpiper |Calidris fuscicollis |Bonaparte-partfutó 
+155||
+Baird's Sandpiper |Calidris bairdii |Baird-partfutó 
+156||
+Pectoral Sandpiper |Calidris melanotos |Vándorpartfutó 
+157||
+Curlew Sandpiper|Calidris ferruginea |Sarlós partfutó
+158||
+Stilt Sandpiper |Calidris himantopus |Töcspartfutó 
+159||
+Dunlin|Calidris alpina |Havasi partfutó
+160||
+Broad-billed Sandpiper|Limicola falcinellus |Sárjáró
+161||
+Buff-breasted Sandpiper |Tryngites subruficollis |Cankópartfutó 
+162||
+Ruff|Philomachus pugnax |Pajzsoscankó
+163||
+Jack Snipe|Lymnocryptes minimus |Kis sárszalonka
+164||
+(Common) Snipe|Gallinago gallinago |Sárszalonka
+165||
+Great Snipe|Gallinago media |Nagy sárszalonka
+166||
+Long-billed Dowitcher |Limnodromus scolopaceus |Hosszúcsőrű cankógoda 
+167||
+(Eurasian) Woodcock|Scolopax rusticola |Erdei szalonka
+168||
+Black-tailed Godwit|Limosa limosa |Nagy goda
+169||
+Bar-tailed Godwit|Limosa lapponica |Kis goda
+170||
+Whimbrel|Numenius phaeopus |Kis póling
+171||
+Slender-billed Curlew |Numenius tenuirostris |Vékonycsőrű póling 
+172||
+(Eurasian) Curlew|Numenius arquata |Nagy póling
+173||
+Upland Sandpiper |Bartramia longicauda |Hosszúfarkú cankó 
+174||
+Spotted Redshank|Tringa erythropus |Füstös cankó
+175||
+(Common) Redshank|Tringa totanus |Piroslábú cankó
+176||
+Marsh Sandpiper|Tringa stagnatilis |Tavi cankó
+177||
+(Common) Greenshank|Tringa nebularia |Szürke cankó
+178||
+Lesser Yellowlegs |Tringa flavipes |Sárgalábú cankó 
+179||
+Green Sandpiper|Tringa ochropus |Erdei cankó
+180||
+Wood Sandpiper|Tringa glareola |Réti cankó
+181||
+Terek Sandpiper |Xenus cinereus |Terekcankó 
+182||
+Common Sandpiper|Actitis hypoleucos |Billegetőcankó
+183||
+(Ruddy) Turnstone|Arenaria interpres |Kőforgató
+184||
+Wilson's Phalarope |Phalaropus tricolor |Wilson-víztaposó 
+185||
+Red-necked Phalarope|Phalaropus lobatus |Vékonycsőrű víztaposó
+186||
+Red (aka Grey) Phalarope |Phalaropus fulicarius |Laposcsőrű víztaposó 
+187||
+Pomarine Skua |Stercorarius pomarinus |Szélesfarkú halfarkas 
+188||
+Parasitic Jaeger (aka Arctic Skua)|Stercorarius parasiticus |Ékfarkú halfarkas 
+189||
+Long-tailed Jaeger (aka Long-tailed Skua)|Stercorarius longicaudus |Nyílfarkú halfarkas 
+190||
+Great Skua |Stercorarius skua |Nagy halfarkas 
+191||
+Great Black-headed (aka Pallas's) Gull |Larus ichthyaetus |Halászsirály 
+192||
+Mediterranean Gull|Larus melanocephalus |Szerecsensirály
+193||
+Franklin's Gull |Larus pipixcan |Prérisirály 
+194||
+Little Gull|Larus minutus |Kis sirály
+195||
+Sabine's Gull |Larus sabini |Fecskesirály 
+196||
+(Common) Black-headed Gull|Larus ridibundus |Dankasirály
+197||
+Slender-billed Gull |Larus genei |Vékonycsőrű sirály 
+198||
+Ring-billed Gull |Larus delawarensis |Gyűrűscsőrű sirály 
+199||
+Mew Gull (aka Common Gull)|Larus canus |Viharsirály
+200||
+Lesser Black-backed Gull|Larus fuscus |Heringsirály
+201||
+Herring Gull |Larus argentatus |Ezüstsirály 
+202||
+Yellow-legged Gull|Larus michahellis |Sárgalábú sirály
+203||
+Caspian Gull|Larus cachinnans |Sztyeppi sirály
+204||
+Glaucous Gull |Larus hyperboreus |Jeges sirály 
+205||
+Great Black-backed Gull |Larus marinus |Dolmányos sirály 
+206||
+(Black-legged) Kittiwake |Rissa tridactyla |Csüllő 
+207||
+Gull-billed Tern|Gelochelidon nilotica |Kacagócsér
+208||
+Caspian Tern|Hydroprogne caspia |Lócsér
+209||
+Sandwich Tern |Sterna sandvicensis |Kenti csér 
+210||
+Common Tern|Sterna hirundo |Küszvágó csér
+211||
+Arctic Tern |Sterna paradisaea |Sarki csér 
+212||
+Little Tern|Sterna albifrons |Kis csér
+213||
+Whiskered Tern|Chlidonias hybrida|Fattyúszerkő
+214||
+Black Tern|Chlidonias niger |Kormos szerkő
+215||
+White-winged (aka White-winged Black) Tern|Chlidonias leucopterus |Fehérszárnyú szerkő
+216||
+Razorbill |Alca torda |Alka 
+217||
+(Atlantic) Puffin |Fratercula arctica |Lunda 
+218||
+Chestnut-bellied Sandgrouse |Pterocles exustus |Barnahasú pusztaityúk 
+219||
+Pallas's Sandgrouse |Syrrhaptes paradoxus |Talpastyúk 
+220||
+Feral Pigeon|Columba livia f. domestica |Parlagi galamb
+221||
+Stock Dove|Columba oenas |Kék galamb
+222||
+(Common) Wood Pigeon|Columba palumbus |Örvös galamb
+223||
+(Eurasian) Collared Dove|Streptopelia decaocto |Balkáni gerle
+224||
+(European) Turtle Dove|Streptopelia turtur |Vadgerle
+225||
+Oriental (aka Rufous) Turtle Dove |Streptopelia orientalis |Keleti gerle 
+226||
+Great Spotted Cuckoo |Clamator glandarius |Pettyes kakukk 
+227||
+(Common) Cuckoo|Cuculus canorus |Kakukk
+228||
+Barn Owl|Tyto alba |Gyöngybagoly
+229||
+(Eurasian) Scops Owl|Otus scops |Füleskuvik
+230||
+(Eurasian) Eagle Owl|Bubo bubo |Uhu
+231||
+Snowy Owl |Bubo scandiacus|Hóbagoly 
+232||
+(Northern) Hawk Owl |Surnia ulula |Karvalybagoly 
+233||
+(Eurasian) Pygmy Owl |Glaucidium passerinum |Törpekuvik 
+234||
+Little Owl|Athene noctua |Kuvik
+235||
+Tawny Owl|Strix aluco |Macskabagoly
+236||
+Ural Owl|Strix uralensis |Uráli bagoly
+237||
+Long-eared Owl|Asio otus |Erdei fülesbagoly
+238||
+Short-eared Owl|Asio flammeus |Réti fülesbagoly
+239||
+Boreal (aka Tengmalm's) Owl |Aegolius funereus |Gatyáskuvik 
+240||
+(Europen) Nightjar|Caprimulgus europaeus |Lappantyú
+241||
+(Common) Swift|Apus apus |Sarlósfecske
+242||
+Pallid Swift |Apus pallidus |Halvány sarlósfecske 
+243||
+Alpine Swift |Apus melba |Havasi sarlósfecske 
+244||
+(Common) Kingfisher|Alcedo atthis |Jégmadár
+245||
+(European) Bee-eater|Merops apiaster |Gyurgyalag
+246||
+(European) Roller|Coracias garrulus |Szalakóta
+247||
+(Eurasian) Hoopoe|Upupa epops |Búbosbanka
+248||
+(Eurasian) Wryneck|Jynx torquilla |Nyaktekercs
+249||
+Grey-headed Woodpecker|Picus canus |Hamvas küllő
+250||
+(European) Green Woodpecker|Picus viridis |Zöld küllő
+251||
+Black Woodpecker|Dryocopus martius |Fekete harkály
+252||
+Great Spotted Woodpecker|Dendrocopos major |Nagy fakopáncs
+253||
+Syrian Woodpecker|Dendrocopos syriacus |Balkáni fakopáncs
+254||
+Middle Spotted Woodpecker|Dendrocopos medius |Közép fakopáncs
+255||
+White-backed Woodpecker|Dendrocopos leucotos |Fehérhátú fakopáncs
+256||
+Lesser Spotted Woodpecker|Dendrocopos minor |Kis fakopáncs
+257||
+Calandra Lark |Melanocorypha calandra |Kalandrapacsirta 
+258||
+(Greater) Short-toed Lark |Calandrella brachydactyla |Szikipacsirta 
+259||
+Crested Lark|Galerida cristata |Búbospacsirta
+260||
+Woodlark|Lullula arborea |Erdei pacsirta
+261||
+(Eurasian) Skylark|Alauda arvensis |Mezei pacsirta
+262||
+Horned (aka Shore) Lark|Eremophila alpestris |Havasi fülespacsirta 
+263||
+Sand Martin|Riparia riparia |Partifecske
+264||
+(Barn) Swallow|Hirundo rustica |Füsti fecske
+265||
+Red-rumped Swallow |Cecropis daurica |Vörhenyes fecske 
+266||
+(Common) House Martin|Delichon urbicum|Molnárfecske
+267||
+Richard's Pipit |Anthus richardi |Sarkantyús pityer 
+268||
+Tawny Pipit|Anthus campestris |Parlagi pityer
+269||
+Tree Pipit|Anthus trivialis |Erdei pityer
+270||
+Meadow Pipit|Anthus pratensis |Réti pityer
+271||
+Red-throated Pipit|Anthus cervinus |Rozsdástorkú pityer
+272||
+Water Pipit|Anthus spinoletta |Havasi pityer
+273||
+(Western) Yellow Wagtail|Motacilla flava |Sárga billegető
+274||
+Citrine Wagtail |Motacilla citreola |Citrombillegető 
+275||
+Grey Wagtail|Motacilla cinerea |Hegyi billegető
+276||
+White (aka Pied) Wagtail|Motacilla alba |Barázdabillegető
+277||
+(Bohemian) Waxwing|Bombycilla garrulus |Csonttollú
+278||
+(White-throated) Dipper|Cinclus cinclus |Vízirigó
+279||
+(Winter) Wren|Troglodytes troglodytes |Ökörszem
+280||
+Dunnock|Prunella modularis |Erdei szürkebegy
+281||
+Alpine Accentor|Prunella collaris |Havasi szürkebegy
+282||
+(European) Robin|Erithacus rubecula |Vörösbegy
+283||
+Thrush Nightingale|Luscinia luscinia |Nagy fülemüle
+284||
+(Common) Nightingale|Luscinia megarhynchos |Fülemüle
+285||
+Bluethroat|Luscinia svecica |Kékbegy
+286||
+Black Redstart|Phoenicurus ochruros |Házi rozsdafarkú
+287||
+(Common) Redstart|Phoenicurus phoenicurus |Kerti rozsdafarkú
+288||
+Whinchat|Saxicola rubetra |Rozsdás csuk
+289||
+(Common) Stonechat|Saxicola torquatus|Cigánycsuk
+290||
+Isabelline Wheatear |Oenanthe isabellina |Pusztai hantmadár 
+291||
+(Northern) Wheatear|Oenanthe oenanthe |Hantmadár
+292||
+Pied Wheatear |Oenanthe pleschanka |Apácahantmadár 
+293||
+Black-eared Wheatear |Oenanthe hispanica |Déli hantmadár 
+294||
+Desert Wheatear |Oenanthe deserti |Sivatagi hantmadár 
+295||
+(Rufous-tailed) Rock Thrush|Monticola saxatilis |Kövirigó
+296||
+Blue Rock Thrush |Monticola solitarius |Kék kövirigó 
+297||
+Ring Ouzel|Turdus torquatus |Örvös rigó
+298||
+(Common) Blackbird|Turdus merula |Fekete rigó
+299||
+Fieldfare|Turdus pilaris |Fenyőrigó
+300||
+Song Thrush|Turdus philomelos |Énekes rigó
+301||
+Redwing|Turdus iliacus |Szőlőrigó
+302||
+Mistle Thrush|Turdus viscivorus |Léprigó
+303||
+Cetti's Warbler |Cettia cetti |Berki poszáta 
+304||
+Zitting Cisticola (aka Streaked Fantail Warbler)|Cisticola juncidis |Szuharbújó 
+305||
+(Common) Grasshopper Warbler|Locustella naevia |Réti tücsökmadár
+306||
+River Warbler|Locustella fluviatilis |Berki tücsökmadár
+307||
+Savi's Warbler|Locustella luscinioides |Nádi tücsökmadár
+308||
+Moustached Warbler|Acrocephalus melanopogon |Fülemülesitke
+309||
+Aquatic Warbler |Acrocephalus paludicola |Csíkosfejű nádiposzáta 
+310||
+Sedge Warbler|Acrocephalus schoenobaenus |Foltos nádiposzáta
+311||
+(European) Reed Warbler|Acrocephalus scirpaceus |Cserregő nádiposzáta
+312||
+Marsh Warbler|Acrocephalus palustris |Énekes nádiposzáta
+313||
+Paddyfield Warbler |Acrocephalus agricola |Rozsdás nádiposzáta 
+314||
+Great Reed Warbler|Acrocephalus arundinaceus |Nádirigó
+315||
+(Eastern) Olivaceous Warbler|Hippolais pallida |Halvány geze
+316||
+Icterine Warbler|Hippolais icterina |Kerti geze
+317||
+Blackcap|Sylvia atricapilla |Barátposzáta
+318||
+Garden Warbler|Sylvia borin |Kerti poszáta
+319||
+Barred Warbler|Sylvia nisoria |Karvalyposzáta
+320||
+Lesser Whitethroat|Sylvia curruca |Kis poszáta
+321||
+(Common) Whitethroat|Sylvia communis |Mezei poszáta
+322||
+Subalpine Warbler |Sylvia cantillans |Bajszos poszáta 
+323||
+Sardinian Warbler |Sylvia melanocephala |Kucsmás poszáta 
+324||
+Pallas's Leaf Warbler |Phylloscopus proregulus |Királyfüzike 
+325||
+Yellow-browed Warbler |Phylloscopus inornatus |Vándorfüzike 
+326||
+Hume's Leaf Warbler |Phylloscopus humei |Himalájai füzike 
+327||
+Radde's Warbler |Phylloscopus schwarzi |Vastagcsőrű füzike 
+328||
+Dusky Warbler |Phylloscopus fuscatus |Barna füzike 
+329||
+(Western) Bonelli's Warbler |Phylloscopus bonelli |Bonelli-füzike 
+330||
+Wood Warbler|Phylloscopus sibilatrix |Sisegő füzike
+331||
+(Common) Chiffchaff|Phylloscopus collybita |Csilpcsalpfüzike
+332||
+Willow Warbler|Phylloscopus trochilus |Fitiszfüzike
+333||
+Goldcrest|Regulus regulus |Sárgafejű királyka
+334||
+Firecrest|Regulus ignicapilla|Tüzesfejű királyka
+335||
+Spotted Flycatcher|Muscicapa striata |Szürke légykapó
+336||
+Red-breasted Flycatcher|Ficedula parva |Kis légykapó
+337||
+Collared Flycatcher|Ficedula albicollis |Örvös légykapó
+338||
+(European) Pied Flycatcher|Ficedula hypoleuca |Kormos légykapó
+339||
+Bearded Reedling (aka Bearded Tit)|Panurus biarmicus |Barkóscinege
+340||
+Long-tailed Bushtit (aka Long-tailed Tit)|Aegithalos caudatus |Őszapó
+341||
+Marsh Tit|Parus palustris |Barátcinege
+342||
+Willow Tit|Parus montanus |Kormosfejű cinege
+343||
+(European) Crested Tit|Parus cristatus |Búbos cinege
+344||
+Coal Tit|Parus ater |Fenyvescinege
+345||
+Blue Tit|Parus caeruleus |Kék cinege
+346||
+Great Tit|Parus major |Széncinege
+347||
+(Eurasian) Nuthatch|Sitta europaea |Csuszka
+348||
+Wallcreeper|Tichodroma muraria |Hajnalmadár
+349||
+(Eurasian) Treecreeper|Certhia familiaris |Hegyi fakusz
+350||
+Short-toed Treecreeper|Certhia brachydactyla |Rövidkarmú fakusz
+351||
+(Eurasian) Penduline Tit|Remiz pendulinus |Függőcinege
+352||
+(Eurasian) Golden Oriole|Oriolus oriolus |Sárgarigó
+353||
+Red-backed Shrike|Lanius collurio |Tövisszúró gébics
+354||
+Lesser Grey Shrike|Lanius minor |Kis őrgébics
+355||
+Great Grey Shrike|Lanius excubitor |Nagy őrgébics
+356||
+Woodchat Shrike |Lanius senator |Vörösfejű gébics 
+357||
+(Eurasian) Jay|Garrulus glandarius |Szajkó
+358||
+(Eurasian) Magpie|Pica pica |Szarka
+359||
+(Spotted) Nutcracker|Nucifraga caryocatactes |Fenyőszajkó
+360||
+Alpine Chough |Pyrrhocorax graculus |Havasi csóka 
+361||
+(Red-billed) Chough |Pyrrhocorax pyrrhocorax |Havasi varjú 
+362||
+(Western) Jackdaw|Corvus monedula |Csóka
+363||
+Rook|Corvus frugilegus |Vetési varjú
+364||
+Carrion Crow|Corvus corone |Kormos varjú
+365||
+Hooded Crow|Corvus cornix |Dolmányos varjú
+366||
+(Northern) Raven|Corvus corax |Holló
+367||
+(Common) Starling|Sturnus vulgaris |Seregély
+368||
+Rosy (aka Rose-coloured) Starling|Sturnus roseus |Pásztormadár
+369||
+House Sparrow|Passer domesticus |Házi veréb
+370||
+(Eurasian) Tree Sparrow|Passer montanus |Mezei veréb
+371||
+(Common) Chaffinch|Fringilla coelebs |Erdei pinty
+372||
+Brambling|Fringilla montifringilla |Fenyőpinty
+373||
+(European) Serin|Serinus serinus |Csicsörke
+374||
+(European) Greenfinch|Carduelis chloris |Zöldike
+375||
+(European) Goldfinch|Carduelis carduelis |Tengelic
+376||
+(European) Siskin|Carduelis spinus |Csíz
+377||
+(Common) Linnet|Carduelis cannabina |Kenderike
+378||
+Twite|Carduelis flavirostris |Sárgacsőrű kenderike
+379||
+(Common) Redpoll|Carduelis flammea |Zsezse
+380||
+Arctic Redpoll |Carduelis hornemanni |Szürke zsezse 
+381||
+Two-barred Crossbill |Loxia leucoptera |Szalagos keresztcsőrű 
+382||
+(Red) Crossbill|Loxia curvirostra |Keresztcsőrű
+383||
+(Common) (aka Scarlet) Rosefinch |Carpodacus erythrinus |Karmazsinpirók 
+384||
+Pallas's Rosefinch |Carpodacus roseus |Rózsás pirók 
+385||
+Pine Grosbeak |Pinicola enucleator |Nagy pirók 
+386||
+(Eurasian) Bullfinch|Pyrrhula pyrrhula |Süvöltő
+387||
+Hawfinch|Coccothraustes coccothraustes |Meggyvágó
+388||
+Lapland Longspur (aka Lapland Bunting)|Calcarius lapponicus |Sarkantyús sármány 
+389||
+Snow Bunting|Plectrophenax nivalis |Hósármány
+390||
+Pine Bunting |Emberiza leucocephalos |Fenyősármány 
+391||
+Yellowhammer|Emberiza citrinella |Citromsármány
+392||
+Cirl Bunting |Emberiza cirlus |Sövénysármány 
+393||
+Rock Bunting|Emberiza cia |Bajszos sármány
+394||
+Ortolan Bunting |Emberiza hortulana |Kerti sármány 
+395||
+Little Bunting |Emberiza pusilla |Törpesármány 
+396||
+(Common) Reed Bunting|Emberiza schoeniclus |Nádi sármány
+397||
+Black-headed Bunting |Emberiza melanocephala |Kucsmás sármány 
+398||
+Corn Bunting|Miliaria calandra |Sordély

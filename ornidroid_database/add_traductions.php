@@ -62,7 +62,9 @@ function removeDiacritics($str) {
 		"ý",
 		"ÿ",
 		"Ÿ",
-		"ß"
+		"ß",
+		"ő",
+		"ű"
 	), array (
 		"a",
 		"a",
@@ -119,7 +121,9 @@ function removeDiacritics($str) {
 		"y",
 		"y",
 		"Y",
-		"ss"
+		"ss",
+		"o",
+		"u"
 	), $str);
 }
 
@@ -177,10 +181,18 @@ $sk_code='sk';
 $se_code='se';
 $zh_code='zh';
 $gr_code='gr';
+$bg_code='bg';
+$ro_code='ro';
+$hu_code='hu';
 
 $latin_index_in_greek_file=1;
 $greek_index_in_greek_file=2;
-
+$latin_index_in_bulgarian_file=1;
+$bulgarian_index_in_bulgarian_file=0;
+$latin_index_in_romanian_file=0;
+$romanian_index_in_romanian_file=1;
+$latin_index_in_hungarian_file=1;
+$hungarian_index_in_hungarian_file=2;
 try {
 	$sqliteFile = "ornidroid.jpg";
 	$dbh = new PDO('sqlite:'.$sqliteFile); // success
@@ -253,7 +265,7 @@ try {
 	    while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
 		//si latin non vide et 4 colonnes = un oiseau !
 		if (""!=$data[$latin_index_in_greek_file]&&count($data)==4){
-			$findBirdIdQuery = "select id from bird where scientific_name='".trim($data[$latin_index_in_greek_file])."'";
+			$findBirdIdQuery = "select id from bird where scientific_name='".trim($data[$latin_index_in_greek_file])."' or scientific_name2='".trim($data[$latin_index_in_greek_file])."'";
 			echo $findBirdIdQuery."\n";
 			$birdId=-1;
 			foreach ($dbh->query($findBirdIdQuery) as $row){
@@ -265,6 +277,72 @@ try {
 			}
 			else {
 				echo "GREC : nom latin non référencé : " . $data[$latin_index_in_greek_file]."\n";
+			}
+		}
+	    }
+	    fclose($handle);
+	}
+	//bulgare
+	if (($handle = fopen("traductions_bulgare.csv", "r")) !== FALSE) {
+	    while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
+		//si latin non vide et 2 colonnes = un oiseau !
+		if (""!=$data[$latin_index_in_bulgarian_file]&&count($data)==2){
+			$findBirdIdQuery = "select id from bird where scientific_name='".trim($data[$latin_index_in_bulgarian_file])."' or scientific_name2='".trim($data[$latin_index_in_bulgarian_file])."'";
+			echo $findBirdIdQuery."\n";
+			$birdId=-1;
+			foreach ($dbh->query($findBirdIdQuery) as $row){
+				$birdId = $row["id"];
+			}
+			if ($birdId>=1){
+				echo "######insertion du bulgare pour : " . $data[$latin_index_in_bulgarian_file]."\n";
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,trim($data[$bulgarian_index_in_bulgarian_file]),$bg_code));
+			}
+			else {
+				echo "Bulgare : nom latin non référencé : " . $data[$latin_index_in_bulgarian_file]."\n";
+			}
+		}
+	    }
+	    fclose($handle);
+	}
+	//roumain
+	if (($handle = fopen("traductions_roumain.csv", "r")) !== FALSE) {
+	    while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
+		//si latin non vide et 2 colonnes = un oiseau !
+		if (""!=$data[$latin_index_in_romanian_file]&&count($data)==2){
+			$findBirdIdQuery = "select id from bird where scientific_name='".trim($data[$latin_index_in_romanian_file])."' or scientific_name2='".trim($data[$latin_index_in_romanian_file])."'";
+			echo $findBirdIdQuery."\n";
+			$birdId=-1;
+			foreach ($dbh->query($findBirdIdQuery) as $row){
+				$birdId = $row["id"];
+			}
+			if ($birdId>=1){
+				echo "######insertion du romanian pour : " . $data[$latin_index_in_romanian_file]."\n";
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,trim($data[$romanian_index_in_romanian_file]),$ro_code));
+			}
+			else {
+				echo "romanian : nom latin non référencé : " . $data[$latin_index_in_romanian_file]."\n";
+			}
+		}
+	    }
+	    fclose($handle);
+	}
+	//hungarian
+	if (($handle = fopen("traductions_hongrois.csv", "r")) !== FALSE) {
+	    while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
+		//si latin non vide et 3 colonnes = un oiseau !
+		if (""!=$data[$latin_index_in_hungarian_file]&&count($data)==3){
+			$findBirdIdQuery = "select id from bird where scientific_name='".trim($data[$latin_index_in_hungarian_file])."' or scientific_name2='".trim($data[$latin_index_in_hungarian_file])."'";
+			echo $findBirdIdQuery."\n";
+			$birdId=-1;
+			foreach ($dbh->query($findBirdIdQuery) as $row){
+				$birdId = $row["id"];
+			}
+			if ($birdId>=1){
+				echo "######insertion du hungarian pour : " . $data[$latin_index_in_hungarian_file]."\n";
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,trim($data[$hungarian_index_in_hungarian_file]),$hu_code));
+			}
+			else {
+				echo "hungarian : nom latin non référencé : " . $data[$latin_index_in_hungarian_file]."\n";
 			}
 		}
 	    }

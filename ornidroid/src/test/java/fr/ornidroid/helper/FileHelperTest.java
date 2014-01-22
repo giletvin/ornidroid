@@ -2,6 +2,8 @@ package fr.ornidroid.helper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.Assert;
 
@@ -50,10 +52,16 @@ public class FileHelperTest extends AbstractTest {
 			FileHelper.copyDirectory(srcDir, destDir);
 			final File[] srcDirContent = srcDir.listFiles();
 			final File[] destDirContent = destDir.listFiles();
+			List<String> srcDirContentPaths = new ArrayList<String>();
+
+			List<String> destDirContentPaths = new ArrayList<String>();
 			Assert.assertTrue(srcDirContent.length == destDirContent.length);
 			for (int i = 0; i < srcDirContent.length; i++) {
-				Assert.assertTrue(srcDirContent[i].getName().equals(
-						destDirContent[i].getName()));
+				srcDirContentPaths.add(srcDirContent[i].getName());
+				destDirContentPaths.add(destDirContent[i].getName());
+			}
+			for (String path : srcDirContentPaths) {
+				Assert.assertTrue(destDirContentPaths.contains(path));
 			}
 
 		} catch (final IOException e) {

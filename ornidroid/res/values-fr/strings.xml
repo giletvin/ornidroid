@@ -40,11 +40,11 @@
 
      <!-- labels used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
-    <string name="preferences_lang_title">Language utilisée pour la recherche</string>
+    <string name="preferences_lang_title">Langue utilisée pour la recherche</string>
     <string name="preferences_lang_summary">23 langues disponibles</string>
     <string name="preferences_ornidroid_home_key">OrnidroidHome</string>
     <string name="preferences_ornidroid_home_title">Répertoire des données d\'Ornidroid</string>
-    <string name="preferences_ornidroid_home_summary">Choisir le répertoire où Ornidroid doit placer ses données.</string>
+    <string name="preferences_ornidroid_home_summary">Choisir le répertoire où Ornidroid doit placer ses données. Pour les utilisateurs avertis seulement !</string>
     <string name="preferences_ornidroid_home_copying_files">Copie de fichiers en cours</string>
     <string name="preferences_ornidroid_home_saved">Modification du répertoire de données réussie</string>
     <string name="preferences_automatic_update_check_key">AutomaticUpdateCheck</string>

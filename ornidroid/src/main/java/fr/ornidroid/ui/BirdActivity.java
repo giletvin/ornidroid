@@ -15,7 +15,6 @@ import android.widget.SimpleAdapter;
 import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.TabHost.TabSpec;
-import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import fr.ornidroid.R;
@@ -60,7 +59,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	private static final String DETAIL_TAB_NAME = "detailTab";
 
 	/** The Constant TAB_HEIGHT. */
-	private static final int TAB_HEIGHT = 50;
+	private static final int TAB_HEIGHT = 150;
 
 	/** The audio helper. */
 	private final AudioHelper audioHelper;
@@ -449,8 +448,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 		this.tabs.setCurrentTab(this.tabIdToDisplay);
 
-		resizeTabs(this.tabs);
-
 	}
 
 	/*
@@ -506,21 +503,4 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		this.mediaPlayer.release();
 	}
 
-	/**
-	 * Resize tabs. Hint found there :
-	 * http://groups.google.com/group/android-developers
-	 * /browse_thread/thread/c0ce750ca2525637?pli=1
-	 * 
-	 * @param tabHost
-	 *            the tab host
-	 */
-	private void resizeTabs(final TabHost tabHost) {
-		final TabWidget widget = tabHost.getTabWidget();
-		final int childCount = widget.getChildCount();
-		for (int i = 0; i < childCount; i++) {
-			final View child = widget.getChildAt(i);
-			child.getLayoutParams().height = TAB_HEIGHT;
-		}
-
-	}
 }

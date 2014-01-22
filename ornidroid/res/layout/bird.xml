@@ -13,7 +13,7 @@
         android:id="@android:id/tabcontent"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="55dp" >
+        android:paddingTop="75dp" >
 
         <LinearLayout
             android:id="@+id/content"

@@ -130,6 +130,7 @@ public class PictureHelper {
 		taxonAndNbPicturesLayout.addView(this.birdActivity
 				.getNumberOfPicturesTextView());
 		taxonAndNbPicturesLayout.setPadding(5, 10, 5, 5);
+
 		taxonAndNbPicturesLayout.setLayoutParams(new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 		headerLayout.addView(taxonAndNbPicturesLayout);
@@ -144,11 +145,17 @@ public class PictureHelper {
 			infoButtonLayout.setPadding(5, 10, 5, 5);
 
 			// add button to add custom media files
+			this.birdActivity.getRemoveCustomPictureButton().setPadding(15, 0,
+					25, 0);
 			infoButtonLayout.addView(this.birdActivity
 					.getRemoveCustomPictureButton());
+			this.birdActivity.getAddCustomPictureButton().setPadding(20, 0, 20,
+					0);
 			infoButtonLayout.addView(this.birdActivity
 					.getAddCustomPictureButton());
 			if (!Constants.getAutomaticUpdateCheckPreference()) {
+				this.birdActivity.getUpdateFilesButton().setPadding(20, 0, 20,
+						0);
 				infoButtonLayout.addView(this.birdActivity
 						.getUpdateFilesButton());
 			} else {
@@ -157,6 +164,7 @@ public class PictureHelper {
 
 			// info button
 			this.birdActivity.setInfoButton(new ImageView(this.birdActivity));
+			this.birdActivity.getInfoButton().setPadding(20, 0, 0, 0);
 			this.birdActivity.getInfoButton().setOnClickListener(
 					this.birdActivity);
 			this.birdActivity.getInfoButton().setImageResource(

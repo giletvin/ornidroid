@@ -62,6 +62,16 @@
             android:text="@string/help"
             android:textSize="20sp" />
 
+         <TextView
+            android:id="@+id/menu_preferences"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20sp"
+            android:paddingRight="20sp"
+            android:paddingTop="20sp"
+            android:text="@string/preferences"
+            android:textSize="20sp" />
+        
         <TextView
             android:id="@+id/menu_about"
             android:layout_width="wrap_content"

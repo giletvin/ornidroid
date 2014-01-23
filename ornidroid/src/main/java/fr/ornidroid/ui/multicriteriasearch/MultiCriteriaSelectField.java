@@ -220,22 +220,17 @@ public class MultiCriteriaSelectField extends LinearLayout implements
 		// add the icon on the left side
 		final LayoutParams paramsLayoutIcon = new LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		paramsLayoutIcon.height = 50;
-		paramsLayoutIcon.width = 50;
 		this.icon.setLayoutParams(paramsLayoutIcon);
 		this.icon.setImageResource(R.drawable.ic_down);
 		layoutTextIcon.addView(this.icon);
 
 		// add a layout for the text
 		final LinearLayout layoutText = new LinearLayout(context);
-
+		layoutText.setGravity(Gravity.CENTER);
 		final LayoutParams paramsLayoutText = new LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT);
 		paramsLayoutText.leftMargin = 20;
-		paramsLayoutText.topMargin = 5;
-		paramsLayoutText.gravity = Gravity.CENTER;
 		layoutText.setLayoutParams(paramsLayoutText);
-		this.textView.setPadding(0, 10, 10, 0);
 		layoutText.addView(this.textView);
 		layoutTextIcon.addView(layoutText);
 

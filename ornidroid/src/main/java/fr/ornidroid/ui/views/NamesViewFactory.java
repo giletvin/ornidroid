@@ -52,7 +52,7 @@ public class NamesViewFactory {
 		final LinearLayout linearLayout = new LinearLayout(this.activity);
 
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
-		linearLayout.setPadding(5, 10, 5, 5);
+		linearLayout.setPadding(25, 10, 5, 5);
 
 		this.scientificName = new TextView(this.activity);
 		linearLayout.addView(this.scientificName);

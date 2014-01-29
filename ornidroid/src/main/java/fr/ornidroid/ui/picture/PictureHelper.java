@@ -27,6 +27,15 @@ import fr.ornidroid.ui.BirdActivity;
 public class PictureHelper {
 
 	/**
+	 * General left padding
+	 */
+	private static final int LEFT_PADDING = 25;
+	/**
+	 * General right padding
+	 */
+	private static final int RIGHT_PADDING = 20;
+
+	/**
 	 * Try decode bitmap.
 	 * 
 	 * @param bitmapPath
@@ -117,11 +126,13 @@ public class PictureHelper {
 		headerLayout.setOrientation(LinearLayout.HORIZONTAL);
 		headerLayout.setHorizontalGravity(Gravity.RIGHT);
 		headerLayout.setWeightSum(2);
+		headerLayout.setPadding(LEFT_PADDING, 10, 5, 5);
 
 		// vertical layout on the left side which contains the name of the bird
 		// and the nb of pictures
 		final LinearLayout taxonAndNbPicturesLayout = new LinearLayout(
 				this.birdActivity);
+
 		taxonAndNbPicturesLayout.setOrientation(LinearLayout.VERTICAL);
 		this.birdActivity.setTaxon(new TextView(this.birdActivity));
 		this.birdActivity.setNumberOfPicturesTextView(new TextView(
@@ -129,7 +140,6 @@ public class PictureHelper {
 		taxonAndNbPicturesLayout.addView(this.birdActivity.getTaxon());
 		taxonAndNbPicturesLayout.addView(this.birdActivity
 				.getNumberOfPicturesTextView());
-		taxonAndNbPicturesLayout.setPadding(5, 10, 5, 5);
 
 		taxonAndNbPicturesLayout.setLayoutParams(new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
@@ -142,20 +152,16 @@ public class PictureHelper {
 					this.birdActivity);
 			infoButtonLayout.setOrientation(LinearLayout.HORIZONTAL);
 			infoButtonLayout.setGravity(Gravity.RIGHT);
-			infoButtonLayout.setPadding(5, 10, 5, 5);
+			infoButtonLayout.setPadding(5, 10, 5, RIGHT_PADDING);
 
 			// add button to add custom media files
-			this.birdActivity.getRemoveCustomPictureButton().setPadding(15, 0,
-					25, 0);
 			infoButtonLayout.addView(this.birdActivity
 					.getRemoveCustomPictureButton());
-			this.birdActivity.getAddCustomPictureButton().setPadding(20, 0, 20,
-					0);
+
 			infoButtonLayout.addView(this.birdActivity
 					.getAddCustomPictureButton());
 			if (!Constants.getAutomaticUpdateCheckPreference()) {
-				this.birdActivity.getUpdateFilesButton().setPadding(20, 0, 20,
-						0);
+
 				infoButtonLayout.addView(this.birdActivity
 						.getUpdateFilesButton());
 			} else {
@@ -222,12 +228,14 @@ public class PictureHelper {
 				imageAndDescription.setOrientation(LinearLayout.VERTICAL);
 
 				final TextView description = new TextView(this.birdActivity);
+				description.setPadding(LEFT_PADDING, 0, 0, 0);
 				description
 						.setText(picture
 								.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
 				description.setTextAppearance(this.birdActivity,
 						android.R.style.TextAppearance_Small);
 				imageAndDescription.addView(description);
+
 				this.birdActivity.getViewFlipper().addView(imageAndDescription);
 				displayFixedPicture();
 				updateNumberOfPicturesText();

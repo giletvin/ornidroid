@@ -573,17 +573,22 @@ public abstract class AbstractDownloadableMediaActivity extends
 		this.addCustomPictureButton = new ImageView(this);
 		this.addCustomPictureButton.setOnClickListener(this);
 		this.addCustomPictureButton.setImageResource(R.drawable.ic_add);
+		this.addCustomPictureButton.setPadding(20, 0, 20, 0);
 
 		this.removeCustomPictureButton = new ImageView(this);
 		this.removeCustomPictureButton.setOnClickListener(this);
 		this.removeCustomPictureButton.setImageResource(R.drawable.ic_remove);
+		this.removeCustomPictureButton.setPadding(20, 0, 20, 0);
+
 		this.addCustomAudioButton = new ImageView(this);
 		this.addCustomAudioButton.setOnClickListener(this);
 		this.addCustomAudioButton.setImageResource(R.drawable.ic_add);
+		this.addCustomAudioButton.setPadding(20, 0, 20, 0);
 
 		this.removeCustomAudioButton = new ImageView(this);
 		this.removeCustomAudioButton.setOnClickListener(this);
 		this.removeCustomAudioButton.setImageResource(R.drawable.ic_remove);
+		this.removeCustomAudioButton.setPadding(20, 0, 20, 0);
 
 		hookOnCreate();
 	}

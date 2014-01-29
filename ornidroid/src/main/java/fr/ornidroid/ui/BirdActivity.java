@@ -58,9 +58,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/** The Constant DETAIL_TAB_NAME. */
 	private static final String DETAIL_TAB_NAME = "detailTab";
 
-	/** The Constant TAB_HEIGHT. */
-	private static final int TAB_HEIGHT = 150;
-
 	/** The audio helper. */
 	private final AudioHelper audioHelper;
 
@@ -103,6 +100,28 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/** The taxon. */
 	private TextView taxon;
 
+	/** picture description */
+	private TextView pictureDescription;
+
+	/**
+	 * Gets the picture description.
+	 * 
+	 * @return the picture description
+	 */
+	public TextView getPictureDescription() {
+		return pictureDescription;
+	}
+
+	/**
+	 * Sets the picture description.
+	 * 
+	 * @param pictureDescription
+	 *            the new picture description
+	 */
+	public void setPictureDescription(TextView pictureDescription) {
+		this.pictureDescription = pictureDescription;
+	}
+
 	/** The view flipper. */
 	private ViewFlipper viewFlipper;
 
@@ -137,7 +156,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 				// + this.bird.getTaxon() + " e");
 			}
 			this.mListView = new ListView(this);
-
+			mListView.setPadding(25, 0, 25, 0);
 			final SimpleAdapter adapter = new SimpleAdapter(this,
 					this.ornidroidService.getCurrentBird().getListAudioFiles(),
 					R.layout.audio_list, new String[] {

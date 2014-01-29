@@ -61,7 +61,7 @@ public class AudioHelper implements OnClickListener {
 	public View createAudioControlView() {
 		final LinearLayout audioLayout = new LinearLayout(this.birdActivity);
 		audioLayout.setOrientation(LinearLayout.VERTICAL);
-		audioLayout.setPadding(0, 25, 0, 10);
+		audioLayout.setPadding(0, 25, 25, 10);
 		final LinearLayout customMediaButtonsLayout = new LinearLayout(
 				this.birdActivity);
 		customMediaButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);

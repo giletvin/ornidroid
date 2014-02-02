@@ -1,7 +1,6 @@
 package fr.ornidroid.ui;
 
 import java.io.File;
-import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -30,12 +29,17 @@ import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
+import fr.ornidroid.ui.downloads.CheckUpdateFilesHandler;
+import fr.ornidroid.ui.downloads.CheckUpdateFilesHandler.UpdateFilesCallback;
+import fr.ornidroid.ui.downloads.HandlerThreadUpdateFiles;
+import fr.ornidroid.ui.downloads.UpdateFilesLoaderInfo;
 
 /**
  * The Class AbstractDownloadableMediaActivity.
  */
 public abstract class AbstractDownloadableMediaActivity extends
-		AbstractOrnidroidActivity implements Runnable, OnClickListener {
+		AbstractOrnidroidActivity implements Runnable, OnClickListener,
+		UpdateFilesCallback {
 	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
 	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
 
@@ -43,7 +47,7 @@ public abstract class AbstractDownloadableMediaActivity extends
 	protected static final int DIALOG_PICTURE_INFO_ID = 0;
 
 	/** The Constant DIALOG_UPDATES_AVAILABLE. */
-	protected static final int DIALOG_UPDATES_AVAILABLE = 1;
+	public static final int DIALOG_UPDATES_AVAILABLE = 1;
 
 	/** The Constant DOWNLOAD_FINISHED. */
 	protected static final int DOWNLOAD_FINISHED = 2;
@@ -88,8 +92,8 @@ public abstract class AbstractDownloadableMediaActivity extends
 	/** The download status. */
 	private int downloadStatus;
 
-	/** The files to download. */
-	private List<String> filesToDownload;
+	/** The m loader. */
+	private HandlerThreadUpdateFiles mLoader;
 
 	/** The info button. */
 	private ImageView infoButton;
@@ -130,6 +134,15 @@ public abstract class AbstractDownloadableMediaActivity extends
 	}
 
 	/**
+	 * Gets the ornidroid io service.
+	 * 
+	 * @return the ornidroid io service
+	 */
+	public IOrnidroidIOService getOrnidroidIOService() {
+		return ornidroidIOService;
+	}
+
+	/**
 	 * Check for updates. Fires a dialog box if updates are found. If manual
 	 * check, let the user know that no updates are found.
 	 * 
@@ -138,22 +151,11 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * 
 	 */
 	public void checkForUpdates(final boolean manualCheck) {
-		boolean updatesToDo = false;
-		try {
-			this.filesToDownload = this.ornidroidIOService.filesToUpdate(
-					getMediaHomeDirectory(), getBird(), getFileType());
-			updatesToDo = (this.filesToDownload.size() > 0);
-		} catch (final OrnidroidException e) {
-			Toast.makeText(this, R.string.updates_check_error,
-					Toast.LENGTH_LONG).show();
+		if (this.mLoader == null) {
+			this.mLoader = new HandlerThreadUpdateFiles(this);
+			this.mLoader.start();
 		}
-		if (updatesToDo) {
-			this.showDialog(DIALOG_UPDATES_AVAILABLE);
-		} else if (manualCheck) {
-			Toast.makeText(this, R.string.updates_none, Toast.LENGTH_LONG)
-					.show();
-		}
-
+		this.mLoader.checkForUpdates(manualCheck, this);
 	}
 
 	/**
@@ -680,7 +682,7 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * 
 	 * @return the media home directory
 	 */
-	private String getMediaHomeDirectory() {
+	public String getMediaHomeDirectory() {
 		String mediaHomeDirectory = null;
 		switch (getFileType()) {
 		case AUDIO:
@@ -741,4 +743,43 @@ public abstract class AbstractDownloadableMediaActivity extends
 		}
 
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.ui.downloads.CheckUpdateFilesHandler.UpdateFilesCallback
+	 * #onUpdateFilesEnded(fr.ornidroid.ui.downloads.CheckUpdateFilesHandler,
+	 * fr.ornidroid.ui.downloads.UpdateFilesLoaderInfo)
+	 */
+	public void onUpdateFilesEnded(CheckUpdateFilesHandler loader,
+			UpdateFilesLoaderInfo info) {
+		if (info.getException() != null) {
+			Toast.makeText(this, R.string.updates_check_error,
+					Toast.LENGTH_LONG).show();
+		}
+		if (info.isUpdatesAvailable()) {
+			this.showDialog(DIALOG_UPDATES_AVAILABLE);
+		} else {
+			if (info.isManualCheck()) {
+				Toast.makeText(this, R.string.updates_none, Toast.LENGTH_LONG)
+						.show();
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onDestroy()
+	 */
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (this.mLoader != null) {
+			this.mLoader.quit();
+			this.mLoader = null;
+		}
+	}
+
 }

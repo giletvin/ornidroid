@@ -4,34 +4,30 @@ package fr.ornidroid.ui.downloads;
  * source code found : http://cyrilmottier.com
  * /2011/07/18/android-et-la-programmation-concurrente-partie-2/
  */
-public interface CheckUpdateFilesHandler {
+public interface GenericTaskHandler {
 	/**
 	 * Callback to notify state changes.
 	 * 
 	 */
-	public static interface UpdateFilesCallback {
+	public static interface GenericTaskCallback {
 
 		/**
-		 * On update files ended.
+		 * On task ended.
 		 * 
 		 * @param loader
 		 *            the loader
 		 * @param info
 		 *            the info
 		 */
-		void onUpdateFilesEnded(CheckUpdateFilesHandler loader,
-				UpdateFilesLoaderInfo info);
+		void onTaskEnded(GenericTaskHandler loader, LoaderInfo info);
 
 	}
 
 	/**
-	 * Check for updates.
+	 * Generic task.
 	 * 
-	 * @param manualCheck
-	 *            the manual check
 	 * @param callback
 	 *            the callback
 	 */
-	public void checkForUpdates(boolean manualCheck,
-			UpdateFilesCallback callback);
+	public void genericTask(GenericTaskCallback callback);
 }

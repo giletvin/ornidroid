@@ -29,17 +29,19 @@ import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.downloads.CheckUpdateFilesHandler;
-import fr.ornidroid.ui.downloads.CheckUpdateFilesHandler.UpdateFilesCallback;
-import fr.ornidroid.ui.downloads.HandlerThreadUpdateFiles;
-import fr.ornidroid.ui.downloads.UpdateFilesLoaderInfo;
+import fr.ornidroid.ui.downloads.CheckForUpdateFilesLoaderInfo;
+import fr.ornidroid.ui.downloads.GenericTaskHandler;
+import fr.ornidroid.ui.downloads.GenericTaskHandler.GenericTaskCallback;
+import fr.ornidroid.ui.downloads.HandlerForCheckUpdateFilesThread;
+import fr.ornidroid.ui.downloads.HandlerGenericThread;
+import fr.ornidroid.ui.downloads.LoaderInfo;
 
 /**
  * The Class AbstractDownloadableMediaActivity.
  */
 public abstract class AbstractDownloadableMediaActivity extends
 		AbstractOrnidroidActivity implements Runnable, OnClickListener,
-		UpdateFilesCallback {
+		GenericTaskCallback {
 	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
 	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
 
@@ -93,7 +95,7 @@ public abstract class AbstractDownloadableMediaActivity extends
 	private int downloadStatus;
 
 	/** The m loader. */
-	private HandlerThreadUpdateFiles mLoader;
+	private HandlerGenericThread mLoader;
 
 	/** The info button. */
 	private ImageView infoButton;
@@ -152,10 +154,11 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 */
 	public void checkForUpdates(final boolean manualCheck) {
 		if (this.mLoader == null) {
-			this.mLoader = new HandlerThreadUpdateFiles(this);
+			this.mLoader = new HandlerForCheckUpdateFilesThread(this,
+					manualCheck);
 			this.mLoader.start();
 		}
-		this.mLoader.checkForUpdates(manualCheck, this);
+		this.mLoader.genericTask(this);
 	}
 
 	/**
@@ -748,22 +751,23 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * fr.ornidroid.ui.downloads.CheckUpdateFilesHandler.UpdateFilesCallback
-	 * #onUpdateFilesEnded(fr.ornidroid.ui.downloads.CheckUpdateFilesHandler,
-	 * fr.ornidroid.ui.downloads.UpdateFilesLoaderInfo)
+	 * fr.ornidroid.ui.downloads.GenericTaskHandler.GenericTaskCallback#onTaskEnded
+	 * (fr.ornidroid.ui.downloads.GenericTaskHandler,
+	 * fr.ornidroid.ui.downloads.LoaderInfo)
 	 */
-	public void onUpdateFilesEnded(CheckUpdateFilesHandler loader,
-			UpdateFilesLoaderInfo info) {
-		if (info.getException() != null) {
+	public void onTaskEnded(GenericTaskHandler loader, LoaderInfo loaderInfo) {
+		if (loaderInfo.getException() != null) {
 			Toast.makeText(this, R.string.updates_check_error,
 					Toast.LENGTH_LONG).show();
-		}
-		if (info.isUpdatesAvailable()) {
-			this.showDialog(DIALOG_UPDATES_AVAILABLE);
 		} else {
-			if (info.isManualCheck()) {
-				Toast.makeText(this, R.string.updates_none, Toast.LENGTH_LONG)
-						.show();
+			CheckForUpdateFilesLoaderInfo info = (CheckForUpdateFilesLoaderInfo) loaderInfo;
+			if (info.isUpdatesAvailable()) {
+				this.showDialog(DIALOG_UPDATES_AVAILABLE);
+			} else {
+				if (info.isManualCheck()) {
+					Toast.makeText(this, R.string.updates_none,
+							Toast.LENGTH_LONG).show();
+				}
 			}
 		}
 	}

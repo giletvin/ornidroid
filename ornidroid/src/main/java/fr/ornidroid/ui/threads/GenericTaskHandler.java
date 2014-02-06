@@ -1,4 +1,4 @@
-package fr.ornidroid.ui.downloads;
+package fr.ornidroid.ui.threads;
 
 /**
  * source code found : http://cyrilmottier.com

@@ -30,11 +30,11 @@ import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.downloads.CheckForUpdateFilesLoaderInfo;
-import fr.ornidroid.ui.downloads.GenericTaskHandler;
-import fr.ornidroid.ui.downloads.GenericTaskHandler.GenericTaskCallback;
 import fr.ornidroid.ui.downloads.HandlerForCheckUpdateFilesThread;
-import fr.ornidroid.ui.downloads.HandlerGenericThread;
-import fr.ornidroid.ui.downloads.LoaderInfo;
+import fr.ornidroid.ui.threads.GenericTaskHandler;
+import fr.ornidroid.ui.threads.HandlerGenericThread;
+import fr.ornidroid.ui.threads.LoaderInfo;
+import fr.ornidroid.ui.threads.GenericTaskHandler.GenericTaskCallback;
 
 /**
  * The Class AbstractDownloadableMediaActivity.

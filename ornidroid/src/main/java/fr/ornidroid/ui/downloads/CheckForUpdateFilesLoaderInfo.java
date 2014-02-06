@@ -1,6 +1,7 @@
 package fr.ornidroid.ui.downloads;
 
-import fr.ornidroid.ui.downloads.GenericTaskHandler.GenericTaskCallback;
+import fr.ornidroid.ui.threads.LoaderInfo;
+import fr.ornidroid.ui.threads.GenericTaskHandler.GenericTaskCallback;
 
 /**
  * The Class CheckForUpdateFilesLoaderInfo.

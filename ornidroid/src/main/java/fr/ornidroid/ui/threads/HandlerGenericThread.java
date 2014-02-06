@@ -1,4 +1,4 @@
-package fr.ornidroid.ui.downloads;
+package fr.ornidroid.ui.threads;
 
 import android.os.Handler;
 import android.os.Handler.Callback;
@@ -193,5 +193,5 @@ public abstract class HandlerGenericThread extends HandlerThread implements
 	 * 
 	 * @return the loader info
 	 */
-	abstract LoaderInfo getLoaderInfo(GenericTaskCallback callback);
+	protected abstract LoaderInfo getLoaderInfo(GenericTaskCallback callback);
 }

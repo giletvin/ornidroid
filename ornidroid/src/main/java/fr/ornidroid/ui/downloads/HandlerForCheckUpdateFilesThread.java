@@ -4,6 +4,8 @@ import java.util.List;
 
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.ui.AbstractDownloadableMediaActivity;
+import fr.ornidroid.ui.threads.HandlerGenericThread;
+import fr.ornidroid.ui.threads.LoaderInfo;
 
 /**
  * The Class HandlerForCheckUpdateFilesThread.
@@ -66,7 +68,7 @@ public class HandlerForCheckUpdateFilesThread extends HandlerGenericThread {
 	 * .ui.downloads.GenericTaskHandler.GenericTaskCallback)
 	 */
 	@Override
-	LoaderInfo getLoaderInfo(GenericTaskCallback callback) {
+	protected LoaderInfo getLoaderInfo(GenericTaskCallback callback) {
 		if (loaderInfo == null) {
 			loaderInfo = new CheckForUpdateFilesLoaderInfo(callback,
 					manualCheck);

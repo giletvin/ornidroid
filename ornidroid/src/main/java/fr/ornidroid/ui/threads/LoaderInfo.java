@@ -1,6 +1,6 @@
-package fr.ornidroid.ui.downloads;
+package fr.ornidroid.ui.threads;
 
-import fr.ornidroid.ui.downloads.GenericTaskHandler.GenericTaskCallback;
+import fr.ornidroid.ui.threads.GenericTaskHandler.GenericTaskCallback;
 
 /**
  * Wrapper to pass information between threads.

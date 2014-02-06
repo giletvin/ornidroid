@@ -64,8 +64,8 @@ public class HandlerForCheckUpdateFilesThread extends HandlerGenericThread {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * fr.ornidroid.ui.downloads.HandlerGenericThread#getLoaderInfo(fr.ornidroid
-	 * .ui.downloads.GenericTaskHandler.GenericTaskCallback)
+	 * fr.ornidroid.ui.threads.HandlerGenericThread#getLoaderInfo(fr.ornidroid
+	 * .ui.threads.GenericTaskHandler.GenericTaskCallback)
 	 */
 	@Override
 	protected LoaderInfo getLoaderInfo(GenericTaskCallback callback) {

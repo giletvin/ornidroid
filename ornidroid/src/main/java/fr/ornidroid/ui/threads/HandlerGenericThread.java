@@ -13,6 +13,7 @@ import fr.ornidroid.helper.Constants;
  */
 public abstract class HandlerGenericThread extends HandlerThread implements
 		GenericTaskHandler {
+	private LoaderInfo loaderInfo;
 
 	/** The Constant TASK_ENDED. */
 	private static final int TASK_ENDED = 4;
@@ -193,5 +194,10 @@ public abstract class HandlerGenericThread extends HandlerThread implements
 	 * 
 	 * @return the loader info
 	 */
-	protected abstract LoaderInfo getLoaderInfo(GenericTaskCallback callback);
+	protected LoaderInfo getLoaderInfo(GenericTaskCallback callback) {
+		if (loaderInfo == null) {
+			loaderInfo = new LoaderInfo(callback);
+		}
+		return loaderInfo;
+	}
 }

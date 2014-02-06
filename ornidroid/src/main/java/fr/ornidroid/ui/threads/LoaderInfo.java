@@ -5,7 +5,7 @@ import fr.ornidroid.ui.threads.GenericTaskHandler.GenericTaskCallback;
 /**
  * Wrapper to pass information between threads.
  */
-public abstract class LoaderInfo {
+public class LoaderInfo {
 
 	/** The callback. */
 	private final GenericTaskCallback callback;

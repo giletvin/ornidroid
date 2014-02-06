@@ -19,14 +19,16 @@ import fr.ornidroid.ui.HelpActivity;
 import fr.ornidroid.ui.HomeActivity;
 import fr.ornidroid.ui.components.HelpDialog;
 import fr.ornidroid.ui.components.OrnidroidHomeDialogPreference;
-import fr.ornidroid.ui.preferences.MoveDirectoryHandler.MoveDirectoryCallback;
+import fr.ornidroid.ui.threads.GenericTaskHandler;
+import fr.ornidroid.ui.threads.GenericTaskHandler.GenericTaskCallback;
+import fr.ornidroid.ui.threads.LoaderInfo;
 
 /**
  * The Class OrnidroidPreferenceActivity.
  */
 public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 		OnPreferenceClickListener, OnSharedPreferenceChangeListener,
-		MoveDirectoryCallback {
+		GenericTaskCallback {
 
 	/** The m loader. */
 	private HandlerThreadOrnidroidHomeMvDirectory mLoader;
@@ -61,15 +63,7 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.ornidroid.ui.MoveDirectoryHandler.MoveDirectoryCallback#onMoveEnded
-	 * (fr.ornidroid.ui.MoveDirectoryHandler)
-	 */
-	public void onMoveEnded(final MoveDirectoryHandler loader,
-			final LoaderInfo info) {
+	public void onTaskEnded(GenericTaskHandler loader, LoaderInfo info) {
 		killLoader();
 		if (info.getException() != null) {
 			// an error occured
@@ -150,15 +144,14 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 		if (getResources().getString(R.string.preferences_ornidroid_home_key)
 				.equals(key) && !this.moveEnded) {
 			if (this.mLoader == null) {
-				this.mLoader = new HandlerThreadOrnidroidHomeMvDirectory();
+				this.mLoader = new HandlerThreadOrnidroidHomeMvDirectory(
+						OrnidroidPreferenceActivity.this.ornidroidHomeDialogPreference
+								.getOldOrnidroidHome(), Constants
+								.getOrnidroidHome());
 				this.mLoader.start();
 			}
 
-			this.mLoader
-					.moveDirectory(
-							OrnidroidPreferenceActivity.this.ornidroidHomeDialogPreference
-									.getOldOrnidroidHome(), Constants
-									.getOrnidroidHome(), this);
+			mLoader.genericTask(this);
 			this.progressBar = new ProgressDialog(this);
 			this.progressBar.setCancelable(false);
 			this.progressBar.setMessage(this.getResources().getText(

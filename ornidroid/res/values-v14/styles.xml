@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="AppTheme" parent="android:Theme.Holo" />
+
+    <style name="ScreensTheme" parent="android:Theme.Holo" />
+
+</resources>

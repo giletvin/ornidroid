@@ -1,13 +1,11 @@
 package fr.ornidroid.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
-import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
+import fr.ornidroid.helper.MenuHelper;
 
 /**
  * The Class AbstractOrnidroidActivity. Extending this class enables the menu.
@@ -30,8 +28,7 @@ public abstract class AbstractOrnidroidActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		final MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.options_menu, menu);
-		return true;
+		return MenuHelper.onCreateOptionsMenu(inflater, menu);
 	}
 
 	/*
@@ -41,21 +38,6 @@ public abstract class AbstractOrnidroidActivity extends Activity {
 	 */
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.search:
-			onSearchRequested();
-			return true;
-		case R.id.preferences:
-			startActivity(new Intent(this, OrnidroidPreferenceActivity.class));
-			return (true);
-		case R.id.help:
-			startActivity(new Intent(this, HelpActivity.class));
-			return (true);
-		case R.id.home:
-			startActivity(new Intent(this, HomeActivity.class));
-			return (true);
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+		return MenuHelper.onOptionsItemSelected(this, item);
 	}
 }

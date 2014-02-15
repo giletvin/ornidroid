@@ -61,14 +61,28 @@ public class MyCustomAdapter extends ArrayAdapter<String> {
 	 * @return the custom view
 	 */
 	public View getCustomView(final int position, final View convertView,
-			final ViewGroup parent) {
-		final LayoutInflater inflater = this.activity.getLayoutInflater();
-		final View row = inflater.inflate(R.layout.row_spinner_icons, parent,
-				false);
-		final TextView label = (TextView) row.findViewById(R.id.spinner_text);
-		label.setText(this.itemsList.get(position));
+			final ViewGroup parent, boolean dropDownStyle) {
 
-		final ImageView icon = (ImageView) row.findViewById(R.id.spinner_icon);
+		final LayoutInflater inflater = this.activity.getLayoutInflater();
+		View row;
+		ImageView icon;
+		if (dropDownStyle) {
+			row = inflater.inflate(R.layout.row_spinner_icons_dropdown_list,
+					parent, false);
+			final TextView label = (TextView) row
+					.findViewById(R.id.spinner_text_dropdown_list);
+			label.setText(this.itemsList.get(position));
+
+			icon = (ImageView) row
+					.findViewById(R.id.spinner_icon_dropdown_list);
+		} else {
+			row = inflater.inflate(R.layout.row_spinner_icons, parent, false);
+			final TextView label = (TextView) row
+					.findViewById(R.id.spinner_text);
+			label.setText(this.itemsList.get(position));
+
+			icon = (ImageView) row.findViewById(R.id.spinner_icon);
+		}
 
 		int idRes = 0;
 		switch (this.selectFieldType) {
@@ -101,7 +115,10 @@ public class MyCustomAdapter extends ArrayAdapter<String> {
 	@Override
 	public View getDropDownView(final int position, final View convertView,
 			final ViewGroup parent) {
-		return getCustomView(position, convertView, parent);
+		View v = getCustomView(position, convertView, parent, true);
+		v.setBackgroundResource(R.color.mcs_custom_spinner_items_dropdown_background);
+
+		return v;
 	}
 
 	/*
@@ -113,6 +130,6 @@ public class MyCustomAdapter extends ArrayAdapter<String> {
 	@Override
 	public View getView(final int position, final View convertView,
 			final ViewGroup parent) {
-		return getCustomView(position, convertView, parent);
+		return getCustomView(position, convertView, parent, false);
 	}
 }

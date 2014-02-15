@@ -210,6 +210,6 @@ public class SpinnerIconSelector {
 
 		}
 		final Integer resId = COUNTRIES_FLAGS_RES_ID.get(countrycode);
-		return resId == null ? R.drawable.bec_tous : resId;
+		return resId == null ? R.drawable.flag_all_countries : resId;
 	}
 }

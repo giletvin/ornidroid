@@ -16,19 +16,25 @@
     android:versionCode="14"
     android:versionName="7.0.0-SNAPSHOT" >
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16" />
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <supports-screens android:largeScreens="true" />
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
 
-    <application 
+    <application
         android:icon="@drawable/ic_ornidroid"
-        android:label="@string/app_name" >
-        <activity
-            android:name=".ui.HomeActivity"
-            android:theme="@android:style/Theme.Light" >
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity android:name=".ui.HomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +45,7 @@
         <!-- The default activity of the app; displays search results. -->
         <activity
             android:name=".ui.MainActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/ScreensTheme" >
 
             <!-- Receives the search request. -->
             <intent-filter>
@@ -57,14 +63,17 @@
         <activity
             android:name=".ui.preferences.OrnidroidPreferenceActivity"
             android:label="@string/preferences"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:theme="@style/ScreensTheme" />
         <!-- about activity -->
         <activity
             android:name=".ui.AboutActivity"
-            android:label="@string/about" />
+            android:label="@string/about"
+            android:theme="@style/ScreensTheme" />
         <activity
             android:name=".ui.HelpActivity"
-            android:label="@string/help" />
+            android:label="@string/help"
+            android:theme="@style/ScreensTheme" />
 
         <!-- full size image activity -->
         <activity
@@ -74,14 +83,15 @@
         <activity
             android:name=".ui.BirdActivity"
             android:label="@string/bird_info"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@style/ScreensTheme" />
         <activity
             android:name=".ui.multicriteriasearch.MultiCriteriaSearchActivity"
             android:label="@string/menu_search_multi"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@style/ScreensTheme" />
         <activity
             android:name=".ui.AddCustomMediaActivity"
-            android:label="@string/add_custom_media_title" />
+            android:label="@string/add_custom_media_title"
+            android:theme="@style/ScreensTheme" />
 
         <!-- Provides search suggestions for words and their definitions. -->
         <provider

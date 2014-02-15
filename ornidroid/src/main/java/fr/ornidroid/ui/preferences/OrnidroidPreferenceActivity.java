@@ -1,7 +1,6 @@
 package fr.ornidroid.ui.preferences;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -15,8 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
-import fr.ornidroid.ui.HelpActivity;
-import fr.ornidroid.ui.HomeActivity;
+import fr.ornidroid.helper.MenuHelper;
 import fr.ornidroid.ui.components.HelpDialog;
 import fr.ornidroid.ui.components.OrnidroidHomeDialogPreference;
 import fr.ornidroid.ui.threads.GenericTaskHandler;
@@ -59,8 +57,7 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		final MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.options_menu, menu);
-		return true;
+		return MenuHelper.onCreateOptionsMenu(inflater, menu);
 	}
 
 	public void onTaskEnded(GenericTaskHandler loader, LoaderInfo info) {
@@ -95,22 +92,7 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	 */
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.search:
-			onSearchRequested();
-			return true;
-		case R.id.preferences:
-			startActivity(new Intent(this, OrnidroidPreferenceActivity.class));
-			return (true);
-		case R.id.help:
-			startActivity(new Intent(this, HelpActivity.class));
-			return (true);
-		case R.id.home:
-			startActivity(new Intent(this, HomeActivity.class));
-			return (true);
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+		return MenuHelper.onOptionsItemSelected(this, item);
 	}
 
 	/**

@@ -1,10 +1,29 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/home" android:icon="@drawable/ic_home"
-		android:title="@string/home" />
-	<item android:id="@+id/search" android:title="@string/menu_search"
-		android:icon="@drawable/ic_menu_search" />
-	<item android:id="@+id/preferences" android:icon="@drawable/ic_preferences"
-		android:title="@string/preferences" />
-	<item android:id="@+id/help" android:icon="@drawable/ic_help"
-		android:title="@string/help" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:showAsAction="never"
+        android:title="@string/home"/>
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_menu_search"
+        android:showAsAction="never"
+        android:title="@string/menu_search"/>
+    <item
+        android:id="@+id/search_multi"
+        android:icon="@drawable/ic_menu_search"
+        android:showAsAction="never"
+        android:title="@string/menu_search_multi"/>
+    <item
+        android:id="@+id/preferences"
+        android:icon="@drawable/ic_preferences"
+        android:showAsAction="never"
+        android:title="@string/preferences"/>
+    <item
+        android:id="@+id/help"
+        android:icon="@drawable/ic_help"
+        android:showAsAction="never"
+        android:title="@string/help"/>
+
 </menu>

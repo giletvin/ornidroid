@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- style of custom spinner with icons when it is shut -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -9,12 +10,12 @@
         android:id="@+id/spinner_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon" android:paddingLeft="10sp"/>
+        android:src="@drawable/icon" />
 
     
     <TextView
-        android:id="@+id/spinner_text" android:textColor="#000000"
+        android:id="@+id/spinner_text" android:textColor="@color/mcs_spinner_text_selected"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:paddingLeft="20sp" android:textSize="14sp" />
+        android:layout_height="wrap_content" android:paddingLeft="20sp" />
 
 </LinearLayout>

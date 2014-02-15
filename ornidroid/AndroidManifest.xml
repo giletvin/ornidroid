@@ -43,9 +43,7 @@
         </activity>
 
         <!-- The default activity of the app; displays search results. -->
-        <activity
-            android:name=".ui.MainActivity"
-            android:theme="@style/ScreensTheme" >
+        <activity android:name=".ui.MainActivity" >
 
             <!-- Receives the search request. -->
             <intent-filter>
@@ -63,17 +61,14 @@
         <activity
             android:name=".ui.preferences.OrnidroidPreferenceActivity"
             android:label="@string/preferences"
-            android:noHistory="true"
-            android:theme="@style/ScreensTheme" />
+            android:noHistory="true" />
         <!-- about activity -->
         <activity
             android:name=".ui.AboutActivity"
-            android:label="@string/about"
-            android:theme="@style/ScreensTheme" />
+            android:label="@string/about" />
         <activity
             android:name=".ui.HelpActivity"
-            android:label="@string/help"
-            android:theme="@style/ScreensTheme" />
+            android:label="@string/help" />
 
         <!-- full size image activity -->
         <activity
@@ -82,16 +77,13 @@
             android:noHistory="true" />
         <activity
             android:name=".ui.BirdActivity"
-            android:label="@string/bird_info"
-            android:theme="@style/ScreensTheme" />
+            android:label="@string/bird_info" />
         <activity
             android:name=".ui.multicriteriasearch.MultiCriteriaSearchActivity"
-            android:label="@string/menu_search_multi"
-            android:theme="@style/ScreensTheme" />
+            android:label="@string/menu_search_multi" />
         <activity
             android:name=".ui.AddCustomMediaActivity"
-            android:label="@string/add_custom_media_title"
-            android:theme="@style/ScreensTheme" />
+            android:label="@string/add_custom_media_title" />
 
         <!-- Provides search suggestions for words and their definitions. -->
         <provider

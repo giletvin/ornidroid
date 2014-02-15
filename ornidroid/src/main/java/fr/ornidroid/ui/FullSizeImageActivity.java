@@ -211,6 +211,20 @@ public class FullSizeImageActivity extends Activity {
 					.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 			return true;
 		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * android.view.GestureDetector.SimpleOnGestureListener#onFling(android
+		 * .view.MotionEvent, android.view.MotionEvent, float, float)
+		 */
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+				float velocityY) {
+			// consume the on fling event so that nothing occurs
+			return true;
+		}
 	}
 
 	/** The bm large image. */

@@ -85,6 +85,7 @@
     <string name="scientific_name">Nom scientifique</string>
     <string name="description">Description</string>
     <string name="distribution">Habitat et comportement</string>
+    <string name="geographic_distribution">Distribution géographique</string>
     <string name="scientific_order">Ordre</string>
     <string name="scientific_family">Famille</string>
     <string name="credits">Crédits</string>

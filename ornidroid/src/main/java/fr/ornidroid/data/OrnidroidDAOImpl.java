@@ -662,4 +662,49 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		return cursor;
 
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.data.IOrnidroidDAO#getGeographicDistribution(int)
+	 */
+	public Cursor getGeographicDistribution(int id) {
+		Cursor cursor = null;
+		try {
+			final SQLiteDatabase db = this.dataBaseOpenHelper
+					.getReadableDatabase();
+			final StringBuilder query = new StringBuilder();
+			String countryNameColumn = NAME_COLUMN_NAME
+					+ Constants.UNDERSCORE_STRING
+					+ I18nHelper.getLang().getCode();
+			query.append(SELECT);
+			query.append(countryNameColumn);
+			query.append(AS);
+			query.append(NAME_COLUMN_NAME);
+			query.append(FROM);
+			query.append(COUNTRY_TABLE);
+			query.append(INNER_JOIN);
+			query.append(BIRD_COUNTRY_TABLE);
+			query.append(" on country_code=code");
+			query.append(WHERE);
+			query.append("bird_fk=");
+			query.append(id);
+			query.append(ORDER_BY);
+			query.append(NAME_COLUMN_NAME);
+
+			final String[] selectionArgs = null;
+			cursor = db.rawQuery(query.toString(), selectionArgs);
+			if (cursor == null) {
+				return null;
+			} else if (!cursor.moveToFirst()) {
+				cursor.close();
+				return null;
+			}
+		} catch (final SQLException e) {
+			// Log.e(Constants.LOG_TAG, "Exception sql " + e);
+		} finally {
+			this.dataBaseOpenHelper.close();
+		}
+		return cursor;
+	}
 }

@@ -1,5 +1,7 @@
 package fr.ornidroid.ui.views;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -42,6 +44,9 @@ public class DetailsViewFactory {
 	/** The wikipedia link. */
 	private TextView wikipediaLink;
 
+	/** The list countries. */
+	private TextView listCountries;
+
 	/**
 	 * Instantiates a new details view factory.
 	 * 
@@ -83,6 +88,10 @@ public class DetailsViewFactory {
 		this.distribution.setPadding(5, 0, 5, 20);
 		linearLayout.addView(this.distribution);
 
+		this.listCountries = new TextView(this.activity);
+		this.listCountries.setPadding(5, 0, 5, 20);
+		linearLayout.addView(this.listCountries);
+
 		this.wikipediaLink = new TextView(this.activity);
 		this.wikipediaLink.setPadding(5, 0, 5, 20);
 
@@ -99,12 +108,38 @@ public class DetailsViewFactory {
 			printBirdDescription(this.ornidroidService.getCurrentBird());
 			printBirdDistributionAndBehaviour(this.ornidroidService
 					.getCurrentBird());
+			fillCountriesList();
 			printHttpLinks();
+
 		}
+
 		// return linearLayout;
 		final ScrollView scrollView = new ScrollView(this.activity);
 		scrollView.addView(linearLayout);
 		return scrollView;
+
+	}
+
+	/**
+	 * Fill countries list.
+	 */
+	private void fillCountriesList() {
+		final List<String> listCountries = this.ornidroidService
+				.getGeographicDistribution(this.ornidroidService
+						.getCurrentBird().getId());
+		if (!listCountries.isEmpty()) {
+			StringBuffer sbuf = new StringBuffer(
+					this.activity.getText(R.string.geographic_distribution)
+							+ BasicConstants.COLUMN_STRING
+							+ BasicConstants.CARRIAGE_RETURN
+							+ BasicConstants.CARRIAGE_RETURN);
+
+			for (String country : listCountries) {
+				sbuf.append(country + BasicConstants.CARRIAGE_RETURN);
+			}
+
+			this.listCountries.setText(sbuf.toString());
+		}
 
 	}
 

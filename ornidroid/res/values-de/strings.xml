@@ -77,6 +77,7 @@
     <string name="scientific_name">Wissenschaftlicher Name</string>
     <string name="description">Beschreibung</string>
     <string name="distribution">Lebensraum und Verhalten</string>
+    <string name="geographic_distribution">Geographic distribution</string>
     <string name="scientific_order">Ordnung</string>
     <string name="scientific_family">Familie</string>
     <string name="credits">Nachweis</string>

@@ -402,6 +402,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 						cursor.getString(taxonIndex));
 				result.add(taxon);
 			}
+			cursor.close();
 		}
 		return result;
 	}
@@ -677,5 +678,28 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		final SelectFieldsValue sfv = new SelectFieldsValue(mapNameId,
 				mapNameCode, fieldsValues);
 		return sfv;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getGeographicDistribution(int)
+	 */
+	public List<String> getGeographicDistribution(int id) {
+		final Cursor cursor = this.ornidroidDAO.getGeographicDistribution(id);
+		final List<String> result = new ArrayList<String>();
+		if (cursor != null) {
+			final int nbResults = cursor.getCount();
+			for (int i = 0; i < nbResults; i++) {
+				cursor.moveToPosition(i);
+				final int countryNameIndex = cursor
+						.getColumnIndexOrThrow(IOrnidroidDAO.NAME_COLUMN_NAME);
+				final String country = cursor.getString(countryNameIndex);
+				result.add(country);
+			}
+			cursor.close();
+		}
+		return result;
 	}
 }

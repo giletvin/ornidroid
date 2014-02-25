@@ -198,4 +198,14 @@ public interface IOrnidroidDAO {
 	 */
 	boolean hasHistory();
 
+	/**
+	 * gets the countries where the bird can be seen
+	 * 
+	 * @param id
+	 *            the id of the bird
+	 * @return cursor on the results of the query. Can be null if something goes
+	 *         wrong
+	 */
+	Cursor getGeographicDistribution(int id);
+
 }

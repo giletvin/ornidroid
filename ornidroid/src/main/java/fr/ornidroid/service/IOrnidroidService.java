@@ -166,6 +166,15 @@ public interface IOrnidroidService {
 	List<Taxon> getNames(int id);
 
 	/**
+	 * Gets the countries where the bird can be seen
+	 * 
+	 * @param id
+	 *            : bird id
+	 * @return List of countries (String)
+	 */
+	List<String> getGeographicDistribution(int id);
+
+	/**
 	 * Gets the oiseaux net link.
 	 * 
 	 * @param currentBird

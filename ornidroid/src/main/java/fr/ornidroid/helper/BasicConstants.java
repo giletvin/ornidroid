@@ -21,6 +21,9 @@ public class BasicConstants {
 	/** The Constant COLUMN_STRING. */
 	public static final String COLUMN_STRING = ": ";
 
+	/** The Constant UNDERSCORE_STRING. */
+	public static final String UNDERSCORE_STRING = "_";
+
 	/** The Constant COMMA. */
 	public static final String COMMA_STRING = ",";
 	/** The Constant CONTENTS_PROPERTIES. */

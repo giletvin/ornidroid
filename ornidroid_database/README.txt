@@ -53,6 +53,8 @@ keytool -genkey -v -keystore ornidroid_key.keystore -alias ornidroid_key -keyalg
 
 
 Une fois la version commitée, testée...
+Ajouter     android:debuggable="false" dans le tag application
+
 Changer le n° de version d'Ornidroid dans le fichier pom.xml
 Verifier le version code et version name dans le manifest.xml
 Vérifier que la dernière version de la db est dans le répertoire assets.

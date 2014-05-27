@@ -82,19 +82,20 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		this.mListView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(final AdapterView<?> parent,
+					final View view, final int position, final long id) {
+				MainActivity.this.clickedPositionInTheList = position;
+				startActivity(buildIntentBirdInfoActivity(String
+						.valueOf(MainActivity.this.ornidroidService
+								.getBirdIdInHistory(position))));
+			}
+		});
 		if (this.ornidroidService.hasHistory()) {
 			this.mListView.setAdapter(this.ornidroidService
 					.getHistoricResultsAdapter());
 			this.mListView.setSelection(this.clickedPositionInTheList);
-			this.mListView.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(final AdapterView<?> parent,
-						final View view, final int position, final long id) {
-					MainActivity.this.clickedPositionInTheList = position;
-					startActivity(buildIntentBirdInfoActivity(String
-							.valueOf(MainActivity.this.ornidroidService
-									.getBirdIdInHistory(position))));
-				}
-			});
+
 		}
 	}
 

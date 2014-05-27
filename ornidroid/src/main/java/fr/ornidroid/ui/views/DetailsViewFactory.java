@@ -44,6 +44,9 @@ public class DetailsViewFactory {
 	/** The wikipedia link. */
 	private TextView wikipediaLink;
 
+	/** The xeno canto map link. */
+	private TextView xenoCantoMapLink;
+
 	/** The list countries. */
 	private TextView listCountries;
 
@@ -91,6 +94,10 @@ public class DetailsViewFactory {
 		this.listCountries = new TextView(this.activity);
 		this.listCountries.setPadding(5, 0, 5, 20);
 		linearLayout.addView(this.listCountries);
+
+		this.xenoCantoMapLink = new TextView(this.activity);
+		this.xenoCantoMapLink.setPadding(5, 0, 5, 20);
+		linearLayout.addView(this.xenoCantoMapLink);
 
 		this.wikipediaLink = new TextView(this.activity);
 		this.wikipediaLink.setPadding(5, 0, 5, 20);
@@ -233,6 +240,12 @@ public class DetailsViewFactory {
 	 * Prints the http links.
 	 */
 	private void printHttpLinks() {
+		final String xenoCantoUrl = this.ornidroidService
+				.getXenoCantoMapUrl(this.ornidroidService.getCurrentBird());
+		this.xenoCantoMapLink.setText(Html.fromHtml(xenoCantoUrl));
+		this.xenoCantoMapLink.setMovementMethod(LinkMovementMethod
+				.getInstance());
+
 		final String wikipedia = this.ornidroidService
 				.getWikipediaLink(this.ornidroidService.getCurrentBird());
 

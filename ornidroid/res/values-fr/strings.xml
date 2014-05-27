@@ -131,6 +131,7 @@
     <string name="expand_collapse_form">Ouvrir/Fermer le formulaire</string>
     <string name="search_remarkable_sign_choose">Choisir un signe distinctif</string>
     <string name="search_remarkable_sign">Signe distinctif</string>
+    <string name="xeno_canto_map">Carte de distribution (Xeno Canto)</string>
     <!-- labels for the updates -->
     <string name="updates_available">Mises à jour disponibles.\nTélécharger ?</string>
     <string name="updates_check_error">Echec de la vérification des mises à jour.\nMerci de vérifier votre connexion internet.</string>

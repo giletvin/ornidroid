@@ -14,7 +14,7 @@
     package="fr.ornidroid"
     android:installLocation="auto"
     android:versionCode="15"
-    android:versionName="8.0.0-SNAPSHOT" >
+    android:versionName="8.0.0" >
     <!-- ANDROID DEBUGGABLE !! -->
     <uses-sdk
         android:minSdkVersion="8"

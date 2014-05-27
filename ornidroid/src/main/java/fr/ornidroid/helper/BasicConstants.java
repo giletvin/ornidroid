@@ -63,6 +63,9 @@ public class BasicConstants {
 	/** The Constant SLASH_STRING. */
 	public static final String SLASH_STRING = "/";
 
+	/** The Constant DASH_STRING. */
+	public static final String DASH_STRING = "-";
+
 	/**
 	 * The junit context. Always false, except when running junit tests. This is
 	 * to avoid the "Stub" Runtime Error when calling android SDK methods

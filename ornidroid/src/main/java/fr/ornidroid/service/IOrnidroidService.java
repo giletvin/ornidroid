@@ -249,4 +249,14 @@ public interface IOrnidroidService {
 	 */
 	void loadBirdDetails(Uri uri);
 
+	/**
+	 * Gets the xeno canto map url. Something like :
+	 * http://www.xeno-canto.org/species/Grus-grus
+	 * 
+	 * @param currentBird
+	 *            the current bird
+	 * @return the xeno canto map url
+	 */
+	String getXenoCantoMapUrl(Bird currentBird);
+
 }

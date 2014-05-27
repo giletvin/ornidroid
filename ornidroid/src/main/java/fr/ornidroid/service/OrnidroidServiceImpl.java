@@ -702,4 +702,25 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		}
 		return result;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getXenoCantoMapUrl(fr.ornidroid
+	 * .bo.Bird)
+	 */
+	public String getXenoCantoMapUrl(Bird currentBird) {
+
+		final StringBuffer sbuf = new StringBuffer();
+		sbuf.append("<a href=\"http://www.xeno-canto.org/species/");
+
+		sbuf.append(currentBird.getScientificName().replaceAll(
+				BasicConstants.BLANK_STRING, BasicConstants.DASH_STRING));
+		sbuf.append("\">");
+		sbuf.append(Constants.getCONTEXT().getResources()
+				.getString(R.string.xeno_canto_map));
+		sbuf.append("</a>");
+		return sbuf.toString();
+	}
 }

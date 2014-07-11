@@ -1,6 +1,6 @@
-Arboretum
+ornidroid
 =========
 
-Fork de Ornidroid.
+[[Wiki Ornidroid]] (https://github.com/giletvin/ornidroid/wiki)
 
 

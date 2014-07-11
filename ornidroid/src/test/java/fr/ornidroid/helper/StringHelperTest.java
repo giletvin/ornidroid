@@ -1,5 +1,7 @@
 package fr.ornidroid.helper;
 
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -113,5 +115,29 @@ public class StringHelperTest extends AbstractTest {
 		Assert.assertEquals(StringHelper.substringAfterLast("a", "a"), "");
 		Assert.assertEquals(StringHelper.substringAfterLast("a", "z"), "");
 
+	}
+
+	/**
+	 * Test parse list preference value.
+	 */
+	@Test
+	public void testParseListPreferenceValue() {
+		List<String> values = StringHelper.parseListPreferenceValue(null, null);
+		Assert.assertEquals(0, values.size());
+		values = StringHelper.parseListPreferenceValue(null,
+				BasicConstants.COMMA_STRING);
+		Assert.assertEquals(0, values.size());
+		values = StringHelper.parseListPreferenceValue("",
+				BasicConstants.COMMA_STRING);
+		Assert.assertEquals(0, values.size());
+		values = StringHelper.parseListPreferenceValue("es",
+				BasicConstants.COMMA_STRING);
+		Assert.assertEquals(1, values.size());
+		Assert.assertEquals("es", values.get(0));
+		values = StringHelper.parseListPreferenceValue("es,de",
+				BasicConstants.COMMA_STRING);
+		Assert.assertEquals(2, values.size());
+		Assert.assertEquals("es", values.get(0));
+		Assert.assertEquals("de", values.get(1));
 	}
 }

@@ -1,5 +1,7 @@
 package fr.ornidroid.data;
 
+import java.util.List;
+
 import android.app.SearchManager;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -639,10 +641,11 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			}
 			query.append(sqlDynamicFragments.getWhereClause());
 			query.append(" and bird.id=taxonomy.bird_fk");
-
-			query.append(" and taxonomy.lang=\"");
-			query.append(Constants.getOrnidroidSearchLang());
-			query.append("\"");
+			query.append(handleSetOfLanguagesinSqlQuery(Constants
+					.getOrnidroidSearchLanguages()));
+			// query.append(" and taxonomy.lang=\"");
+			// query.append(Constants.getOrnidroidSearchLanguages());
+			// query.append("\"");
 			query.append(" order by searched_taxon");
 			// Log.d(Constants.LOG_TAG, "Perform SQL query " +
 			// query.toString());
@@ -661,6 +664,26 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		}
 		return cursor;
 
+	}
+
+	/**
+	 * Handle set of languagesin sql query.
+	 * 
+	 * @param ornidroidSearchLanguages
+	 *            the ornidroid search languages
+	 * @return the string
+	 */
+	private String handleSetOfLanguagesinSqlQuery(
+			List<String> ornidroidSearchLanguages) {
+		StringBuffer sbuf = new StringBuffer();
+		sbuf.append(" and taxonomy.lang in (\"\"");
+		for (String lang : ornidroidSearchLanguages) {
+			sbuf.append(",\"");
+			sbuf.append(lang);
+			sbuf.append("\"");
+		}
+		sbuf.append(")");
+		return sbuf.toString();
 	}
 
 	/*

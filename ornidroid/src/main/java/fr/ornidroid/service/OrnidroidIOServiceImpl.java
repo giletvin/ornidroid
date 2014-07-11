@@ -19,6 +19,7 @@ import fr.ornidroid.download.DownloadHelperInterface;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.FileHelper;
+import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.helper.StringHelper;
@@ -415,7 +416,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 						final AbstractOrnidroidFile ornidroidFile = OrnidroidFileFactoryImpl
 								.getFactory().createOrnidroidFile(
 										file.getAbsolutePath(), fileType,
-										Constants.getOrnidroidSearchLang());
+										I18nHelper.getLang().getCode());
 						files.add(ornidroidFile);
 					}
 				} catch (final FileNotFoundException e) {

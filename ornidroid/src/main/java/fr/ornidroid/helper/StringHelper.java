@@ -2,6 +2,7 @@ package fr.ornidroid.helper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * The Class StringUtils. Code from commons-lang 2.6
@@ -381,6 +382,28 @@ public class StringHelper {
 			list.add(str.substring(start, i));
 		}
 		return list.toArray(new String[list.size()]);
+	}
+
+	/**
+	 * Parses the string value to extract tokens
+	 * 
+	 * @param pRawValues
+	 *            the raw values
+	 * @param separator
+	 *            the separator
+	 * @return the set of extracted tokens
+	 */
+	public static final List<String> parseListPreferenceValue(
+			String pRawValues, String separator) {
+		List<String> values = new ArrayList<String>();
+		if (!isEmpty(separator) && !isEmpty(pRawValues)) {
+			StringTokenizer stok = new StringTokenizer(pRawValues,
+					BasicConstants.COMMA_STRING);
+			while (stok.hasMoreElements()) {
+				values.add(stok.nextToken());
+			}
+		}
+		return values;
 	}
 
 }

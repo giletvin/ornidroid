@@ -1,6 +1,8 @@
 package fr.ornidroid.helper;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +10,7 @@ import android.os.Environment;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.OrnidroidFileType;
+import fr.ornidroid.ui.preferences.ListPreferenceMultiSelect;
 
 /**
  * The Class Constants. This file has imports from android sdk packages and thus
@@ -148,17 +151,31 @@ public class Constants extends BasicConstants {
 	 * Gets the ornidroid search lang used in the search engine. It is not the
 	 * same as the UI lang!
 	 * 
-	 * @return the ornidroid search lang, never null. Default is French.
+	 * @return the ornidroid search languages, never null. Default is a set with
+	 *         only French.
 	 */
-	public static final String getOrnidroidSearchLang() {
+	public static final List<String> getOrnidroidSearchLanguages() {
+		List<String> ornidroidSearchLanguages;
 		try {
-			return Constants.getOrnidroidPreferences().getString(
-					getStringFromXmlResource(R.string.preferences_lang_key),
-					ORNIDROID_SEARCH_LANG_DEFAULT_VALUE);
+			String languagesFromPreferences = Constants
+					.getOrnidroidPreferences()
+					.getString(
+							getStringFromXmlResource(R.string.preferences_lang_key),
+							ORNIDROID_SEARCH_LANG_DEFAULT_VALUE);
+			ornidroidSearchLanguages = StringHelper.parseListPreferenceValue(
+					languagesFromPreferences,
+					ListPreferenceMultiSelect.DEFAULT_SEPARATOR);
+			if (ornidroidSearchLanguages.size() == 0) {
+				ornidroidSearchLanguages
+						.add(ORNIDROID_SEARCH_LANG_DEFAULT_VALUE);
+			}
+
 		} catch (final NullPointerException e) {
-			// should not occur. Only for test purposes
-			return ORNIDROID_SEARCH_LANG_DEFAULT_VALUE;
+			// this should not occur
+			ornidroidSearchLanguages = new ArrayList<String>();
+			ornidroidSearchLanguages.add(ORNIDROID_SEARCH_LANG_DEFAULT_VALUE);
 		}
+		return ornidroidSearchLanguages;
 	}
 
 	/**

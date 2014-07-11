@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/fr.ornidroid"
     android:title="@string/preferences" >
 
-    <ListPreference
+    <fr.ornidroid.ui.preferences.ListPreferenceMultiSelect
         android:defaultValue="fr"
         android:entries="@array/lang_labels"
         android:entryValues="@array/lang_values"

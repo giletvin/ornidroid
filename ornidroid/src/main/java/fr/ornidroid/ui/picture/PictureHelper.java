@@ -1,11 +1,15 @@
 package fr.ornidroid.ui.picture;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Dialog;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -26,6 +30,8 @@ import fr.ornidroid.ui.BirdActivity;
  */
 public class PictureHelper {
 
+	/** The loaded bitmaps. */
+	private final static Map<String, Bitmap> LOADED_BITMAPS = new HashMap<String, Bitmap>();
 	/**
 	 * General left padding
 	 */
@@ -34,39 +40,6 @@ public class PictureHelper {
 	 * General right padding
 	 */
 	private static final int RIGHT_PADDING = 20;
-
-	/**
-	 * Try decode bitmap.
-	 * 
-	 * @param bitmapPath
-	 *            the bitmap path
-	 * @param resource
-	 *            the resource
-	 * @return the bitmap. If an OutOfMemoryError occurs, returns a default
-	 *         error image to avoid NullPointerExceptions
-	 */
-	public static Bitmap tryDecodeBitmap(final String bitmapPath,
-			final Resources resource) {
-		Bitmap bMap = null;
-		try {
-			bMap = BitmapFactory.decodeFile(bitmapPath);
-		} catch (final OutOfMemoryError e) {
-			// http://stackoverflow.com/questions/7138645/catching-outofmemoryerror-in-decoding-bitmap
-			// try to load another time after a gc
-			System.gc();
-			try {
-				bMap = BitmapFactory.decodeFile(bitmapPath);
-			} catch (final OutOfMemoryError e2) {
-				bMap = null;
-			}
-		}
-		if (null == bMap) {
-			// error image
-			bMap = BitmapFactory.decodeResource(resource,
-					R.drawable.error_image);
-		}
-		return bMap;
-	}
 
 	/** The bird activity. */
 	private final BirdActivity birdActivity;
@@ -199,13 +172,74 @@ public class PictureHelper {
 		final AbstractOrnidroidFile picture = this.birdActivity.getBird()
 				.getPicture(index);
 		this.birdActivity.setCurrentMediaFile(picture);
-		final Bitmap bMap = tryDecodeBitmap(picture.getPath(),
-				this.birdActivity.getResources());
+
+		Bitmap bMap = loadBitmap(picture, this.birdActivity.getResources());
 		if (bMap != null) {
 			imagePicture.setImageBitmap(bMap);
 			imageAndDescription.addView(imagePicture);
 		}
 
+	}
+
+	/**
+	 * Load bitmap, either from the HashMap in memory or from the sdcard.
+	 * 
+	 * @param picture
+	 *            the picture
+	 * @param resources
+	 *            the resources
+	 * @return the bitmap
+	 */
+	public static Bitmap loadBitmap(final AbstractOrnidroidFile picture,
+			final Resources resources) {
+		// try to load the bitmap from cache first
+		Bitmap bMap = LOADED_BITMAPS.get(picture.getPath());
+		if (bMap == null) {
+			// if not in the cache, load the image from sdcard and put the
+			// Bitmap in the cache
+
+			try {
+				bMap = BitmapFactory.decodeFile(picture.getPath(),
+						getBitmapDecodeOptions());
+			} catch (final OutOfMemoryError e) {
+				// reset the HashMap
+				// http://stackoverflow.com/questions/7138645/catching-outofmemoryerror-in-decoding-bitmap
+				// try to load another time after a gc
+				PictureHelper.resetLoadedBitmaps();
+				System.gc();
+				try {
+
+					bMap = BitmapFactory.decodeFile(picture.getPath(),
+							getBitmapDecodeOptions());
+				} catch (final OutOfMemoryError e2) {
+					bMap = null;
+				}
+			}
+			if (null == bMap) {
+				// error image
+				bMap = BitmapFactory.decodeResource(resources,
+						R.drawable.error_image);
+			} else {
+				// ok, bitmap loaded and put in the cache
+				LOADED_BITMAPS.put(picture.getPath(), bMap);
+			}
+
+		}
+		return bMap;
+	}
+
+	/**
+	 * Gets the bitmap decode options.
+	 * 
+	 * @return the bitmap decode options
+	 */
+	private static Options getBitmapDecodeOptions() {
+		// http://stackoverflow.com/questions/19678665/bitmapfactory-decodefile-out-of-memory-with-images-2400x2400
+		BitmapFactory.Options options = new Options();
+		options.inJustDecodeBounds = false;
+		options.inPreferredConfig = Config.RGB_565;
+		options.inDither = true;
+		return options;
 	}
 
 	/**
@@ -219,6 +253,7 @@ public class PictureHelper {
 	 * 
 	 */
 	public void populateViewFlipper() {
+		// PictureHelper.resetLoadedBitmaps();
 		if (this.birdActivity.getBird().getNumberOfPictures() > 0) {
 			final List<AbstractOrnidroidFile> listPictures = this.birdActivity
 					.getBird().getPictures();
@@ -244,6 +279,18 @@ public class PictureHelper {
 		} else {
 			this.birdActivity.printDownloadButtonAndInfo();
 		}
+	}
+
+	/**
+	 * Reset loaded bitmaps.
+	 */
+	public static void resetLoadedBitmaps() {
+		for (Bitmap b : LOADED_BITMAPS.values()) {
+			if (null != b) {
+				b.recycle();
+			}
+		}
+		LOADED_BITMAPS.clear();
 	}
 
 	/**

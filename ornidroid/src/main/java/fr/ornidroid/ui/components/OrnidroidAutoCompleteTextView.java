@@ -81,6 +81,20 @@ public class OrnidroidAutoCompleteTextView extends AutoCompleteTextView {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see android.widget.AutoCompleteTextView#showDropDown()
+	 */
+	@Override
+	public void showDropDown() {
+		try {
+			super.showDropDown();
+		} catch (Throwable t) {
+			// issue #95 : do nothing when an exception occurs in this case
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.TextView#onTouchEvent(android.view.MotionEvent)
 	 */
 	@Override

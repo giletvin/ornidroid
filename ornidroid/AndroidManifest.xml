@@ -72,7 +72,7 @@
 
         <!-- full size image activity -->
         <activity
-            android:name=".ui.FullSizeImageActivity"
+            android:name=".ui.ScrollableImageActivity"
             android:label="@string/bird_image_big"
             android:noHistory="true" />
         <activity

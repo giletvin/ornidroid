@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import fr.ornidroid.ui.BirdActivity;
-import fr.ornidroid.ui.FullSizeImageActivity;
+import fr.ornidroid.ui.ScrollableImageActivity;
 
 /**
  * The listener interface for receiving gesture events. The class that is
@@ -66,7 +66,7 @@ public class BirdActivityGestureListener extends SimpleOnGestureListener {
 					.getDisplayedPictureId();
 			this.birdActivity.getPictureHelper().resetViewFlipper();
 			final Intent intentImageFullSize = new Intent(this.birdActivity,
-					FullSizeImageActivity.class);
+					ScrollableImageActivity.class);
 			intentImageFullSize.putExtra(BirdActivity.DISPLAYED_PICTURE_ID,
 					displayedPictureId);
 			this.birdActivity.startActivity(intentImageFullSize

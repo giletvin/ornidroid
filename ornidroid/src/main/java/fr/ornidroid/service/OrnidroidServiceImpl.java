@@ -25,6 +25,7 @@ import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.helper.SupportedLanguage;
+import fr.ornidroid.ui.picture.PictureHelper;
 
 /**
  * The Class OrnidroidServiceImpl.
@@ -626,6 +627,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 							distribution, scientificOrder, scientificFamily,
 							getHabitatFromCursor(cursor), size, category,
 							oiseauxNetUrl);
+			// when a new bird arrives, clear the hashmap of stored bitmaps
+			PictureHelper.resetLoadedBitmaps();
 			cursor.close();
 		}
 

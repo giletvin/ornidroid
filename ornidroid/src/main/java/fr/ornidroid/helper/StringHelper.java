@@ -1,5 +1,6 @@
 package fr.ornidroid.helper;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -406,4 +407,18 @@ public class StringHelper {
 		return values;
 	}
 
+	/**
+	 * Strip accents.
+	 * http://blog.helyx.org/2012/05/supprimer-les-accents-dune-phrase
+	 * -avec-java6/
+	 * 
+	 * @param input
+	 *            the input
+	 * @return the string
+	 */
+	public static String stripAccents(String input) {
+		String textToStrip = StringHelper.defaultString(input);
+		return Normalizer.normalize(textToStrip, Normalizer.Form.NFD)
+				.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+	}
 }

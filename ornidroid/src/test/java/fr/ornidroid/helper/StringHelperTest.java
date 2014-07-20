@@ -140,4 +140,14 @@ public class StringHelperTest extends AbstractTest {
 		Assert.assertEquals("es", values.get(0));
 		Assert.assertEquals("de", values.get(1));
 	}
+
+	/**
+	 * Test strip accents.
+	 */
+	@Test
+	public void testStripAccents() {
+		Assert.assertEquals("", StringHelper.stripAccents(null));
+		Assert.assertEquals("", StringHelper.stripAccents(""));
+		Assert.assertEquals("Eeeeecoui", StringHelper.stripAccents("Eeéêèçöùî"));
+	}
 }

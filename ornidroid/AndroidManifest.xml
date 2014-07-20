@@ -17,7 +17,7 @@
     android:versionName="9.0.0-SNAPSHOT" >
     <!-- ANDROID DEBUGGABLE !! -->
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="9"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

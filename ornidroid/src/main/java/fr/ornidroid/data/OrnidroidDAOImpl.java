@@ -190,7 +190,8 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	public Cursor getBirdMatches(final String query) {
 		final StringBuffer whereClause = new StringBuffer().append(WHERE)
 				.append(SEARCHED_TAXON).append(" MATCH ?");
-		final String[] selectionArgs = new String[] { query + "*" };
+		final String[] selectionArgs = new String[] { StringHelper
+				.stripAccents(query) + "*" };
 		final Cursor cursor = query(
 				new SqlDynamicFragments(whereClause.toString(),
 						Constants.EMPTY_STRING), selectionArgs, false);

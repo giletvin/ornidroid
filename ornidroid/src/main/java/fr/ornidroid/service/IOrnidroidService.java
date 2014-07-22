@@ -2,11 +2,10 @@ package fr.ornidroid.service;
 
 import java.util.List;
 
-import android.database.Cursor;
 import android.net.Uri;
-import android.widget.ListAdapter;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
+import fr.ornidroid.bo.SimpleBird;
 import fr.ornidroid.bo.Taxon;
 import fr.ornidroid.helper.OrnidroidException;
 
@@ -49,17 +48,17 @@ public interface IOrnidroidService {
 	Integer getBirdIdInHistory(int position);
 
 	/**
-	 * Gets the bird matches.
+	 * Gets the matching birds and store the results in the history result
 	 * 
 	 * @param query
 	 *            the query
-	 * @return the bird matches
+	 * @return the matching birds
 	 */
-	Cursor getBirdMatches(String query);
+	List<SimpleBird> getMatchingBirds(String query);
 
 	/**
-	 * Gets the bird matches from the multi criteria search and load the results
-	 * in the history stack.
+	 * Gets the bird matches from the multi criteria search and store the
+	 * results in the history result.
 	 * 
 	 * @param formBean
 	 *            the form bean
@@ -139,13 +138,6 @@ public interface IOrnidroidService {
 	 * @return the habitats
 	 */
 	List<String> getHabitats();
-
-	/**
-	 * Gets the historic results adapter.
-	 * 
-	 * @return the historic results adapter
-	 */
-	ListAdapter getHistoricResultsAdapter();
 
 	/**
 	 * Gets the multi search criteria count results.
@@ -258,5 +250,12 @@ public interface IOrnidroidService {
 	 * @return the xeno canto map url
 	 */
 	String getXenoCantoMapUrl(Bird currentBird);
+
+	/**
+	 * Gets the query result.
+	 * 
+	 * @return the query result
+	 */
+	List<SimpleBird> getQueryResult();
 
 }

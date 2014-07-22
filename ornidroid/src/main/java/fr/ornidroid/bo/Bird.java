@@ -21,9 +21,6 @@ public class Bird extends SimpleBird {
 	/** The habitat. */
 	private String habitat;
 
-	/** The id. */
-	private Integer id;
-
 	/** The oiseaux net url. */
 	private String oiseauxNetUrl;
 
@@ -32,9 +29,6 @@ public class Bird extends SimpleBird {
 
 	/** The scientific family. */
 	private String scientificFamily;
-
-	/** The scientific name. */
-	private String scientificName;
 
 	/** The scientific name2. */
 	private String scientificName2;
@@ -89,15 +83,6 @@ public class Bird extends SimpleBird {
 	 */
 	public String getHabitat() {
 		return this.habitat;
-	}
-
-	/**
-	 * Gets the id.
-	 * 
-	 * @return the id
-	 */
-	public Integer getId() {
-		return this.id;
 	}
 
 	/**
@@ -190,15 +175,6 @@ public class Bird extends SimpleBird {
 	}
 
 	/**
-	 * Gets the scientific name.
-	 * 
-	 * @return the scientific name
-	 */
-	public String getScientificName() {
-		return this.scientificName;
-	}
-
-	/**
 	 * Gets the scientific name2.
 	 * 
 	 * @return the scientific name2
@@ -267,16 +243,6 @@ public class Bird extends SimpleBird {
 	 */
 	public void setHabitat(final String habitat) {
 		this.habitat = habitat;
-	}
-
-	/**
-	 * Sets the id.
-	 * 
-	 * @param id
-	 *            the new id
-	 */
-	public void setId(final Integer id) {
-		this.id = id;
 	}
 
 	/**
@@ -357,16 +323,6 @@ public class Bird extends SimpleBird {
 	 */
 	protected void setOiseauxNetUrl(final String oiseauxNetUrl) {
 		this.oiseauxNetUrl = oiseauxNetUrl;
-	}
-
-	/**
-	 * Sets the scientific name.
-	 * 
-	 * @param scientificName
-	 *            the new scientific name
-	 */
-	protected void setScientificName(final String scientificName) {
-		this.scientificName = scientificName;
 	}
 
 	/**

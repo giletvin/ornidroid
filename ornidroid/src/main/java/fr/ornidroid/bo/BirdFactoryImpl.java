@@ -71,15 +71,42 @@ public class BirdFactoryImpl {
 	/**
 	 * Creates the simple bird. Only the taxon and the directory name are set
 	 * 
+	 * @param id
+	 *            the id
+	 * @param taxon
+	 *            the taxon
+	 * @param birdDirectoryName
+	 *            the bird directory name
+	 * @param scientificName
+	 *            the scientific name
+	 * @return the bird
+	 */
+	public SimpleBird createSimpleBird(final Integer id, final String taxon,
+			final String birdDirectoryName, final String scientificName) {
+		final SimpleBird bird = new SimpleBird();
+		bird.setId(id);
+		bird.setTaxon(taxon);
+		bird.setScientificName(scientificName);
+		bird.setBirdDirectoryName(birdDirectoryName);
+		return bird;
+	}
+
+	/**
+	 * Creates the simple bird. Only the taxon and the directory name are set
+	 * 
+	 * @param id
+	 *            the id
 	 * @param taxon
 	 *            the taxon
 	 * @param birdDirectoryName
 	 *            the bird directory name
 	 * @return the bird
+	 * @deprecated
 	 */
-	public SimpleBird createSimpleBird(final String taxon,
+	public SimpleBird createSimpleBird(final Integer id, final String taxon,
 			final String birdDirectoryName) {
 		final SimpleBird bird = new SimpleBird();
+		bird.setId(id);
 		bird.setTaxon(taxon);
 
 		bird.setBirdDirectoryName(birdDirectoryName);

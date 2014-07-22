@@ -20,6 +20,25 @@ public class SimpleBird {
 	}
 
 	/**
+	 * Gets the id.
+	 * 
+	 * @return the id
+	 */
+	public Integer getId() {
+		return this.id;
+	}
+
+	/**
+	 * Sets the id.
+	 * 
+	 * @param id
+	 *            the new id
+	 */
+	public void setId(final Integer id) {
+		this.id = id;
+	}
+
+	/**
 	 * Sets the taxon.
 	 * 
 	 * @param taxon
@@ -29,11 +48,34 @@ public class SimpleBird {
 		this.taxon = taxon;
 	}
 
+	/** The id. */
+	private Integer id;
 	/** The taxon. */
 	private String taxon;
 
 	/** The bird directory name. */
 	private String birdDirectoryName;
+	/** The scientific name. */
+	private String scientificName;
+
+	/**
+	 * Gets the scientific name.
+	 * 
+	 * @return the scientific name
+	 */
+	public String getScientificName() {
+		return scientificName;
+	}
+
+	/**
+	 * Sets the scientific name.
+	 * 
+	 * @param scientificName
+	 *            the new scientific name
+	 */
+	public void setScientificName(String scientificName) {
+		this.scientificName = scientificName;
+	}
 
 	/**
 	 * Gets the bird directory name.

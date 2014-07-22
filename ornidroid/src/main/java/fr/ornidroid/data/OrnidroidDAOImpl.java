@@ -1,5 +1,6 @@
 package fr.ornidroid.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.SearchManager;
@@ -10,7 +11,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 import android.widget.ListAdapter;
+import fr.ornidroid.bo.BirdFactoryImpl;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
+import fr.ornidroid.bo.SimpleBird;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.StringHelper;
@@ -20,6 +23,8 @@ import fr.ornidroid.helper.SupportedLanguage;
  * Contains sql queries to search for birds in the database.
  */
 public class OrnidroidDAOImpl implements IOrnidroidDAO {
+	/** The bird factory. */
+	private final BirdFactoryImpl birdFactory;
 
 	/**
 	 * The Class SqlDynamicFragments. Contains the sql code snippets where and
@@ -148,6 +153,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			final OrnidroidDatabaseOpenHelper pDataBaseOpenHelper) {
 		this.dataBaseOpenHelper = pDataBaseOpenHelper;
 		this.historyHelper = new HistoryHelper();
+		this.birdFactory = new BirdFactoryImpl();
 	}
 
 	/*
@@ -207,11 +213,49 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 * fr.ornidroid.data.IOrnidroidDAO#getBirdMatchesFromMultiSearchCriteria
 	 * (fr.ornidroid.bo.MultiCriteriaSearchFormBean)
 	 */
-	public void getBirdMatchesFromMultiSearchCriteria(
+	public List<SimpleBird> getBirdMatchesFromMultiSearchCriteria(
 			final MultiCriteriaSearchFormBean formBean) {
+
 		final Cursor cursor = query(getSqlDynamicFragments(formBean, true),
 				null, false);
-		this.historyHelper.setHistory(cursor);
+		return getBirdListFromCursor(cursor);
+
+	}
+
+	/**
+	 * Gets the bird list from cursor and close the cursor once the birds are
+	 * instanciated
+	 * 
+	 * @param cursor
+	 *            the cursor
+	 * @return the bird list from cursor
+	 */
+	private List<SimpleBird> getBirdListFromCursor(final Cursor cursor) {
+		List<SimpleBird> results = new ArrayList<SimpleBird>();
+		if (null == cursor) {
+			return results;
+		}
+
+		final int nbRouws = cursor.getCount();
+		for (int i = 0; i < nbRouws; i++) {
+			cursor.moveToPosition(i);
+			final int idIndex = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+
+			final String taxon = cursor.getString(cursor
+					.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1));
+			final String directoryName = cursor.getString(cursor
+					.getColumnIndex(IOrnidroidDAO.DIRECTORY_NAME_COLUMN));
+			final String scientificName = cursor.getString(cursor
+					.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2));
+
+			final SimpleBird bird = this.birdFactory.createSimpleBird(
+					cursor.getInt(idIndex), taxon, directoryName,
+					scientificName);
+			results.add(bird);
+
+		}
+		cursor.close();
+		return results;
 	}
 
 	/*
@@ -369,15 +413,6 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 */
 	public Cursor getSizes() {
 		return getCursorFromListTable(SIZE_TABLE, ID, I18nHelper.getLang());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.ornidroid.data.IOrnidroidDAO#hasHistory()
-	 */
-	public boolean hasHistory() {
-		return this.historyHelper.hasHistory();
 	}
 
 	/**
@@ -730,5 +765,27 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 			this.dataBaseOpenHelper.close();
 		}
 		return cursor;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.data.IOrnidroidDAO#getMatchingBirds(java.lang.String)
+	 */
+	public List<SimpleBird> getMatchingBirds(String query) {
+		List<SimpleBird> results = new ArrayList<SimpleBird>();
+		final StringBuffer whereClause = new StringBuffer().append(WHERE)
+				.append(SEARCHED_TAXON).append(" MATCH ?");
+		final String[] selectionArgs = new String[] { StringHelper
+				.stripAccents(query) + "*" };
+		final Cursor cursor = query(
+				new SqlDynamicFragments(whereClause.toString(),
+						Constants.EMPTY_STRING), selectionArgs, false);
+		if (StringHelper.isBlank(query) || null == cursor) {
+			return results;
+		}
+
+		return getBirdListFromCursor(cursor);
+
 	}
 }

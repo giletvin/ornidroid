@@ -19,6 +19,8 @@ import fr.ornidroid.ui.components.OrnidroidViewBinder;
 /**
  * The Class HistoryHelper. This class allows to return to the search results
  * when the back button is clicked.
+ * 
+ * @deprecated
  */
 public class HistoryHelper {
 
@@ -31,6 +33,8 @@ public class HistoryHelper {
 	/**
 	 * mapping in the adapter results between the from columns in SQL and the
 	 * "to" fields in the displayed results.
+	 * 
+	 * @deprecated
 	 */
 	private final String[] from = new String[] {
 			SearchManager.SUGGEST_COLUMN_TEXT_1,
@@ -39,18 +43,24 @@ public class HistoryHelper {
 	/**
 	 * List Adapter which contains the results of the search, to enable the
 	 * return to the result list when the back button is pressed.
+	 * 
+	 * @deprecated
 	 */
 	private SimpleAdapter resultsAdapter;
 
 	/**
 	 * This list contains the ids of the birds which are referenced in the
 	 * results_adapter.
+	 * 
+	 * @deprecated
 	 */
 	private List<Integer> resultsBirdIds;
 
 	/**
 	 * mapping in the adapter results between the from columns in SQL and the
 	 * "to" fields in the displayed results.
+	 * 
+	 * @deprecated
 	 */
 	private final int[] to = new int[] { R.id.taxon, R.id.scientific_name };
 
@@ -66,6 +76,7 @@ public class HistoryHelper {
 	 * 
 	 * @param cursor
 	 *            the cursor
+	 * @deprecated
 	 */
 	public void setHistory(final Cursor cursor) {
 		if (null != this.currentCursor) {
@@ -81,6 +92,8 @@ public class HistoryHelper {
 			final int nbRouws = cursor.getCount();
 			for (int i = 0; i < nbRouws; i++) {
 				cursor.moveToPosition(i);
+				final int idIndex = cursor
+						.getColumnIndexOrThrow(BaseColumns._ID);
 				final String column_1 = cursor.getString(cursor
 						.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1));
 				final String directoryName = cursor.getString(cursor
@@ -93,9 +106,11 @@ public class HistoryHelper {
 					scientificNamesList.add(scientificName);
 					final Map<String, SimpleBird> map = new HashMap<String, SimpleBird>();
 					final SimpleBird birdLine1 = this.birdFactory
-							.createSimpleBird(column_1, directoryName);
+							.createSimpleBird(cursor.getInt(idIndex), column_1,
+									directoryName);
 					final SimpleBird birdLine2 = this.birdFactory
-							.createSimpleBird(scientificName, null);
+							.createSimpleBird(cursor.getInt(idIndex),
+									scientificName, null);
 					map.put(SearchManager.SUGGEST_COLUMN_TEXT_1, birdLine1);
 					map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, birdLine2);
 					data.add(map);
@@ -116,6 +131,7 @@ public class HistoryHelper {
 	 *            the method.
 	 * @return the bird id in history. If position is invalid, returns the first
 	 *         id in the list
+	 * @deprecated
 	 */
 	protected Integer getBirdIdInHistory(int position) {
 		if ((position < 0) || (position >= this.resultsBirdIds.size())) {
@@ -133,16 +149,6 @@ public class HistoryHelper {
 	 */
 	protected ListAdapter getResultsAdapter() {
 		return this.resultsAdapter;
-	}
-
-	/**
-	 * Checks for history.
-	 * 
-	 * @return true, if successful
-	 */
-	protected boolean hasHistory() {
-		return (null != this.resultsBirdIds)
-				&& (this.resultsBirdIds.size() > 0);
 	}
 
 }

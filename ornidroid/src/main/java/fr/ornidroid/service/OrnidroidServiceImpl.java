@@ -10,11 +10,11 @@ import android.app.SearchManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.widget.ListAdapter;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.BirdFactoryImpl;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
+import fr.ornidroid.bo.SimpleBird;
 import fr.ornidroid.bo.Taxon;
 import fr.ornidroid.data.IOrnidroidDAO;
 import fr.ornidroid.data.OrnidroidDAOImpl;
@@ -51,6 +51,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		 * 
 		 * @param pMapNameId
 		 *            the map name id
+		 * @param pMapNameCode
+		 *            the map name code
 		 * @param pFieldValues
 		 *            the field values
 		 */
@@ -160,6 +162,9 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	/** The sizes map. */
 	private Map<String, Integer> sizesMap;
 
+	/** The query result. */
+	private List<SimpleBird> queryResult;
+
 	/**
 	 * Instantiates a new ornidroid service impl.
 	 * 
@@ -223,23 +228,14 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.ornidroid.service.IOrnidroidService#getBirdMatches(java.lang
-	 * .String)
-	 */
-	public Cursor getBirdMatches(final String query) {
-		return this.ornidroidDAO.getBirdMatches(query);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * fr.ornidroid.service.IOrnidroidService#getBirdMatchesFromMultiSearchCriteria
 	 * (fr.ornidroid.bo.MultiCriteriaSearchFormBean)
 	 */
 	public void getBirdMatchesFromMultiSearchCriteria(
 			final MultiCriteriaSearchFormBean formBean) {
-		this.ornidroidDAO.getBirdMatchesFromMultiSearchCriteria(formBean);
+		queryResult = this.ornidroidDAO
+				.getBirdMatchesFromMultiSearchCriteria(formBean);
 
 	}
 
@@ -360,15 +356,6 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 
 		}
 		return this.habitatsList;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.ornidroid.service.IOrnidroidService#getHistoricResultsAdapter ()
-	 */
-	public ListAdapter getHistoricResultsAdapter() {
-		return this.ornidroidDAO.getHistoricResultsAdapter();
 	}
 
 	/*
@@ -515,7 +502,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * @see fr.ornidroid.service.IOrnidroidService#hasHistory()
 	 */
 	public boolean hasHistory() {
-		return this.ornidroidDAO.hasHistory();
+		return (queryResult != null && queryResult.size() > 0);
 	}
 
 	/**
@@ -725,5 +712,25 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 				.getString(R.string.xeno_canto_map));
 		sbuf.append("</a>");
 		return sbuf.toString();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#getMatchingBirds(java.lang.String)
+	 */
+	public List<SimpleBird> getMatchingBirds(String query) {
+		queryResult = this.ornidroidDAO.getMatchingBirds(query);
+		return queryResult;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidService#getQueryResult()
+	 */
+	public List<SimpleBird> getQueryResult() {
+		return queryResult;
 	}
 }

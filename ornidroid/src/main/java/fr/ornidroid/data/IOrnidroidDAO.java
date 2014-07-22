@@ -1,8 +1,11 @@
 package fr.ornidroid.data;
 
+import java.util.List;
+
 import android.database.Cursor;
 import android.widget.ListAdapter;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
+import fr.ornidroid.bo.SimpleBird;
 
 /**
  * The Interface IOrnidroidDAO.
@@ -120,7 +123,7 @@ public interface IOrnidroidDAO {
 	 *            the form bean
 	 * @return the bird matches from multi search criteria
 	 */
-	void getBirdMatchesFromMultiSearchCriteria(
+	List<SimpleBird> getBirdMatchesFromMultiSearchCriteria(
 			MultiCriteriaSearchFormBean formBean);
 
 	/**
@@ -192,13 +195,6 @@ public interface IOrnidroidDAO {
 	Cursor getSizes();
 
 	/**
-	 * Checks for history.
-	 * 
-	 * @return true, if successful
-	 */
-	boolean hasHistory();
-
-	/**
 	 * gets the countries where the bird can be seen
 	 * 
 	 * @param id
@@ -207,5 +203,14 @@ public interface IOrnidroidDAO {
 	 *         wrong
 	 */
 	Cursor getGeographicDistribution(int id);
+
+	/**
+	 * Gets the matching birds.
+	 * 
+	 * @param query
+	 *            the query
+	 * @return the matching birds
+	 */
+	List<SimpleBird> getMatchingBirds(String query);
 
 }

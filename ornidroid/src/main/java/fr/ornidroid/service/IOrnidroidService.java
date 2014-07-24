@@ -39,15 +39,6 @@ public interface IOrnidroidService {
 	List<String> getBeakForms();
 
 	/**
-	 * Gets the bird id in history.
-	 * 
-	 * @param position
-	 *            the position
-	 * @return the bird id in history
-	 */
-	Integer getBirdIdInHistory(int position);
-
-	/**
 	 * Gets the matching birds and store the results in the history result
 	 * 
 	 * @param query

@@ -219,15 +219,6 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.ornidroid.service.IOrnidroidService#getBirdIdInHistory(int)
-	 */
-	public Integer getBirdIdInHistory(final int position) {
-		return this.ornidroidDAO.getBirdIdInHistory(position);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * fr.ornidroid.service.IOrnidroidService#getBirdMatchesFromMultiSearchCriteria
 	 * (fr.ornidroid.bo.MultiCriteriaSearchFormBean)

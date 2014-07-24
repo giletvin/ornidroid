@@ -10,7 +10,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
-import android.widget.ListAdapter;
 import fr.ornidroid.bo.BirdFactoryImpl;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.bo.SimpleBird;
@@ -140,9 +139,6 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/** The data base open helper. */
 	private final OrnidroidDatabaseOpenHelper dataBaseOpenHelper;
 
-	/** The history helper. */
-	private final HistoryHelper historyHelper;
-
 	/**
 	 * Constructor.
 	 * 
@@ -152,7 +148,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	private OrnidroidDAOImpl(
 			final OrnidroidDatabaseOpenHelper pDataBaseOpenHelper) {
 		this.dataBaseOpenHelper = pDataBaseOpenHelper;
-		this.historyHelper = new HistoryHelper();
+
 		this.birdFactory = new BirdFactoryImpl();
 	}
 
@@ -182,15 +178,6 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.ornidroid.data.IOrnidroidDAO#getBirdIdInHistory(int)
-	 */
-	public Integer getBirdIdInHistory(final int position) {
-		return this.historyHelper.getBirdIdInHistory(position);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getBirdMatches(java.lang.String)
 	 */
 	public Cursor getBirdMatches(final String query) {
@@ -201,7 +188,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		final Cursor cursor = query(
 				new SqlDynamicFragments(whereClause.toString(),
 						Constants.EMPTY_STRING), selectionArgs, false);
-		this.historyHelper.setHistory(cursor);
+
 		return cursor;
 
 	}
@@ -363,15 +350,6 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		return getCursorFromListTable(HABITAT_TABLE_NAME, NAME_COLUMN_NAME,
 				I18nHelper.getLang());
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.ornidroid.data.IOrnidroidDAO#getHistoricResultsAdapter()
-	 */
-	public ListAdapter getHistoricResultsAdapter() {
-		return this.historyHelper.getResultsAdapter();
 	}
 
 	/*

@@ -3,7 +3,6 @@ package fr.ornidroid.data;
 import java.util.List;
 
 import android.database.Cursor;
-import android.widget.ListAdapter;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.bo.SimpleBird;
 
@@ -98,15 +97,6 @@ public interface IOrnidroidDAO {
 	Cursor getBird(String rowId);
 
 	/**
-	 * Gets the bird id in history.
-	 * 
-	 * @param position
-	 *            the position
-	 * @return the bird id in history
-	 */
-	Integer getBirdIdInHistory(int position);
-
-	/**
 	 * Returns a Cursor over all birds that match the given query.
 	 * 
 	 * @param query
@@ -163,13 +153,6 @@ public interface IOrnidroidDAO {
 	 * @return the habitats
 	 */
 	Cursor getHabitats();
-
-	/**
-	 * Gets the historic results adapter.
-	 * 
-	 * @return the historic results adapter
-	 */
-	ListAdapter getHistoricResultsAdapter();
 
 	/**
 	 * Gets the multi search criteria count results.

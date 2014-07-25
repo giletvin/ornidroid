@@ -272,9 +272,9 @@ public class PictureHelper {
 				imageAndDescription.addView(description);
 
 				this.birdActivity.getViewFlipper().addView(imageAndDescription);
-				displayFixedPicture();
-				updateNumberOfPicturesText();
 			}
+			displayFixedPicture();
+			updateNumberOfPicturesText();
 			insertBitmapInViewFlipper(this.birdActivity.getDisplayedPictureId());
 		} else {
 			this.birdActivity.printDownloadButtonAndInfo();

@@ -178,24 +178,6 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see fr.ornidroid.data.IOrnidroidDAO#getBirdMatches(java.lang.String)
-	 */
-	public Cursor getBirdMatches(final String query) {
-		final StringBuffer whereClause = new StringBuffer().append(WHERE)
-				.append(SEARCHED_TAXON).append(" MATCH ?");
-		final String[] selectionArgs = new String[] { StringHelper
-				.stripAccents(query) + "*" };
-		final Cursor cursor = query(
-				new SqlDynamicFragments(whereClause.toString(),
-						Constants.EMPTY_STRING), selectionArgs, false);
-
-		return cursor;
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * fr.ornidroid.data.IOrnidroidDAO#getBirdMatchesFromMultiSearchCriteria
 	 * (fr.ornidroid.bo.MultiCriteriaSearchFormBean)

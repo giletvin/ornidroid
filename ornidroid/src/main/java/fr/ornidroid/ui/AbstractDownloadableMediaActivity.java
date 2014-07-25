@@ -7,7 +7,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -32,9 +31,9 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.downloads.CheckForUpdateFilesLoaderInfo;
 import fr.ornidroid.ui.downloads.HandlerForCheckUpdateFilesThread;
 import fr.ornidroid.ui.threads.GenericTaskHandler;
+import fr.ornidroid.ui.threads.GenericTaskHandler.GenericTaskCallback;
 import fr.ornidroid.ui.threads.HandlerGenericThread;
 import fr.ornidroid.ui.threads.LoaderInfo;
-import fr.ornidroid.ui.threads.GenericTaskHandler.GenericTaskCallback;
 
 /**
  * The Class AbstractDownloadableMediaActivity.
@@ -123,8 +122,8 @@ public abstract class AbstractDownloadableMediaActivity extends
 	/** The update files button. */
 	private ImageView updateFilesButton;
 
-	/** The uri. */
-	private Uri uri;
+	/** The birdId. */
+	private int birdId;
 
 	/**
 	 * Instantiates a new abstract downloadable media activity.
@@ -702,9 +701,10 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * Load bird details, from uri contained in the intent.
 	 */
 	private void loadBirdDetails() {
-		this.uri = getIntent().getData();
-		if (null != this.uri) {
-			this.ornidroidService.loadBirdDetails(this.uri);
+		this.birdId = getIntent()
+				.getIntExtra(MainActivity.BIRD_ID_ITENT_PRM, 0);
+		if (0 != this.birdId) {
+			this.ornidroidService.loadBirdDetails(birdId);
 		}
 	}
 

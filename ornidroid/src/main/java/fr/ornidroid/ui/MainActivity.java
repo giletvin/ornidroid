@@ -7,7 +7,6 @@ import java.util.Map;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,7 +23,6 @@ import android.widget.TextView.OnEditorActionListener;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.BirdFactoryImpl;
 import fr.ornidroid.bo.SimpleBird;
-import fr.ornidroid.data.DictionaryProvider;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
@@ -38,10 +36,14 @@ public class MainActivity extends AbstractOrnidroidActivity {
 
 	/**
 	 * The Constant SHOW_SEARCH_FIELD_INTENT_PRM to hide or show the search
-	 * field at the top of this screen
+	 * field at the top of this screen.
 	 */
 	public static final String SHOW_SEARCH_FIELD_INTENT_PRM = "show_search_field";
 
+	/** The Constant BIRD_ID_ITENT_PRM. */
+	public static final String BIRD_ID_ITENT_PRM = "bird_id_intent_prm";
+
+	/** The bird factory. */
 	private final BirdFactoryImpl birdFactory;
 	/**
 	 * mapping in the adapter results between the from columns in SQL and the
@@ -120,8 +122,7 @@ public class MainActivity extends AbstractOrnidroidActivity {
 					final View view, final int position, final long id) {
 				MainActivity.this.clickedPositionInTheList = position;
 				Integer clickedBirdId = resultsBirdIds.get(position);
-				startActivity(buildIntentBirdInfoActivity(String
-						.valueOf(clickedBirdId)));
+				startActivity(buildIntentBirdInfoActivity(clickedBirdId));
 
 			}
 		});
@@ -139,12 +140,10 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	 *            the bird id
 	 * @return the intent
 	 */
-	private Intent buildIntentBirdInfoActivity(final String birdId) {
+	private Intent buildIntentBirdInfoActivity(final Integer birdId) {
 		final Intent birdIntent = new Intent(getApplicationContext(),
 				BirdActivity.class);
-		final Uri data = Uri.withAppendedPath(DictionaryProvider.CONTENT_URI,
-				birdId);
-		birdIntent.setData(data);
+		birdIntent.putExtra(BIRD_ID_ITENT_PRM, birdId);
 		return birdIntent;
 	}
 
@@ -153,6 +152,7 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	 * behaviour to open the bird info activity
 	 * 
 	 * @param intent
+	 *            the intent
 	 */
 	private void initAutoCompleteField(final Intent intent) {
 		this.searchField = (AutoCompleteTextView) findViewById(R.id.home_search_field);
@@ -171,8 +171,6 @@ public class MainActivity extends AbstractOrnidroidActivity {
 				List<SimpleBird> queryResult = ornidroidService
 						.getMatchingBirds(userInput.toString());
 
-				// getItemsFromDb(userInput.toString());
-
 				// update the adapater
 				adapterAutocompleteTextView.notifyDataSetChanged();
 				adapterAutocompleteTextView = new ArrayAdapter<SimpleBird>(
@@ -185,13 +183,9 @@ public class MainActivity extends AbstractOrnidroidActivity {
 
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 
@@ -209,8 +203,8 @@ public class MainActivity extends AbstractOrnidroidActivity {
 					SimpleBird clickedBird = ornidroidService.getQueryResult()
 							.get(0);
 					printQueryResults();
-					startActivity(buildIntentBirdInfoActivity(String
-							.valueOf(clickedBird.getId())));
+					startActivity(buildIntentBirdInfoActivity(clickedBird
+							.getId()));
 				}
 			}
 		});

@@ -43,19 +43,8 @@
         </activity>
 
         <!-- The default activity of the app; displays search results. -->
-        <activity android:name=".ui.MainActivity" >
+        <activity android:name=".ui.MainActivity" />
 
-            <!-- Receives the search request. -->
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-                <!-- No category needed, because the Intent will specify this class component -->
-            </intent-filter>
-
-            <!-- Points to searchable meta data. -->
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
 
         <!-- Preferences activity -->
         <activity
@@ -85,10 +74,7 @@
             android:name=".ui.AddCustomMediaActivity"
             android:label="@string/add_custom_media_title" />
 
-        <!-- Provides search suggestions for words and their definitions. -->
-        <provider
-            android:name=".data.DictionaryProvider"
-            android:authorities="fr.ornidroid.data.DictionaryProvider" />
+      
 
         <!-- Points to searchable activity so the whole app can invoke search. -->
         <meta-data

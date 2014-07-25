@@ -97,15 +97,6 @@ public interface IOrnidroidDAO {
 	Cursor getBird(String rowId);
 
 	/**
-	 * Returns a Cursor over all birds that match the given query.
-	 * 
-	 * @param query
-	 *            The string to search for
-	 * @return Cursor over all birds that match, or null if none found.
-	 */
-	Cursor getBirdMatches(String query);
-
-	/**
 	 * Gets the bird matches from multi search criteria and stores the results
 	 * in the history stack.
 	 * 

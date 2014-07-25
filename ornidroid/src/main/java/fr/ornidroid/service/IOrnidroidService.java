@@ -2,7 +2,6 @@ package fr.ornidroid.service;
 
 import java.util.List;
 
-import android.net.Uri;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.bo.SimpleBird;
@@ -222,15 +221,6 @@ public interface IOrnidroidService {
 	 *            the bird id
 	 */
 	void loadBirdDetails(Integer birdId);
-
-	/**
-	 * Load bird details. Load info from the database. The created bird doesn't
-	 * have its media files yet.
-	 * 
-	 * @param uri
-	 *            the uri
-	 */
-	void loadBirdDetails(Uri uri);
 
 	/**
 	 * Gets the xeno canto map url. Something like :

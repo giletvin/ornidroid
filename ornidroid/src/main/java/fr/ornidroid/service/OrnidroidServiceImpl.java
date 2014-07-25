@@ -8,7 +8,6 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.provider.BaseColumns;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Bird;
@@ -509,18 +508,6 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.ornidroid.service.IOrnidroidService#loadBirdDetails(android
-	 * .net.Uri)
-	 */
-	public void loadBirdDetails(final Uri uri) {
-		final Cursor cursor = this.activity.managedQuery(uri, null, null, null,
-				null);
-		loadBirdDetailsFromCursor(cursor);
-	}
-
 	/**
 	 * Gets the habitat from cursor. Concatenates habitat 1 and habitat 2
 	 * 
@@ -547,7 +534,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	}
 
 	/**
-	 * Load bird details from cursor.
+	 * Load bird details from cursor and closes it
 	 * 
 	 * @param cursor
 	 *            the cursor
@@ -613,7 +600,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	}
 
 	/**
-	 * Load select fields from cursor, used to populate the Spinners.
+	 * Load select fields from cursor, used to populate the Spinners and closes
+	 * the cursor
 	 * 
 	 * @param cursor
 	 *            the cursor from the DAO, from a select query on the fields ID

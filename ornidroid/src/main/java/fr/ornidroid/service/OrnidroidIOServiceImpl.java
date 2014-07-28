@@ -444,4 +444,21 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		return files;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidIOService#getWikipediaPage(fr.ornidroid
+	 * .bo.Bird)
+	 */
+	public String getWikipediaPage(Bird currentBird) {
+		return Constants.getOrnidroidHomeWikipedia()
+				+ File.separator
+				+ I18nHelper.getLang().getCode()
+				+ File.separator
+				+ currentBird.getScientificName().replace(
+						BasicConstants.BLANK_STRING,
+						BasicConstants.UNDERSCORE_STRING);
+	}
+
 }

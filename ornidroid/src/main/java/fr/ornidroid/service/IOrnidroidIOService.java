@@ -110,4 +110,13 @@ public interface IOrnidroidIOService {
 	void removeCustomMediaFile(AbstractOrnidroidFile ornidroidFile)
 			throws OrnidroidException;
 
+	/**
+	 * Gets the wikipedia page.
+	 * 
+	 * @param currentBird
+	 *            the current bird
+	 * @return the path of the wikipedia page
+	 */
+	public String getWikipediaPage(Bird currentBird);
+
 }

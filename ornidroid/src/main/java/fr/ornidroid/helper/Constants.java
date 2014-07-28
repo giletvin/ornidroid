@@ -235,4 +235,14 @@ public class Constants extends BasicConstants {
 		}
 		return mExternalStorageWriteable;
 	}
+
+	/**
+	 * Gets the ornidroid home wikipedia.
+	 * 
+	 * @return the ornidroid home wikipedia
+	 */
+	public static final String getOrnidroidHomeWikipedia() {
+		return Constants.getOrnidroidHome() + File.separator
+				+ WIKIPEDIA_DIRECTORY;
+	}
 }

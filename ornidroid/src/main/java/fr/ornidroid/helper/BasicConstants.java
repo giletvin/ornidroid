@@ -31,6 +31,7 @@ public class BasicConstants {
 
 	/** The Constant CUSTOM_MEDIA_FILE_PREFIX. */
 	public static final String CUSTOM_MEDIA_FILE_PREFIX = "custom_";
+
 	/**
 	 * The Constant DB_CHECKSIZE_NAME. This file contains the size ot the
 	 * database file. It is used to detect a new version of the database. If a
@@ -53,6 +54,9 @@ public class BasicConstants {
 
 	/** The Constant IMAGES_DIRECTORY. */
 	public static final String IMAGES_DIRECTORY = "images";
+
+	/** The Constant WIKIPEDIA_DIRECTORY. */
+	public static final String WIKIPEDIA_DIRECTORY = "wikipedia";
 	/** The Constant LOG_TAG. */
 	public static final String LOG_TAG = "Ornidroid";
 

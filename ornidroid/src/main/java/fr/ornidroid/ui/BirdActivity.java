@@ -6,6 +6,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -22,7 +23,9 @@ import fr.ornidroid.bo.AudioOrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.OrnidroidException;
+import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
+import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.audio.AudioHelper;
 import fr.ornidroid.ui.picture.BirdActivityGestureListener;
@@ -58,6 +61,9 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/** The Constant DETAIL_TAB_NAME. */
 	private static final String DETAIL_TAB_NAME = "detailTab";
 
+	/** The Constant WIKIPEDIA_TAB_NAME. */
+	private static final String WIKIPEDIA_TAB_NAME = "wikipediaTab";
+
 	/** The audio helper. */
 	private final AudioHelper audioHelper;
 
@@ -81,6 +87,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
+	private final IOrnidroidIOService ornidroidIOService;
 
 	/** The picture helper. */
 	private final PictureHelper pictureHelper;
@@ -134,6 +141,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	public BirdActivity() {
 		super();
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
+		this.ornidroidIOService = new OrnidroidIOServiceImpl();
 		this.audioHelper = new AudioHelper(this);
 		this.pictureHelper = new PictureHelper(this);
 	}
@@ -146,9 +154,11 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	 * )
 	 */
 	public View createTabContent(final String tabName) {
+		View returnedView;
 
 		if (AUDIO_TAB_NAME.equals(tabName)) {
 			this.audioLayout = new LinearLayout(this);
+			returnedView = this.audioLayout;
 			try {
 				loadMediaFilesLocally();
 			} catch (final OrnidroidException e) {
@@ -178,9 +188,10 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 			this.audioLayout.addView(this.audioHelper.createAudioControlView());
 			this.audioLayout.addView(this.mListView);
-			return this.audioLayout;
 
-		} else {
+		}
+
+		else if (PICTURES_TAB_NAME.equals(tabName)) {
 			try {
 				loadMediaFilesLocally();
 			} catch (final OrnidroidException e) {
@@ -188,6 +199,7 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 				// + this.bird.getTaxon() + " e");
 			}
 			this.pictureLayout = new LinearLayout(this);
+			returnedView = this.pictureLayout;
 
 			// retrieve the displayed picture (when coming back from the
 			// zoom)
@@ -217,9 +229,17 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 					return false;
 				}
 			};
-			return this.pictureLayout;
 
+		} else {
+			// last case : Wikipedia Tab
+			WebView webView = new WebView(this);
+			webView.loadUrl("file:///"
+					+ this.ornidroidIOService.getWikipediaPage(ornidroidService
+							.getCurrentBird()));
+			returnedView = webView;
 		}
+
+		return returnedView;
 
 	}
 
@@ -451,7 +471,12 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			}
 		});
 		this.tabs.addTab(tspec1);
-
+		// Wikipedia tab
+		final TabSpec tspecWikipedia = this.tabs.newTabSpec(WIKIPEDIA_TAB_NAME);
+		tspecWikipedia.setIndicator(BasicConstants.EMPTY_STRING, getResources()
+				.getDrawable(R.drawable.ic_tab_details));
+		tspecWikipedia.setContent(this);
+		this.tabs.addTab(tspecWikipedia);
 		// bird names
 		final TabSpec tspec2 = this.tabs.newTabSpec(BIRD_NAMES_TAB_NAME);
 		tspec2.setIndicator(BasicConstants.EMPTY_STRING, getResources()

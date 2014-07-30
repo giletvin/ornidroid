@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import fr.ornidroid.R;
-import fr.ornidroid.bo.AbstractOrnidroidFile;
+import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
@@ -63,7 +63,7 @@ public class PictureHelper {
 	public void displayPictureInfoInDialog(final Dialog dialog) {
 		dialog.setContentView(R.layout.picture_info_dialog);
 		dialog.setTitle(R.string.dialog_picture_title);
-		final AbstractOrnidroidFile displayedPicture = this.birdActivity
+		final OrnidroidFile displayedPicture = this.birdActivity
 				.getBird().getPictures()
 				.get(this.birdActivity.getDisplayedPictureId());
 		displayLineInDialog(dialog, displayedPicture,
@@ -169,7 +169,7 @@ public class PictureHelper {
 		final LinearLayout imageAndDescription = (LinearLayout) this.birdActivity
 				.getViewFlipper().getChildAt(index);
 		final ImageView imagePicture = new ImageView(this.birdActivity);
-		final AbstractOrnidroidFile picture = this.birdActivity.getBird()
+		final OrnidroidFile picture = this.birdActivity.getBird()
 				.getPicture(index);
 		this.birdActivity.setCurrentMediaFile(picture);
 
@@ -190,7 +190,7 @@ public class PictureHelper {
 	 *            the resources
 	 * @return the bitmap
 	 */
-	public static Bitmap loadBitmap(final AbstractOrnidroidFile picture,
+	public static Bitmap loadBitmap(final OrnidroidFile picture,
 			final Resources resources) {
 		// try to load the bitmap from cache first
 		Bitmap bMap = LOADED_BITMAPS.get(picture.getPath());
@@ -255,9 +255,9 @@ public class PictureHelper {
 	public void populateViewFlipper() {
 		// PictureHelper.resetLoadedBitmaps();
 		if (this.birdActivity.getBird().getNumberOfPictures() > 0) {
-			final List<AbstractOrnidroidFile> listPictures = this.birdActivity
+			final List<OrnidroidFile> listPictures = this.birdActivity
 					.getBird().getPictures();
-			for (final AbstractOrnidroidFile picture : listPictures) {
+			for (final OrnidroidFile picture : listPictures) {
 				final LinearLayout imageAndDescription = new LinearLayout(
 						this.birdActivity);
 				imageAndDescription.setOrientation(LinearLayout.VERTICAL);
@@ -343,7 +343,7 @@ public class PictureHelper {
 	 *            the property name
 	 */
 	private void displayLineInDialog(final Dialog dialog,
-			final AbstractOrnidroidFile displayedPicture,
+			final OrnidroidFile displayedPicture,
 			final int textViewResId, final int labelResourceId,
 			final String propertyName) {
 		final String propertyValue = displayedPicture.getProperty(propertyName);

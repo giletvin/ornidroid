@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.ornidroid.bo.AbstractOrnidroidFile;
+import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.AudioOrnidroidFile;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.BirdFactoryImpl;
@@ -238,7 +238,7 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 				destDir.list().length);
 		final OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
 				.getFactory();
-		AbstractOrnidroidFile ornidroidFile = factory.createOrnidroidFile(
+		OrnidroidFile ornidroidFile = factory.createOrnidroidFile(
 				destFile.getAbsolutePath(), OrnidroidFileType.PICTURE,
 				SupportedLanguage.ENGLISH.getCode());
 		Assert.assertEquals("comment", ornidroidFile
@@ -435,12 +435,12 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 
 		final OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
 				.getFactory();
-		final AbstractOrnidroidFile officialOrnidroidFile = factory
+		final OrnidroidFile officialOrnidroidFile = factory
 				.createOrnidroidFile(
 						imagesDir.getAbsolutePath() + "/file1.jpg",
 						OrnidroidFileType.PICTURE,
 						SupportedLanguage.ENGLISH.getCode());
-		final AbstractOrnidroidFile customOrnidroidFile = factory
+		final OrnidroidFile customOrnidroidFile = factory
 				.createOrnidroidFile(imagesDir.getAbsolutePath()
 						+ "/custom_file1.jpg", OrnidroidFileType.PICTURE,
 						SupportedLanguage.ENGLISH.getCode());

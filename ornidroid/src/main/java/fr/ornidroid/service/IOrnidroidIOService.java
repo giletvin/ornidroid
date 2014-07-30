@@ -3,8 +3,8 @@ package fr.ornidroid.service;
 import java.io.File;
 import java.util.List;
 
-import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.Bird;
+import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.OrnidroidException;
 
@@ -107,16 +107,7 @@ public interface IOrnidroidIOService {
 	 * @throws OrnidroidException
 	 *             the ornidroid exception
 	 */
-	void removeCustomMediaFile(AbstractOrnidroidFile ornidroidFile)
+	void removeCustomMediaFile(OrnidroidFile ornidroidFile)
 			throws OrnidroidException;
-
-	/**
-	 * Gets the wikipedia page.
-	 * 
-	 * @param currentBird
-	 *            the current bird
-	 * @return the path of the wikipedia page
-	 */
-	public String getWikipediaPage(Bird currentBird);
 
 }

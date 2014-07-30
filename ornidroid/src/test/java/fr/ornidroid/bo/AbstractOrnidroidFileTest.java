@@ -18,7 +18,7 @@ public class AbstractOrnidroidFileTest {
 	 */
 	@Test
 	public void testExtractFilenameFromPath() {
-		final AbstractOrnidroidFile file = new AudioOrnidroidFile();
+		final OrnidroidFile file = new AudioOrnidroidFile();
 		file.setPath("/tmp/file.mp3");
 		Assert.assertEquals("file.mp3", file.extractFilenameFromPath());
 	}
@@ -28,7 +28,7 @@ public class AbstractOrnidroidFileTest {
 	 */
 	@Test
 	public void testGetProperty() {
-		final AbstractOrnidroidFile file = new AudioOrnidroidFile();
+		final OrnidroidFile file = new AudioOrnidroidFile();
 		Assert.assertNotNull("getProperty should not be null",
 				file.getProperty(PictureOrnidroidFile.IMAGE_AUTHOR_PROPERTY));
 		final Map<String, String> props = new HashMap<String, String>();
@@ -47,10 +47,10 @@ public class AbstractOrnidroidFileTest {
 	 */
 	@Test
 	public void testIsCustomMediaFile() {
-		final AbstractOrnidroidFile file = new AudioOrnidroidFile();
+		final OrnidroidFile file = new AudioOrnidroidFile();
 		file.setPath("/tmp/file.mp3");
 		Assert.assertFalse(file.isCustomMediaFile());
-		final AbstractOrnidroidFile file2 = new AudioOrnidroidFile();
+		final OrnidroidFile file2 = new AudioOrnidroidFile();
 		file2.setPath("/tmp/" + BasicConstants.CUSTOM_MEDIA_FILE_PREFIX
 				+ "file.mp3");
 		Assert.assertTrue(file2.isCustomMediaFile());

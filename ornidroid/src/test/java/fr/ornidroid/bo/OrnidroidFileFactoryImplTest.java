@@ -21,7 +21,7 @@ public class OrnidroidFileFactoryImplTest {
 		final OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
 				.getFactory();
 
-		AbstractOrnidroidFile ornidroidFile;
+		OrnidroidFile ornidroidFile;
 		// file with a properties file
 		try {
 			ornidroidFile = factory.createOrnidroidFile(
@@ -70,7 +70,7 @@ public class OrnidroidFileFactoryImplTest {
 		final OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
 				.getFactory();
 
-		AbstractOrnidroidFile ornidroidFile;
+		OrnidroidFile ornidroidFile;
 
 		// file 1. Complete. Remark are in english although file is loaded in
 		// french
@@ -82,16 +82,16 @@ public class OrnidroidFileFactoryImplTest {
 		Assert.assertNotNull(ornidroidFile);
 
 		Assert.assertEquals("wrong recordist", "Dougie Preston", ornidroidFile
-				.getProperty(AbstractOrnidroidFile.AUDIO_RECORDIST_PROPERTY));
+				.getProperty(OrnidroidFile.AUDIO_RECORDIST_PROPERTY));
 		Assert.assertNotNull("remarks should not be null", ornidroidFile
-				.getProperty(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY));
+				.getProperty(OrnidroidFile.AUDIO_REMARKS_PROPERTY));
 		Assert.assertNotNull("duration should not be null", ornidroidFile
-				.getProperty(AbstractOrnidroidFile.AUDIO_DURATION_PROPERTY));
+				.getProperty(OrnidroidFile.AUDIO_DURATION_PROPERTY));
 		Assert.assertNotNull("title should not be null", ornidroidFile
-				.getProperty(AbstractOrnidroidFile.AUDIO_TITLE_PROPERTY));
+				.getProperty(OrnidroidFile.AUDIO_TITLE_PROPERTY));
 
 		Assert.assertNotNull("ref should not be null", ornidroidFile
-				.getProperty(AbstractOrnidroidFile.AUDIO_REF_PROPERTY));
+				.getProperty(OrnidroidFile.AUDIO_REF_PROPERTY));
 
 		// file 2. Remarks are missing
 		ornidroidFile = factory
@@ -101,13 +101,13 @@ public class OrnidroidFileFactoryImplTest {
 						SupportedLanguage.ENGLISH.getCode());
 		Assert.assertNotNull(ornidroidFile);
 		Assert.assertNotNull("recordist should not be null", ornidroidFile
-				.getProperty(AbstractOrnidroidFile.AUDIO_RECORDIST_PROPERTY));
+				.getProperty(OrnidroidFile.AUDIO_RECORDIST_PROPERTY));
 		Assert.assertEquals("remarks should be empty", "", ornidroidFile
-				.getProperty(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY));
+				.getProperty(OrnidroidFile.AUDIO_REMARKS_PROPERTY));
 		Assert.assertNotNull("duration should not be null", ornidroidFile
-				.getProperty(AbstractOrnidroidFile.AUDIO_DURATION_PROPERTY));
+				.getProperty(OrnidroidFile.AUDIO_DURATION_PROPERTY));
 		Assert.assertNotNull("title should not be null", ornidroidFile
-				.getProperty(AbstractOrnidroidFile.AUDIO_TITLE_PROPERTY));
+				.getProperty(OrnidroidFile.AUDIO_TITLE_PROPERTY));
 
 		// file 3. Remarks in french
 		ornidroidFile = factory.createOrnidroidFile(
@@ -119,7 +119,7 @@ public class OrnidroidFileFactoryImplTest {
 				"french remarks should be loaded",
 				"french remarks",
 				ornidroidFile
-						.getProperty(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY));
+						.getProperty(OrnidroidFile.AUDIO_REMARKS_PROPERTY));
 
 		// same file, remarks in english
 		ornidroidFile = factory.createOrnidroidFile(
@@ -131,7 +131,7 @@ public class OrnidroidFileFactoryImplTest {
 				"english remarks should be loaded",
 				"english remarks",
 				ornidroidFile
-						.getProperty(AbstractOrnidroidFile.AUDIO_REMARKS_PROPERTY));
+						.getProperty(OrnidroidFile.AUDIO_REMARKS_PROPERTY));
 
 	}
 
@@ -145,7 +145,7 @@ public class OrnidroidFileFactoryImplTest {
 		final OrnidroidFileFactoryImpl factory = OrnidroidFileFactoryImpl
 				.getFactory();
 
-		AbstractOrnidroidFile ornidroidFile;
+		OrnidroidFile ornidroidFile;
 		// file with a properties file fr
 		ornidroidFile = factory.createOrnidroidFile(
 				"./src/test/resources/images/bird_1/1.jpg",

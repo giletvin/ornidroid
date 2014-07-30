@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.util.Log;
-import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.Bird;
+import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileFactoryImpl;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.bo.PictureOrnidroidFile;
@@ -103,7 +103,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		final File destFile = new File(destinationDirectory + File.separator
 				+ destFileName);
 		final File propertiesFile = new File(destFile.getAbsolutePath()
-				+ AbstractOrnidroidFile.PROPERTIES_SUFFIX);
+				+ OrnidroidFile.PROPERTIES_SUFFIX);
 		doAddCustomMediaFiles(fileType, selectedFile, destFile, propertiesFile,
 				comment);
 
@@ -173,8 +173,64 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 			bird.setSounds(lookForOrnidroidFiles(mediaHomeDirectory,
 					bird.getBirdDirectoryName(), OrnidroidFileType.AUDIO, true));
 			break;
+		case WIKIPEDIA_PAGE:
+			bird.setWikipediaPage(downloadWikipediaPage(bird));
+
+			break;
 		}
 
+	}
+
+	/**
+	 * Gets the local wikipedia page or download it.
+	 * 
+	 * @param bird
+	 *            the bird
+	 * @return the local wikipedia page or download it
+	 */
+	private OrnidroidFile downloadWikipediaPage(Bird bird) {
+		// cherche s'il existe une page wiki locale
+		File wikipediaFile;
+
+		try {
+			wikipediaFile = downloadHelper.downloadFile(
+					downloadHelper.getBaseUrl(I18nHelper.getLang().getCode(),
+							OrnidroidFileType.WIKIPEDIA_PAGE),
+					bird.getScientificName().replace(
+							BasicConstants.BLANK_STRING,
+							BasicConstants.UNDERSCORE_STRING),
+					Constants.getOrnidroidHomeWikipedia() + File.separator
+							+ I18nHelper.getLang().getCode());
+			return getLocalWikipediaPage(bird);
+		} catch (OrnidroidException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the local wikipedia page.
+	 * 
+	 * @param bird
+	 *            the bird
+	 * @return the local wikipedia page
+	 */
+	private OrnidroidFile getLocalWikipediaPage(Bird bird) {
+		// cherche s'il existe une page wiki locale
+		File wikipediaFile = new File(getWikipediaPage(bird));
+		if (wikipediaFile.exists()) {
+			OrnidroidFile wikipediaOrnidroidFile;
+			try {
+				wikipediaOrnidroidFile = OrnidroidFileFactoryImpl.getFactory()
+						.createOrnidroidFile(wikipediaFile.getAbsolutePath(),
+								OrnidroidFileType.WIKIPEDIA_PAGE,
+								I18nHelper.getLang().getCode());
+				return wikipediaOrnidroidFile;
+			} catch (FileNotFoundException e) {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 
 	/*
@@ -221,6 +277,10 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 			bird.setSounds(lookForOrnidroidFiles(fileDirectory,
 					bird.getBirdDirectoryName(), OrnidroidFileType.AUDIO, false));
 			break;
+
+		case WIKIPEDIA_PAGE:
+			bird.setWikipediaPage(getLocalWikipediaPage(bird));
+			break;
 		}
 	}
 
@@ -231,12 +291,12 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 * fr.ornidroid.service.IOrnidroidIOService#removeCustomMediaFile(fr.ornidroid
 	 * .bo.AbstractOrnidroidFile)
 	 */
-	public void removeCustomMediaFile(final AbstractOrnidroidFile ornidroidFile)
+	public void removeCustomMediaFile(final OrnidroidFile ornidroidFile)
 			throws OrnidroidException {
 		if (ornidroidFile.isCustomMediaFile()) {
 			final File mediaFile = new File(ornidroidFile.getPath());
 			final File mediaPropertiesFile = new File(ornidroidFile.getPath()
-					+ AbstractOrnidroidFile.PROPERTIES_SUFFIX);
+					+ OrnidroidFile.PROPERTIES_SUFFIX);
 			try {
 				FileHelper.forceDelete(mediaFile);
 				FileHelper.forceDelete(mediaPropertiesFile);
@@ -299,19 +359,22 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		String data = null;
 		switch (fileType) {
 		case AUDIO:
-			data = AbstractOrnidroidFile.AUDIO_TITLE_PROPERTY
+			data = OrnidroidFile.AUDIO_TITLE_PROPERTY
 					+ BasicConstants.EQUALS_STRING + comment;
 			break;
 		case PICTURE:
 			data = PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY
-					+ AbstractOrnidroidFile.LANGUAGE_SEPARATOR
+					+ OrnidroidFile.LANGUAGE_SEPARATOR
 					+ SupportedLanguage.FRENCH.getCode()
 					+ BasicConstants.EQUALS_STRING + comment
 					+ BasicConstants.CARRIAGE_RETURN
 					+ PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY
-					+ AbstractOrnidroidFile.LANGUAGE_SEPARATOR
+					+ OrnidroidFile.LANGUAGE_SEPARATOR
 					+ SupportedLanguage.ENGLISH.getCode()
 					+ BasicConstants.EQUALS_STRING + comment;
+			break;
+		case WIKIPEDIA_PAGE:
+			data = BasicConstants.EMPTY_STRING;
 			break;
 		}
 		return data;
@@ -323,7 +386,6 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 * @param localContent
 	 *            : if true parse the local file, otherwise download the remote
 	 *            file from web site
-	 * 
 	 * @param mediaHomeDirectory
 	 *            the media home directory
 	 * @param bird
@@ -331,8 +393,6 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 * @param fileType
 	 *            the file type
 	 * @return the list of files parsed from contents.properties file
-	 * @throws OrnidroidException
-	 *             the ornidroid exception
 	 */
 	private List<String> loadContentFile(final boolean localContent,
 			final String mediaHomeDirectory, final Bird bird,
@@ -387,11 +447,11 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 * @throws OrnidroidException
 	 *             the ornidroid exception
 	 */
-	private List<AbstractOrnidroidFile> lookForOrnidroidFiles(
+	private List<OrnidroidFile> lookForOrnidroidFiles(
 			final String ornidroidMediaHome, final String directoryName,
 			final OrnidroidFileType fileType, final boolean downloadFromInternet)
 			throws OrnidroidException {
-		final List<AbstractOrnidroidFile> files = new ArrayList<AbstractOrnidroidFile>();
+		final List<OrnidroidFile> files = new ArrayList<OrnidroidFile>();
 		if (StringHelper.isNotBlank(directoryName)) {
 			final File filesDirectory = new File(ornidroidMediaHome
 					+ File.separator + directoryName);
@@ -413,7 +473,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 				}
 				try {
 					for (final File file : filesList) {
-						final AbstractOrnidroidFile ornidroidFile = OrnidroidFileFactoryImpl
+						final OrnidroidFile ornidroidFile = OrnidroidFileFactoryImpl
 								.getFactory().createOrnidroidFile(
 										file.getAbsolutePath(), fileType,
 										I18nHelper.getLang().getCode());
@@ -444,14 +504,14 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		return files;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Gets the wikipedia page local path.
 	 * 
-	 * @see
-	 * fr.ornidroid.service.IOrnidroidIOService#getWikipediaPage(fr.ornidroid
-	 * .bo.Bird)
+	 * @param currentBird
+	 *            the current bird
+	 * @return the local path of the wikipedia page
 	 */
-	public String getWikipediaPage(Bird currentBird) {
+	private String getWikipediaPage(Bird currentBird) {
 		return Constants.getOrnidroidHomeWikipedia()
 				+ File.separator
 				+ I18nHelper.getLang().getCode()

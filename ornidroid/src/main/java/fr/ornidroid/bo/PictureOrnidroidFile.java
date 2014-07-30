@@ -3,7 +3,7 @@ package fr.ornidroid.bo;
 /**
  * The Class PictureOrnidroidFile.
  */
-public class PictureOrnidroidFile extends AbstractOrnidroidFile {
+public class PictureOrnidroidFile extends OrnidroidFile {
 
 	/** The Constant IMAGE_AUTHOR_PROPERTY. */
 	public static final String IMAGE_AUTHOR_PROPERTY = "image_author";

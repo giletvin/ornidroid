@@ -36,9 +36,7 @@
     <string name="bird_image_big">Zoomed picture</string>
     <string name="bird_names">Taxonomy</string>
     <string name="add_custom_media_title">Add custom files</string>
-    
-	
-	
+
     <!-- labels used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
     <string name="preferences_lang_title">Languages of the search engine</string>
@@ -59,8 +57,7 @@
     <string name="add_custom_media_success">Your file has been successfully added</string>
     <string name="remove_custom_media_success">Your file has been successfully deleted</string>
     <string name="add_custom_media_go_back">Go back to the bird</string>
-    
-    
+
     <!-- pictures info dialog box -->
     <string name="dialog_picture_title">Picture info</string>
     <string name="dialog_picture_description">Description</string>
@@ -94,6 +91,7 @@
 		available on the website ? (Internet connection is required)</string>
     <string name="no_pictures">No pictures. Do you want to check if records are
 		available on the website ? (Internet connection is required)</string>
+    <string name="no_wiki">Wikipedia page not found on your device. Do you want to download it (Internet connection is required)</string>
     <string name="about_ornidroid">Licence Creative Commons BY
 		NC\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.en</string>
     <string name="download_in_progress">Download in progress</string>
@@ -138,5 +136,6 @@
     <!-- labels for the updates -->
     <string name="updates_available">Updates available. Download ?</string>
     <string name="updates_check_error">Updates check went wrong. Please check your internet connectivity.</string>
-	<string name="updates_none">No updates available.</string>
+    <string name="updates_none">No updates available.</string>
+
 </resources>

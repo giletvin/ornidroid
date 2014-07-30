@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import fr.ornidroid.R;
-import fr.ornidroid.bo.AbstractOrnidroidFile;
+import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.ui.BirdActivity;
 
@@ -160,7 +160,7 @@ public class AudioHelper implements OnClickListener {
 	 */
 	public void spinThatShit(final int position) {
 		// Log.i(Constants.LOG_TAG, "Reading mp3 number " + position);
-		final AbstractOrnidroidFile mp3File = this.birdActivity
+		final OrnidroidFile mp3File = this.birdActivity
 				.getOrnidroidService().getCurrentBird().getSound(position);
 		this.birdActivity.setCurrentMediaFile(mp3File);
 		if (null != mp3File) {

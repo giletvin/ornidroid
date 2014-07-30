@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.ornidroid.bo.AbstractOrnidroidFile;
+import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.FileHelper;
@@ -42,7 +42,7 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 			// since its presence is used to control the validity of the
 			// downloading
 			url = new URL(baseUrl + File.separator + fileName
-					+ AbstractOrnidroidFile.PROPERTIES_SUFFIX);
+					+ OrnidroidFile.PROPERTIES_SUFFIX);
 			final DefaultDownloadable propertiesFileDownloadable = new DefaultDownloadable(
 					url, destinationPath);
 			propertiesFileDownloadable.download();
@@ -109,6 +109,9 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 			baseUrl = DownloadConstants.getOrnidroidWebSiteAudio()
 					+ File.separator + directoryName;
 			break;
+		case WIKIPEDIA_PAGE:
+			baseUrl = DownloadConstants.getOrnidroidWebSiteWikipedia()
+					+ File.separator + directoryName;
 		default:
 			break;
 		}

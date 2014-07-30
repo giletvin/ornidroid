@@ -1,5 +1,7 @@
 package fr.ornidroid.bo;
 
+import fr.ornidroid.helper.BasicConstants;
+
 /**
  * The Enum OrnidroidFileType.
  */
@@ -8,7 +10,10 @@ public enum OrnidroidFileType {
 	/** The SOUND. */
 	AUDIO,
 	/** The PICTURE. */
-	PICTURE;
+	PICTURE,
+
+	/** The wikipedia page. */
+	WIKIPEDIA_PAGE;
 
 	/** The Constant AUDIO_EXTENSION. */
 	public final static String AUDIO_EXTENSION = ".mp3";
@@ -19,7 +24,7 @@ public enum OrnidroidFileType {
 	public final static String PICTURE_EXTENSION = ".jpg";
 
 	/**
-	 * Gets the code.
+	 * Gets the code. Must be the same as tab id
 	 * 
 	 * @param type
 	 *            the type
@@ -34,6 +39,9 @@ public enum OrnidroidFileType {
 				break;
 			case AUDIO:
 				code = 1;
+				break;
+			case WIKIPEDIA_PAGE:
+				code = 3;
 				break;
 
 			}
@@ -57,7 +65,8 @@ public enum OrnidroidFileType {
 		case AUDIO:
 			extension = AUDIO_EXTENSION;
 			break;
-
+		case WIKIPEDIA_PAGE:
+			extension = BasicConstants.EMPTY_STRING;
 		}
 		return extension;
 	}

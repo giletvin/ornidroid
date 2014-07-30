@@ -25,7 +25,29 @@ public class Bird extends SimpleBird {
 	private String oiseauxNetUrl;
 
 	/** The pictures. */
-	private List<AbstractOrnidroidFile> pictures;
+	private List<OrnidroidFile> pictures;
+
+	/** The wikipedia page. */
+	private OrnidroidFile wikipediaPage;
+
+	/**
+	 * Gets the wikipedia page.
+	 * 
+	 * @return the wikipedia page
+	 */
+	public OrnidroidFile getWikipediaPage() {
+		return wikipediaPage;
+	}
+
+	/**
+	 * Sets the wikipedia page.
+	 * 
+	 * @param wikipediaPage
+	 *            the new wikipedia page
+	 */
+	public void setWikipediaPage(OrnidroidFile wikipediaPage) {
+		this.wikipediaPage = wikipediaPage;
+	}
 
 	/** The scientific family. */
 	private String scientificFamily;
@@ -40,7 +62,7 @@ public class Bird extends SimpleBird {
 	private String size;
 
 	/** The sounds. */
-	private List<AbstractOrnidroidFile> sounds;
+	private List<OrnidroidFile> sounds;
 
 	/**
 	 * Instantiates a new bird.
@@ -97,7 +119,7 @@ public class Bird extends SimpleBird {
 	public List<Map<String, String>> getListAudioFiles() {
 		final List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		if (null != this.sounds) {
-			for (final AbstractOrnidroidFile audioFile : this.sounds) {
+			for (final OrnidroidFile audioFile : this.sounds) {
 				final AudioOrnidroidFile ornidroidAudioFile = (AudioOrnidroidFile) audioFile;
 				list.add(ornidroidAudioFile.getPropertiesForScreen());
 			}
@@ -145,7 +167,7 @@ public class Bird extends SimpleBird {
 	 *            the picture number
 	 * @return the picture
 	 */
-	public AbstractOrnidroidFile getPicture(final int pictureNumber) {
+	public OrnidroidFile getPicture(final int pictureNumber) {
 		if ((this.pictures != null) && (this.pictures.size() > pictureNumber)) {
 			return this.pictures.get(pictureNumber);
 		} else {
@@ -158,7 +180,7 @@ public class Bird extends SimpleBird {
 	 * 
 	 * @return the pictures.
 	 */
-	public List<AbstractOrnidroidFile> getPictures() {
+	public List<OrnidroidFile> getPictures() {
 		// if (pictures == null) {
 		// setPictures(new ArrayList<AbstractOrnidroidFile>());
 		// }
@@ -208,7 +230,7 @@ public class Bird extends SimpleBird {
 	 *            the sound number
 	 * @return the sound, can be null if soundNumber is not valid
 	 */
-	public AbstractOrnidroidFile getSound(final int soundNumber) {
+	public OrnidroidFile getSound(final int soundNumber) {
 		if ((this.sounds != null) && (this.sounds.size() > soundNumber)) {
 			return this.sounds.get(soundNumber);
 		} else {
@@ -221,7 +243,7 @@ public class Bird extends SimpleBird {
 	 * 
 	 * @return the sounds
 	 */
-	public List<AbstractOrnidroidFile> getSounds() {
+	public List<OrnidroidFile> getSounds() {
 		return this.sounds;
 	}
 
@@ -251,7 +273,7 @@ public class Bird extends SimpleBird {
 	 * @param pictures
 	 *            the new pictures
 	 */
-	public void setPictures(final List<AbstractOrnidroidFile> pictures) {
+	public void setPictures(final List<OrnidroidFile> pictures) {
 		this.pictures = pictures;
 	}
 
@@ -291,7 +313,7 @@ public class Bird extends SimpleBird {
 	 * @param sounds
 	 *            the new sounds
 	 */
-	public void setSounds(final List<AbstractOrnidroidFile> sounds) {
+	public void setSounds(final List<OrnidroidFile> sounds) {
 		this.sounds = sounds;
 	}
 

@@ -7,7 +7,7 @@ import fr.ornidroid.helper.BasicConstants;
 /**
  * The Class OrnidroidFile.
  */
-public abstract class AbstractOrnidroidFile {
+public class OrnidroidFile {
 	/** The Constant AUDIO_DURATION_PROPERTY. */
 	public static final String AUDIO_DURATION_PROPERTY = "audio_duration";
 	/** The Constant AUDIO_RECORDIST_PROPERTY. */
@@ -45,7 +45,7 @@ public abstract class AbstractOrnidroidFile {
 	/**
 	 * Instantiates a new ornidroid file.
 	 */
-	protected AbstractOrnidroidFile() {
+	protected OrnidroidFile() {
 
 	}
 

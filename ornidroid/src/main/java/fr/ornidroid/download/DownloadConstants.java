@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
 
-
 import fr.ornidroid.R;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
@@ -45,6 +44,17 @@ public class DownloadConstants {
 		loadWebSiteRoot();
 		return ORNIDROID_WEB_SITE_ROOT + File.separator
 				+ BasicConstants.AUDIO_DIRECTORY;
+	}
+
+	/**
+	 * Gets the ornidroid web site wikipedia.
+	 * 
+	 * @return the ornidroid web site wikipedia
+	 */
+	public static String getOrnidroidWebSiteWikipedia() {
+		loadWebSiteRoot();
+		return ORNIDROID_WEB_SITE_ROOT + File.separator
+				+ BasicConstants.WIKIPEDIA_DIRECTORY;
 	}
 
 	/**

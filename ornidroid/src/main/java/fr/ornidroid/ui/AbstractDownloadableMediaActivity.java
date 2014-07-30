@@ -18,8 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.ornidroid.R;
-import fr.ornidroid.bo.AbstractOrnidroidFile;
 import fr.ornidroid.bo.Bird;
+import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidError;
@@ -80,7 +80,7 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * Gets the current (selected) media file if picture : the displayed image,
 	 * if sound, the played mp3.
 	 */
-	private AbstractOrnidroidFile currentMediaFile;
+	private OrnidroidFile currentMediaFile;
 
 	/** The dialog. */
 	private Dialog dialog;
@@ -373,6 +373,9 @@ public abstract class AbstractDownloadableMediaActivity extends
 			case PICTURE:
 				noMediaMessage.setText(R.string.no_pictures);
 				break;
+			case WIKIPEDIA_PAGE:
+				noMediaMessage.setText(R.string.no_wiki);
+				break;
 
 			}
 
@@ -465,7 +468,7 @@ public abstract class AbstractDownloadableMediaActivity extends
 	 * @param selectedFile
 	 *            the new selected file
 	 */
-	public void setCurrentMediaFile(final AbstractOrnidroidFile selectedFile) {
+	public void setCurrentMediaFile(final OrnidroidFile selectedFile) {
 		this.currentMediaFile = selectedFile;
 		if (this.currentMediaFile != null) {
 			ImageView removeButton = null;
@@ -475,6 +478,9 @@ public abstract class AbstractDownloadableMediaActivity extends
 				break;
 			case PICTURE:
 				removeButton = this.removeCustomPictureButton;
+				break;
+			case WIKIPEDIA_PAGE:
+				// do nothing
 				break;
 			}
 			if (this.currentMediaFile.isCustomMediaFile()) {
@@ -693,6 +699,8 @@ public abstract class AbstractDownloadableMediaActivity extends
 		case PICTURE:
 			mediaHomeDirectory = Constants.getOrnidroidHomeImages();
 			break;
+		case WIKIPEDIA_PAGE:
+			mediaHomeDirectory = Constants.getOrnidroidHomeWikipedia();
 		}
 		return mediaHomeDirectory;
 	}

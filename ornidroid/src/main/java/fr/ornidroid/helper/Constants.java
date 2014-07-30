@@ -71,13 +71,18 @@ public class Constants extends BasicConstants {
 		String mediaHome = null;
 		switch (fileType) {
 		case AUDIO:
-			mediaHome = Constants.getOrnidroidHomeAudio();
+			mediaHome = Constants.getOrnidroidHomeAudio() + File.separator
+					+ bird.getBirdDirectoryName();
 			break;
 		case PICTURE:
-			mediaHome = Constants.getOrnidroidHomeImages();
+			mediaHome = Constants.getOrnidroidHomeImages() + File.separator
+					+ bird.getBirdDirectoryName();
 			break;
+		case WIKIPEDIA_PAGE:
+			mediaHome = Constants.getOrnidroidHomeWikipedia() + File.separator
+					+ I18nHelper.getLang().getCode();
 		}
-		return mediaHome + File.separator + bird.getBirdDirectoryName();
+		return mediaHome;
 	}
 
 	/**

@@ -20,12 +20,11 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.AudioOrnidroidFile;
+import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.OrnidroidException;
-import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
-import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.audio.AudioHelper;
 import fr.ornidroid.ui.picture.BirdActivityGestureListener;
@@ -87,7 +86,6 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
-	private final IOrnidroidIOService ornidroidIOService;
 
 	/** The picture helper. */
 	private final PictureHelper pictureHelper;
@@ -135,13 +133,17 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	/** The gesture listener. */
 	View.OnTouchListener gestureListener;
 
+	private WebView webView;
+
+	private LinearLayout wikipediaLayout;
+
 	/**
 	 * Instantiates a new bird detail activity.
 	 */
 	public BirdActivity() {
 		super();
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
-		this.ornidroidIOService = new OrnidroidIOServiceImpl();
+
 		this.audioHelper = new AudioHelper(this);
 		this.pictureHelper = new PictureHelper(this);
 	}
@@ -231,12 +233,27 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 			};
 
 		} else {
-			// last case : Wikipedia Tab
-			WebView webView = new WebView(this);
-			webView.loadUrl("file:///"
-					+ this.ornidroidIOService.getWikipediaPage(ornidroidService
-							.getCurrentBird()));
-			returnedView = webView;
+
+			try {
+				loadMediaFilesLocally();
+			} catch (final OrnidroidException e) {
+				// Log.e(Constants.LOG_TAG, "Error reading media files of bird "
+				// + this.bird.getTaxon() + " e");
+			}
+			OrnidroidFile wikipediaPage = this.ornidroidService
+					.getCurrentBird().getWikipediaPage();
+			if (wikipediaPage != null) {
+				this.webView = new WebView(this);
+				returnedView = this.webView;
+				webView.loadUrl("file:///" + wikipediaPage.getPath());
+				returnedView = webView;
+
+			} else {
+				this.wikipediaLayout = new LinearLayout(this);
+				this.wikipediaLayout.setOrientation(LinearLayout.VERTICAL);
+				printDownloadButtonAndInfo();
+				returnedView = wikipediaLayout;
+			}
 		}
 
 		return returnedView;
@@ -272,8 +289,10 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 				&& AUDIO_TAB_NAME.equals(this.tabs.getCurrentTabTag())) {
 
 			return OrnidroidFileType.AUDIO;
-		} else {
+		} else if (PICTURES_TAB_NAME.equals(this.tabs.getCurrentTabTag())) {
 			return OrnidroidFileType.PICTURE;
+		} else {
+			return OrnidroidFileType.WIKIPEDIA_PAGE;
 		}
 	}
 
@@ -416,8 +435,14 @@ public class BirdActivity extends AbstractDownloadableMediaActivity implements
 	protected LinearLayout getSpecificContentLayout() {
 		if (AUDIO_TAB_NAME.equals(BirdActivity.this.tabs.getCurrentTabTag())) {
 			return this.audioLayout;
-		} else {
+		} else if (PICTURES_TAB_NAME.equals(BirdActivity.this.tabs
+				.getCurrentTabTag())) {
 			return this.pictureLayout;
+		} else {
+			if (null == wikipediaLayout) {
+				wikipediaLayout = new LinearLayout(this);
+			}
+			return this.wikipediaLayout;
 		}
 	}
 

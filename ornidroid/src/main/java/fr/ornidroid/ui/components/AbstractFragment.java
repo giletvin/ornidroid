@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -270,7 +271,10 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 */
 	public void onClick(final View v) {
 		if (v == this.infoButton) {
-			getActivity().showDialog(DIALOG_PICTURE_INFO_ID);
+			FragmentManager fm = getActivity().getSupportFragmentManager();
+			PictureInfoDialog pictureInfoDialog = new PictureInfoDialog();
+			pictureInfoDialog.setOrnidroidFile(currentMediaFile);
+			pictureInfoDialog.show(fm, "pictureInfoDialog");
 		}
 		if (v == this.okDialogButton) {
 			this.dialog.dismiss();

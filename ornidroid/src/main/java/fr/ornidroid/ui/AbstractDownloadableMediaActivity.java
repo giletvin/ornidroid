@@ -44,7 +44,11 @@ public abstract class AbstractDownloadableMediaActivity extends
 	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
 	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
 
-	/** The Constant DIALOG_PICTURE_INFO_ID. */
+	/**
+	 * The Constant DIALOG_PICTURE_INFO_ID.
+	 * 
+	 * @deprecated
+	 */
 	protected static final int DIALOG_PICTURE_INFO_ID = 0;
 
 	/** The Constant DIALOG_UPDATES_AVAILABLE. */

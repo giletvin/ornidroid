@@ -59,13 +59,13 @@ public class PictureHelper {
 	 * 
 	 * @param dialog
 	 *            the dialog
+	 * @deprecated
 	 */
 	public void displayPictureInfoInDialog(final Dialog dialog) {
 		dialog.setContentView(R.layout.picture_info_dialog);
 		dialog.setTitle(R.string.dialog_picture_title);
-		final OrnidroidFile displayedPicture = this.birdActivity
-				.getBird().getPictures()
-				.get(this.birdActivity.getDisplayedPictureId());
+		final OrnidroidFile displayedPicture = this.birdActivity.getBird()
+				.getPictures().get(this.birdActivity.getDisplayedPictureId());
 		displayLineInDialog(dialog, displayedPicture,
 				R.id.dialog_picture_description,
 				R.string.dialog_picture_description,
@@ -169,8 +169,8 @@ public class PictureHelper {
 		final LinearLayout imageAndDescription = (LinearLayout) this.birdActivity
 				.getViewFlipper().getChildAt(index);
 		final ImageView imagePicture = new ImageView(this.birdActivity);
-		final OrnidroidFile picture = this.birdActivity.getBird()
-				.getPicture(index);
+		final OrnidroidFile picture = this.birdActivity.getBird().getPicture(
+				index);
 		this.birdActivity.setCurrentMediaFile(picture);
 
 		Bitmap bMap = loadBitmap(picture, this.birdActivity.getResources());
@@ -341,11 +341,11 @@ public class PictureHelper {
 	 *            the label resource id
 	 * @param propertyName
 	 *            the property name
+	 * @deprecated
 	 */
 	private void displayLineInDialog(final Dialog dialog,
-			final OrnidroidFile displayedPicture,
-			final int textViewResId, final int labelResourceId,
-			final String propertyName) {
+			final OrnidroidFile displayedPicture, final int textViewResId,
+			final int labelResourceId, final String propertyName) {
 		final String propertyValue = displayedPicture.getProperty(propertyName);
 		if (StringHelper.isNotBlank(propertyValue)) {
 			final TextView textView = (TextView) dialog

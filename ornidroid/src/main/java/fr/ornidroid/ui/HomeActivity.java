@@ -100,7 +100,15 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 			return launchActivity(AboutActivity.class);
 		}
 		if (v == this.helpLink) {
-			return launchActivity(HelpActivity.class);
+			// TODO : pour le developpement du nouvel ecran avec le MERLe en dur
+			// return launchActivity(HelpActivity.class);
+			final Intent intent = new Intent(getApplicationContext(),
+					NewBirdActivity.class);
+
+			intent.putExtra(MainActivity.BIRD_ID_ITENT_PRM, 272);
+
+			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+			return true;
 		}
 		if (v == this.preferencesLink) {
 			return launchActivity(OrnidroidPreferenceActivity.class);

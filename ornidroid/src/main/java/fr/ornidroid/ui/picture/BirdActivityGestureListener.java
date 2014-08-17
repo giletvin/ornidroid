@@ -17,6 +17,7 @@ import fr.ornidroid.ui.ScrollableImageActivity;
  * method is invoked.
  * 
  * @see GestureEvent
+ * @deprecated
  */
 public class BirdActivityGestureListener extends SimpleOnGestureListener {
 	/** The Constant SWIPE_MAX_OFF_PATH. */

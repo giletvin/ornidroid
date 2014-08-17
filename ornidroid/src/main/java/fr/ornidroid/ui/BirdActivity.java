@@ -36,6 +36,8 @@ import fr.ornidroid.ui.views.NamesViewFactory;
  * Displays bird details. This is the main activity which contains the tabs.
  * Picture, audio, description and bird names tabs.<br>
  * The tabs are not activities, only views.
+ * 
+ * @deprecated
  */
 public class BirdActivity extends AbstractDownloadableMediaActivity implements
 		TabContentFactory, OnClickListener {

@@ -285,11 +285,12 @@ public class PictureHelper {
 	 * Reset loaded bitmaps.
 	 */
 	public static void resetLoadedBitmaps() {
-		for (Bitmap b : LOADED_BITMAPS.values()) {
-			if (null != b) {
-				b.recycle();
-			}
-		}
+		// TODO : Pb avec l'appel à recycle
+		// for (Bitmap b : LOADED_BITMAPS.values()) {
+		// if (null != b) {
+		// // b.recycle();
+		// }
+		// }TODO : Pb avec l'appel à recycle
 		LOADED_BITMAPS.clear();
 	}
 

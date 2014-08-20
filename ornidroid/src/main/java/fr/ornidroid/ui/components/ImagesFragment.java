@@ -42,6 +42,8 @@ public class ImagesFragment extends AbstractFragment {
 
 	/** The displayed picture id. */
 	private int displayedPictureId;
+	private ImageSlidesFragmentAdapter mAdapter;
+	private GalleryViewPager mPager;
 
 	/**
 	 * Gets the displayed picture id.
@@ -74,7 +76,8 @@ public class ImagesFragment extends AbstractFragment {
 	@Override
 	public View getOnCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		pictureLayout = (LinearLayout) inflater.inflate(
+				R.layout.fragment_images, container, false);
 		// View rootView = inflater.inflate(R.layout.fragment_images,
 		// container, false);
 		//
@@ -87,27 +90,41 @@ public class ImagesFragment extends AbstractFragment {
 			// + this.bird.getTaxon() + " e");
 		}
 
-		this.pictureLayout = new LinearLayout(getActivity());
+		// this.pictureLayout = new LinearLayout(getActivity());
 
 		// retrieve the displayed picture (when coming back from the
 		// zoom)
 		this.displayedPictureId = getActivity().getIntent().getIntExtra(
 				DISPLAYED_PICTURE_ID, 0);
 
-		this.pictureLayout.setOrientation(LinearLayout.VERTICAL);
+		// this.pictureLayout.setOrientation(LinearLayout.VERTICAL);
+		//
+		LinearLayout headerLayout = (LinearLayout) pictureLayout
+				.findViewById(R.id.images_header);
 
-		this.pictureLayout.addView(getHeaderView());
+		headerLayout.addView(getHeaderView());
 
 		taxon.setText(ornidroidService.getCurrentBird().getTaxon());
 
-		this.viewFlipper = new ViewFlipper(getActivity());
-		this.pictureLayout.addView(this.viewFlipper);
+		// this.viewFlipper = new ViewFlipper(getActivity());
+		// this.pictureLayout.addView(this.viewFlipper);
+		//
+		// this.viewFlipper.setInAnimation(getActivity(),
+		// android.R.anim.fade_in);
+		// this.viewFlipper
+		// .setOutAnimation(getActivity(), android.R.anim.fade_out);
+		//
+		// populateViewFlipper();
+		// TODO :
+		// http://stackoverflow.com/questions/13796382/android-viewpager-as-image-slide-gallery
+		// et
+		// http://stackoverflow.com/questions/7098868/viewpager-inside-viewpager
+		mAdapter = new ImageSlidesFragmentAdapter(getFragmentManager());
 
-		this.viewFlipper.setInAnimation(getActivity(), android.R.anim.fade_in);
-		this.viewFlipper
-				.setOutAnimation(getActivity(), android.R.anim.fade_out);
+		mPager = (GalleryViewPager) pictureLayout
+				.findViewById(R.id.images_slide_pager);
 
-		populateViewFlipper();
+		mPager.setAdapter(mAdapter);
 
 		// TODO: gestion du swipe sur le viewflipper + double tap
 		// this.gestureDetector = new GestureDetector(getActivity(),

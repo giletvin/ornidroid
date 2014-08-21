@@ -41,10 +41,11 @@ public class ImageSlidesFragmentAdapter extends FragmentPagerAdapter {
 	 */
 	@Override
 	public Fragment getItem(int position) {
-		ImageSlideFragment imageFragment = new ImageSlideFragment();
-		imageFragment.setOrnidroidPictureFile(this.currentBird
+		ImageSlideFragment imageSlideFragment = new ImageSlideFragment();
+		imageSlideFragment.setOrnidroidPictureFile(this.currentBird
 				.getPicture(position));
-		return imageFragment;
+
+		return imageSlideFragment;
 	}
 
 	/*

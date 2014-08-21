@@ -273,7 +273,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 		if (v == this.infoButton) {
 			FragmentManager fm = getActivity().getSupportFragmentManager();
 			PictureInfoDialog pictureInfoDialog = new PictureInfoDialog();
-			pictureInfoDialog.setOrnidroidFile(currentMediaFile);
+			pictureInfoDialog.setOrnidroidFile(this.currentMediaFile);
 			pictureInfoDialog.show(fm, "pictureInfoDialog");
 		}
 		if (v == this.okDialogButton) {

@@ -223,6 +223,7 @@ public class ImagesFragment extends AbstractFragment {
 	 * first to display). The bitmaps are loaded and deallocated on the fly when
 	 * the user flips the view flipper.
 	 * 
+	 * @deprecated
 	 */
 	private void populateViewFlipper() {
 		// PictureHelper.resetLoadedBitmaps();

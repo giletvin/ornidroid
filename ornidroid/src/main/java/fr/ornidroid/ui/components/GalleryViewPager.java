@@ -82,6 +82,7 @@ public class GalleryViewPager extends ViewPager {
 			break;
 
 		case MotionEvent.ACTION_MOVE:
+
 			/*
 			 * if this is the first item, scrolling from left to right should
 			 * navigate in the surrounding ViewPager
@@ -135,7 +136,15 @@ public class GalleryViewPager extends ViewPager {
 		}
 
 		super.onTouchEvent(ev);
+		this.callingFragment.setCurrentMediaFilePosition(this.getCurrentItem());
 		return true;
+	}
+
+	private ImagesFragment callingFragment;
+
+	public void setCallingFragment(ImagesFragment pImagesFragment) {
+		this.callingFragment = pImagesFragment;
+
 	}
 
 }

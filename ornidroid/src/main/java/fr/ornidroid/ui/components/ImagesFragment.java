@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +41,11 @@ public class ImagesFragment extends AbstractFragment {
 
 	/** The displayed picture id. */
 	private int displayedPictureId;
+
+	/** The m adapter. */
 	private ImageSlidesFragmentAdapter mAdapter;
+
+	/** The m pager. */
 	private GalleryViewPager mPager;
 
 	/**
@@ -56,8 +59,7 @@ public class ImagesFragment extends AbstractFragment {
 
 	/** The number of pictures text view. */
 	private TextView numberOfPicturesTextView;
-	/** The gesture detector. */
-	private GestureDetector gestureDetector;
+
 	/** The taxon. */
 	private TextView taxon;
 	/** The view flipper. */
@@ -78,10 +80,6 @@ public class ImagesFragment extends AbstractFragment {
 			Bundle savedInstanceState) {
 		pictureLayout = (LinearLayout) inflater.inflate(
 				R.layout.fragment_images, container, false);
-		// View rootView = inflater.inflate(R.layout.fragment_images,
-		// container, false);
-		//
-		// return rootView;
 
 		try {
 			loadMediaFilesLocally();
@@ -90,53 +88,32 @@ public class ImagesFragment extends AbstractFragment {
 			// + this.bird.getTaxon() + " e");
 		}
 
-		// this.pictureLayout = new LinearLayout(getActivity());
-
 		// retrieve the displayed picture (when coming back from the
 		// zoom)
 		this.displayedPictureId = getActivity().getIntent().getIntExtra(
 				DISPLAYED_PICTURE_ID, 0);
 
-		// this.pictureLayout.setOrientation(LinearLayout.VERTICAL);
 		//
 		LinearLayout headerLayout = (LinearLayout) pictureLayout
 				.findViewById(R.id.images_header);
 
 		headerLayout.addView(getHeaderView());
 
-		taxon.setText(ornidroidService.getCurrentBird().getTaxon());
+		this.taxon.setText(ornidroidService.getCurrentBird().getTaxon());
 
-		// this.viewFlipper = new ViewFlipper(getActivity());
-		// this.pictureLayout.addView(this.viewFlipper);
-		//
-		// this.viewFlipper.setInAnimation(getActivity(),
-		// android.R.anim.fade_in);
-		// this.viewFlipper
-		// .setOutAnimation(getActivity(), android.R.anim.fade_out);
-		//
-		// populateViewFlipper();
 		// TODO :
 		// http://stackoverflow.com/questions/13796382/android-viewpager-as-image-slide-gallery
 		// et
 		// http://stackoverflow.com/questions/7098868/viewpager-inside-viewpager
 		mAdapter = new ImageSlidesFragmentAdapter(getFragmentManager());
 		mAdapter.setCurrentBird(this.ornidroidService.getCurrentBird());
+
 		mPager = (GalleryViewPager) pictureLayout
 				.findViewById(R.id.images_slide_pager);
 
 		mPager.setAdapter(mAdapter);
-
-		// TODO: gestion du swipe sur le viewflipper + double tap
-		// this.gestureDetector = new GestureDetector(getActivity(),
-		// new NewBirdActivityGestureListener(this));
-		// this.gestureListener = new View.OnTouchListener() {
-		// public boolean onTouch(final View v, final MotionEvent event) {
-		// if (ImagesFragment.this.gestureDetector.onTouchEvent(event)) {
-		// return true;
-		// }
-		// return false;
-		// }
-		// };
+		mPager.setCallingFragment(this);
+		setCurrentMediaFilePosition(0);
 		return pictureLayout;
 	}
 
@@ -320,5 +297,17 @@ public class ImagesFragment extends AbstractFragment {
 	 */
 	public void resetViewFlipper() {
 		this.viewFlipper = null;
+	}
+
+	/**
+	 * Sets the current media file postion.
+	 * 
+	 * @param currentItem
+	 *            the new current media file postion
+	 */
+	public void setCurrentMediaFilePosition(int currentItem) {
+		final OrnidroidFile picture = this.ornidroidService.getCurrentBird()
+				.getPicture(currentItem);
+		setCurrentMediaFile(picture);
 	}
 }

@@ -15,7 +15,8 @@ import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.ui.picture.PictureHelper;
 
 /**
- * The Class ImageSlideFragment.
+ * ImageSlideFragment. Sub fragment in the Images Fragment which handles the
+ * picture and its description.
  */
 public class ImageSlideFragment extends Fragment {
 

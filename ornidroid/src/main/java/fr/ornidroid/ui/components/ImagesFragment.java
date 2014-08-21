@@ -120,7 +120,7 @@ public class ImagesFragment extends AbstractFragment {
 		// et
 		// http://stackoverflow.com/questions/7098868/viewpager-inside-viewpager
 		mAdapter = new ImageSlidesFragmentAdapter(getFragmentManager());
-
+		mAdapter.setCurrentBird(this.ornidroidService.getCurrentBird());
 		mPager = (GalleryViewPager) pictureLayout
 				.findViewById(R.id.images_slide_pager);
 

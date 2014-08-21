@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import fr.ornidroid.bo.OrnidroidFile;
+import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.ui.picture.PictureHelper;
 
 /**
@@ -19,6 +21,8 @@ public class ImageSlideFragment extends Fragment {
 
 	/** The ornidroid picture file. */
 	private OrnidroidFile ornidroidPictureFile;
+	/** General left padding. */
+	private static final int LEFT_PADDING = 25;
 
 	/**
 	 * Sets the ornidroid picture file.
@@ -69,8 +73,15 @@ public class ImageSlideFragment extends Fragment {
 		}
 
 		LinearLayout layout = new LinearLayout(getActivity());
-
+		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setGravity(Gravity.CENTER);
+		final TextView description = new TextView(getActivity());
+		description.setPadding(LEFT_PADDING, 0, 0, 0);
+		description.setText(this.ornidroidPictureFile
+				.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
+		description.setTextAppearance(getActivity(),
+				android.R.style.TextAppearance_Small);
+		layout.addView(description);
 		layout.addView(image);
 
 		return layout;

@@ -1,5 +1,6 @@
 package fr.ornidroid.ui.components;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -8,30 +9,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import fr.ornidroid.bo.OrnidroidFile;
+import fr.ornidroid.ui.picture.PictureHelper;
 
 /**
  * The Class ImageSlideFragment.
  */
 public class ImageSlideFragment extends Fragment {
 
-	/** The image resource id. */
-	int imageResourceId;
+	/** The ornidroid picture file. */
+	private OrnidroidFile ornidroidPictureFile;
+
+	/**
+	 * Sets the ornidroid picture file.
+	 * 
+	 * @param ornidroidPictureFile
+	 *            the new ornidroid picture file
+	 */
+	public void setOrnidroidPictureFile(OrnidroidFile ornidroidPictureFile) {
+		this.ornidroidPictureFile = ornidroidPictureFile;
+	}
 
 	/**
 	 * Instantiates a new image slide fragment.
 	 */
 	public ImageSlideFragment() {
 
-	}
-
-	/**
-	 * Sets the image resource id.
-	 * 
-	 * @param imageResourceId
-	 *            the new image resource id
-	 */
-	public void setImageResourceId(int imageResourceId) {
-		this.imageResourceId = imageResourceId;
 	}
 
 	/*
@@ -57,10 +60,15 @@ public class ImageSlideFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		ImageView image = new ImageView(getActivity());
-		image.setImageResource(imageResourceId);
+
+		Bitmap bMap = PictureHelper.loadBitmap(this.ornidroidPictureFile,
+				getActivity().getResources());
+		if (bMap != null) {
+			image.setImageBitmap(bMap);
+
+		}
 
 		LinearLayout layout = new LinearLayout(getActivity());
-		// layout.setLayoutParams(new LayoutParams());
 
 		layout.setGravity(Gravity.CENTER);
 		layout.addView(image);

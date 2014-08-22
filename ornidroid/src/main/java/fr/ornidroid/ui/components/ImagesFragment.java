@@ -187,7 +187,7 @@ public class ImagesFragment extends AbstractFragment {
 
 			headerLayout.addView(infoButtonLayout);
 		}
-
+		updateNumberOfPicturesText();
 		return headerLayout;
 	}
 
@@ -263,6 +263,7 @@ public class ImagesFragment extends AbstractFragment {
 	 * 
 	 * @param index
 	 *            the index
+	 * @deprecated
 	 */
 	public void insertBitmapInViewFlipper(final int index) {
 		final LinearLayout imageAndDescription = (LinearLayout) this.viewFlipper
@@ -306,8 +307,10 @@ public class ImagesFragment extends AbstractFragment {
 	 *            the new current media file postion
 	 */
 	public void setCurrentMediaFilePosition(int currentItem) {
+		this.displayedPictureId = currentItem;
 		final OrnidroidFile picture = this.ornidroidService.getCurrentBird()
 				.getPicture(currentItem);
 		setCurrentMediaFile(picture);
+		updateNumberOfPicturesText();
 	}
 }

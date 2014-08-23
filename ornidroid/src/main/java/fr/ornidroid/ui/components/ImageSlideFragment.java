@@ -3,13 +3,13 @@ package fr.ornidroid.ui.components;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import fr.ornidroid.R;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.ui.picture.PictureHelper;
@@ -63,8 +63,9 @@ public class ImageSlideFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
-		ImageView image = new ImageView(getActivity());
+		LinearLayout layout = (LinearLayout) inflater.inflate(
+				R.layout.fragment_picture, container, false);
+		ImageView image = (ImageView) layout.findViewById(R.id.picture);
 
 		Bitmap bMap = PictureHelper.loadBitmap(this.ornidroidPictureFile,
 				getActivity().getResources());
@@ -73,17 +74,13 @@ public class ImageSlideFragment extends Fragment {
 
 		}
 
-		LinearLayout layout = new LinearLayout(getActivity());
-		layout.setOrientation(LinearLayout.VERTICAL);
-		layout.setGravity(Gravity.CENTER);
-		final TextView description = new TextView(getActivity());
+		final TextView description = (TextView) layout
+				.findViewById(R.id.picture_description);
 		description.setPadding(LEFT_PADDING, 0, 0, 0);
 		description.setText(this.ornidroidPictureFile
 				.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
 		description.setTextAppearance(getActivity(),
 				android.R.style.TextAppearance_Small);
-		layout.addView(description);
-		layout.addView(image);
 
 		return layout;
 	}

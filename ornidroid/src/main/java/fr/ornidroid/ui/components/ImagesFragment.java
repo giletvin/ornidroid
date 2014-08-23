@@ -2,11 +2,13 @@ package fr.ornidroid.ui.components;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
@@ -20,12 +22,13 @@ import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidException;
+import fr.ornidroid.ui.ScrollableImageActivity;
 import fr.ornidroid.ui.picture.PictureHelper;
 
 /**
  * The Class ImagesFragment.
  */
-public class ImagesFragment extends AbstractFragment {
+public class ImagesFragment extends AbstractFragment implements OnClickListener {
 
 	/** The picture layout. */
 	private LinearLayout pictureLayout;
@@ -67,6 +70,8 @@ public class ImagesFragment extends AbstractFragment {
 
 	/** The gesture listener. */
 	View.OnTouchListener gestureListener;
+
+	private ImageView zoomButton;
 
 	/*
 	 * (non-Javadoc)
@@ -181,10 +186,17 @@ public class ImagesFragment extends AbstractFragment {
 			getInfoButton().setPadding(20, 0, 0, 0);
 			getInfoButton().setOnClickListener(this);
 			getInfoButton().setImageResource(R.drawable.ic_info);
-			infoButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
-					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 			infoButtonLayout.addView(getInfoButton());
 
+			// zoom button
+			this.zoomButton = new ImageView(getActivity());
+			zoomButton.setPadding(20, 0, 0, 0);
+			zoomButton.setOnClickListener(this);
+			zoomButton.setImageResource(R.drawable.ic_menu_search);
+			infoButtonLayout.addView(zoomButton);
+
+			infoButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 			headerLayout.addView(infoButtonLayout);
 		}
 		updateNumberOfPicturesText();
@@ -312,5 +324,26 @@ public class ImagesFragment extends AbstractFragment {
 				.getPicture(currentItem);
 		setCurrentMediaFile(picture);
 		updateNumberOfPicturesText();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.ui.components.AbstractFragment#onClick(android.view.View)
+	 */
+	@Override
+	public void onClick(final View v) {
+		if (v == this.zoomButton) {
+			final Intent intentImageFullSize = new Intent(getActivity(),
+					ScrollableImageActivity.class);
+			intentImageFullSize.putExtra(
+					ScrollableImageActivity.DISPLAYED_PICTURE_ID,
+					displayedPictureId);
+			getActivity().startActivity(
+					intentImageFullSize
+							.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+		}
+		super.onClick(v);
 	}
 }

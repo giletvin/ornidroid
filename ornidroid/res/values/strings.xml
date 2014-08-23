@@ -78,6 +78,7 @@
 		Internet.</string>
 
     <!-- autres labels -->
+    <string name="zoom">Zoom image</string>
     <string name="home_stars">****</string>
     <string name="scientific_name">Scientific name</string>
     <string name="description">Description</string>

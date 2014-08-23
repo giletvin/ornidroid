@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/fr.ornidroid"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -11,16 +10,53 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
     </LinearLayout>
+	<TextView
+	    android:paddingBottom="10sp"
+	    android:paddingTop="10sp"
+	    android:paddingLeft="10sp"
+        android:id="@+id/picture_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_stars" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp" >
 
-    <!--  <android.support.v4.view.ViewPager
-        android:id="@+id/images_slide_pager"
+        <ImageView
+            android:id="@+id/previous_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/bird_image"
+            android:src="@drawable/ic_previous" />
+
+        <ImageView
+            android:id="@+id/zoom_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/bird_image"
+            android:src="@drawable/ic_zoom" />
+
+        <ImageView
+            android:id="@+id/next_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/bird_image"
+            android:src="@drawable/ic_next" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/picture"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-  -->
-  <fr.ornidroid.ui.components.GalleryViewPager
-        android:id="@+id/images_slide_pager"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="300sp"
+        android:contentDescription="@string/bird_image"
+        android:scaleType="fitCenter"
+        android:src="@drawable/oiseauweb" />
+
 </LinearLayout>

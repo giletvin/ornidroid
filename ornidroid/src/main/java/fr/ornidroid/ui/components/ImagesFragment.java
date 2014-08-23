@@ -1,7 +1,5 @@
 package fr.ornidroid.ui.components;
 
-import java.util.List;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
@@ -45,33 +42,29 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 	/** The displayed picture id. */
 	private int displayedPictureId;
 
-	/** The m adapter. */
-	private ImageSlidesFragmentAdapter mAdapter;
-
-	/** The m pager. */
-	private GalleryViewPager mPager;
-
-	/**
-	 * Gets the displayed picture id.
-	 * 
-	 * @return the displayed picture id
-	 */
-	public int getDisplayedPictureId() {
-		return displayedPictureId;
-	}
-
 	/** The number of pictures text view. */
 	private TextView numberOfPicturesTextView;
 
 	/** The taxon. */
 	private TextView taxon;
-	/** The view flipper. */
-	private ViewFlipper viewFlipper;
 
 	/** The gesture listener. */
 	View.OnTouchListener gestureListener;
 
+	/** The zoom button. */
 	private ImageView zoomButton;
+
+	/** The next button. */
+	private ImageView nextButton;
+
+	/** The m picture. */
+	private ImageView mPicture;
+
+	/** The previous button. */
+	private ImageView previousButton;
+
+	/** The m picture description. */
+	private TextView mPictureDescription;
 
 	/*
 	 * (non-Javadoc)
@@ -105,21 +98,51 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 		headerLayout.addView(getHeaderView());
 
 		this.taxon.setText(ornidroidService.getCurrentBird().getTaxon());
+		this.mPictureDescription = (TextView) pictureLayout
+				.findViewById(R.id.picture_description);
+		this.nextButton = (ImageView) pictureLayout
+				.findViewById(R.id.next_button);
+		this.nextButton.setOnClickListener(this);
+		this.zoomButton = (ImageView) pictureLayout
+				.findViewById(R.id.zoom_button);
+		this.zoomButton.setOnClickListener(this);
+		this.previousButton = (ImageView) pictureLayout
+				.findViewById(R.id.previous_button);
+		this.previousButton.setOnClickListener(this);
 
-		// TODO :
-		// http://stackoverflow.com/questions/13796382/android-viewpager-as-image-slide-gallery
-		// et
-		// http://stackoverflow.com/questions/7098868/viewpager-inside-viewpager
-		mAdapter = new ImageSlidesFragmentAdapter(getFragmentManager());
-		mAdapter.setCurrentBird(this.ornidroidService.getCurrentBird());
-
-		mPager = (GalleryViewPager) pictureLayout
-				.findViewById(R.id.images_slide_pager);
-
-		mPager.setAdapter(mAdapter);
-		mPager.setCallingFragment(this);
-		setCurrentMediaFilePosition(0);
+		this.mPicture = (ImageView) pictureLayout.findViewById(R.id.picture);
+		this.mPicture.setOnClickListener(this);
+		loadImage(0);
 		return pictureLayout;
+	}
+
+	/**
+	 * Load image and change picture description.
+	 * 
+	 * @param imagePosition
+	 *            the image position
+	 */
+	private void loadImage(int imagePosition) {
+		if (imagePosition < 0) {
+			imagePosition = this.ornidroidService.getCurrentBird()
+					.getNumberOfPictures() - 1;
+		}
+		if (imagePosition >= this.ornidroidService.getCurrentBird()
+				.getNumberOfPictures()) {
+			imagePosition = 0;
+		}
+		OrnidroidFile pictureFile = ornidroidService.getCurrentBird()
+				.getPicture(imagePosition);
+		this.mPictureDescription.setText(pictureFile
+				.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
+
+		Bitmap bMap = PictureHelper.loadBitmap(pictureFile, getActivity()
+				.getResources());
+		if (bMap != null) {
+			this.mPicture.setImageBitmap(bMap);
+
+		}
+		setCurrentMediaFilePosition(imagePosition);
 	}
 
 	/*
@@ -139,6 +162,8 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 	 * @return the view
 	 */
 	public View getHeaderView() {
+		// TODO : faire tout ça en XML
+
 		// creation of the main header layout
 		final LinearLayout headerLayout = new LinearLayout(getActivity());
 		headerLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -188,69 +213,17 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 			getInfoButton().setImageResource(R.drawable.ic_info);
 			infoButtonLayout.addView(getInfoButton());
 
-			// zoom button
-			this.zoomButton = new ImageView(getActivity());
-			zoomButton.setPadding(20, 0, 0, 0);
-			zoomButton.setOnClickListener(this);
-			zoomButton.setImageResource(R.drawable.ic_menu_search);
-			infoButtonLayout.addView(zoomButton);
-
 			infoButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 			headerLayout.addView(infoButtonLayout);
 		}
-		updateNumberOfPicturesText();
-		return headerLayout;
-	}
-
-	/**
-	 * Update view flipper with the pictures of the bird. If the bird doesn't
-	 * have pictures, instead of the view flipper, show a button to ask if the
-	 * user wants to download pictures from the web site.
-	 * 
-	 * To limit memory consumption, the bitmaps are not loaded yet (except the
-	 * first to display). The bitmaps are loaded and deallocated on the fly when
-	 * the user flips the view flipper.
-	 * 
-	 * @deprecated
-	 */
-	private void populateViewFlipper() {
-		// PictureHelper.resetLoadedBitmaps();
-		if (this.ornidroidService.getCurrentBird().getNumberOfPictures() > 0) {
-			final List<OrnidroidFile> listPictures = this.ornidroidService
-					.getCurrentBird().getPictures();
-			for (final OrnidroidFile picture : listPictures) {
-				final LinearLayout imageAndDescription = new LinearLayout(
-						getActivity());
-				imageAndDescription.setOrientation(LinearLayout.VERTICAL);
-
-				final TextView description = new TextView(getActivity());
-				description.setPadding(LEFT_PADDING, 0, 0, 0);
-				description
-						.setText(picture
-								.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
-				description.setTextAppearance(getActivity(),
-						android.R.style.TextAppearance_Small);
-				imageAndDescription.addView(description);
-
-				this.viewFlipper.addView(imageAndDescription);
-			}
-			displayFixedPicture();
-			updateNumberOfPicturesText();
-			insertBitmapInViewFlipper(this.displayedPictureId);
-		} else {
+		// TODO : à verifier dans le cas où il faut télécharger les images
+		else {
 			printDownloadButtonAndInfo();
 		}
-	}
 
-	/**
-	 * When coming to this screen with a given picture id to display. set the
-	 * cursor of the view flipper on the good image to display
-	 */
-	private void displayFixedPicture() {
-		for (int i = 0; i < this.displayedPictureId; i++) {
-			this.viewFlipper.showNext();
-		}
+		updateNumberOfPicturesText();
+		return headerLayout;
 	}
 
 	/**
@@ -269,31 +242,6 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 
 	}
 
-	/**
-	 * Memory consumption : Insert the bitmap of the given index in view
-	 * flipper.
-	 * 
-	 * @param index
-	 *            the index
-	 * @deprecated
-	 */
-	public void insertBitmapInViewFlipper(final int index) {
-		final LinearLayout imageAndDescription = (LinearLayout) this.viewFlipper
-				.getChildAt(index);
-		final ImageView imagePicture = new ImageView(getActivity());
-		final OrnidroidFile picture = this.ornidroidService.getCurrentBird()
-				.getPicture(index);
-		setCurrentMediaFile(picture);
-
-		Bitmap bMap = PictureHelper.loadBitmap(picture, getActivity()
-				.getResources());
-		if (bMap != null) {
-			imagePicture.setImageBitmap(bMap);
-			imageAndDescription.addView(imagePicture);
-		}
-
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -303,13 +251,6 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 	@Override
 	protected LinearLayout getSpecificContentLayout() {
 		return this.pictureLayout;
-	}
-
-	/**
-	 * Reset resources. Set the viewFlipper to null
-	 */
-	public void resetViewFlipper() {
-		this.viewFlipper = null;
 	}
 
 	/**
@@ -334,7 +275,7 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 	 */
 	@Override
 	public void onClick(final View v) {
-		if (v == this.zoomButton) {
+		if (v == this.zoomButton || v == this.mPicture) {
 			final Intent intentImageFullSize = new Intent(getActivity(),
 					ScrollableImageActivity.class);
 			intentImageFullSize.putExtra(
@@ -344,6 +285,15 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 					intentImageFullSize
 							.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 		}
+		if (v == this.nextButton) {
+			loadImage(displayedPictureId + 1);
+
+		}
+		if (v == this.previousButton) {
+			loadImage(displayedPictureId - 1);
+		}
+
 		super.onClick(v);
 	}
+
 }

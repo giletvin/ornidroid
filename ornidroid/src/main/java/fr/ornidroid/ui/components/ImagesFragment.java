@@ -3,6 +3,7 @@ package fr.ornidroid.ui.components;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,8 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 
 	/** The zoom button. */
 	private ImageView zoomButton;
+	/** The info button. */
+	private ImageView infoButton;
 
 	/** The next button. */
 	private ImageView nextButton;
@@ -218,11 +221,11 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 			}
 
 			// info button
-			setInfoButton(new ImageView(getActivity()));
-			getInfoButton().setPadding(20, 0, 0, 0);
-			getInfoButton().setOnClickListener(this);
-			getInfoButton().setImageResource(R.drawable.ic_info);
-			infoButtonLayout.addView(getInfoButton());
+			this.infoButton = new ImageView(getActivity());
+			this.infoButton.setPadding(20, 0, 0, 0);
+			this.infoButton.setOnClickListener(this);
+			this.infoButton.setImageResource(R.drawable.ic_info);
+			infoButtonLayout.addView(this.infoButton);
 
 			infoButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
@@ -282,6 +285,13 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 	 */
 	@Override
 	public void onClick(final View v) {
+		if (v == this.infoButton) {
+			FragmentManager fm = getActivity().getSupportFragmentManager();
+			PictureInfoDialog pictureInfoDialog = new PictureInfoDialog();
+			pictureInfoDialog.setOrnidroidFile(getCurrentMediaFile());
+			pictureInfoDialog.show(fm, "pictureInfoDialog");
+		}
+
 		if (v == this.zoomButton || v == this.mPicture) {
 			final Intent intentImageFullSize = new Intent(getActivity(),
 					ScrollableImageActivity.class);

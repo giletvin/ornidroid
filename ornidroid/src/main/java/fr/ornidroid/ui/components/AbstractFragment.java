@@ -2,19 +2,18 @@ package fr.ornidroid.ui.components;
 
 import java.io.File;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,10 +52,6 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	/** The m loader. */
 	private HandlerGenericThread mLoader;
 
-	/** The ok dialog button. */
-	private Button okDialogButton;
-	/** The dialog. */
-	private Dialog dialog;
 	/** The progress bar. */
 	private ProgressDialog progressBar;
 	/** The download status. */
@@ -81,8 +76,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 
 	/** The update files button. */
 	private ImageView updateFilesButton;
-	/** The info button. */
-	private ImageView infoButton;
+
 	/** The add custom picture button. */
 	private ImageView addCustomPictureButton;
 	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
@@ -90,9 +84,6 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 
 	/** The Constant DIALOG_PICTURE_INFO_ID. */
 	protected static final int DIALOG_PICTURE_INFO_ID = 0;
-
-	/** The Constant DIALOG_UPDATES_AVAILABLE. */
-	public static final int DIALOG_UPDATES_AVAILABLE = 1;
 
 	/** The Constant DOWNLOAD_FINISHED. */
 	protected static final int DOWNLOAD_FINISHED = 2;
@@ -270,15 +261,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	public void onClick(final View v) {
-		if (v == this.infoButton) {
-			FragmentManager fm = getActivity().getSupportFragmentManager();
-			PictureInfoDialog pictureInfoDialog = new PictureInfoDialog();
-			pictureInfoDialog.setOrnidroidFile(this.currentMediaFile);
-			pictureInfoDialog.show(fm, "pictureInfoDialog");
-		}
-		if (v == this.okDialogButton) {
-			this.dialog.dismiss();
-		}
+
 		if (v.getId() == DOWNLOAD_BUTTON_ID) {
 			startDownload();
 		}
@@ -432,7 +415,26 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 		} else {
 			CheckForUpdateFilesLoaderInfo info = (CheckForUpdateFilesLoaderInfo) loaderInfo;
 			if (info.isUpdatesAvailable()) {
-				getActivity().showDialog(DIALOG_UPDATES_AVAILABLE);
+				// getActivity().showDialog(DIALOG_UPDATES_AVAILABLE);
+				AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(R.string.updates_available)
+						.setNegativeButton(R.string.cancel,
+								new DialogInterface.OnClickListener() {
+									public void onClick(
+											final DialogInterface dialog,
+											final int whichButton) {
+									}
+								})
+						.setPositiveButton(R.string.ok,
+								new DialogInterface.OnClickListener() {
+									public void onClick(
+											final DialogInterface dialog,
+											final int whichButton) {
+										startDownload();
+									}
+								}).create();
+				dialog.show();
 			} else {
 				if (info.isManualCheck()) {
 					Toast.makeText(getActivity(), R.string.updates_none,
@@ -466,25 +468,6 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	}
 
 	/**
-	 * Gets the info button.
-	 * 
-	 * @return the info button
-	 */
-	public ImageView getInfoButton() {
-		return this.infoButton;
-	}
-
-	/**
-	 * Sets the info button.
-	 * 
-	 * @param infoButton
-	 *            the new info button
-	 */
-	public void setInfoButton(final ImageView infoButton) {
-		this.infoButton = infoButton;
-	}
-
-	/**
 	 * Sets the currently selected media file and makes the remove media button
 	 * appear or disappear accordingly.
 	 * 
@@ -515,6 +498,15 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 			this.removeCustomAudioButton.setVisibility(View.GONE);
 			this.removeCustomPictureButton.setVisibility(View.GONE);
 		}
+	}
+
+	/**
+	 * Gets the current media file.
+	 * 
+	 * @return the current media file
+	 */
+	public OrnidroidFile getCurrentMediaFile() {
+		return currentMediaFile;
 	}
 
 	/**

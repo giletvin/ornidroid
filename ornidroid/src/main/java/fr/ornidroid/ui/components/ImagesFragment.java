@@ -12,6 +12,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
@@ -81,38 +82,48 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 
 		try {
 			loadMediaFilesLocally();
+			// retrieve the displayed picture (when coming back from the
+			// zoom)
+			this.displayedPictureId = getActivity().getIntent().getIntExtra(
+					DISPLAYED_PICTURE_ID, 0);
+
+			//
+			LinearLayout headerLayout = (LinearLayout) pictureLayout
+					.findViewById(R.id.images_header);
+
+			headerLayout.addView(getHeaderView());
+
+			this.taxon.setText(ornidroidService.getCurrentBird().getTaxon());
+			this.mPictureDescription = (TextView) pictureLayout
+					.findViewById(R.id.picture_description);
+			this.nextButton = (ImageView) pictureLayout
+					.findViewById(R.id.next_button);
+			this.nextButton.setOnClickListener(this);
+			this.zoomButton = (ImageView) pictureLayout
+					.findViewById(R.id.zoom_button);
+			this.zoomButton.setOnClickListener(this);
+			this.previousButton = (ImageView) pictureLayout
+					.findViewById(R.id.previous_button);
+			this.previousButton.setOnClickListener(this);
+
+			this.mPicture = (ImageView) pictureLayout
+					.findViewById(R.id.picture);
+			this.mPicture.setOnClickListener(this);
+
+			if (ornidroidService.getCurrentBird().getNumberOfPictures() == 0) {
+				pictureLayout.removeAllViews();
+				printDownloadButtonAndInfo();
+			} else {
+				loadImage(0);
+			}
 		} catch (final OrnidroidException e) {
-			// Log.e(Constants.LOG_TAG, "Error reading media files of bird "
-			// + this.bird.getTaxon() + " e");
+			Toast.makeText(
+					getActivity(),
+					"Error reading media files of bird "
+							+ this.ornidroidService.getCurrentBird().getTaxon()
+							+ " e", Toast.LENGTH_LONG).show();
 		}
 
-		// retrieve the displayed picture (when coming back from the
-		// zoom)
-		this.displayedPictureId = getActivity().getIntent().getIntExtra(
-				DISPLAYED_PICTURE_ID, 0);
-
-		//
-		LinearLayout headerLayout = (LinearLayout) pictureLayout
-				.findViewById(R.id.images_header);
-
-		headerLayout.addView(getHeaderView());
-
-		this.taxon.setText(ornidroidService.getCurrentBird().getTaxon());
-		this.mPictureDescription = (TextView) pictureLayout
-				.findViewById(R.id.picture_description);
-		this.nextButton = (ImageView) pictureLayout
-				.findViewById(R.id.next_button);
-		this.nextButton.setOnClickListener(this);
-		this.zoomButton = (ImageView) pictureLayout
-				.findViewById(R.id.zoom_button);
-		this.zoomButton.setOnClickListener(this);
-		this.previousButton = (ImageView) pictureLayout
-				.findViewById(R.id.previous_button);
-		this.previousButton.setOnClickListener(this);
-
-		this.mPicture = (ImageView) pictureLayout.findViewById(R.id.picture);
-		this.mPicture.setOnClickListener(this);
-		loadImage(0);
 		return pictureLayout;
 	}
 
@@ -162,7 +173,7 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 	 * @return the view
 	 */
 	public View getHeaderView() {
-		// TODO : faire tout ça en XML
+		// TODO : faire tout ça en XML ?
 
 		// creation of the main header layout
 		final LinearLayout headerLayout = new LinearLayout(getActivity());
@@ -216,10 +227,6 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 			infoButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 			headerLayout.addView(infoButtonLayout);
-		}
-		// TODO : à verifier dans le cas où il faut télécharger les images
-		else {
-			printDownloadButtonAndInfo();
 		}
 
 		updateNumberOfPicturesText();

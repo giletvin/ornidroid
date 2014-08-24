@@ -3,6 +3,7 @@ package fr.ornidroid.ui;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -16,7 +17,8 @@ import fr.ornidroid.ui.components.TabsPagerAdapter;
  */
 public class NewBirdActivity extends FragmentActivity implements
 		ActionBar.TabListener {
-
+	/** The media player. */
+	private MediaPlayer mMediaPlayer;
 	/** The birdId. */
 	private int birdId;
 	/** The ornidroid service. */
@@ -143,4 +145,34 @@ public class NewBirdActivity extends FragmentActivity implements
 		return viewPager.getCurrentItem();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onStart()
+	 */
+	@Override
+	protected void onStart() {
+		super.onStart();
+		this.mMediaPlayer = new MediaPlayer();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		super.onStop();
+		this.mMediaPlayer.release();
+	}
+
+	/**
+	 * Gets the media player.
+	 * 
+	 * @return the media player
+	 */
+	public MediaPlayer getMediaPlayer() {
+		return this.mMediaPlayer;
+	}
 }

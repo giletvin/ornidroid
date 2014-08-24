@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import fr.ornidroid.R;
 
-public class GamesFragment extends Fragment {
+public class DetailsFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

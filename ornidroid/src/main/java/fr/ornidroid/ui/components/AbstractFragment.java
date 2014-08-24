@@ -72,13 +72,15 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	/** The remove custom picture button. */
 	ImageView removeCustomPictureButton;
 	/** The remove custom picture button. */
-	private ImageView removeCustomAudioButton;
+	ImageView removeCustomAudioButton;
 
 	/** The update files button. */
 	private ImageView updateFilesButton;
 
 	/** The add custom picture button. */
 	private ImageView addCustomPictureButton;
+	/** The add custom audio button. */
+	ImageView addCustomAudioButton;
 	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
 	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
 
@@ -171,6 +173,15 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 		this.removeCustomPictureButton.setOnClickListener(this);
 		this.removeCustomPictureButton.setImageResource(R.drawable.ic_remove);
 		this.removeCustomPictureButton.setPadding(20, 0, 20, 0);
+		this.addCustomAudioButton = new ImageView(getActivity());
+		this.addCustomAudioButton.setOnClickListener(this);
+		this.addCustomAudioButton.setImageResource(R.drawable.ic_add);
+		this.addCustomAudioButton.setPadding(20, 0, 20, 0);
+
+		this.removeCustomAudioButton = new ImageView(getActivity());
+		this.removeCustomAudioButton.setOnClickListener(this);
+		this.removeCustomAudioButton.setImageResource(R.drawable.ic_remove);
+		this.removeCustomAudioButton.setPadding(20, 0, 20, 0);
 		return getOnCreateView(inflater, container, savedInstanceState);
 
 	}
@@ -265,8 +276,8 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 		if (v.getId() == DOWNLOAD_BUTTON_ID) {
 			startDownload();
 		}
-		if ((v == this.addCustomPictureButton)) {
-			// || (v == this.addCustomAudioButton)) {
+		if ((v == this.addCustomPictureButton)
+				|| (v == this.addCustomAudioButton)) {
 			final Intent intent = new Intent(getActivity(),
 					AddCustomMediaActivity.class);
 			intent.putExtra(OrnidroidFileType.FILE_TYPE_INTENT_PARAM_NAME,
@@ -276,8 +287,8 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 							.getBirdDirectoryName());
 			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 		}
-		if ((v == this.removeCustomPictureButton)) {
-			// || (v == this.removeCustomAudioButton)) {
+		if ((v == this.removeCustomPictureButton)
+				|| (v == this.removeCustomAudioButton)) {
 			try {
 				this.ornidroidIOService
 						.removeCustomMediaFile(this.currentMediaFile);

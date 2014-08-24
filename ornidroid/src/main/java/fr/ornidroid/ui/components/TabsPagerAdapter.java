@@ -50,18 +50,18 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 			// images fragment
 			return new ImagesFragment();
 		case AUDIO_TAB:
-			// Games fragment activity
-			return new GamesFragment();
+			// audio fragment
+			return new AudioFragment();
 		case DETAILS_TAB:
 			// Movies fragment activity
-			return new GamesFragment();
+			return new DetailsFragment();
 		case WIKIPEDIA_TAB:
 			// Wikipedia Fragment
 			WikipediaFragment wikipediaFragment = new WikipediaFragment();
 			return wikipediaFragment;
 		case NAMES_TAB:
 			// Movies fragment activity
-			return new GamesFragment();
+			return new DetailsFragment();
 		}
 
 		return null;

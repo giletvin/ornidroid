@@ -15,6 +15,8 @@ import fr.ornidroid.ui.BirdActivity;
 /**
  * This class handles the audio stuff of the BirdActivity. MediaPlayer,
  * play/pause the mp3 files, toggles the buttons, etc ...
+ * 
+ * @deprecated
  */
 public class AudioHelper implements OnClickListener {
 
@@ -160,8 +162,8 @@ public class AudioHelper implements OnClickListener {
 	 */
 	public void spinThatShit(final int position) {
 		// Log.i(Constants.LOG_TAG, "Reading mp3 number " + position);
-		final OrnidroidFile mp3File = this.birdActivity
-				.getOrnidroidService().getCurrentBird().getSound(position);
+		final OrnidroidFile mp3File = this.birdActivity.getOrnidroidService()
+				.getCurrentBird().getSound(position);
 		this.birdActivity.setCurrentMediaFile(mp3File);
 		if (null != mp3File) {
 			try {

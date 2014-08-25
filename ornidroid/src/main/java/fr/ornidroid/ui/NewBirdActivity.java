@@ -64,8 +64,8 @@ public class NewBirdActivity extends FragmentActivity implements
 				.setTabListener(this));
 		actionBar.addTab(actionBar.newTab().setIcon(R.drawable.ic_tab_details)
 				.setTabListener(this));
-		actionBar.addTab(actionBar.newTab().setIcon(R.drawable.ic_tab_details)
-				.setTabListener(this));
+		actionBar.addTab(actionBar.newTab()
+				.setIcon(R.drawable.ic_tab_wikipedia).setTabListener(this));
 		actionBar.addTab(actionBar.newTab()
 				.setIcon(R.drawable.ic_tab_bird_names).setTabListener(this));
 

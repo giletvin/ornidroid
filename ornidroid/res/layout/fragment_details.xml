@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="5sp"
+        android:paddingLeft="25sp"
+        android:paddingRight="5sp"
+        android:paddingTop="10sp" >
+
+        <TextView
+            android:id="@+id/details_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:paddingTop="0sp"
+            android:text="@string/home_stars" />
+
+        <TextView
+            android:id="@+id/details_order_family"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:paddingTop="0sp"
+            android:text="@string/home_stars" />
+
+        <TextView
+            android:id="@+id/details_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:paddingTop="0sp"
+            android:text="@string/home_stars" />
+
+        <TextView
+            android:id="@+id/details_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:paddingTop="0sp"
+            android:text="@string/home_stars" />
+
+        <TextView
+            android:id="@+id/details_distribution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:paddingTop="0sp"
+            android:text="@string/home_stars" />
+
+        <TextView
+            android:id="@+id/details_countries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:paddingTop="0sp"
+            android:text="@string/home_stars" />
+
+        <TextView
+            android:id="@+id/details_xeno_canto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:paddingTop="0sp"
+            android:text="@string/home_stars" />
+
+        <TextView
+            android:id="@+id/details_wikipedia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:paddingTop="0sp"
+            android:text="@string/home_stars" />
+
+        <TextView
+            android:id="@+id/details_oiseaux_net"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:paddingTop="0sp"
+            android:text="@string/home_stars" />
+    </LinearLayout>
+
+</ScrollView>

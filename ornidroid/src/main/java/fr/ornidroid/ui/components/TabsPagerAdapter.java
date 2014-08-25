@@ -53,15 +53,15 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 			// audio fragment
 			return new AudioFragment();
 		case DETAILS_TAB:
-			// Movies fragment activity
+			// Details fragment activity
 			return new DetailsFragment();
 		case WIKIPEDIA_TAB:
 			// Wikipedia Fragment
 			WikipediaFragment wikipediaFragment = new WikipediaFragment();
 			return wikipediaFragment;
 		case NAMES_TAB:
-			// Movies fragment activity
-			return new DetailsFragment();
+			// Names
+			return new NamesFragment();
 		}
 
 		return null;

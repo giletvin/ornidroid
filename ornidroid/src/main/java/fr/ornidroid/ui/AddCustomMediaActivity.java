@@ -266,7 +266,7 @@ public class AddCustomMediaActivity extends ListActivity {
 	 */
 	private void goBackToBirdActivity() {
 		final Intent intentBirdInfo = new Intent(getApplicationContext(),
-				BirdActivity.class);
+				NewBirdActivity.class);
 
 		// put the uri so that the BirdInfoActivity
 		// reloads correctly the
@@ -275,7 +275,7 @@ public class AddCustomMediaActivity extends ListActivity {
 		// put an extra info to let the
 		// BirdInfoActivity know which tab to
 		// open.
-		intentBirdInfo.putExtra(BirdActivity.INTENT_TAB_TO_OPEN,
+		intentBirdInfo.putExtra(NewBirdActivity.INTENT_TAB_TO_OPEN,
 				OrnidroidFileType.getCode(this.fileType));
 		startActivity(intentBirdInfo.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 

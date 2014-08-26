@@ -142,7 +142,7 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	 */
 	private Intent buildIntentBirdInfoActivity(final Integer birdId) {
 		final Intent birdIntent = new Intent(getApplicationContext(),
-				BirdActivity.class);
+				NewBirdActivity.class);
 		birdIntent.putExtra(BIRD_ID_ITENT_PRM, birdId);
 		return birdIntent;
 	}

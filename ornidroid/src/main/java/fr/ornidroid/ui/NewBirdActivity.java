@@ -7,7 +7,11 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import fr.ornidroid.R;
+import fr.ornidroid.helper.MenuHelper;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.components.TabsPagerAdapter;
@@ -17,6 +21,9 @@ import fr.ornidroid.ui.components.TabsPagerAdapter;
  */
 public class NewBirdActivity extends FragmentActivity implements
 		ActionBar.TabListener {
+
+	/** The Constant INTENT_ACTIVITY_TO_OPEN. */
+	public static final String INTENT_TAB_TO_OPEN = "intentTabToOpenParameter";
 	/** The media player. */
 	private MediaPlayer mMediaPlayer;
 	/** The birdId. */
@@ -174,5 +181,26 @@ public class NewBirdActivity extends FragmentActivity implements
 	 */
 	public MediaPlayer getMediaPlayer() {
 		return this.mMediaPlayer;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
+		final MenuInflater inflater = getMenuInflater();
+		return MenuHelper.onCreateOptionsMenu(inflater, menu);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item) {
+		return MenuHelper.onOptionsItemSelected(this, item);
 	}
 }

@@ -44,12 +44,12 @@ public class WikipediaFragment extends AbstractFragment {
 		if (wikipediaPage != null) {
 
 			wikipediaWebView.loadUrl("file:///" + wikipediaPage.getPath());
-
+			specificContentLayout.addView(wikipediaWebView);
 		} else {
-			// TODO à implementer lorsque la page wiki n 'est pas trouvée en
-			// local : proposer le téléchargement
+			specificContentLayout.removeAllViews();
+			printDownloadButtonAndInfo();
 		}
-		specificContentLayout.addView(wikipediaWebView);
+
 		return specificContentLayout;
 	}
 

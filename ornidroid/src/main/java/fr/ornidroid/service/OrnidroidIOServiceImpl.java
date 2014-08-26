@@ -190,10 +190,9 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 */
 	private OrnidroidFile downloadWikipediaPage(Bird bird) {
 		// cherche s'il existe une page wiki locale
-		File wikipediaFile;
 
 		try {
-			wikipediaFile = downloadHelper.downloadFile(
+			downloadHelper.downloadFile(
 					downloadHelper.getBaseUrl(I18nHelper.getLang().getCode(),
 							OrnidroidFileType.WIKIPEDIA_PAGE),
 					bird.getScientificName().replace(

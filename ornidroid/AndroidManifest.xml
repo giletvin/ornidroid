@@ -60,16 +60,14 @@
             android:label="@string/help" />
         <activity
             android:name=".ui.NewBirdActivity"
-            android:label="@string/help" />
+            android:label="@string/bird_info" />
 
         <!-- full size image activity -->
         <activity
             android:name=".ui.ScrollableImageActivity"
             android:label="@string/bird_image_big"
             android:noHistory="true" />
-        <activity
-            android:name=".ui.BirdActivity"
-            android:label="@string/bird_info" />
+      
         <activity
             android:name=".ui.multicriteriasearch.MultiCriteriaSearchActivity"
             android:label="@string/menu_search_multi" />

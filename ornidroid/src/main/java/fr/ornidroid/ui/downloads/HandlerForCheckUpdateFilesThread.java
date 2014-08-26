@@ -6,8 +6,6 @@ import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
-import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.AbstractDownloadableMediaActivity;
 import fr.ornidroid.ui.threads.HandlerGenericThread;
 import fr.ornidroid.ui.threads.LoaderInfo;
 
@@ -30,26 +28,6 @@ public class HandlerForCheckUpdateFilesThread extends HandlerGenericThread {
 
 	/** The manual check. */
 	private final boolean manualCheck;
-
-	/**
-	 * Instantiates a new handler for check update files thread.
-	 * 
-	 * @param activity
-	 *            the activity
-	 * @param manualCheck
-	 *            the manual check
-	 * @deprecated
-	 */
-	public HandlerForCheckUpdateFilesThread(
-			AbstractDownloadableMediaActivity activity, boolean manualCheck) {
-		super();
-
-		this.ornidroidIOService = activity.getOrnidroidIOService();
-		this.ornidroidService = OrnidroidServiceFactory.getService(activity);
-		this.mediaHomeDirectory = activity.getMediaHomeDirectory();
-		this.fileType = activity.getFileType();
-		this.manualCheck = manualCheck;
-	}
 
 	/**
 	 * Instantiates a new handler for check update files thread.

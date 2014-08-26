@@ -28,9 +28,7 @@ import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.AbstractDownloadableMediaActivity;
 import fr.ornidroid.ui.AddCustomMediaActivity;
-import fr.ornidroid.ui.BirdActivity;
 import fr.ornidroid.ui.NewBirdActivity;
 import fr.ornidroid.ui.downloads.CheckForUpdateFilesLoaderInfo;
 import fr.ornidroid.ui.downloads.HandlerForCheckUpdateFilesThread;
@@ -255,10 +253,9 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 			intent.setData(getActivity().getIntent().getData());
 			// put an extra info to let the BirdInfoActivity know which tab to
 			// open.
-			intent.putExtra(BirdActivity.INTENT_TAB_TO_OPEN,
+			intent.putExtra(NewBirdActivity.INTENT_TAB_TO_OPEN,
 					OrnidroidFileType.getCode(getFileType()));
-			intent.putExtra(
-					AbstractDownloadableMediaActivity.DOWNLOAD_ERROR_INTENT_PARAM,
+			intent.putExtra(DOWNLOAD_ERROR_INTENT_PARAM,
 					this.ornidroidDownloadErrorCode);
 			startActivity(intent);
 			getActivity().finish();
@@ -304,7 +301,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 				intent.setData(getActivity().getIntent().getData());
 				// put an extra info to let the BirdInfoActivity know which tab
 				// to open
-				intent.putExtra(BirdActivity.INTENT_TAB_TO_OPEN,
+				intent.putExtra(NewBirdActivity.INTENT_TAB_TO_OPEN,
 						OrnidroidFileType.getCode(getFileType()));
 				startActivity(intent);
 				getActivity().finish();

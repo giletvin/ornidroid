@@ -55,30 +55,39 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 				container, false);
 		try {
 			loadMediaFilesLocally();
+			if (ornidroidService.getCurrentBird().getNumberOfSounds() > 0) {
+				LinearLayout headerLayout = (LinearLayout) mAudioLayout
+						.findViewById(R.id.audio_header);
 
-			LinearLayout headerLayout = (LinearLayout) mAudioLayout
-					.findViewById(R.id.audio_header);
+				headerLayout.addView(createAudioControlView());
 
-			headerLayout.addView(createAudioControlView());
+				mListView = (ListView) mAudioLayout
+						.findViewById(R.id.list_audio);
 
-			mListView = (ListView) mAudioLayout.findViewById(R.id.list_audio);
+				final SimpleAdapter adapter = new SimpleAdapter(
+						this.getActivity(), this.ornidroidService
+								.getCurrentBird().getListAudioFiles(),
+						R.layout.audio_list, new String[] {
+								AudioOrnidroidFile.LINE_1,
+								AudioOrnidroidFile.LINE_2 }, new int[] {
+								R.id.audio_line1, R.id.audio_line2 });
+				this.mListView.setAdapter(adapter);
 
-			final SimpleAdapter adapter = new SimpleAdapter(this.getActivity(),
-					this.ornidroidService.getCurrentBird().getListAudioFiles(),
-					R.layout.audio_list, new String[] {
-							AudioOrnidroidFile.LINE_1,
-							AudioOrnidroidFile.LINE_2 }, new int[] {
-							R.id.audio_line1, R.id.audio_line2 });
-			this.mListView.setAdapter(adapter);
+				this.mListView.setTextFilterEnabled(true);
 
-			this.mListView.setTextFilterEnabled(true);
-
-			this.mListView.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(final AdapterView<?> parent,
-						final View view, final int position, final long id) {
-					AudioFragment.this.spinThatShit(position);
-				}
-			});
+				this.mListView
+						.setOnItemClickListener(new OnItemClickListener() {
+							public void onItemClick(
+									final AdapterView<?> parent,
+									final View view, final int position,
+									final long id) {
+								AudioFragment.this.spinThatShit(position);
+							}
+						});
+			} else {
+				mAudioLayout.removeAllViews();
+				printDownloadButtonAndInfo();
+			}
 
 		} catch (final OrnidroidException e) {
 			Toast.makeText(
@@ -131,8 +140,6 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 			mStopButton.setImageResource(R.drawable.ic_sound_stop);
 			mStopButton.setOnClickListener(this);
 			audioControlLayout.addView(mStopButton);
-		} else {
-			printDownloadButtonAndInfo();
 		}
 		audioLayout.addView(customMediaButtonsLayout);
 		audioLayout.addView(audioControlLayout);

@@ -94,6 +94,9 @@ public class NewBirdActivity extends FragmentActivity implements
 			}
 		});
 
+		int tabToOpen = getIntent().getIntExtra(INTENT_TAB_TO_OPEN, 0);
+
+		viewPager.setCurrentItem(tabToOpen);
 		this.loadBirdDetails();
 		this.ornidroidService.getCurrentBird();
 

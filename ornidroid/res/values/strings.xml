@@ -138,5 +138,9 @@
     <string name="updates_available">Updates available. Download ?</string>
     <string name="updates_check_error">Updates check went wrong. Please check your internet connectivity.</string>
     <string name="updates_none">No updates available.</string>
-
+    <string name="download_images_zip_package">You can also download the complete package of images for all the birds of the database.\nYou must have enough free space on your device and a good access to Internet: wifi connection is highly recommanded</string>
+    <string name="download_audio_zip_package">You can also download the complete package of sounds for all the birds of the database.\nYou must have enough free space on your device and a good access to Internet: wifi connection is highly recommanded</string>
+    <string name="download_wikipedia_zip_package">You can also download the complete package of wikipedia files for all the birds of the database.\nYou must have enough free space on your device and a good access to Internet: wifi connection is highly recommanded</string>
+    <string name="download_zip_package_error">Download zip package went wrong. Please check your connection settings.</string>
+    <string name="download_zip_not_enough_space">You don\'t have enough free space on your device to download and install the package.\nAudio : 250 Mb required during installation. \nImages : 120 Mb\nWikipedia files : 60 Mb.</string>
 </resources>

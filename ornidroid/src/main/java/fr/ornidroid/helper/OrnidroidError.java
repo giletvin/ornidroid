@@ -26,7 +26,9 @@ public enum OrnidroidError {
 	/**
 	 * The ORNIDROI d_ hom e_ no t_ found.
 	 */
-	ORNIDROID_HOME_NOT_FOUND;
+	ORNIDROID_HOME_NOT_FOUND,
+	/** The unzip package. */
+	UNZIP_PACKAGE;
 
 	/**
 	 * Gets the error code.

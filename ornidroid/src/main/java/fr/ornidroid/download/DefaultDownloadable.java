@@ -43,6 +43,9 @@ import fr.ornidroid.helper.StringHelper;
  */
 public class DefaultDownloadable extends Downloadable {
 
+	/** The Constant SUFFIX_DOWNLOAD. */
+	public static final String SUFFIX_DOWNLOAD = ".download";
+
 	/**
 	 * safe delete.
 	 * 
@@ -172,7 +175,7 @@ public class DefaultDownloadable extends Downloadable {
 					// + "/"+ normalized(url);
 
 					this.cachedFile = new File(prefix);
-					this.downloadFile = new File(prefix + ".download");
+					this.downloadFile = new File(prefix + SUFFIX_DOWNLOAD);
 					this.timestampFile = new File(prefix + ".timestamp");
 
 					if (this.cachedFile.exists()) {

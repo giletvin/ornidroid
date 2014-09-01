@@ -110,4 +110,45 @@ public interface IOrnidroidIOService {
 	void removeCustomMediaFile(OrnidroidFile ornidroidFile)
 			throws OrnidroidException;
 
+	/**
+	 * Download zip package.
+	 * 
+	 * @param zipname
+	 *            zipname
+	 * @param mediaHomeDirectory
+	 *            the media home directory
+	 * @param fileType
+	 *            the file type
+	 * 
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
+	 */
+	public void downloadZipPackage(String zipname, String mediaHomeDirectory)
+			throws OrnidroidException;
+
+	/**
+	 * Checks if is enough free space.
+	 * 
+	 * @param fileType
+	 *            the file type
+	 * @return true, if is enough free space
+	 */
+	public boolean isEnoughFreeSpace(OrnidroidFileType fileType);
+
+	/**
+	 * Gets the zipname according to the filetype
+	 * 
+	 * @param fileType
+	 *            the file type
+	 * @return the zipname (audio.zip, images.zip or wikipedia.zip)
+	 */
+	public String getZipname(OrnidroidFileType fileType);
+
+	/**
+	 * Gets the download progress in percent of the zip package downloading.
+	 * 
+	 * @return the zip download progress percent
+	 */
+	public int getZipDownloadProgressPercent(OrnidroidFileType fileType);
+
 }

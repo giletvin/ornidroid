@@ -1,11 +1,8 @@
 package fr.ornidroid.ui.downloads;
 
-import java.util.List;
-
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.service.IOrnidroidIOService;
-import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.ui.threads.HandlerGenericThread;
 import fr.ornidroid.ui.threads.LoaderInfo;
 import fr.ornidroid.ui.threads.ThreadEnum;
@@ -13,22 +10,16 @@ import fr.ornidroid.ui.threads.ThreadEnum;
 /**
  * The Class HandlerForCheckUpdateFilesThread.
  */
-public class HandlerForCheckUpdateFilesThread extends HandlerGenericThread {
+public class HandlerForDownloadZipPackageThread extends HandlerGenericThread {
 
 	/** The ornidroid io service. */
 	private IOrnidroidIOService ornidroidIOService;
-
-	/** The ornidroid service. */
-	private IOrnidroidService ornidroidService;
 
 	/** The media home directory. */
 	private String mediaHomeDirectory;
 
 	/** The file type. */
 	private OrnidroidFileType fileType;
-
-	/** The manual check. */
-	private final boolean manualCheck;
 
 	/**
 	 * Instantiates a new handler for check update files thread.
@@ -41,20 +32,16 @@ public class HandlerForCheckUpdateFilesThread extends HandlerGenericThread {
 	 *            the media home directory
 	 * @param fileType
 	 *            the file type
-	 * @param manualCheck
-	 *            the manual check
 	 */
-	public HandlerForCheckUpdateFilesThread(
-			IOrnidroidIOService ornidroidIOService,
-			IOrnidroidService ornidroidService, String mediaHomeDirectory,
-			OrnidroidFileType fileType, boolean manualCheck) {
+	public HandlerForDownloadZipPackageThread(
+			IOrnidroidIOService ornidroidIOService, String mediaHomeDirectory,
+			OrnidroidFileType fileType) {
 		super();
 
 		this.ornidroidIOService = ornidroidIOService;
-		this.ornidroidService = ornidroidService;
 		this.mediaHomeDirectory = mediaHomeDirectory;
 		this.fileType = fileType;
-		this.manualCheck = manualCheck;
+
 	}
 
 	/*
@@ -66,23 +53,17 @@ public class HandlerForCheckUpdateFilesThread extends HandlerGenericThread {
 	 */
 	@Override
 	protected void doTask(LoaderInfo loaderInfo) {
-		CheckForUpdateFilesLoaderInfo loader = (CheckForUpdateFilesLoaderInfo) loaderInfo;
-		boolean updatesToDo = false;
 		try {
-			List<String> filesToDownload = this.ornidroidIOService
-					.filesToUpdate(this.mediaHomeDirectory,
-							ornidroidService.getCurrentBird(), this.fileType);
-			updatesToDo = (filesToDownload.size() > 0);
+			String zipname = this.ornidroidIOService.getZipname(fileType);
+			this.ornidroidIOService.downloadZipPackage(zipname,
+					this.mediaHomeDirectory);
 		} catch (final OrnidroidException e) {
-			loader.setException(e);
+			loaderInfo.setException(e);
 		}
-
-		loader.setUpdatesAvailable(updatesToDo);
-
 	}
 
 	/** The loader info. */
-	private CheckForUpdateFilesLoaderInfo loaderInfo;
+	private LoaderInfo loaderInfo;
 
 	/*
 	 * (non-Javadoc)
@@ -94,8 +75,7 @@ public class HandlerForCheckUpdateFilesThread extends HandlerGenericThread {
 	@Override
 	protected LoaderInfo getLoaderInfo(GenericTaskCallback callback) {
 		if (loaderInfo == null) {
-			loaderInfo = new CheckForUpdateFilesLoaderInfo(callback,
-					manualCheck);
+			loaderInfo = new LoaderInfo(callback);
 		}
 		return loaderInfo;
 	}
@@ -106,7 +86,7 @@ public class HandlerForCheckUpdateFilesThread extends HandlerGenericThread {
 	 * @see fr.ornidroid.ui.threads.GenericTaskHandler#getThreadType()
 	 */
 	public ThreadEnum getThreadType() {
-		return ThreadEnum.CHECK_UPDATE;
+		return ThreadEnum.DOWNLOAD_ZIP;
 	}
 
 }

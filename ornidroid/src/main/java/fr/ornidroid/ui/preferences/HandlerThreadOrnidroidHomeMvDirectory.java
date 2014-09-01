@@ -5,6 +5,7 @@ import java.io.File;
 import fr.ornidroid.helper.FileHelper;
 import fr.ornidroid.ui.threads.HandlerGenericThread;
 import fr.ornidroid.ui.threads.LoaderInfo;
+import fr.ornidroid.ui.threads.ThreadEnum;
 
 /**
  * The Class HandlerThreadOrnidroidHomeMvDirectory.
@@ -50,6 +51,15 @@ public class HandlerThreadOrnidroidHomeMvDirectory extends HandlerGenericThread 
 			loaderInfo.setException(e);
 		}
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.ui.threads.GenericTaskHandler#getThreadType()
+	 */
+	public ThreadEnum getThreadType() {
+		return ThreadEnum.MOVE_ORNIDROID_HOME;
 	}
 
 }

@@ -9,10 +9,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.AudioOrnidroidFile;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.BirdFactoryImpl;
+import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileFactoryImpl;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.bo.PictureOrnidroidFile;
@@ -440,10 +440,9 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 						imagesDir.getAbsolutePath() + "/file1.jpg",
 						OrnidroidFileType.PICTURE,
 						SupportedLanguage.ENGLISH.getCode());
-		final OrnidroidFile customOrnidroidFile = factory
-				.createOrnidroidFile(imagesDir.getAbsolutePath()
-						+ "/custom_file1.jpg", OrnidroidFileType.PICTURE,
-						SupportedLanguage.ENGLISH.getCode());
+		final OrnidroidFile customOrnidroidFile = factory.createOrnidroidFile(
+				imagesDir.getAbsolutePath() + "/custom_file1.jpg",
+				OrnidroidFileType.PICTURE, SupportedLanguage.ENGLISH.getCode());
 		Assert.assertEquals(
 				"there should be 4 files in the test directory : file1.jpg, custom_file1.jpg and their properties files",
 				4, imagesDir.list().length);
@@ -460,5 +459,17 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 		Assert.assertEquals(
 				"there should be 2 files in the test directory : file1.jpg,  and its properties file",
 				2, imagesDir.list().length);
+	}
+
+	/**
+	 * Test download zip package.
+	 * 
+	 * @throws OrnidroidException
+	 *             the ornidroid exception
+	 */
+	@Test
+	public void testDownloadZipPackage() throws OrnidroidException {
+		this.ornidroidIOService.downloadZipPackage("audio.zip", TEST_DIRECTORY);
+
 	}
 }

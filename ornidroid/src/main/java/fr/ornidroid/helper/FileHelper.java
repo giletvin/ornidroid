@@ -1,16 +1,20 @@
 package fr.ornidroid.helper;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * The Class FileUtils. code from commons-io 2.4
@@ -480,5 +484,73 @@ public class FileHelper {
 	 * Private constructor.
 	 */
 	private FileHelper() {
+	}
+
+	/**
+	 * Unzip file.
+	 * 
+	 * @param zipname
+	 *            the zipname
+	 * @param path
+	 *            the path
+	 * @return true, if successful
+	 */
+	public static boolean unzipFile(String zipname, String destDir) {
+		InputStream is;
+		ZipInputStream zis;
+		try {
+			String filename;
+			is = new FileInputStream(destDir + File.separator + zipname);
+			zis = new ZipInputStream(new BufferedInputStream(is));
+			ZipEntry ze;
+			byte[] buffer = new byte[1024];
+			int count;
+
+			while ((ze = zis.getNextEntry()) != null) {
+				// zapis do souboru
+				filename = ze.getName();
+
+				// Need to create directories if not exists, or
+				// it will generate an Exception...
+				if (ze.isDirectory()) {
+					File fmd = new File(destDir + File.separator + filename);
+					fmd.mkdirs();
+					continue;
+				}
+
+				FileOutputStream fout = new FileOutputStream(destDir
+						+ File.separator + filename);
+
+				// cteni zipu a zapis
+				while ((count = zis.read(buffer)) != -1) {
+					fout.write(buffer, 0, count);
+				}
+
+				fout.close();
+				zis.closeEntry();
+			}
+
+			zis.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Gets the file size in mb.
+	 * 
+	 * @param downloadedFile
+	 *            the downloaded file
+	 * @return the file size in mb
+	 */
+	public static int getFileSizeInMb(File downloadedFile) {
+		if (downloadedFile.exists()) {
+			long fileLength = downloadedFile.length() / (1024 * 1024);
+			return (int) fileLength;
+		} else
+			return 0;
 	}
 }

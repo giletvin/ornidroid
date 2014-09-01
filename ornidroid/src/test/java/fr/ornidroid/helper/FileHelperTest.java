@@ -247,4 +247,19 @@ public class FileHelperTest extends AbstractTest {
 
 	}
 
+	/**
+	 * Test parse content file.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testUnzipFile() throws IOException {
+		final File destDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/destDir");
+		final File srcZip = new File("./src/test/resources/audio/audio.zip");
+		final File destZip = new File(destDir.getAbsolutePath()
+				+ File.separator + "audio.zip");
+		FileHelper.doCopyFile(srcZip, destZip);
+		FileHelper.unzipFile("audio.zip", destDir.getAbsolutePath());
+	}
 }

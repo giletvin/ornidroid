@@ -14,12 +14,12 @@ public interface GenericTaskHandler {
 		/**
 		 * On task ended.
 		 * 
-		 * @param loader
-		 *            the loader
+		 * @param taskHandler
+		 *            the task handler
 		 * @param info
 		 *            the info
 		 */
-		void onTaskEnded(GenericTaskHandler loader, LoaderInfo info);
+		void onTaskEnded(GenericTaskHandler taskHandler, LoaderInfo info);
 
 	}
 
@@ -30,4 +30,11 @@ public interface GenericTaskHandler {
 	 *            the callback
 	 */
 	public void genericTask(GenericTaskCallback callback);
+
+	/**
+	 * Gets the thread type.
+	 * 
+	 * @return the thread type
+	 */
+	public ThreadEnum getThreadType();
 }

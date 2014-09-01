@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.os.StatFs;
 import android.util.Log;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileFactoryImpl;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.bo.PictureOrnidroidFile;
+import fr.ornidroid.download.DefaultDownloadable;
+import fr.ornidroid.download.DownloadConstants;
 import fr.ornidroid.download.DownloadHelperImpl;
 import fr.ornidroid.download.DownloadHelperInterface;
 import fr.ornidroid.helper.BasicConstants;
@@ -29,6 +32,12 @@ import fr.ornidroid.helper.SupportedLanguage;
  * The Class OrnidroidIOServiceImpl.
  */
 public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
+
+	/** The Constant MIN_SIZE_REQUIRED_TO_DOWNLOAD_ZIP_PACKAGES. */
+	private static final int MIN_SPACE_TO_DOWNLOAD_IMAGE_PACKAGE = 120;
+	private static final int MIN_SPACE_TO_DOWNLOAD_AUDIO_PACKAGE = 250;
+	private static final int MIN_SPACE_TO_DOWNLOAD_WIKIPEDIA_PACKAGE = 60;
+
 	/**
 	 * The Class OrnidroidFileFilter.
 	 */
@@ -520,4 +529,163 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 						BasicConstants.UNDERSCORE_STRING);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidIOService#downloadZipPackage(java.lang
+	 * .String, java.lang.String)
+	 */
+	public void downloadZipPackage(String zipname, String mediaHomeDirectory)
+			throws OrnidroidException {
+		OrnidroidException exception = null;
+
+		deleteTempFiles(mediaHomeDirectory, zipname);
+
+		File zipPackageFile = downloadHelper.downloadFile(
+				DownloadConstants.getOrnidroidWebSite(), zipname,
+				mediaHomeDirectory);
+		boolean success = FileHelper.unzipFile(zipPackageFile.getName(),
+				mediaHomeDirectory);
+
+		try {
+			FileHelper.forceDelete(zipPackageFile);
+		} catch (IOException e) {
+			exception = new OrnidroidException(OrnidroidError.UNZIP_PACKAGE, e);
+		}
+
+		if (!success) {
+			exception = new OrnidroidException(OrnidroidError.UNZIP_PACKAGE,
+					null);
+		}
+		if (exception != null) {
+			throw exception;
+		}
+
+	}
+
+	/**
+	 * Delete temp files from previous download tries.
+	 * 
+	 * @param mediaHomeDirectory
+	 *            the media home directory
+	 * @param zipname
+	 *            the zipname
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	private void deleteTempFiles(String mediaHomeDirectory, String zipname) {
+		File tempZipfile = new File(mediaHomeDirectory + File.separator
+				+ zipname);
+		if (tempZipfile.exists()) {
+			try {
+				FileHelper.forceDelete(tempZipfile);
+			} catch (IOException e) {
+
+			}
+		}
+		tempZipfile = new File(mediaHomeDirectory + File.separator + zipname
+				+ DefaultDownloadable.SUFFIX_DOWNLOAD);
+		if (tempZipfile.exists()) {
+			try {
+				FileHelper.forceDelete(tempZipfile);
+			} catch (IOException e) {
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidIOService#isEnoughFreeSpace()
+	 * 
+	 * Tip found :
+	 * http://stackoverflow.com/questions/3394765/how-to-check-available
+	 * -space-on-android-device-on-mini-sd-card
+	 */
+	public boolean isEnoughFreeSpace(OrnidroidFileType fileType) {
+		int requiredSpace = getRequiredSpaceToDownloadZip(fileType);
+		File ornidroidHome = new File(Constants.getOrnidroidHome());
+		StatFs stat = new StatFs(ornidroidHome.getPath());
+		// TODO using deprecated method since api level is 11
+		// non deprecated methods are : getBlockSizeLong and
+		// getAvailableBlocksLong
+		long bytesAvailable = (long) stat.getBlockSize()
+				* (long) stat.getAvailableBlocks();
+		float spaceAvailableInMb = bytesAvailable / (1024.f * 1024.f);
+		return spaceAvailableInMb > requiredSpace;
+	}
+
+	/**
+	 * Gets the required space to download zip.
+	 * 
+	 * @param fileType
+	 *            the file type
+	 * @return the required space to download zip
+	 */
+	private int getRequiredSpaceToDownloadZip(OrnidroidFileType fileType) {
+		int requiredSpace = 0;
+		switch (fileType) {
+		case WIKIPEDIA_PAGE:
+			requiredSpace = MIN_SPACE_TO_DOWNLOAD_WIKIPEDIA_PACKAGE;
+			break;
+		case AUDIO:
+			requiredSpace = MIN_SPACE_TO_DOWNLOAD_AUDIO_PACKAGE;
+			break;
+		case PICTURE:
+			requiredSpace = MIN_SPACE_TO_DOWNLOAD_IMAGE_PACKAGE;
+			break;
+		}
+		return requiredSpace;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidIOService#getZipname(fr.ornidroid.bo.
+	 * OrnidroidFileType)
+	 */
+	public String getZipname(OrnidroidFileType fileType) {
+		String zipname = null;
+		switch (fileType) {
+		case AUDIO:
+			zipname = "audio.zip";
+			break;
+		case PICTURE:
+			zipname = "images.zip";
+			break;
+		case WIKIPEDIA_PAGE:
+			zipname = "wikipedia.zip";
+			break;
+		}
+		return zipname;
+
+	}
+
+	/**
+	 * Gets the zip download progress percent.
+	 * 
+	 * @param fileType
+	 *            the file type
+	 * @return the zip download progress percent
+	 */
+	public int getZipDownloadProgressPercent(OrnidroidFileType fileType) {
+		File downloadedFile = new File(Constants.getOrnidroidHome()
+				+ File.separator + getZipname(fileType)
+				+ DefaultDownloadable.SUFFIX_DOWNLOAD);
+		if (downloadedFile.exists()) {
+			int megaBytesDownloaded = FileHelper
+					.getFileSizeInMb(downloadedFile);
+			return (megaBytesDownloaded * 200)
+					/ getRequiredSpaceToDownloadZip(fileType);
+		} else {
+			downloadedFile = new File(Constants.getOrnidroidHome()
+					+ File.separator + getZipname(fileType));
+			if (downloadedFile.exists()) {
+				return 100;
+			} else {
+				return 0;
+			}
+		}
+	}
 }

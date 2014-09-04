@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -61,7 +62,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	/** The download status. */
 	private int downloadStatus;
 	/** The download from internet button. */
-	private ImageView downloadFromInternetButton;
+	private Button downloadFromInternetButton;
 
 	/** The download info text. */
 	private TextView downloadInfoText;
@@ -87,7 +88,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	ImageView addCustomAudioButton;
 
 	/** The download all from internet button. */
-	private ImageView downloadAllFromInternetButton;
+	private Button downloadAllFromInternetButton;
 	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
 	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
 
@@ -649,23 +650,22 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 		noMediaMessage.setGravity(Gravity.CENTER_HORIZONTAL);
 
 		getSpecificContentLayout().addView(noMediaMessage);
-		this.downloadFromInternetButton = new ImageView(getActivity());
+		this.downloadFromInternetButton = new Button(getActivity());
 		this.downloadFromInternetButton.setOnClickListener(this);
-		this.downloadFromInternetButton
-				.setImageResource(R.drawable.ic_file_download);
+
+		this.downloadFromInternetButton.setText(R.string.download_birds_file);
 		this.downloadFromInternetButton.setLayoutParams(new LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
 		getSpecificContentLayout().addView(this.downloadFromInternetButton);
 
-		final TextView downloadAllMessage = new TextView(getActivity());
-		downloadAllMessage.setPadding(5, 50, 5, 20);
-		downloadAllMessage.setGravity(Gravity.CENTER_HORIZONTAL);
-		this.downloadAllFromInternetButton = new ImageView(getActivity());
+		this.downloadAllFromInternetButton = new Button(getActivity());
+
 		this.downloadAllFromInternetButton.setOnClickListener(this);
 		this.downloadAllFromInternetButton
-				.setImageResource(R.drawable.ic_zip_download);
-		getSpecificContentLayout().addView(downloadAllMessage);
+				.setText(R.string.download_zip_package);
+		this.downloadAllFromInternetButton.setLayoutParams(new LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
 		getSpecificContentLayout().addView(this.downloadAllFromInternetButton);
 
@@ -684,19 +684,13 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 			switch (getFileType()) {
 			case AUDIO:
 				noMediaMessage.setText(R.string.no_records);
-				downloadAllMessage.setText(R.string.download_audio_zip_package);
 				break;
 			case PICTURE:
 				noMediaMessage.setText(R.string.no_pictures);
-				downloadAllMessage
-						.setText(R.string.download_images_zip_package);
 				break;
 			case WIKIPEDIA_PAGE:
 				noMediaMessage.setText(R.string.no_wiki);
-				downloadAllMessage
-						.setText(R.string.download_wikipedia_zip_package);
 				break;
-
 			}
 
 			break;

@@ -37,8 +37,7 @@
     <string name="bird_names">Taxonomie</string>
     <string name="add_custom_media_title">Ajout de fichiers personnalisés</string>
 
-
-     <!-- labels used in preferences -->
+    <!-- labels used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
     <string name="preferences_lang_title">Langues utilisées pour la recherche</string>
     <string name="preferences_lang_summary">23 langues disponibles. Recherche sur plusieurs langues différentes possible.</string>
@@ -58,8 +57,7 @@
     <string name="add_custom_media_success">Le fichier a été correctement ajouté</string>
     <string name="remove_custom_media_success">Le fichier a été correctement supprimé</string>
     <string name="add_custom_media_go_back">Retour vers l\'oiseau</string>
-    
-    
+
     <!-- pictures info dialog box -->
     <string name="dialog_picture_title">Informations sur l\'image</string>
     <string name="dialog_picture_description">Description</string>
@@ -136,5 +134,8 @@
     <string name="updates_available">Mises à jour disponibles.\nTélécharger ?</string>
     <string name="updates_check_error">Echec de la vérification des mises à jour.\nMerci de vérifier votre connexion internet.</string>
     <string name="updates_none">Aucune mise à jour disponible.</string>
-
+    <string name="download_birds_file">Télécharger uniquement\npour cet oiseau</string>
+    <string name="download_zip_package">Télécharger le package complet\npour tous les oiseaux</string>
+    <string name="download_zip_package_error">Problème dans le téléchargement.</string>
+    <string name="download_zip_not_enough_space">Espace insuffisant sur la mémoire de l\'appareil.\nAudio : 250 Mo nécessaires pendant l\'installation. \nImages : 120 Mo\nPages Wikipedia : 60 Mo.</string>
 </resources>

@@ -38,7 +38,7 @@ do
 		fi
 		if [ "$kbps" -gt "$MAX_BIT_RATE" ]; then
 			echo "compression!"
-			ffmpeg -map_meta_data 0:0 -i $soundfile -acodec libmp3lame -ab ${MAX_BIT_RATE}k ${soundfile}_new.mp3 2>&1 
+			avconv -i $soundfile -acodec libmp3lame -ab ${MAX_BIT_RATE}k ${soundfile}_new.mp3 2>&1 
 			mv ${soundfile}_new.mp3 $soundfile
 		else
 			echo "pas de compression !" 

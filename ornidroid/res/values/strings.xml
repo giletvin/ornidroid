@@ -140,7 +140,9 @@
     <string name="updates_none">No updates available.</string>
     <string name="download_birds_file">Download only for this bird</string>
     <string name="download_zip_package">Download complete package</string>
+    <string name="download_and_install_in_progress">Download and installation in progress.</string>
     <string name="download_zip_package_error">Download zip package went wrong.</string>
+    <string name="download_zip_package_error_detail">Please check your Internet connection.</string>
     <string name="download_zip_not_enough_space">You don\'t have enough free space on your device to download and install the package.\nAudio : 250 Mb required during installation. \nImages : 120 Mb\nWikipedia files : 60 Mb.</string>
 
 </resources>

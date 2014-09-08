@@ -92,6 +92,7 @@
 		Internet ?</string>
     <string name="no_pictures">Pas de photo. Vérifier et télécharger depuis
 		Internet ?</string>
+		<string name="no_wiki">La fiche wikipedia n\'est pas sur votre appareil. Voulez-vous la télécharger ?</string>
     <string name="about_ornidroid">Cette application est sous
 		licence Creative Commons BY
 		NC\nhttp://creativecommons.org/licenses/by-nc/3.0/deed.fr</string>
@@ -136,6 +137,8 @@
     <string name="updates_none">Aucune mise à jour disponible.</string>
     <string name="download_birds_file">Télécharger uniquement\npour cet oiseau</string>
     <string name="download_zip_package">Télécharger le package complet\npour tous les oiseaux</string>
+    <string name="download_and_install_in_progress">Téléchargement et installation en cours.</string>
     <string name="download_zip_package_error">Problème dans le téléchargement.</string>
-    <string name="download_zip_not_enough_space">Espace insuffisant sur la mémoire de l\'appareil.\nAudio : 250 Mo nécessaires pendant l\'installation. \nImages : 120 Mo\nPages Wikipedia : 60 Mo.</string>
+    <string name="download_zip_package_error_detail">Merci de vérifier vos paramètres de connexion.</string>
+    <string name="download_zip_not_enough_space">Espace insuffisant sur la mémoire de l\'appareil.\nAudio : 700 Mo nécessaires pendant l\'installation. \nImages : 120 Mo\nPages Wikipedia : 60 Mo.</string>
 </resources>

@@ -35,7 +35,11 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 
 	/** The Constant MIN_SIZE_REQUIRED_TO_DOWNLOAD_ZIP_PACKAGES. */
 	private static final int MIN_SPACE_TO_DOWNLOAD_IMAGE_PACKAGE = 120;
-	private static final int MIN_SPACE_TO_DOWNLOAD_AUDIO_PACKAGE = 250;
+
+	/** The Constant MIN_SPACE_TO_DOWNLOAD_AUDIO_PACKAGE. */
+	private static final int MIN_SPACE_TO_DOWNLOAD_AUDIO_PACKAGE = 700;
+
+	/** The Constant MIN_SPACE_TO_DOWNLOAD_WIKIPEDIA_PACKAGE. */
 	private static final int MIN_SPACE_TO_DOWNLOAD_WIKIPEDIA_PACKAGE = 60;
 
 	/**
@@ -73,6 +77,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 
 	/** The download helper. */
 	private final DownloadHelperInterface downloadHelper;
+	private double previousProgress;
 
 	/**
 	 * Instantiates a new ornidroid io service impl.
@@ -676,13 +681,19 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		if (downloadedFile.exists()) {
 			int megaBytesDownloaded = FileHelper
 					.getFileSizeInMb(downloadedFile);
-			return (megaBytesDownloaded * 200)
-					/ getRequiredSpaceToDownloadZip(fileType);
+			// telechargement a 70% max
+			double result = ((megaBytesDownloaded * 200) / getRequiredSpaceToDownloadZip(fileType)) * 0.7d;
+			previousProgress = Math.floor(result);
+			return (int) previousProgress;
 		} else {
 			downloadedFile = new File(Constants.getOrnidroidHome()
 					+ File.separator + getZipname(fileType));
 			if (downloadedFile.exists()) {
-				return 100;
+				// telechargement termine. On augmente tout doucement jusqu a
+				// 100
+				previousProgress += 0.5;
+				previousProgress = Math.min(100, previousProgress);
+				return (int) previousProgress;
 			} else {
 				return 0;
 			}

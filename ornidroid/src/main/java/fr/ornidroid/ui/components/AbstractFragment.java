@@ -426,14 +426,14 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 			this.progressBar = new ProgressDialog(getActivity());
 			this.progressBar.setCancelable(false);
 			this.progressBar.setMessage(this.getResources().getText(
-					R.string.download_in_progress));
+					R.string.download_and_install_in_progress));
 			this.progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			this.progressBar.show();
+
 			Runnable runnableUpdateProgressBar = new Runnable() {
 
 				public void run() {
 					while (progressBar.isShowing()) {
-
 						progressBar.setProgress(ornidroidIOService
 								.getZipDownloadProgressPercent(getFileType()));
 						try {
@@ -445,6 +445,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 				}
 
 			};
+
 			new Thread(runnableUpdateProgressBar).start();
 		} else {
 			Dialog dialog = new AlertDialog.Builder(this.getActivity())
@@ -501,10 +502,11 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 *            the loader info
 	 */
 	private void onDownloadZipPackageTaskEnded(LoaderInfo loaderInfo) {
+		progressBar.setProgress(100);
 		progressBar.dismiss();
 		if (loaderInfo.getException() != null) {
 			String downloadErrorText = getActivity().getResources().getString(
-					R.string.download_zip_package_error)
+					R.string.download_zip_package_error_detail)
 					+ BasicConstants.CARRIAGE_RETURN
 					+ loaderInfo.getException().toString();
 			Dialog dialog = new AlertDialog.Builder(this.getActivity())

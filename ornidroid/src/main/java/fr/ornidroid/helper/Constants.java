@@ -6,6 +6,10 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Environment;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Bird;
@@ -249,5 +253,58 @@ public class Constants extends BasicConstants {
 	public static final String getOrnidroidHomeWikipedia() {
 		return Constants.getOrnidroidHome() + File.separator
 				+ WIKIPEDIA_DIRECTORY;
+	}
+
+	/**
+	 * Gets the application name.
+	 * 
+	 * @return the application name
+	 */
+	public static final String getApplicationName() {
+		final PackageManager pm = CONTEXT.getPackageManager();
+		ApplicationInfo ai;
+		try {
+			ai = pm.getApplicationInfo(CONTEXT.getPackageName(), 0);
+		} catch (final NameNotFoundException e) {
+			ai = null;
+		}
+		final String applicationName = (String) (ai != null ? pm
+				.getApplicationLabel(ai) : "(unknown)");
+		return applicationName;
+	}
+
+	/**
+	 * Gets the version name.
+	 * 
+	 * @return the version name
+	 */
+	public static final String getVersionName() {
+		final PackageManager pm = CONTEXT.getPackageManager();
+		PackageInfo pinfo;
+		try {
+			pinfo = pm.getPackageInfo(CONTEXT.getPackageName(), 0);
+		} catch (final NameNotFoundException e) {
+			pinfo = null;
+		}
+		final String versionName = pinfo != null ? pinfo.versionName
+				: "(unknown)";
+		return versionName;
+	}
+
+	/**
+	 * Gets the version name.
+	 * 
+	 * @return the version name
+	 */
+	public static final int getVersionCode() {
+		final PackageManager pm = CONTEXT.getPackageManager();
+		PackageInfo pinfo;
+		try {
+			pinfo = pm.getPackageInfo(CONTEXT.getPackageName(), 0);
+		} catch (final NameNotFoundException e) {
+			pinfo = null;
+		}
+		final int versionName = pinfo != null ? pinfo.versionCode : 0;
+		return versionName;
 	}
 }

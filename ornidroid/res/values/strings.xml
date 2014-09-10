@@ -144,5 +144,6 @@
     <string name="download_zip_package_error">Download zip package went wrong.</string>
     <string name="download_zip_package_error_detail">Please check your Internet connection.</string>
     <string name="download_zip_not_enough_space">You don\'t have enough free space on your device to download and install the package.\nAudio : 250 Mb required during installation. \nImages : 120 Mb\nWikipedia files : 60 Mb.</string>
+    <string name="release_notes">Release notes</string>
 
 </resources>

@@ -33,15 +33,6 @@ public class BasicConstants {
 	public static final String CUSTOM_MEDIA_FILE_PREFIX = "custom_";
 
 	/**
-	 * The Constant DB_CHECKSIZE_NAME. This file contains the size ot the
-	 * database file. It is used to detect a new version of the database. If a
-	 * new version of the apk file comes with a new version of the db, its
-	 * checksize file will have a different value than the size of the locally
-	 * installed db.
-	 */
-	public final static String DB_CHECKSIZE_NAME = "ornidroid.jpg.size";
-
-	/**
 	 * The D b_ name. It ends with a .jpg extension although it is a sqlite file
 	 */
 	public final static String DB_NAME = "ornidroid.jpg";

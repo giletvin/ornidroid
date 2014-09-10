@@ -3,10 +3,6 @@ package fr.ornidroid.ui;
 import java.util.List;
 import java.util.Map;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -15,6 +11,7 @@ import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Credits;
 import fr.ornidroid.helper.BasicConstants;
+import fr.ornidroid.helper.Constants;
 
 /**
  * The Class AboutActivity.
@@ -44,24 +41,11 @@ public class AboutActivity extends AbstractOrnidroidActivity {
 		setTitle(R.string.about);
 
 		final TextView aboutText = (TextView) findViewById(R.id.about_ornidroid_version);
-		final PackageManager pm = getApplicationContext().getPackageManager();
-		ApplicationInfo ai;
-		PackageInfo pinfo;
-		try {
-			ai = pm.getApplicationInfo(this.getPackageName(), 0);
-			pinfo = pm.getPackageInfo(getPackageName(), 0);
 
-		} catch (final NameNotFoundException e) {
-			ai = null;
-			pinfo = null;
-		}
-		final String applicationName = (String) (ai != null ? pm
-				.getApplicationLabel(ai) : "(unknown)");
-		final String versionName = pinfo != null ? pinfo.versionName
-				: "(unknown)";
+		final String applicationName = Constants.getApplicationName();
 
 		aboutText.setText(applicationName + BasicConstants.BLANK_STRING
-				+ versionName + BasicConstants.CARRIAGE_RETURN
+				+ Constants.getVersionName() + BasicConstants.CARRIAGE_RETURN
 				+ this.getResources().getString(R.string.about_ornidroid));
 
 		printCredits();

@@ -712,4 +712,13 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	public List<SimpleBird> getQueryResult() {
 		return queryResult;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.service.IOrnidroidService#getReleaseNotes()
+	 */
+	public String getReleaseNotes() {
+		return ornidroidDAO.getReleaseNotes();
+	}
 }

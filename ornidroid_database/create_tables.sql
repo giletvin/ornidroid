@@ -106,3 +106,45 @@ insert into application_info(id,key,value,date,comments) VALUES(6,"ornidroid_ver
 insert into application_info(id,key,value,date,comments) VALUES(7,"ornidroid_version","6.0.0","29/11/2013","roumain, bulgare, hongrois");
 
 
+
+create table release_notes(id integer,version_code integer,date,comments_de,comments_en,comments_fr,read integer);
+
+insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(1,16,"09/09/2014","","","",0);
+update release_notes set comments_fr="Evolutions : 
+ - intégration des pages wikipedia
+ - refonte de l''écran de détail des oiseaux
+ - téléchargement des packages complets d''images, sons et pages wikipedia depuis l''application
+ - améliorations de la base de données de sons : ajout de nombreux fichiers mp3
+ - notification sur les nouveautés lors de mises à jour (cet écran !)
+
+Corrections de bugs:
+
+ - image zoomée déformée sur certains appareils
+ - anomalies sur la recherche par nom
+ - crashs aléatoires" where version_code=16;
+
+update release_notes set comments_en="New features : 
+ - Wikipedia files embedded in the app
+ - redesign of the main screen
+ - download of full packages of images, sounds or wikipedia files from the app
+ - More mp3 files from Xeno Canto available
+ - Release notes screen
+
+Bug fixes :
+
+ - distorsion on zoomed images
+ - bugs in the search by name
+ - random crashes" where version_code=16;
+
+update release_notes set comments_de="New features : 
+ - Wikipedia files embedded in the app
+ - redesign of the main screen
+ - download of full packages of images, sounds or wikipedia files from the app
+ - More mp3 files from Xeno Canto available
+ - Release notes screen
+
+Bug fixes :
+
+ - distorsion on zoomed images
+ - bugs in the search by name
+ - random crashes" where version_code=16;

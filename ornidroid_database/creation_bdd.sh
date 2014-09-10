@@ -24,8 +24,7 @@ cat generate_insert_data_bird_country.sql | sqlite3 $DATABASE_NAME
 cat generate_update_oiseaux_net_links.sql | sqlite3 $DATABASE_NAME
 
 sqlite3 $DATABASE_NAME 'VACUUM;'
-#generation du fichier .size pour le controle de mise a jour dans l appli
-cat $DATABASE_NAME | wc -c > $DATABASE_NAME.size
+
 
 
 

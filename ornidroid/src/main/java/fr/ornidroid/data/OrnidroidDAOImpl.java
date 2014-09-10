@@ -104,6 +104,9 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	/** The Constant SELECT. */
 	private static final String SELECT = "select ";
 
+	/** The Constant AND. */
+	private static final String AND = " and ";
+
 	/** The singleton. */
 	private static IOrnidroidDAO singleton;
 
@@ -352,7 +355,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		final SQLiteDatabase db = this.dataBaseOpenHelper.getReadableDatabase();
 		final int countResults = (int) DatabaseUtils.longForQuery(db,
 				countQuery.toString(), null);
-
+		db.close();
 		return countResults;
 	}
 
@@ -746,6 +749,77 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		}
 
 		return getBirdListFromCursor(cursor);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.ornidroid.data.IOrnidroidDAO#getReleaseNotes()
+	 */
+	public String getReleaseNotes() {
+		Cursor cursor = null;
+		String releaseNotes = null;
+		try {
+			final SQLiteDatabase db = this.dataBaseOpenHelper
+					.getReadableDatabase();
+
+			String commentsColumn = "comments_"
+					+ I18nHelper.getLang().getCode();
+			final StringBuilder query = new StringBuilder();
+			query.append(SELECT);
+			query.append(commentsColumn);
+			query.append(FROM);
+			query.append("release_notes");
+			query.append(WHERE);
+			query.append("version_code=");
+			query.append(Constants.getVersionCode());
+			query.append(AND);
+			query.append("read=0");
+
+			final String[] selectionArgs = null;
+			cursor = db.rawQuery(query.toString(), selectionArgs);
+
+			if (cursor.moveToFirst()) {
+				int commentsColumnIndex = cursor.getColumnIndex(commentsColumn);
+				releaseNotes = cursor.getString(commentsColumnIndex);
+			}
+		} catch (final SQLException e) {
+			// Log.e(Constants.LOG_TAG, "Exception sql " + e);
+		} finally {
+			this.dataBaseOpenHelper.close();
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+		if (StringHelper.isNotBlank(releaseNotes)) {
+			updateReadReleaseNoteFlag(Constants.getVersionCode());
+
+		}
+		return releaseNotes;
+	}
+
+	/**
+	 * Update read release note flag.
+	 * 
+	 * @param versionCode
+	 *            the version code
+	 */
+	private void updateReadReleaseNoteFlag(int versionCode) {
+		try {
+			final SQLiteDatabase db = this.dataBaseOpenHelper
+					.getWritableDatabase();
+
+			String strSQL = "UPDATE release_notes SET read = 1 WHERE version_code="
+					+ Constants.getVersionCode();
+			db.execSQL(strSQL);
+			// db.setTransactionSuccessful();
+			// db.endTransaction();
+		} catch (final SQLException e) {
+
+		} finally {
+			this.dataBaseOpenHelper.close();
+		}
 
 	}
 }

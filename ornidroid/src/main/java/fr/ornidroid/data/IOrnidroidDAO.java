@@ -187,4 +187,11 @@ public interface IOrnidroidDAO {
 	 */
 	List<SimpleBird> getMatchingBirds(String query);
 
+	/**
+	 * Gets the release notes.
+	 * 
+	 * @return the release notes
+	 */
+	String getReleaseNotes();
+
 }

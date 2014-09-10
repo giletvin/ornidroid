@@ -2,7 +2,6 @@ package fr.ornidroid.helper;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,40 +19,6 @@ public class IOHelper {
 	 * The default buffer size to use.
 	 */
 	private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
-
-	/**
-	 * Check if the size of the file is the same as the value contained in the
-	 * inputStream.
-	 * 
-	 * @param file
-	 *            the file
-	 * @param isCheckSize
-	 *            the is check size
-	 * @return true, if size of file is the same. False in any other case
-	 *         (exceptions should be caught here).
-	 */
-	public static boolean checkSize(final File file,
-			final InputStream isCheckSize) {
-		boolean checkOk = false;
-
-		// check size to see if local db is the same as the db in assets
-		try {
-			final long checksize = file.length();
-			final List<String> lines = readLines(isCheckSize);
-			if (lines.size() == 1) {
-
-				final long checksizeControl = Long.parseLong(lines.get(0));
-				if (checksizeControl == checksize) {
-					checkOk = true;
-				}
-			}
-
-		} catch (final Exception e) {
-			// exception : consider that the file is not up to date
-			checkOk = false;
-		}
-		return checkOk;
-	}
 
 	/**
 	 * Close quietly.

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.content.Context;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -120,16 +121,20 @@ public class OrnidroidDatabaseOpenHelper extends SQLiteOpenHelper {
 			return false;
 		}
 
-		boolean dbUptodate;
-		InputStream is;
+		int countResults = 0;
+		final SQLiteDatabase db = this.getReadableDatabase();
 		try {
-			is = this.myContext.getAssets().open(Constants.DB_CHECKSIZE_NAME);
-			dbUptodate = IOHelper.checkSize(dbFile, is);
-		} catch (final IOException e) {
-			dbUptodate = false;
+			StringBuffer query = new StringBuffer();
+			query.append("select count(*) from release_notes where version_code=");
+			query.append(Constants.getVersionCode());
+			countResults = (int) DatabaseUtils.longForQuery(db,
+					query.toString(), null);
+		} catch (Exception e) {
+			countResults = 0;
+		} finally {
+			db.close();
 		}
-		return dbUptodate;
-
+		return countResults == 1;
 	}
 
 	/**

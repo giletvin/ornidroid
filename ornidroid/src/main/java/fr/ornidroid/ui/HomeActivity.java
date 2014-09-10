@@ -12,6 +12,7 @@ import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidException;
+import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
@@ -84,6 +85,7 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 		this.preferencesLink.setOnTouchListener(this);
 		this.multiCriteriaSearchLink = (TextView) findViewById(R.id.menu_search_multi);
 		this.multiCriteriaSearchLink.setOnTouchListener(this);
+
 	}
 
 	/*
@@ -173,7 +175,22 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 	protected void onStart() {
 		super.onStart();
 		checkOrnidroidHomeDirectory();
-
+		String releaseNotes = ornidroidService.getReleaseNotes();
+		if (StringHelper.isNotBlank(releaseNotes)) {
+			Dialog dialog = new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setTitle(R.string.release_notes)
+					.setMessage(releaseNotes)
+					.setPositiveButton(R.string.ok,
+							new DialogInterface.OnClickListener() {
+								public void onClick(
+										final DialogInterface dialog,
+										final int whichButton) {
+									dialog.dismiss();
+								}
+							}).create();
+			dialog.show();
+		}
 	}
 
 	/**

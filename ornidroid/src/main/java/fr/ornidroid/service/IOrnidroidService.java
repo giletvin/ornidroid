@@ -239,4 +239,11 @@ public interface IOrnidroidService {
 	 */
 	List<SimpleBird> getQueryResult();
 
+	/**
+	 * Gets the release notes.
+	 * 
+	 * @return the release notes
+	 */
+	String getReleaseNotes();
+
 }

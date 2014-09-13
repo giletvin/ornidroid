@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -670,6 +671,13 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
 		getSpecificContentLayout().addView(this.downloadAllFromInternetButton);
+
+		final TextView manualDownloadInfo = new TextView(getActivity());
+		manualDownloadInfo.setPadding(5, 10, 5, 20);
+		manualDownloadInfo.setGravity(Gravity.CENTER_HORIZONTAL);
+		manualDownloadInfo.setText(R.string.download_manual);
+		Linkify.addLinks(manualDownloadInfo, Linkify.ALL);
+		getSpecificContentLayout().addView(manualDownloadInfo);
 
 		final OrnidroidError ornidroidError = OrnidroidError
 				.getOrnidroidError(this.ornidroidDownloadErrorCode);

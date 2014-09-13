@@ -1,5 +1,6 @@
 #!/bin/sh
 # script de creation de base de données sqlite a partir du fichier csv des oiseaux. Le separateur du csv est |
+#pre requis sqlite3 php5-sqlite
 php create_insert_data_sql_file.php
 export DATABASE_NAME=ornidroid.jpg
 rm $DATABASE_NAME

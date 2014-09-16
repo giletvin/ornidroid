@@ -158,13 +158,13 @@ public class Constants extends BasicConstants {
 		switch (fileType) {
 		case AUDIO:
 			path = getOrnidroidHomeAudio();
-
+			break;
 		case PICTURE:
 			path = getOrnidroidHomeImages();
-
+			break;
 		case WIKIPEDIA_PAGE:
 			path = getOrnidroidHomeWikipedia();
-
+			break;
 		}
 		return path;
 

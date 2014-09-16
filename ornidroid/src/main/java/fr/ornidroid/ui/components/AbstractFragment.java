@@ -495,6 +495,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 										final DialogInterface dialog,
 										final int whichButton) {
 									dialog.dismiss();
+									reloadActivity();
 								}
 							}).create();
 			dialog.show();
@@ -555,19 +556,25 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 										final DialogInterface dialog,
 										final int whichButton) {
 									dialog.dismiss();
+									reloadActivity();
 								}
 							}).create();
 			dialog.show();
 		} else {
-			// everything went fine. Reload the screen.
-			final Intent intentBirdInfo = new Intent(this.getActivity(),
-					NewBirdActivity.class);
-			intentBirdInfo.putExtra(NewBirdActivity.INTENT_TAB_TO_OPEN,
-					OrnidroidFileType.getCode(this.getFileType()));
-			startActivity(intentBirdInfo
-					.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+			reloadActivity();
 		}
 
+	}
+
+	/**
+	 * Reload activity.
+	 */
+	private void reloadActivity() {
+		final Intent intentBirdInfo = new Intent(this.getActivity(),
+				NewBirdActivity.class);
+		intentBirdInfo.putExtra(NewBirdActivity.INTENT_TAB_TO_OPEN,
+				OrnidroidFileType.getCode(this.getFileType()));
+		startActivity(intentBirdInfo.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 	}
 
 	/**

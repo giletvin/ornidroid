@@ -25,6 +25,7 @@
     <string name="home">Home</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="warning">Warning</string>
 
     <!-- activity titles -->
     <string name="preferences">Preferences</string>
@@ -142,9 +143,10 @@
     <string name="download_zip_package">Download complete package</string>
     <string name="download_package_in_progress">Download in progress</string>
     <string name="install_package_in_progress">Installation in progress</string>
+    <string name="download_zip_package_warn_detail">Wifi connection is highly recommanded. Downloading and installing a package can last up to 5 to 10 min (depending on your internet connection)</string>
     <string name="download_zip_package_error">Download zip package went wrong.</string>
     <string name="download_zip_package_error_detail">Please check your Internet connection.</string>
-    <string name="download_zip_not_enough_space">You don\'t have enough free space on your device to download and install the package.\nAudio : 250 Mb required during installation. \nImages : 120 Mb\nWikipedia files : 60 Mb.</string>
+    <string name="download_zip_not_enough_space">You don\'t have enough free space on your device to download and install the package.\nAudio : 700 Mb required during installation. \nImages : 120 Mb\nWikipedia files : 40 Mb.</string>
     <string name="download_manual">You can also download the full package manually from a computer : https://github.com/giletvin/ornidroid/wiki/Installation-en</string>
     <string name="release_notes">Release notes</string>
 

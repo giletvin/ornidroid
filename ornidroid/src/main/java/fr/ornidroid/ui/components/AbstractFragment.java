@@ -284,7 +284,28 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 			startDownload();
 		}
 		if (v == this.downloadAllFromInternetButton) {
-			startDownloadAll();
+			Dialog dialog = new AlertDialog.Builder(this.getActivity())
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setTitle(R.string.warning)
+					.setMessage(R.string.download_zip_package_warn_detail)
+					.setPositiveButton(R.string.ok,
+							new DialogInterface.OnClickListener() {
+								public void onClick(
+										final DialogInterface dialog,
+										final int whichButton) {
+									dialog.dismiss();
+									startDownloadAll();
+								}
+							})
+					.setNegativeButton(R.string.cancel,
+							new DialogInterface.OnClickListener() {
+								public void onClick(
+										final DialogInterface dialog,
+										final int whichButton) {
+									dialog.dismiss();
+								}
+							}).create();
+			dialog.show();
 		}
 		if ((v == this.addCustomPictureButton)
 				|| (v == this.addCustomAudioButton)) {
@@ -375,11 +396,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 * Start download.
 	 */
 	protected void startDownload() {
-		getSpecificContentLayout().removeAllViews();
-		this.downloadInfoText = new TextView(getActivity());
-		this.downloadInfoText.setText(R.string.download_please_wait);
-		this.downloadInfoText.setPadding(5, 10, 5, 20);
-		getSpecificContentLayout().addView(this.downloadInfoText);
+		resetScreenBeforeDownload();
 		this.downloadStatus = DOWNLOAD_NOT_STARTED;
 		// prepare for a progress bar dialog
 		this.progressBar = new ProgressDialog(getActivity());
@@ -393,6 +410,17 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 		this.downloadStatus = DOWNLOAD_NOT_STARTED;
 
 		new Thread(this).start();
+	}
+
+	/**
+	 * Reset screen before download.
+	 */
+	private void resetScreenBeforeDownload() {
+		getSpecificContentLayout().removeAllViews();
+		this.downloadInfoText = new TextView(getActivity());
+		this.downloadInfoText.setText(R.string.download_please_wait);
+		this.downloadInfoText.setPadding(5, 10, 5, 20);
+		getSpecificContentLayout().addView(this.downloadInfoText);
 	}
 
 	/**
@@ -417,6 +445,8 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 * Start download all.
 	 */
 	public void startDownloadAll() {
+
+		resetScreenBeforeDownload();
 		if (this.ornidroidIOService.isEnoughFreeSpace(getFileType())) {
 
 			if (this.handlerDownloadZipThread == null) {

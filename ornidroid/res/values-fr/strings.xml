@@ -137,8 +137,10 @@
     <string name="updates_none">Aucune mise à jour disponible.</string>
     <string name="download_birds_file">Télécharger uniquement\npour cet oiseau</string>
     <string name="download_zip_package">Télécharger le package complet\npour tous les oiseaux</string>
-    <string name="download_and_install_in_progress">Téléchargement et installation en cours.</string>
+    <string name="download_package_in_progress">Téléchargement en cours</string>
+    <string name="install_package_in_progress">Installation en cours</string>    
     <string name="download_zip_package_error">Problème dans le téléchargement.</string>
     <string name="download_zip_package_error_detail">Merci de vérifier vos paramètres de connexion.</string>
+    <string name="download_manual">Il est aussi possible de télécharger et installer les packages depuis un ordinateur : https://github.com/giletvin/ornidroid/wiki/Installation</string>
     <string name="download_zip_not_enough_space">Espace insuffisant sur la mémoire de l\'appareil.\nAudio : 700 Mo nécessaires pendant l\'installation. \nImages : 120 Mo\nPages Wikipedia : 60 Mo.</string>
 </resources>

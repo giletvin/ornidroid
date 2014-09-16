@@ -34,6 +34,7 @@ import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.AddCustomMediaActivity;
 import fr.ornidroid.ui.NewBirdActivity;
+import fr.ornidroid.ui.components.progressbar.DoubleProgressBarDialog;
 import fr.ornidroid.ui.downloads.CheckForUpdateFilesLoaderInfo;
 import fr.ornidroid.ui.downloads.HandlerForCheckUpdateFilesThread;
 import fr.ornidroid.ui.downloads.HandlerForDownloadZipPackageThread;
@@ -60,6 +61,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 
 	/** The progress bar. */
 	private ProgressDialog progressBar;
+	private DoubleProgressBarDialog progressBarDownloadPackage;
 	/** The download status. */
 	private int downloadStatus;
 	/** The download from internet button. */
@@ -424,19 +426,23 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 				this.handlerDownloadZipThread.start();
 			}
 			this.handlerDownloadZipThread.genericTask(this);
-			this.progressBar = new ProgressDialog(getActivity());
-			this.progressBar.setCancelable(false);
-			this.progressBar.setMessage(this.getResources().getText(
-					R.string.download_and_install_in_progress));
-			this.progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-			this.progressBar.show();
+			this.progressBarDownloadPackage = new DoubleProgressBarDialog(
+					getActivity(), getFileType());
+
+			this.progressBarDownloadPackage.setCancelable(false);
+
+			this.progressBarDownloadPackage.show();
 
 			Runnable runnableUpdateProgressBar = new Runnable() {
 
 				public void run() {
-					while (progressBar.isShowing()) {
-						progressBar.setProgress(ornidroidIOService
-								.getZipDownloadProgressPercent(getFileType()));
+					while (progressBarDownloadPackage.isShowing()) {
+						progressBarDownloadPackage
+								.setProgressDownload(ornidroidIOService
+										.getZipDownloadProgressPercent(getFileType()));
+						progressBarDownloadPackage
+								.setProgressInstall(ornidroidIOService
+										.getInstallProgressPercent(getFileType()));
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -503,8 +509,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 *            the loader info
 	 */
 	private void onDownloadZipPackageTaskEnded(LoaderInfo loaderInfo) {
-		progressBar.setProgress(100);
-		progressBar.dismiss();
+		progressBarDownloadPackage.dismiss();
 		if (loaderInfo.getException() != null) {
 			String downloadErrorText = getActivity().getResources().getString(
 					R.string.download_zip_package_error_detail)

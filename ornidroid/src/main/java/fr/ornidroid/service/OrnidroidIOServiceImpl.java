@@ -40,7 +40,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	private static final int MIN_SPACE_TO_DOWNLOAD_AUDIO_PACKAGE = 700;
 
 	/** The Constant MIN_SPACE_TO_DOWNLOAD_WIKIPEDIA_PACKAGE. */
-	private static final int MIN_SPACE_TO_DOWNLOAD_WIKIPEDIA_PACKAGE = 60;
+	private static final int MIN_SPACE_TO_DOWNLOAD_WIKIPEDIA_PACKAGE = 40;
 
 	/**
 	 * The Class OrnidroidFileFilter.
@@ -77,7 +77,6 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 
 	/** The download helper. */
 	private final DownloadHelperInterface downloadHelper;
-	private double previousProgress;
 
 	/**
 	 * Instantiates a new ornidroid io service impl.
@@ -681,22 +680,29 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		if (downloadedFile.exists()) {
 			int megaBytesDownloaded = FileHelper
 					.getFileSizeInMb(downloadedFile);
-			// telechargement a 70% max
-			double result = ((megaBytesDownloaded * 200) / getRequiredSpaceToDownloadZip(fileType)) * 0.7d;
-			previousProgress = Math.floor(result);
-			return (int) previousProgress;
+			int result = ((megaBytesDownloaded * 200) / getRequiredSpaceToDownloadZip(fileType));
+			return result;
 		} else {
 			downloadedFile = new File(Constants.getOrnidroidHome()
 					+ File.separator + getZipname(fileType));
 			if (downloadedFile.exists()) {
-				// telechargement termine. On augmente tout doucement jusqu a
-				// 100
-				previousProgress += 0.5;
-				previousProgress = Math.min(100, previousProgress);
-				return (int) previousProgress;
+				return 100;
 			} else {
 				return 0;
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidIOService#getInstallProgressPercent(fr
+	 * .ornidroid.bo.OrnidroidFileType)
+	 */
+	public int getInstallProgressPercent(OrnidroidFileType fileType) {
+		File mediaHome = new File(Constants.getOrnidroidHomeMedia(fileType));
+		return FileHelper.getCountFiles(mediaHome);
+
 	}
 }

@@ -262,4 +262,19 @@ public class FileHelperTest extends AbstractTest {
 		FileHelper.doCopyFile(srcZip, destZip);
 		FileHelper.unzipFile("audio.zip", destDir.getAbsolutePath());
 	}
+
+	/**
+	 * Test get count files.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testGetCountFiles() throws IOException {
+		final File destDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/destDir");
+		int countFiles = FileHelper.getCountFiles(destDir);
+
+		Assert.assertEquals("6 files expected", 6, countFiles);
+
+	}
 }

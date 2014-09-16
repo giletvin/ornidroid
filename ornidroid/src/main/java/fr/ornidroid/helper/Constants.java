@@ -147,6 +147,30 @@ public class Constants extends BasicConstants {
 	}
 
 	/**
+	 * Gets the ornidroid home media.
+	 * 
+	 * @param fileType
+	 *            the file type
+	 * @return the ornidroid home media
+	 */
+	public static final String getOrnidroidHomeMedia(OrnidroidFileType fileType) {
+		String path = null;
+		switch (fileType) {
+		case AUDIO:
+			path = getOrnidroidHomeAudio();
+
+		case PICTURE:
+			path = getOrnidroidHomeImages();
+
+		case WIKIPEDIA_PAGE:
+			path = getOrnidroidHomeWikipedia();
+
+		}
+		return path;
+
+	}
+
+	/**
 	 * Gets the ornidroid preferences.
 	 * 
 	 * @return the ornidroid preferences

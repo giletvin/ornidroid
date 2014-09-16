@@ -553,4 +553,23 @@ public class FileHelper {
 		} else
 			return 0;
 	}
+
+	/**
+	 * Gets the count files.
+	 * 
+	 * @param fileToCheck
+	 *            the file to check
+	 * @return the count files
+	 */
+	public static int getCountFiles(File fileToCheck) {
+		int count = 0;
+		if (fileToCheck != null && fileToCheck.isDirectory()) {
+			File[] listOfFiles = fileToCheck.listFiles();
+			count = listOfFiles.length;
+			for (int i = 0; i < listOfFiles.length; i++) {
+				count += getCountFiles(listOfFiles[i]);
+			}
+		}
+		return count;
+	}
 }

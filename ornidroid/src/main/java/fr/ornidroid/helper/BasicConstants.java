@@ -1,9 +1,14 @@
 package fr.ornidroid.helper;
 
+import fr.ornidroid.bo.OrnidroidFileType;
+
 /**
  * The Class BasicConstants.
  */
 public class BasicConstants {
+	private static final int FILES_COUNT_WIKIPEDIA_PACKAGE = 1332;
+	private static final int FILES_COUNT_PICTURE_PACKAGE = 1856;
+	private static final int FILES_COUNT_AUDIO_PACKAGE = 3040;
 	/** The Constant AUDIO Directory. */
 	public static final String AUDIO_DIRECTORY = "audio";
 	/** The Constant BIRD_PARAMETER_NAME. */
@@ -85,5 +90,24 @@ public class BasicConstants {
 	 */
 	public static void setJunitContext(final boolean junitContext) {
 		JUNIT_CONTEXT = junitContext;
+	}
+
+	/**
+	 * Gets the nb of files in package.
+	 * 
+	 * @param fileType
+	 *            the file type
+	 * @return the nb of files in package
+	 */
+	public static int getNbOfFilesInPackage(OrnidroidFileType fileType) {
+		switch (fileType) {
+		case AUDIO:
+			return FILES_COUNT_AUDIO_PACKAGE;
+		case PICTURE:
+			return FILES_COUNT_PICTURE_PACKAGE;
+		case WIKIPEDIA_PAGE:
+			return FILES_COUNT_WIKIPEDIA_PACKAGE;
+		}
+		return 0;
 	}
 }

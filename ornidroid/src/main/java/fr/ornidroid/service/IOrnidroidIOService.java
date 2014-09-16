@@ -151,4 +151,13 @@ public interface IOrnidroidIOService {
 	 */
 	public int getZipDownloadProgressPercent(OrnidroidFileType fileType);
 
+	/**
+	 * Gets the install progress percent.
+	 * 
+	 * @param fileType
+	 *            the file type
+	 * @return the install progress percent
+	 */
+	public int getInstallProgressPercent(OrnidroidFileType fileType);
+
 }

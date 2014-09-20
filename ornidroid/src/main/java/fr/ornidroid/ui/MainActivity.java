@@ -26,6 +26,7 @@ import fr.ornidroid.bo.SimpleBird;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
+import fr.ornidroid.ui.components.OrnidroidAutoCompleteAdapter;
 import fr.ornidroid.ui.components.OrnidroidViewBinder;
 
 /**
@@ -173,10 +174,11 @@ public class MainActivity extends AbstractOrnidroidActivity {
 
 				// update the adapater
 				adapterAutocompleteTextView.notifyDataSetChanged();
-				adapterAutocompleteTextView = new ArrayAdapter<SimpleBird>(
+				adapterAutocompleteTextView = new OrnidroidAutoCompleteAdapter(
 						MainActivity.this,
 						android.R.layout.simple_dropdown_item_1line,
 						queryResult);
+
 				searchField.setAdapter(adapterAutocompleteTextView);
 
 			}

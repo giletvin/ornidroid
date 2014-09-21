@@ -6,7 +6,7 @@ Génération de la base de données sqlite
 Script creation_bdd.sh
 Input : fichier oiseaux_europe_avibase_ss_rares.csv
 Output : génération du fichier SQLITE "ornidroid.jpg" (extension JPG pour la gestion des assets dans le sdk) et ornidroid.jpg.size (et de fichiers .sql temporaires qu'on peut effacer).
-Suite à la génération, poser les fichiers ornidroid.jpg et ornidroid.jpg.size dans le répertoire assets du projet Android
+Suite à la génération, poser le fichier ornidroid.jpg  dans le répertoire assets du projet Android
 
 Audio
 -----
@@ -58,21 +58,8 @@ Ajouter     android:debuggable="false" dans le tag application
 Changer le n° de version d'Ornidroid dans le fichier pom.xml
 Verifier le version code et version name dans le manifest.xml
 Vérifier que la dernière version de la db est dans le répertoire assets.
-Compiler : mvn clean install
 
-Bidouille pour le packaging
-----------------------------
-pb : dézipper, vider le répertoire meta inf et lancer la commande.
-http://stackoverflow.com/questions/5089042/jarsigner-unable-to-sign-jar-java-util-zip-zipexception-invalid-entry-compres
-zipalign -v 4 ornidroid.apk ornidroid-1.0.0.apk
-
-Signature de l'apk avec la clé
--------------------------------
-jarsigner -verbose -sigalg MD5withRSA -digestalg SHA1 -keystore [path_to_key] ornidroid-2.0.0.apk ornidroid_key
-
-Refaire un coup la commande zipalign
-
-zipalign -v 4 ornidroid-1.0.1.apk ornidroid-1.0.1-FINAL.apk
+Clic droit sur le pj dans Eclipse. Android/Export signed application Package et laisser le wizard créer le fichier apk prêt à livrer sur GPlay.
 
 
 Tag git

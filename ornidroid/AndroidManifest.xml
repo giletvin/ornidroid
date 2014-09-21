@@ -14,7 +14,7 @@
     package="fr.ornidroid"
     android:installLocation="auto"
     android:versionCode="16"
-    android:versionName="9.0.0-SNAPSHOT" >
+    android:versionName="9.0.0" >
     <!-- ANDROID DEBUGGABLE !! -->
     <uses-sdk
         android:minSdkVersion="11"
@@ -30,7 +30,7 @@
         android:smallScreens="true"
         android:xlargeScreens="true" />
 <!-- ANDROID DEBUGGABLE !! -->
-    <application
+    <application android:debuggable="false"
         android:icon="@drawable/ic_ornidroid"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >

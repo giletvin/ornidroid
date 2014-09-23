@@ -26,6 +26,7 @@
 		<item>ru - Русский</item>
 		<item>se - Svenska</item>
 		<item>sk - Slovenčina</item>
+		<item>tr - Türkçe</item>
 		<item>zh - 普通话</item>
 	</string-array>
 
@@ -52,6 +53,7 @@
 		<item>ru</item>
 		<item>se</item>
 		<item>sk</item>
+		<item>tr</item>
 		<item>zh</item>
 	</string-array>
 

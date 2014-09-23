@@ -183,6 +183,7 @@ $zh_code='zh';
 $gr_code='gr';
 $bg_code='bg';
 $ro_code='ro';
+$tr_code='tr';
 $hu_code='hu';
 
 $latin_index_in_greek_file=1;
@@ -191,6 +192,8 @@ $latin_index_in_bulgarian_file=1;
 $bulgarian_index_in_bulgarian_file=0;
 $latin_index_in_romanian_file=0;
 $romanian_index_in_romanian_file=1;
+$latin_index_in_turkish_file=0;
+$turkish_index_in_turkish_file=1;
 $latin_index_in_hungarian_file=1;
 $hungarian_index_in_hungarian_file=2;
 try {
@@ -321,6 +324,28 @@ try {
 			}
 			else {
 				echo "romanian : nom latin non référencé : " . $data[$latin_index_in_romanian_file]."\n";
+			}
+		}
+	    }
+	    fclose($handle);
+	}
+	//turc
+	if (($handle = fopen("traductions_turc.csv", "r")) !== FALSE) {
+	    while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
+		//si latin non vide et 2 colonnes = un oiseau !
+		if (""!=$data[$latin_index_in_turkish_file]&&count($data)==2){
+			$findBirdIdQuery = "select id from bird where scientific_name='".trim($data[$latin_index_in_turkish_file])."' or scientific_name2='".trim($data[$latin_index_in_turkish_file])."'";
+			echo $findBirdIdQuery."\n";
+			$birdId=-1;
+			foreach ($dbh->query($findBirdIdQuery) as $row){
+				$birdId = $row["id"];
+			}
+			if ($birdId>=1){
+				echo "######insertion du turkish pour : " . $data[$latin_index_in_turkish_file]."\n";
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,trim($data[$turkish_index_in_turkish_file]),$tr_code));
+			}
+			else {
+				echo "turkish : nom latin non référencé : " . $data[$latin_index_in_turkish_file]."\n";
 			}
 		}
 	    }

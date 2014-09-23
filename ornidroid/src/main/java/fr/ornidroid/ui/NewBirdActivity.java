@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import fr.ornidroid.R;
+import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.MenuHelper;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
@@ -44,7 +45,9 @@ public class NewBirdActivity extends FragmentActivity implements
 	 * Instantiates a new new bird activity.
 	 */
 	public NewBirdActivity() {
+		super();
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
+		Constants.initializeConstants(this);
 	}
 
 	/*

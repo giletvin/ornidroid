@@ -148,3 +148,29 @@ Bug fixes :
  - distorsion on zoomed images
  - bugs in the search by name
  - random crashes" where version_code=16;
+
+
+insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(1,17,"23/09/2014","","","",0);
+update release_notes set comments_fr="Evolutions : 
+ - ajout de la base de données en turc
+
+Corrections de bugs:
+
+ - crashs aléatoires de l''appli au redémarrage
+" where version_code=17;
+
+update release_notes set comments_en="New features : 
+ - database in turkish
+
+Bug fixes :
+
+ - random crashes when restarting app
+" where version_code=17;
+
+update release_notes set comments_de="New features : 
+ - database in turkish
+
+Bug fixes :
+
+ - random crashes when restarting app
+" where version_code=17;

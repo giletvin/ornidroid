@@ -30,7 +30,7 @@
         android:smallScreens="true"
         android:xlargeScreens="true" />
 <!-- ANDROID DEBUGGABLE !! -->
-    <application android:debuggable="true"
+    <application android:debuggable="false"
         android:icon="@drawable/ic_ornidroid"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >

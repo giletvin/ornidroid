@@ -7,11 +7,9 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.util.Linkify;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +28,7 @@ import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
+import fr.ornidroid.helper.UIHelper;
 import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
@@ -256,6 +255,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 			// close the progress bar dialog
 			this.progressBar.dismiss();
 
+			UIHelper.unlockScreenOrientation(getActivity());
 			// now that the files have been downloaded, force a reopen of the
 			// same screen with an intent
 			final Intent intent = new Intent(getActivity(),
@@ -406,6 +406,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 		this.progressBar.setMessage(this.getResources().getText(
 				R.string.download_in_progress));
 		this.progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		UIHelper.lockScreenOrientation(getActivity());
 		this.progressBar.show();
 
 		// reset download status
@@ -444,23 +445,6 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	}
 
 	/**
-	 * Gets the screen orientation.
-	 * 
-	 * @return the screen orientation
-	 */
-	private int getScreenOrientation() {
-		Display getOrient = getActivity().getWindowManager()
-				.getDefaultDisplay();
-		int orientation;
-		if (getOrient.getWidth() < getOrient.getHeight()) {
-			orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-		} else {
-			orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-		}
-		return orientation;
-	}
-
-	/**
 	 * Start download all.
 	 */
 	public void startDownloadAll() {
@@ -468,7 +452,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 		resetScreenBeforeDownload();
 		if (this.ornidroidIOService.isEnoughFreeSpace(getFileType())) {
 			// lock the screen rotation to avoid onDestroy call
-			getActivity().setRequestedOrientation(getScreenOrientation());
+			UIHelper.lockScreenOrientation(getActivity());
 			if (this.handlerDownloadZipThread == null) {
 				this.handlerDownloadZipThread = new HandlerForDownloadZipPackageThread(
 						ornidroidIOService, Constants.getOrnidroidHome(),
@@ -562,8 +546,8 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	private void onDownloadZipPackageTaskEnded(LoaderInfo loaderInfo) {
 		try {
 			progressBarDownloadPackage.dismiss();
-			getActivity().setRequestedOrientation(
-					ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+			// unlock screen orientation
+			UIHelper.unlockScreenOrientation(getActivity());
 			if (loaderInfo.getException() != null) {
 				String downloadErrorText = getActivity().getResources()
 						.getString(R.string.download_zip_package_error_detail)

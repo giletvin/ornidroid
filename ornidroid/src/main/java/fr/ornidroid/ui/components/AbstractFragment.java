@@ -7,9 +7,11 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.util.Linkify;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -442,13 +444,31 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	}
 
 	/**
+	 * Gets the screen orientation.
+	 * 
+	 * @return the screen orientation
+	 */
+	private int getScreenOrientation() {
+		Display getOrient = getActivity().getWindowManager()
+				.getDefaultDisplay();
+		int orientation;
+		if (getOrient.getWidth() < getOrient.getHeight()) {
+			orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+		} else {
+			orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+		}
+		return orientation;
+	}
+
+	/**
 	 * Start download all.
 	 */
 	public void startDownloadAll() {
 
 		resetScreenBeforeDownload();
 		if (this.ornidroidIOService.isEnoughFreeSpace(getFileType())) {
-
+			// lock the screen rotation to avoid onDestroy call
+			getActivity().setRequestedOrientation(getScreenOrientation());
 			if (this.handlerDownloadZipThread == null) {
 				this.handlerDownloadZipThread = new HandlerForDownloadZipPackageThread(
 						ornidroidIOService, Constants.getOrnidroidHome(),
@@ -540,28 +560,36 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 *            the loader info
 	 */
 	private void onDownloadZipPackageTaskEnded(LoaderInfo loaderInfo) {
-		progressBarDownloadPackage.dismiss();
-		if (loaderInfo.getException() != null) {
-			String downloadErrorText = getActivity().getResources().getString(
-					R.string.download_zip_package_error_detail)
-					+ BasicConstants.CARRIAGE_RETURN
-					+ loaderInfo.getException().toString();
-			Dialog dialog = new AlertDialog.Builder(this.getActivity())
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setTitle(R.string.download_zip_package_error)
-					.setMessage(downloadErrorText)
-					.setPositiveButton(R.string.ok,
-							new DialogInterface.OnClickListener() {
-								public void onClick(
-										final DialogInterface dialog,
-										final int whichButton) {
-									dialog.dismiss();
-									reloadActivity();
-								}
-							}).create();
-			dialog.show();
-		} else {
-			reloadActivity();
+		try {
+			progressBarDownloadPackage.dismiss();
+			getActivity().setRequestedOrientation(
+					ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+			if (loaderInfo.getException() != null) {
+				String downloadErrorText = getActivity().getResources()
+						.getString(R.string.download_zip_package_error_detail)
+						+ BasicConstants.CARRIAGE_RETURN
+						+ loaderInfo.getException().toString();
+				Dialog dialog = new AlertDialog.Builder(this.getActivity())
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(R.string.download_zip_package_error)
+						.setMessage(downloadErrorText)
+						.setPositiveButton(R.string.ok,
+								new DialogInterface.OnClickListener() {
+									public void onClick(
+											final DialogInterface dialog,
+											final int whichButton) {
+										dialog.dismiss();
+										reloadActivity();
+									}
+								}).create();
+				dialog.show();
+			} else {
+				reloadActivity();
+			}
+		} catch (java.lang.IllegalArgumentException e) {
+			// this should not occur since the screen is locked during the
+			// download thread
+			// if this happens, it means that the activity was destroyed earlier
 		}
 
 	}

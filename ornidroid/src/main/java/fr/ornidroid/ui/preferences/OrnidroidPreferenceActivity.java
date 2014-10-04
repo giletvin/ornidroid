@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.MenuHelper;
+import fr.ornidroid.helper.UIHelper;
 import fr.ornidroid.ui.components.HelpDialog;
 import fr.ornidroid.ui.components.OrnidroidHomeDialogPreference;
 import fr.ornidroid.ui.threads.GenericTaskHandler;
@@ -139,7 +140,7 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 			this.progressBar.setMessage(this.getResources().getText(
 					R.string.preferences_ornidroid_home_copying_files));
 			this.progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
+			UIHelper.lockScreenOrientation(this);
 			this.progressBar.show();
 
 		}
@@ -186,6 +187,7 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 		if (this.progressBar != null) {
 			this.progressBar.dismiss();
 		}
+		UIHelper.unlockScreenOrientation(this);
 		this.moveEnded = true;
 	}
 

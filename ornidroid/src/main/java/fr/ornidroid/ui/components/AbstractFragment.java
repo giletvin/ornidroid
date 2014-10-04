@@ -582,11 +582,14 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 * Reload activity.
 	 */
 	private void reloadActivity() {
-		final Intent intentBirdInfo = new Intent(this.getActivity(),
-				NewBirdActivity.class);
-		intentBirdInfo.putExtra(NewBirdActivity.INTENT_TAB_TO_OPEN,
-				OrnidroidFileType.getCode(this.getFileType()));
-		startActivity(intentBirdInfo.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+		if (this.getActivity() != null) {
+			final Intent intentBirdInfo = new Intent(this.getActivity(),
+					NewBirdActivity.class);
+			intentBirdInfo.putExtra(NewBirdActivity.INTENT_TAB_TO_OPEN,
+					OrnidroidFileType.getCode(this.getFileType()));
+			startActivity(intentBirdInfo
+					.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+		}
 	}
 
 	/**

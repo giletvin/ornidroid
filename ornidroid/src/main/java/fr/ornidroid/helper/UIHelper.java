@@ -9,6 +9,13 @@ import android.view.Display;
  */
 public class UIHelper {
 
+	/**
+	 * Gets the screen orientation.
+	 * 
+	 * @param pActivity
+	 *            the activity
+	 * @return the screen orientation
+	 */
 	private static int getScreenOrientation(Activity pActivity) {
 		Display getOrient = pActivity.getWindowManager().getDefaultDisplay();
 		int orientation;

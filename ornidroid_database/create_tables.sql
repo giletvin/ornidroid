@@ -109,8 +109,26 @@ insert into application_info(id,key,value,date,comments) VALUES(7,"ornidroid_ver
 
 create table release_notes(id integer,version_code integer,date,comments_de,comments_en,comments_fr,read integer);
 
-insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(1,16,"09/09/2014","","","",0);
-update release_notes set comments_fr="Evolutions : 
+-- release 9.1.1 version 18
+insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(3,18,"04/10/2014","","","",0);
+update release_notes set comments_fr=" * Version 9.1.1 (04/10/2014)
+
+Corrections de bugs:
+
+ - crashs après le téléchargement de packages de photos, sons ou pages wikipedia
+
+ * Version 9.1.0 (23/09/2014)
+
+Evolutions : 
+ - ajout de la base de données en turc
+
+Corrections de bugs:
+
+ - crashs aléatoires de l''appli au redémarrage
+
+ * Version 9.0.0 (09/09/2014)
+
+Evolutions : 
  - intégration des pages wikipedia
  - refonte de l''écran de détail des oiseaux
  - téléchargement des packages complets d''images, sons et pages wikipedia depuis l''application
@@ -121,9 +139,27 @@ Corrections de bugs:
 
  - image zoomée déformée sur certains appareils
  - anomalies sur la recherche par nom
- - crashs aléatoires" where version_code=16;
+ - crashs aléatoires
+" where version_code=18;
 
-update release_notes set comments_en="New features : 
+update release_notes set comments_en=" * Version 9.1.1 (10/04/2014) 
+
+Bug fixes :
+
+ - crashes after downloading and installing zip packages
+
+ * Version 9.1.0 (09/23/2014)
+
+New features : 
+ - database in turkish
+
+Bug fixes :
+
+ - random crashes when restarting app
+
+ * Version 9.0.0 (09/09/2014)
+
+New features : 
  - Wikipedia files embedded in the app
  - redesign of the main screen
  - download of full packages of images, sounds or wikipedia files from the app
@@ -134,9 +170,27 @@ Bug fixes :
 
  - distorsion on zoomed images
  - bugs in the search by name
- - random crashes" where version_code=16;
+ - random crashes
+" where version_code=18;
 
-update release_notes set comments_de="New features : 
+update release_notes set comments_de=" * Version 9.1.1 (10/04/2014) 
+
+Bug fixes :
+
+ - crashes after downloading and installing zip packages
+
+ * Version 9.1.0 (09/23/2014)
+
+New features : 
+ - database in turkish
+
+Bug fixes :
+
+ - random crashes when restarting app
+
+ * Version 9.0.0 (09/09/2014)
+
+New features : 
  - Wikipedia files embedded in the app
  - redesign of the main screen
  - download of full packages of images, sounds or wikipedia files from the app
@@ -147,30 +201,6 @@ Bug fixes :
 
  - distorsion on zoomed images
  - bugs in the search by name
- - random crashes" where version_code=16;
+ - random crashes
+" where version_code=18;
 
-
-insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(1,17,"23/09/2014","","","",0);
-update release_notes set comments_fr="Evolutions : 
- - ajout de la base de données en turc
-
-Corrections de bugs:
-
- - crashs aléatoires de l''appli au redémarrage
-" where version_code=17;
-
-update release_notes set comments_en="New features : 
- - database in turkish
-
-Bug fixes :
-
- - random crashes when restarting app
-" where version_code=17;
-
-update release_notes set comments_de="New features : 
- - database in turkish
-
-Bug fixes :
-
- - random crashes when restarting app
-" where version_code=17;

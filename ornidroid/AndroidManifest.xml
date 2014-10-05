@@ -13,8 +13,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.ornidroid"
     android:installLocation="auto"
-    android:versionCode="18"
-    android:versionName="9.1.1" >
+    android:versionCode="19"
+    android:versionName="10.0.0-SNAPSHOT" >
     <!-- ANDROID DEBUGGABLE !! -->
     <uses-sdk
         android:minSdkVersion="11"

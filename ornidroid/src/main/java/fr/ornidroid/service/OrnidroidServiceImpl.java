@@ -710,7 +710,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * @see fr.ornidroid.service.IOrnidroidService#getQueryResult()
 	 */
 	public List<SimpleBird> getQueryResult() {
-		return queryResult;
+		return queryResult == null ? new ArrayList<SimpleBird>() : queryResult;
 	}
 
 	/*

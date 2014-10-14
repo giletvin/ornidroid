@@ -2,17 +2,22 @@ package fr.ornidroid.ui.components;
 
 import java.io.IOException;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import fr.ornidroid.R;
@@ -30,6 +35,9 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 	/** The player paused. */
 	private boolean mPlayerPaused = false;
 
+	/** The seek bar. */
+	private SeekBar seekBar;
+
 	/** The m audio layout. */
 	private LinearLayout mAudioLayout;
 	/** The play pause button. */
@@ -40,6 +48,9 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 
 	/** The m stop button. */
 	private ImageView mStopButton;
+
+	/** The handler. */
+	private final Handler seekBarHandler = new Handler();
 
 	/*
 	 * (non-Javadoc)
@@ -140,10 +151,48 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 			mStopButton.setImageResource(R.drawable.ic_sound_stop);
 			mStopButton.setOnClickListener(this);
 			audioControlLayout.addView(mStopButton);
+			seekBar = (SeekBar) mAudioLayout.findViewById(R.id.SeekBar01);
+
+			seekBar.setOnTouchListener(new OnTouchListener() {
+				public boolean onTouch(View v, MotionEvent event) {
+
+					seekChange(v);
+
+					return false;
+				}
+
+			});
+
 		}
 		audioLayout.addView(customMediaButtonsLayout);
 		audioLayout.addView(audioControlLayout);
 		return audioLayout;
+	}
+
+	/**
+	 * Seek change.
+	 * 
+	 * @param v
+	 *            the v
+	 */
+	private void seekChange(View v) {
+		if (getMediaPlayer().isPlaying()) {
+			SeekBar sb = (SeekBar) v;
+			getMediaPlayer().seekTo(sb.getProgress());
+		}
+	}
+
+	/**
+	 * Gets the media player.
+	 * 
+	 * @return the media player
+	 */
+	private MediaPlayer getMediaPlayer() {
+		if (getActivity() != null) {
+			return ((NewBirdActivity) getActivity()).getMediaPlayer();
+		} else {
+			return null;
+		}
 	}
 
 	/*
@@ -179,14 +228,16 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 		final OrnidroidFile mp3File = ornidroidService.getCurrentBird()
 				.getSound(position);
 		setCurrentMediaFile(mp3File);
+
 		if (null != mp3File) {
 			try {
-				((NewBirdActivity) getActivity()).getMediaPlayer().reset();
+				getMediaPlayer().reset();
 
-				((NewBirdActivity) getActivity()).getMediaPlayer()
-						.setDataSource(mp3File.getPath());
-				((NewBirdActivity) getActivity()).getMediaPlayer().prepare();
-				((NewBirdActivity) getActivity()).getMediaPlayer().start();
+				getMediaPlayer().setDataSource(mp3File.getPath());
+				getMediaPlayer().prepare();
+				getMediaPlayer().start();
+				seekBar.setMax(getMediaPlayer().getDuration());
+				startPlayProgressUpdater();
 				changePlayPauseButton(false);
 			} catch (final IOException e) {
 				// Log.e(Constants.LOG_TAG, "Could not open file " + mp3File
@@ -195,6 +246,28 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 				// Log.e(Constants.LOG_TAG, "Error on setDataSource " + mp3File
 				// + " for playback.", e2);
 			}
+		}
+	}
+
+	/**
+	 * Start play progress updater.
+	 */
+	private void startPlayProgressUpdater() {
+		try {
+			if (getMediaPlayer() != null) {
+
+				if (getMediaPlayer().isPlaying() || mPlayerPaused) {
+					seekBar.setProgress(getMediaPlayer().getCurrentPosition());
+					Runnable notification = new Runnable() {
+						public void run() {
+							startPlayProgressUpdater();
+						}
+					};
+					seekBarHandler.postDelayed(notification, 1000);
+				}
+			}
+		} catch (IllegalStateException illegalStateException) {
+			// under the carpet
 		}
 	}
 
@@ -211,9 +284,9 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 			changePlayPauseButton(true);
 		}
 		if (v == mPlayPauseButton) {
-			if (((NewBirdActivity) getActivity()).getMediaPlayer().isPlaying()) {
+			if (getMediaPlayer().isPlaying()) {
 				// Log.d(Constants.LOG_TAG, "Player was playing. Pausing");
-				((NewBirdActivity) getActivity()).getMediaPlayer().pause();
+				getMediaPlayer().pause();
 				mPlayerPaused = true;
 				togglePlayPauseButton();
 
@@ -224,13 +297,17 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 					if (mPlayerPaused) {
 						// Log.d(Constants.LOG_TAG,
 						// "Player was paused. Resuming");
-						((NewBirdActivity) getActivity()).getMediaPlayer()
-								.start();
+						getMediaPlayer().start();
 					} else {
 						// try to launch the first mp3 of the list
 						// Log.d(Constants.LOG_TAG,
 						// "Player was stopped. Trying to play the first item");
 						spinThatShit(0);
+						mListView.performItemClick(mListView.getAdapter()
+								.getView(0, null, null), 0, 0);
+						mListView.requestFocusFromTouch();
+						mListView.setSelection(0);
+
 					}
 					mPlayerPaused = false;
 					togglePlayPauseButton();
@@ -266,11 +343,9 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 	 */
 	public void stopPlayer() {
 		try {
-			if ((null != ((NewBirdActivity) getActivity()).getMediaPlayer())
-					&& ((NewBirdActivity) getActivity()).getMediaPlayer()
-							.isPlaying()) {
-				((NewBirdActivity) getActivity()).getMediaPlayer().stop();
-				((NewBirdActivity) getActivity()).getMediaPlayer().reset();
+			if ((null != getMediaPlayer()) && getMediaPlayer().isPlaying()) {
+				getMediaPlayer().stop();
+				getMediaPlayer().reset();
 			}
 		} catch (final IllegalStateException e) {
 			// Log.w(Constants.LOG_TAG,

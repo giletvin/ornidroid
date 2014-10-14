@@ -3,14 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
+   
     <LinearLayout
         android:id="@+id/audio_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-    </LinearLayout>
 
+   
+    </LinearLayout>
+     <SeekBar
+            android:id="@+id/SeekBar01"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
     <ListView
         android:id="@+id/list_audio"
         android:layout_width="fill_parent"
@@ -19,6 +24,7 @@
         android:layout_marginLeft="25sp"
         android:layout_marginRight="25sp"
         android:layout_marginTop="0sp"
-        android:layout_weight="1" />
+        android:layout_weight="1" 
+        android:listSelector="@color/audio_player_selected_file" />
 
 </LinearLayout>

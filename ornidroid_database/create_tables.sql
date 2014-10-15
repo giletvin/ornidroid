@@ -109,9 +109,16 @@ insert into application_info(id,key,value,date,comments) VALUES(7,"ornidroid_ver
 
 create table release_notes(id integer,version_code integer,date,comments_de,comments_en,comments_fr,read integer);
 
--- release 9.1.1 version 18
-insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(3,18,"04/10/2014","","","",0);
-update release_notes set comments_fr=" * Version 9.1.1 (04/10/2014)
+-- release 10.0.0 version 19
+insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(4,19,"15/10/2014","","","",0);
+update release_notes set comments_fr=" * Version 10.0.0 (15/10/2014)
+
+Evolutions : 
+ - améliorations du lecteur de sons (barre de progression, surlignage du fichier écouté)
+
++ quelques corrections de bugs.
+
+ * Version 9.1.1 (04/10/2014)
 
 Corrections de bugs:
 
@@ -140,9 +147,17 @@ Corrections de bugs:
  - image zoomée déformée sur certains appareils
  - anomalies sur la recherche par nom
  - crashs aléatoires
-" where version_code=18;
+" where version_code=19;
 
-update release_notes set comments_en=" * Version 9.1.1 (10/04/2014) 
+update release_notes set comments_en=" * Version 10.0.0 (10/15/2014)
+
+New features : 
+ - enhancements on the mp3 player : progress bar, played item is now highlighted
+
++ bug fixes.
+
+
+ * Version 9.1.1 (10/04/2014) 
 
 Bug fixes :
 
@@ -171,9 +186,16 @@ Bug fixes :
  - distorsion on zoomed images
  - bugs in the search by name
  - random crashes
-" where version_code=18;
+" where version_code=19;
 
-update release_notes set comments_de=" * Version 9.1.1 (10/04/2014) 
+update release_notes set comments_de=" * Version 10.0.0 (10/15/2014)
+
+New features : 
+ - enhancements on the mp3 player : progress bar, played item is now highlighted
+
++ bug fixes.
+
+ * Version 9.1.1 (10/04/2014) 
 
 Bug fixes :
 
@@ -202,5 +224,5 @@ Bug fixes :
  - distorsion on zoomed images
  - bugs in the search by name
  - random crashes
-" where version_code=18;
+" where version_code=19;
 

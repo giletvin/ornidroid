@@ -14,7 +14,7 @@
     package="fr.ornidroid"
     android:installLocation="auto"
     android:versionCode="19"
-    android:versionName="10.0.0-SNAPSHOT" >
+    android:versionName="10.0.0" >
     <!-- ANDROID DEBUGGABLE !! -->
     <uses-sdk
         android:minSdkVersion="11"

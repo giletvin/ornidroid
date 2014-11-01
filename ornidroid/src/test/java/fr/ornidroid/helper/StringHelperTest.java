@@ -150,4 +150,19 @@ public class StringHelperTest extends AbstractTest {
 		Assert.assertEquals("", StringHelper.stripAccents(""));
 		Assert.assertEquals("Eeeeecoui", StringHelper.stripAccents("Eeéêèçöùî"));
 	}
+
+	/**
+	 * Test replace.
+	 */
+	@Test
+	public void testReplace() {
+		Assert.assertEquals("Bec*croise",
+				StringHelper.replace("Bec-croise", "-", "*", 1));
+		Assert.assertEquals("Bec*croise-zzz",
+				StringHelper.replace("Bec-croise-zzz", "-", "*", 1));
+		Assert.assertEquals("Bec*croise*zzz",
+				StringHelper.replace("Bec-croise-zzz", "-", "*", -1));
+		Assert.assertNull(StringHelper.replace(null, null, null, 0));
+
+	}
 }

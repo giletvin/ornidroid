@@ -13,6 +13,7 @@ import android.util.Log;
 import fr.ornidroid.bo.BirdFactoryImpl;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.bo.SimpleBird;
+import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.StringHelper;
@@ -735,21 +736,38 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 	 * 
 	 * @see fr.ornidroid.data.IOrnidroidDAO#getMatchingBirds(java.lang.String)
 	 */
-	public List<SimpleBird> getMatchingBirds(String query) {
+	public List<SimpleBird> getMatchingBirds(String pQuery) {
 		List<SimpleBird> results = new ArrayList<SimpleBird>();
 		final StringBuffer whereClause = new StringBuffer().append(WHERE)
 				.append(SEARCHED_TAXON).append(" MATCH ?");
-		final String[] selectionArgs = new String[] { StringHelper
-				.stripAccents(query) + "*" };
+		final String[] selectionArgs = new String[] { prepareSearchedString(pQuery) };
 		final Cursor cursor = query(
 				new SqlDynamicFragments(whereClause.toString(),
 						Constants.EMPTY_STRING), selectionArgs, false);
-		if (StringHelper.isBlank(query) || null == cursor) {
+		if (StringHelper.isBlank(pQuery) || null == cursor) {
 			return results;
 		}
 
 		return getBirdListFromCursor(cursor);
 
+	}
+
+	/**
+	 * Prepare searched string to be used in the 'match' sqlite clause.
+	 * <ul>
+	 * <li>adds "*" at the end of the string
+	 * <li>remove diacritics
+	 * <li>escape the '-' character
+	 * </ul>
+	 * 
+	 * @param searchedString
+	 *            the searched string
+	 * @return the prepared string
+	 */
+	private String prepareSearchedString(String searchedString) {
+		return StringHelper.replace(StringHelper.stripAccents(searchedString),
+				BasicConstants.DASH_STRING, "'-'", -1)
+				+ BasicConstants.STAR_STRING;
 	}
 
 	/*

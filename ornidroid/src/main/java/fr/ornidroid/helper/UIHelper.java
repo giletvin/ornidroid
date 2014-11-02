@@ -34,7 +34,9 @@ public class UIHelper {
 	 *            the activity
 	 */
 	public static void lockScreenOrientation(Activity pActivity) {
-		pActivity.setRequestedOrientation(getScreenOrientation(pActivity));
+		if (pActivity != null) {
+			pActivity.setRequestedOrientation(getScreenOrientation(pActivity));
+		}
 	}
 
 	/**
@@ -44,7 +46,9 @@ public class UIHelper {
 	 *            the activity
 	 */
 	public static void unlockScreenOrientation(Activity pActivity) {
-		pActivity
-				.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+		if (pActivity != null) {
+			pActivity
+					.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+		}
 	}
 }

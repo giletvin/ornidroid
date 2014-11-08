@@ -28,6 +28,9 @@ public class WikipediaFragment extends AbstractFragment {
 	@Override
 	public View getOnCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		if (this.ornidroidService.getCurrentBird() == null) {
+			return null;
+		}
 		this.specificContentLayout = new LinearLayout(getActivity());
 		this.specificContentLayout.setOrientation(LinearLayout.VERTICAL);
 		WebView wikipediaWebView = new WebView(getActivity());

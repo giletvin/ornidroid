@@ -62,6 +62,9 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 	@Override
 	public View getOnCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		if (this.ornidroidService.getCurrentBird() == null) {
+			return null;
+		}
 		mAudioLayout = (LinearLayout) inflater.inflate(R.layout.fragment_audio,
 				container, false);
 		try {

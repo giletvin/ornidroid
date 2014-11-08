@@ -49,6 +49,7 @@ import fr.ornidroid.ui.threads.LoaderInfo;
  */
 public abstract class AbstractFragment extends Fragment implements Runnable,
 		OnClickListener, GenericTaskCallback {
+
 	/**
 	 * Gets the current (selected) media file if picture : the displayed image,
 	 * if sound, the played mp3.
@@ -148,15 +149,16 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 *             the ornidroid exception
 	 */
 	public void loadMediaFilesLocally() throws OrnidroidException {
+		if (this.ornidroidService.getCurrentBird() != null) {
+			final File fileDirectory = new File(
+					Constants.getOrnidroidBirdHomeMedia(
+							this.ornidroidService.getCurrentBird(),
+							getFileType()));
+			this.ornidroidIOService.checkAndCreateDirectory(fileDirectory);
 
-		final File fileDirectory = new File(
-				Constants.getOrnidroidBirdHomeMedia(
-						this.ornidroidService.getCurrentBird(), getFileType()));
-		this.ornidroidIOService.checkAndCreateDirectory(fileDirectory);
-
-		this.ornidroidIOService.loadMediaFiles(getMediaHomeDirectory(),
-				this.ornidroidService.getCurrentBird(), getFileType());
-
+			this.ornidroidIOService.loadMediaFiles(getMediaHomeDirectory(),
+					this.ornidroidService.getCurrentBird(), getFileType());
+		}
 	}
 
 	/*

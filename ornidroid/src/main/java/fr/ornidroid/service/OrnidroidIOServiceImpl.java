@@ -228,19 +228,24 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 */
 	private OrnidroidFile getLocalWikipediaPage(Bird bird) {
 		// cherche s'il existe une page wiki locale
-		File wikipediaFile = new File(getWikipediaPage(bird));
-		if (wikipediaFile.exists()) {
-			OrnidroidFile wikipediaOrnidroidFile;
-			try {
-				wikipediaOrnidroidFile = OrnidroidFileFactoryImpl.getFactory()
-						.createOrnidroidFile(wikipediaFile.getAbsolutePath(),
-								OrnidroidFileType.WIKIPEDIA_PAGE,
-								I18nHelper.getLang().getCode());
-				return wikipediaOrnidroidFile;
-			} catch (FileNotFoundException e) {
+		try {
+			File wikipediaFile = new File(getWikipediaPage(bird));
+			if (wikipediaFile.exists()) {
+				OrnidroidFile wikipediaOrnidroidFile;
+				try {
+					wikipediaOrnidroidFile = OrnidroidFileFactoryImpl
+							.getFactory().createOrnidroidFile(
+									wikipediaFile.getAbsolutePath(),
+									OrnidroidFileType.WIKIPEDIA_PAGE,
+									I18nHelper.getLang().getCode());
+					return wikipediaOrnidroidFile;
+				} catch (FileNotFoundException e) {
+					return null;
+				}
+			} else {
 				return null;
 			}
-		} else {
+		} catch (NullPointerException e) {
 			return null;
 		}
 	}

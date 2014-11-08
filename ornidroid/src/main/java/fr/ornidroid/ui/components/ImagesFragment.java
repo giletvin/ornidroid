@@ -21,6 +21,7 @@ import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidException;
+import fr.ornidroid.ui.HomeActivity;
 import fr.ornidroid.ui.ScrollableImageActivity;
 import fr.ornidroid.ui.picture.PictureHelper;
 
@@ -80,6 +81,13 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 	@Override
 	public View getOnCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		if (this.ornidroidService.getCurrentBird() == null) {
+			// Github : #118
+			final Intent intent = new Intent(getActivity(), HomeActivity.class);
+			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+			return null;
+		}
+
 		pictureLayout = (LinearLayout) inflater.inflate(
 				R.layout.fragment_images, container, false);
 

@@ -318,6 +318,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 				FileHelper.forceDelete(mediaFile);
 				FileHelper.forceDelete(mediaPropertiesFile);
 			} catch (final IOException e) {
+				Log.e(BasicConstants.LOG_TAG, e.getMessage(), e);
 				throw new OrnidroidException(
 						OrnidroidError.ADD_CUSTOM_MEDIA_ERROR, e);
 			}
@@ -354,6 +355,9 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 				FileHelper.forceDelete(destFile);
 				FileHelper.forceDelete(propertiesFile);
 			} catch (final IOException e1) {
+			}
+			if (!BasicConstants.isJunitContext()) {
+				Log.e(BasicConstants.LOG_TAG, e.getMessage(), e);
 			}
 			throw new OrnidroidException(OrnidroidError.ADD_CUSTOM_MEDIA_ERROR,
 					e);
@@ -476,6 +480,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 				try {
 					FileHelper.forceMkdir(filesDirectory);
 				} catch (final IOException e) {
+					Log.e(BasicConstants.LOG_TAG, e.getMessage(), e);
 					throw new OrnidroidException(
 							OrnidroidError.ORNIDROID_HOME_NOT_FOUND, e);
 				}
@@ -560,6 +565,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		try {
 			FileHelper.forceDelete(zipPackageFile);
 		} catch (IOException e) {
+			Log.e(BasicConstants.LOG_TAG, e.getMessage(), e);
 			exception = new OrnidroidException(OrnidroidError.UNZIP_PACKAGE, e);
 		}
 

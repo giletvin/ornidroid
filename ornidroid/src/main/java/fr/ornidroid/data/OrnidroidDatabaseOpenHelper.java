@@ -11,6 +11,8 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.IOHelper;
 import fr.ornidroid.helper.OrnidroidError;
@@ -70,9 +72,11 @@ public class OrnidroidDatabaseOpenHelper extends SQLiteOpenHelper {
 					copyDataBase();
 				}
 			} catch (final IOException e) {
+				Log.e(BasicConstants.LOG_TAG, e.getMessage(), e);
 				throw new OrnidroidException(OrnidroidError.DATABASE_NOT_FOUND,
 						e);
 			} catch (final SQLiteException e) {
+				Log.e(BasicConstants.LOG_TAG, e.getMessage(), e);
 				throw new OrnidroidException(OrnidroidError.DATABASE_NOT_FOUND,
 						e);
 			} finally {

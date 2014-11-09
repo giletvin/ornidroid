@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.BasicConstants;
@@ -53,6 +54,7 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 				downloadedFile = mediaFileDownloadable.getFile();
 			}
 		} catch (final MalformedURLException e) {
+			Log.e(BasicConstants.LOG_TAG, e.getMessage(), e);
 			throw new OrnidroidException(
 					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 		}
@@ -141,12 +143,15 @@ public class DownloadHelperImpl implements DownloadHelperInterface {
 						.parseContentFile(contentFileDownloadable.getFile());
 			}
 		} catch (final MalformedURLException e) {
+			Log.e(BasicConstants.LOG_TAG, e.getMessage(), e);
 			throw new OrnidroidException(
 					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 		} catch (final FileNotFoundException e) {
+			Log.e(BasicConstants.LOG_TAG, e.getMessage(), e);
 			throw new OrnidroidException(
 					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 		} catch (final IOException e) {
+			Log.e(BasicConstants.LOG_TAG, e.getMessage(), e);
 			throw new OrnidroidException(
 					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
 		} finally {

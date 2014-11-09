@@ -25,7 +25,7 @@
     <string name="home">Accueil</string>
     <string name="ok">OK</string>
     <string name="cancel">Annuler</string>
-    <string name="warn">Attention</string>
+    <string name="warning">Attention</string>
 
     <!-- activity titles -->
     <string name="preferences">Préférences</string>

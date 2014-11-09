@@ -44,8 +44,19 @@ public class OrnidroidException extends Exception {
 	 * @return the source exception
 	 */
 	public String getSourceExceptionMessage() {
+
 		if (null != this.sourceException) {
-			return this.sourceException.toString();
+			StringBuffer sbuf = new StringBuffer(
+					this.sourceException.toString());
+			sbuf.append(BasicConstants.CARRIAGE_RETURN);
+			if (this.sourceException.getStackTrace() != null) {
+				for (StackTraceElement ste : this.sourceException
+						.getStackTrace()) {
+					sbuf.append(ste.toString());
+					sbuf.append(BasicConstants.CARRIAGE_RETURN);
+				}
+			}
+			return sbuf.toString();
 		}
 		return BasicConstants.EMPTY_STRING;
 	}

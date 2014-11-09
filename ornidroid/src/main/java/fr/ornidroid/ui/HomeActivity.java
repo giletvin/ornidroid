@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.TextView;
 import fr.ornidroid.R;
+import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.helper.StringHelper;
@@ -116,59 +117,6 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onCreateDialog(int)
-	 */
-	@Override
-	protected Dialog onCreateDialog(final int id) {
-		Dialog dialog;
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		switch (id) {
-		case DIALOG_ORNIDROID_HOME_NOT_FOUND_ID:
-			builder.setMessage(
-					this.getText(R.string.dialog_alert_ornidroid_home_not_found))
-					.setNegativeButton("OK",
-							new DialogInterface.OnClickListener() {
-								public void onClick(
-										final DialogInterface dialog,
-										final int id) {
-									dialog.cancel();
-								}
-							});
-
-			break;
-		case DIALOG_ORNIDROID_DATABASE_NOT_FOUND_ID:
-			builder.setMessage(
-					this.getText(R.string.dialog_alert_ornidroid_database_not_found))
-					.setNegativeButton("OK",
-							new DialogInterface.OnClickListener() {
-								public void onClick(
-										final DialogInterface dialog,
-										final int id) {
-									dialog.cancel();
-								}
-							});
-
-			break;
-
-		default:
-			builder.setMessage(
-					this.getText(R.string.dialog_alert_ornidroid_home_not_found))
-					.setNegativeButton("OK",
-							new DialogInterface.OnClickListener() {
-								public void onClick(
-										final DialogInterface dialog,
-										final int id) {
-									dialog.cancel();
-								}
-							});
-		}
-		dialog = builder.create();
-		return dialog;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see android.app.Activity#onStart()
 	 */
 	@Override
@@ -205,17 +153,67 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 			this.ornidroidService.createDbIfNecessary();
 
 		} catch (final OrnidroidException e) {
+			StringBuffer sbuf = new StringBuffer();
+			if (e.getSourceExceptionMessage() != null) {
+				sbuf.append(BasicConstants.CARRIAGE_RETURN);
+				sbuf.append(e.getSourceExceptionMessage());
+			}
+			Dialog dialog;
 			switch (e.getErrorType()) {
 			case DATABASE_NOT_FOUND:
-				showDialog(DIALOG_ORNIDROID_DATABASE_NOT_FOUND_ID);
+				sbuf.insert(
+						0,
+						this.getText(R.string.dialog_alert_ornidroid_database_not_found));
+				dialog = new AlertDialog.Builder(this)
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(R.string.warning)
+						.setMessage(sbuf.toString())
+						.setNegativeButton("OK",
+								new DialogInterface.OnClickListener() {
+									public void onClick(
+											final DialogInterface dialog,
+											final int id) {
+										dialog.cancel();
+									}
+								}).create();
 				break;
 			case ORNIDROID_HOME_NOT_FOUND:
-				showDialog(DIALOG_ORNIDROID_HOME_NOT_FOUND_ID);
+				sbuf.insert(
+						0,
+						this.getText(R.string.dialog_alert_ornidroid_home_not_found));
+				dialog = new AlertDialog.Builder(this)
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(R.string.warning)
+						.setMessage(sbuf.toString())
+						.setNegativeButton("OK",
+								new DialogInterface.OnClickListener() {
+									public void onClick(
+											final DialogInterface dialog,
+											final int id) {
+										dialog.cancel();
+									}
+								}).create();
 				break;
 			default:
-				showDialog(DIALOG_ORNIDROID_HOME_NOT_FOUND_ID);
+				sbuf.insert(
+						0,
+						this.getText(R.string.dialog_alert_ornidroid_home_not_found));
+				dialog = new AlertDialog.Builder(this)
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(R.string.warning)
+						.setMessage(sbuf.toString())
+						.setPositiveButton(R.string.ok,
+								new DialogInterface.OnClickListener() {
+									public void onClick(
+											final DialogInterface dialog,
+											final int whichButton) {
+										dialog.dismiss();
+									}
+								}).create();
+
 				break;
 			}
+			dialog.show();
 
 		}
 	}

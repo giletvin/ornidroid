@@ -1,3 +1,31 @@
+AndroidAnnotations
+https://github.com/excilys/androidannotations/wiki/Download
+
+Steps
+
+Put androidannotations-X.X.X-api.jar in the libs folder
+Put androidannotations-X.X.X.jar in a different folder, such as compile-libs. androidannotations-X.X.X.jar must not go in the libs folder.
+Right-click on your project, choose "Properties"
+Go to Java Compiler and make sure that Compiler compliance level is set to 1.6, otherwise the processor won't be activated
+Go to Java Compiler > Annotation Processing and choose Enable annotation processing
+Go to Java Compiler > Annotation Processing > Factory Path and add the processor JAR : androidannotations-X.X.X.jar.
+Confirm the workspace rebuild
+Go to Java Build Path > Libraries and add the API JAR : androidannotations-X.X.X-api.jar, unless it's already in the build path (ADT 17 automatically adds JARs that are in the libs folder).
+You can start using AndroidAnnotations
+Troubleshooting
+
+To check that AndroidAnnotations is activated, you should see AndroidAnnotations logs in the Eclipse Error Log (Window > Show View > Error Log) as soon as you save a file. If you do not see any log here, then it means AndroidAnnotations isn't activated yet.
+
+If AndroidAnnotations isn't activated, this may be a Java version problem. You should check that eclipse.ini doesn't contain -Dosgi.requiredJavaVersion=1.5, and otherwise change it to -Dosgi.requiredJavaVersion=1.6.
+
+When AndroidAnnotations is activated, You should now see any annotation problem as a regular error marker within the editor and in the Problem view.
+
+Your project name should be identical to the name of the folder containing the project. When importing a project in Eclipse, the project name used is the name of the folder. Since the annotation jar is referenced by projectName/lib/androidannotations-X.X.X.jar, you may otherwise encounter errors when coworkers import your project.
+
+If you get a java.lang.IllegalArgumentException: already added: Lorg/androidannotations/annotations/AfterInject; when compiling, please check that you did not put the processor jar androidannotations-X.X.X.jar in the libs folder.
+
+If you get a java.lang.NoClassDefFoundError at runtime, please verify in project properties > Java Build Path > Order and Export that androidannotations-xxx-api.jar is checked.
+
 Ornidroid_bdd:
 
 

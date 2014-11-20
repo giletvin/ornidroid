@@ -1,13 +1,13 @@
 package fr.ornidroid.ui;
 
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.BasicConstants;
@@ -24,23 +24,20 @@ import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 /**
  * The Class HomeActivity. Start screen of the application
  */
-public class HomeActivity extends AbstractOrnidroidActivity implements
-		OnTouchListener {
-
-	/** The Constant DIALOG_ORNIDROID_DATABASE_NOT_FOUND. */
-	private static final int DIALOG_ORNIDROID_DATABASE_NOT_FOUND_ID = 1;
-
-	/** The Constant DIALOG_ORNIDROID_HOME_NOT_FOUND_ID. */
-	private static final int DIALOG_ORNIDROID_HOME_NOT_FOUND_ID = 0;
+@EActivity(R.layout.home)
+public class HomeActivity extends AbstractOrnidroidActivity {
 
 	/** The about link. */
-	private TextView aboutLink;
+	@ViewById(R.id.menu_about)
+	TextView aboutLink;
 
 	/** The help link. */
-	private TextView helpLink;
+	@ViewById(R.id.menu_help)
+	TextView helpLink;
 
 	/** The multi criteria search link. */
-	private TextView multiCriteriaSearchLink;
+	@ViewById(R.id.menu_search_multi)
+	TextView multiCriteriaSearchLink;
 
 	/** The ornidroid io service. */
 	private final IOrnidroidIOService ornidroidIOService;
@@ -49,10 +46,12 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 	private final IOrnidroidService ornidroidService;
 
 	/** The preferences link. */
-	private TextView preferencesLink;
+	@ViewById(R.id.menu_preferences)
+	TextView preferencesLink;
 
 	/** The search link. */
-	private TextView searchLink;
+	@ViewById(R.id.menu_search)
+	TextView searchLink;
 
 	/**
 	 * Instantiates a new home activity.
@@ -61,57 +60,47 @@ public class HomeActivity extends AbstractOrnidroidActivity implements
 		super();
 		this.ornidroidIOService = new OrnidroidIOServiceImpl();
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
+	}
+
+	/**
+	 * Click search link.
+	 */
+	@Click(R.id.menu_search)
+	void clickSearchLink() {
+		launchActivity(MainActivity.class);
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	/**
+	 * Click search multi link.
 	 */
-	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.home);
-
-		setTitle(R.string.app_name);
-
-		this.searchLink = (TextView) findViewById(R.id.menu_search);
-		this.searchLink.setOnTouchListener(this);
-		this.aboutLink = (TextView) findViewById(R.id.menu_about);
-		this.aboutLink.setOnTouchListener(this);
-		this.helpLink = (TextView) findViewById(R.id.menu_help);
-		this.helpLink.setOnTouchListener(this);
-		this.preferencesLink = (TextView) findViewById(R.id.menu_preferences);
-		this.preferencesLink.setOnTouchListener(this);
-		this.multiCriteriaSearchLink = (TextView) findViewById(R.id.menu_search_multi);
-		this.multiCriteriaSearchLink.setOnTouchListener(this);
-
+	@Click(R.id.menu_search_multi)
+	void clickSearchMultiLink() {
+		launchActivity(MultiCriteriaSearchActivity.class);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.view.View.OnTouchListener#onTouch(android.view.View,
-	 * android.view.MotionEvent)
+	/**
+	 * Click about link.
 	 */
-	public boolean onTouch(final View v, final MotionEvent event) {
-		if (v == this.searchLink) {
-			return launchActivity(MainActivity.class);
-		}
-		if (v == this.aboutLink) {
-			return launchActivity(AboutActivity.class);
-		}
-		if (v == this.helpLink) {
-			return launchActivity(HelpActivity.class);
-		}
-		if (v == this.preferencesLink) {
-			return launchActivity(OrnidroidPreferenceActivity.class);
-		}
-		if (v == this.multiCriteriaSearchLink) {
-			return launchActivity(MultiCriteriaSearchActivity.class);
-		}
-		return false;
+	@Click(R.id.menu_about)
+	void clickAboutLink() {
+		launchActivity(AboutActivity.class);
+	}
+
+	/**
+	 * Click help link.
+	 */
+	@Click(R.id.menu_help)
+	void clickHelpLink() {
+		launchActivity(HelpActivity.class);
+	}
+
+	/**
+	 * Click preferences link.
+	 */
+	@Click(R.id.menu_preferences)
+	void clickPreferencesLink() {
+		launchActivity(OrnidroidPreferenceActivity.class);
 	}
 
 	/*

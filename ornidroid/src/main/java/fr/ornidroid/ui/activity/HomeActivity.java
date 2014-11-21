@@ -20,7 +20,6 @@ import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.AboutActivity;
 import fr.ornidroid.ui.AbstractOrnidroidActivity;
-import fr.ornidroid.ui.HelpActivity;
 import fr.ornidroid.ui.MainActivity;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
 import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
@@ -96,7 +95,7 @@ public class HomeActivity extends AbstractOrnidroidActivity {
 	 */
 	@Click(R.id.menu_help)
 	void clickHelpLink() {
-		launchActivity(HelpActivity.class);
+		launchActivity(HelpActivity_.class);
 	}
 
 	/**

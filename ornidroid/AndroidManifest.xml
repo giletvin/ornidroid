@@ -56,7 +56,7 @@
             android:name=".ui.AboutActivity"
             android:label="@string/about" />
         <activity
-            android:name=".ui.HelpActivity"
+            android:name=".ui.activity.HelpActivity_"
             android:label="@string/help" />
         <activity
             android:name=".ui.NewBirdActivity"

@@ -6,8 +6,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import fr.ornidroid.R;
-import fr.ornidroid.ui.HelpActivity;
 import fr.ornidroid.ui.MainActivity;
+import fr.ornidroid.ui.activity.HelpActivity_;
 import fr.ornidroid.ui.activity.HomeActivity_;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
 import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
@@ -56,7 +56,7 @@ public class MenuHelper {
 					OrnidroidPreferenceActivity.class));
 			return (true);
 		case R.id.help:
-			activity.startActivity(new Intent(activity, HelpActivity.class));
+			activity.startActivity(new Intent(activity, HelpActivity_.class));
 			return (true);
 		case R.id.home:
 			activity.startActivity(new Intent(activity, HomeActivity_.class));

@@ -15,6 +15,7 @@ import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.MenuHelper;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
+import fr.ornidroid.ui.activity.MainActivity;
 import fr.ornidroid.ui.components.TabsPagerAdapter;
 
 /**

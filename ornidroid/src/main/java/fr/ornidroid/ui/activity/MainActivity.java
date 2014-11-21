@@ -1,4 +1,4 @@
-package fr.ornidroid.ui;
+package fr.ornidroid.ui.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +26,8 @@ import fr.ornidroid.bo.SimpleBird;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
+import fr.ornidroid.ui.AbstractOrnidroidActivity;
+import fr.ornidroid.ui.NewBirdActivity;
 import fr.ornidroid.ui.components.OrnidroidAutoCompleteAdapter;
 import fr.ornidroid.ui.components.OrnidroidViewBinder;
 

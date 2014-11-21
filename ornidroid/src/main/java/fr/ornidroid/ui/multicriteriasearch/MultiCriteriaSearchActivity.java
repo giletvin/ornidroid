@@ -19,7 +19,7 @@ import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.AbstractOrnidroidActivity;
-import fr.ornidroid.ui.MainActivity;
+import fr.ornidroid.ui.activity.MainActivity;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandler;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandler.ProgressActionCallback;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandlerThread;

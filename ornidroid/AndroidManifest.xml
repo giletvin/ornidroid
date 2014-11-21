@@ -43,7 +43,7 @@
         </activity>
 
         <!-- The default activity of the app; displays search results. -->
-        <activity android:name=".ui.MainActivity" />
+        <activity android:name="fr.ornidroid.ui.activity.MainActivity" />
 
 
         <!-- Preferences activity -->

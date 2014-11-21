@@ -6,9 +6,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import fr.ornidroid.R;
-import fr.ornidroid.ui.MainActivity;
 import fr.ornidroid.ui.activity.HelpActivity_;
 import fr.ornidroid.ui.activity.HomeActivity_;
+import fr.ornidroid.ui.activity.MainActivity;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
 import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 

@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import fr.ornidroid.R;
 import fr.ornidroid.ui.activity.HelpActivity_;
 import fr.ornidroid.ui.activity.HomeActivity_;
-import fr.ornidroid.ui.activity.MainActivity;
+import fr.ornidroid.ui.activity.MainActivity_;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
 import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 
@@ -45,7 +45,7 @@ public class MenuHelper {
 			final MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.search:
-			activity.startActivity(new Intent(activity, MainActivity.class));
+			activity.startActivity(new Intent(activity, MainActivity_.class));
 			return true;
 		case R.id.search_multi:
 			activity.startActivity(new Intent(activity,

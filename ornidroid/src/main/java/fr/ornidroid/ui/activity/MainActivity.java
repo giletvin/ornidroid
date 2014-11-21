@@ -5,9 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ViewById;
+
 import android.app.SearchManager;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -35,6 +39,7 @@ import fr.ornidroid.ui.components.OrnidroidViewBinder;
  * The main activity for the dictionary. Displays search results triggered by
  * the search dialog and handles actions from search suggestions.
  */
+@EActivity(R.layout.main)
 public class MainActivity extends AbstractOrnidroidActivity {
 
 	/**
@@ -65,14 +70,16 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	/** The clicked position in the list. */
 	private int clickedPositionInTheList = 0;
 
-	/** The m list view. */
-	private ListView mListView;
-
+	@ViewById(R.id.list)
+	ListView mListView;
+	@Extra(SHOW_SEARCH_FIELD_INTENT_PRM)
+	boolean showTextField = true;
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService;
 
 	/** The search field. */
-	private AutoCompleteTextView searchField;
+	@ViewById(R.id.home_search_field)
+	AutoCompleteTextView searchField;
 
 	/** The adapter autocomplete text view. */
 	private ArrayAdapter<SimpleBird> adapterAutocompleteTextView;
@@ -93,23 +100,6 @@ public class MainActivity extends AbstractOrnidroidActivity {
 		super();
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
 		this.birdFactory = new BirdFactoryImpl();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
-	 */
-	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-		this.mListView = (ListView) findViewById(R.id.list);
-
-		setTitle(R.string.app_name);
-		final Intent intent = getIntent();
-		initAutoCompleteField(intent);
-
 	}
 
 	/*
@@ -157,17 +147,14 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	 * @param intent
 	 *            the intent
 	 */
-	private void initAutoCompleteField(final Intent intent) {
-		this.searchField = (AutoCompleteTextView) findViewById(R.id.home_search_field);
-		final boolean showTextField = intent.getBooleanExtra(
-				SHOW_SEARCH_FIELD_INTENT_PRM, true);
+	@AfterViews
+	void initAutoCompleteField() {
 		if (!showTextField) {
 			this.searchField.setVisibility(View.GONE);
 		}
 
 		// add the listener so it will tries to suggest while the user types
 		searchField.addTextChangedListener(new TextWatcher() {
-
 			public void onTextChanged(CharSequence userInput, int start,
 					int before, int count) {
 				// query the database based on the user input

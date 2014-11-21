@@ -19,7 +19,7 @@ import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.AbstractOrnidroidActivity;
-import fr.ornidroid.ui.activity.MainActivity;
+import fr.ornidroid.ui.activity.MainActivity_;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandler;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandler.ProgressActionCallback;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandlerThread;
@@ -105,8 +105,8 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			final ProgressActionLoaderInfo info) {
 		killLoader();
 		final Intent intent = new Intent(getApplicationContext(),
-				MainActivity.class);
-		intent.putExtra(MainActivity.SHOW_SEARCH_FIELD_INTENT_PRM, false);
+				MainActivity_.class);
+		intent.putExtra(MainActivity_.SHOW_SEARCH_FIELD_INTENT_PRM, false);
 		startActivity(intent);
 
 	}

@@ -68,7 +68,7 @@ public class HomeActivity extends AbstractOrnidroidActivity {
 	 */
 	@Click(R.id.menu_search)
 	void clickSearchLink() {
-		launchActivity(MainActivity.class);
+		launchActivity(MainActivity_.class);
 
 	}
 

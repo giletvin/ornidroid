@@ -21,8 +21,8 @@ import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidException;
-import fr.ornidroid.ui.HomeActivity;
 import fr.ornidroid.ui.ScrollableImageActivity;
+import fr.ornidroid.ui.activity.HomeActivity;
 import fr.ornidroid.ui.picture.PictureHelper;
 
 /**

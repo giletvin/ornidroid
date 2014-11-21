@@ -14,7 +14,7 @@
     package="fr.ornidroid"
     android:installLocation="auto"
     android:versionCode="21"
-    android:versionName="10.0.2-SNAPSHOT" >
+    android:versionName="11.0.0-SNAPSHOT" >
     <!-- ANDROID DEBUGGABLE !! -->
     <uses-sdk
         android:minSdkVersion="11"
@@ -34,7 +34,7 @@
         android:icon="@drawable/ic_ornidroid"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity android:name=".ui.HomeActivity_">
+        <activity android:name=".ui.activity.HomeActivity_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

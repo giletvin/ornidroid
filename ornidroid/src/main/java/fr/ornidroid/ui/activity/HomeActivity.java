@@ -1,4 +1,4 @@
-package fr.ornidroid.ui;
+package fr.ornidroid.ui.activity;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -18,6 +18,10 @@ import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
+import fr.ornidroid.ui.AboutActivity;
+import fr.ornidroid.ui.AbstractOrnidroidActivity;
+import fr.ornidroid.ui.HelpActivity;
+import fr.ornidroid.ui.MainActivity;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
 import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 
@@ -157,7 +161,7 @@ public class HomeActivity extends AbstractOrnidroidActivity {
 						.setIcon(android.R.drawable.ic_dialog_alert)
 						.setTitle(R.string.warning)
 						.setMessage(sbuf.toString())
-						.setNegativeButton("OK",
+						.setNegativeButton(R.string.ok,
 								new DialogInterface.OnClickListener() {
 									public void onClick(
 											final DialogInterface dialog,
@@ -174,7 +178,7 @@ public class HomeActivity extends AbstractOrnidroidActivity {
 						.setIcon(android.R.drawable.ic_dialog_alert)
 						.setTitle(R.string.warning)
 						.setMessage(sbuf.toString())
-						.setNegativeButton("OK",
+						.setNegativeButton(R.string.ok,
 								new DialogInterface.OnClickListener() {
 									public void onClick(
 											final DialogInterface dialog,

@@ -7,8 +7,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import fr.ornidroid.R;
 import fr.ornidroid.ui.HelpActivity;
-import fr.ornidroid.ui.HomeActivity_;
 import fr.ornidroid.ui.MainActivity;
+import fr.ornidroid.ui.activity.HomeActivity_;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
 import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 

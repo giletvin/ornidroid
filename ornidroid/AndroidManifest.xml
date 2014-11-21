@@ -53,7 +53,7 @@
             android:noHistory="true" />
         <!-- about activity -->
         <activity
-            android:name=".ui.AboutActivity"
+            android:name=".ui.activity.AboutActivity_"
             android:label="@string/about" />
         <activity
             android:name=".ui.activity.HelpActivity_"

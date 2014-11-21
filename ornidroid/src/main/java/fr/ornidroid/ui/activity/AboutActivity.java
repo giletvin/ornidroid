@@ -1,9 +1,12 @@
-package fr.ornidroid.ui;
+package fr.ornidroid.ui.activity;
 
 import java.util.List;
 import java.util.Map;
 
-import android.os.Bundle;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -12,36 +15,27 @@ import fr.ornidroid.R;
 import fr.ornidroid.bo.Credits;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
+import fr.ornidroid.ui.AbstractOrnidroidActivity;
 
 /**
  * The Class AboutActivity.
  */
+@EActivity(R.layout.about)
 public class AboutActivity extends AbstractOrnidroidActivity {
 
-	/** The layout. */
-	private LinearLayout layout;
+	/** The about text. */
+	@ViewById(R.id.about_ornidroid_version)
+	TextView aboutText;
+
+	/** The credits layout. */
+	@ViewById(R.id.credits_layout)
+	LinearLayout creditsLayout;
 
 	/**
-	 * Instantiates a new about activity.
+	 * After views.
 	 */
-	public AboutActivity() {
-		super();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
-	 */
-	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.about);
-
-		setTitle(R.string.about);
-
-		final TextView aboutText = (TextView) findViewById(R.id.about_ornidroid_version);
-
+	@AfterViews
+	void afterViews() {
 		final String applicationName = Constants.getApplicationName();
 
 		aboutText.setText(applicationName + BasicConstants.BLANK_STRING
@@ -68,7 +62,6 @@ public class AboutActivity extends AbstractOrnidroidActivity {
 	 * Prints the credits.
 	 */
 	private void printCredits() {
-		this.layout = (LinearLayout) findViewById(R.id.credits_layout);
 		final ListView mListView = new ListView(this);
 		final SimpleAdapter adapter = new SimpleAdapter(this, loadCredits(),
 				R.layout.credits_list, new String[] { Credits.CREDIT_TITLE,
@@ -79,7 +72,7 @@ public class AboutActivity extends AbstractOrnidroidActivity {
 		mListView.setAdapter(adapter);
 
 		mListView.setTextFilterEnabled(true);
-		this.layout.addView(mListView);
+		this.creditsLayout.addView(mListView);
 
 	}
 

@@ -18,7 +18,6 @@ import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.AboutActivity;
 import fr.ornidroid.ui.AbstractOrnidroidActivity;
 import fr.ornidroid.ui.MainActivity;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
@@ -87,7 +86,7 @@ public class HomeActivity extends AbstractOrnidroidActivity {
 	 */
 	@Click(R.id.menu_about)
 	void clickAboutLink() {
-		launchActivity(AboutActivity.class);
+		launchActivity(AboutActivity_.class);
 	}
 
 	/**

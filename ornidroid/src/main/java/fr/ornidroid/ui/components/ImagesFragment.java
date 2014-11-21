@@ -22,7 +22,7 @@ import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.ui.ScrollableImageActivity;
-import fr.ornidroid.ui.activity.HomeActivity;
+import fr.ornidroid.ui.activity.HomeActivity_;
 import fr.ornidroid.ui.picture.PictureHelper;
 
 /**
@@ -83,7 +83,7 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 			Bundle savedInstanceState) {
 		if (this.ornidroidService.getCurrentBird() == null) {
 			// Github : #118
-			final Intent intent = new Intent(getActivity(), HomeActivity.class);
+			final Intent intent = new Intent(getActivity(), HomeActivity_.class);
 			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 			return null;
 		}

@@ -101,7 +101,7 @@ public class SearchResultsAdapter extends BaseAdapter {
 		ViewHolder viewHolder;
 
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(R.layout.result,
+			convertView = LayoutInflater.from(context).inflate(R.layout.row_result,
 					parent, false);
 
 			viewHolder = new ViewHolder();

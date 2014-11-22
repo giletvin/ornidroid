@@ -1,16 +1,14 @@
 package fr.ornidroid.ui.activity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ViewById;
 
-import android.app.SearchManager;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,27 +19,23 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import fr.ornidroid.R;
-import fr.ornidroid.bo.BirdFactoryImpl;
 import fr.ornidroid.bo.SimpleBird;
-import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.AbstractOrnidroidActivity;
 import fr.ornidroid.ui.NewBirdActivity;
+import fr.ornidroid.ui.adapter.SearchResultsAdapter;
 import fr.ornidroid.ui.components.OrnidroidAutoCompleteAdapter;
-import fr.ornidroid.ui.components.OrnidroidViewBinder;
 
 /**
  * The main activity for the dictionary. Displays search results triggered by
  * the search dialog and handles actions from search suggestions.
  */
 @EActivity(R.layout.main)
-public class MainActivity extends AbstractOrnidroidActivity {
-
+public class MainActivity extends ListActivity {
+	SearchResultsAdapter adapter;
 	/**
 	 * The Constant SHOW_SEARCH_FIELD_INTENT_PRM to hide or show the search
 	 * field at the top of this screen.
@@ -51,26 +45,10 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	/** The Constant BIRD_ID_ITENT_PRM. */
 	public static final String BIRD_ID_ITENT_PRM = "bird_id_intent_prm";
 
-	/** The bird factory. */
-	private final BirdFactoryImpl birdFactory;
-	/**
-	 * mapping in the adapter results between the from columns in SQL and the
-	 * "to" fields in the displayed results.
-	 */
-	private final String[] from = new String[] {
-			SearchManager.SUGGEST_COLUMN_TEXT_1,
-			SearchManager.SUGGEST_COLUMN_TEXT_2 };
-	/**
-	 * mapping in the adapter results between the from columns in SQL and the
-	 * "to" fields in the displayed results.
-	 * 
-	 * 
-	 */
-	private final int[] to = new int[] { R.id.taxon, R.id.scientific_name };
 	/** The clicked position in the list. */
 	private int clickedPositionInTheList = 0;
 
-	@ViewById(R.id.list)
+	@ViewById(android.R.id.list)
 	ListView mListView;
 	@Extra(SHOW_SEARCH_FIELD_INTENT_PRM)
 	boolean showTextField = true;
@@ -84,41 +62,19 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	/** The adapter autocomplete text view. */
 	private ArrayAdapter<SimpleBird> adapterAutocompleteTextView;
 
-	/** The adapter results. */
-	private SimpleAdapter adapterResults;
-	/**
-	 * This list contains the ids of the birds which are referenced in the
-	 * results_adapter.
-	 * 
-	 */
-	private List<Integer> resultsBirdIds;
-
 	/**
 	 * Instantiates a new main activity.
 	 */
 	public MainActivity() {
 		super();
 		this.ornidroidService = OrnidroidServiceFactory.getService(this);
-		this.birdFactory = new BirdFactoryImpl();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onStart()
+	/**
+	 * After views.
 	 */
-	@Override
-	protected void onStart() {
-		super.onStart();
-		this.mListView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(final AdapterView<?> parent,
-					final View view, final int position, final long id) {
-				MainActivity.this.clickedPositionInTheList = position;
-				Integer clickedBirdId = resultsBirdIds.get(position);
-				startActivity(buildIntentBirdInfoActivity(clickedBirdId));
-
-			}
-		});
+	@AfterViews
+	void afterViews() {
 		if (this.ornidroidService.hasHistory()) {
 			printQueryResults();
 			this.mListView.setSelection(this.clickedPositionInTheList);
@@ -216,32 +172,24 @@ public class MainActivity extends AbstractOrnidroidActivity {
 	}
 
 	/**
+	 * Bird clicked.
+	 * 
+	 * @param bird
+	 *            the bird
+	 */
+	@ItemClick(android.R.id.list)
+	void birdClicked(SimpleBird bird) {
+		startActivity(buildIntentBirdInfoActivity(bird.getId()));
+	}
+
+	/**
 	 * Print query results in the list view.
 	 */
 	private final void printQueryResults() {
-		final List<Map<String, SimpleBird>> data = new ArrayList<Map<String, SimpleBird>>();
-		resultsBirdIds = new ArrayList<Integer>();
-		for (SimpleBird sBird : ornidroidService.getQueryResult()) {
-			final Map<String, SimpleBird> map = new HashMap<String, SimpleBird>();
-			map.put(SearchManager.SUGGEST_COLUMN_TEXT_1, sBird);
-			SimpleBird sBirdScientificName = birdFactory.createSimpleBird(
-					sBird.getId(), sBird.getScientificName(),
-					sBird.getBirdDirectoryName(), sBird.getScientificName());
-			map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, sBirdScientificName);
-			data.add(map);
-			resultsBirdIds.add(sBird.getId());
 
-		}
+		setListAdapter(new SearchResultsAdapter(this,
+				ornidroidService.getQueryResult()));
 
-		// #39 : just refresh the list instead of starting the
-		// activity
-		MainActivity.this.adapterResults = new SimpleAdapter(
-				Constants.getCONTEXT(), data, R.layout.result,
-				MainActivity.this.from, MainActivity.this.to);
-		MainActivity.this.adapterResults
-				.setViewBinder(new OrnidroidViewBinder());
-		MainActivity.this.mListView
-				.setAdapter(MainActivity.this.adapterResults);
 		MainActivity.this.searchField.dismissDropDown();
 	}
 

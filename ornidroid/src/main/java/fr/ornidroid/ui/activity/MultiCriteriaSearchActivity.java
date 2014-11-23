@@ -1,4 +1,4 @@
-package fr.ornidroid.ui.multicriteriasearch;
+package fr.ornidroid.ui.activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +18,14 @@ import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.activity.AbstractOrnidroidActivity;
-import fr.ornidroid.ui.activity.MainActivity_;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandler;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandler.ProgressActionCallback;
 import fr.ornidroid.ui.components.progressbar.ProgressActionHandlerThread;
 import fr.ornidroid.ui.components.progressbar.ProgressActionLoaderInfo;
+import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType;
+import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField;
+import fr.ornidroid.ui.multicriteriasearch.MyCustomAdapter;
+import fr.ornidroid.ui.multicriteriasearch.OnSpinnersItemSelected;
 
 /**
  * The Class MultiCriteriaSearchActivity.
@@ -179,7 +181,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	 *            the parent
 	 * @return the select type
 	 */
-	protected MultiCriteriaSearchFieldType getSelectType(
+	public MultiCriteriaSearchFieldType getSelectType(
 			final AdapterView<?> parent) {
 		if (MultiCriteriaSelectField.class.isInstance(parent.getParent())) {
 			final MultiCriteriaSelectField field = (MultiCriteriaSelectField) parent
@@ -196,7 +198,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	 * @param countResults
 	 *            the count results
 	 */
-	protected void updateSearchCountResults(final int countResults) {
+	public void updateSearchCountResults(final int countResults) {
 		this.nbResultsTextView.setText(countResults + Constants.BLANK_STRING
 				+ this.getText(R.string.search_results));
 	}

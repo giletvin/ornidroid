@@ -1,5 +1,6 @@
 package fr.ornidroid.ui.multicriteriasearch;
 
+import fr.ornidroid.ui.activity.MultiCriteriaSearchActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;

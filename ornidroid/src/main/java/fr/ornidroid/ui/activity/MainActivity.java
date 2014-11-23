@@ -24,7 +24,6 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.NewBirdActivity;
 import fr.ornidroid.ui.adapter.SearchResultsAdapter;
 import fr.ornidroid.ui.components.OrnidroidAutoCompleteAdapter;
-import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
 import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 
 /**

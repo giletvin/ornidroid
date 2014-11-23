@@ -69,7 +69,7 @@
             android:noHistory="true" />
       
         <activity
-            android:name=".ui.multicriteriasearch.MultiCriteriaSearchActivity"
+            android:name="fr.ornidroid.ui.activity.MultiCriteriaSearchActivity"
             android:label="@string/menu_search_multi" />
         <activity
             android:name=".ui.AddCustomMediaActivity"

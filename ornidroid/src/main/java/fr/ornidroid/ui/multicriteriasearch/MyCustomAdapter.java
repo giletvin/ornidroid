@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import fr.ornidroid.R;
+import fr.ornidroid.ui.activity.MultiCriteriaSearchActivity;
 
 /**
  * The Class MyCustomAdapter. This class allows to print icons and text in a

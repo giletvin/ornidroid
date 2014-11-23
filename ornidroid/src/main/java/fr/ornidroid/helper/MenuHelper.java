@@ -9,7 +9,7 @@ import fr.ornidroid.R;
 import fr.ornidroid.ui.activity.HelpActivity_;
 import fr.ornidroid.ui.activity.HomeActivity_;
 import fr.ornidroid.ui.activity.MainActivity_;
-import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
+import fr.ornidroid.ui.activity.MultiCriteriaSearchActivity;
 import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 
 /**

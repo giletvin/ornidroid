@@ -15,7 +15,6 @@ import fr.ornidroid.R;
 import fr.ornidroid.bo.Credits;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
-import fr.ornidroid.ui.AbstractOrnidroidActivity;
 
 /**
  * The Class AboutActivity.

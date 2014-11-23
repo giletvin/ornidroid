@@ -7,7 +7,6 @@ import org.androidannotations.annotations.ViewById;
 import android.text.util.Linkify;
 import android.widget.TextView;
 import fr.ornidroid.R;
-import fr.ornidroid.ui.AbstractOrnidroidActivity;
 
 /**
  * The Class HelpActivity.

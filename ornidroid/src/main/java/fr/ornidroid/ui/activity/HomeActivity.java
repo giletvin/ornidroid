@@ -18,7 +18,6 @@ import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.AbstractOrnidroidActivity;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
 import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 

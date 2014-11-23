@@ -1,4 +1,4 @@
-package fr.ornidroid.ui;
+package fr.ornidroid.ui.activity;
 
 import android.app.Activity;
 import android.view.Menu;

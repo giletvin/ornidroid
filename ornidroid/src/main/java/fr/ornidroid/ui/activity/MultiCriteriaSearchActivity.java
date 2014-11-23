@@ -4,26 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.components.progressbar.ProgressActionHandler;
-import fr.ornidroid.ui.components.progressbar.ProgressActionHandler.ProgressActionCallback;
-import fr.ornidroid.ui.components.progressbar.ProgressActionHandlerThread;
-import fr.ornidroid.ui.components.progressbar.ProgressActionLoaderInfo;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField;
 import fr.ornidroid.ui.multicriteriasearch.MyCustomAdapter;
@@ -33,16 +31,12 @@ import fr.ornidroid.ui.multicriteriasearch.OnSpinnersItemSelected;
  * The Class MultiCriteriaSearchActivity.
  */
 @EActivity(R.layout.multicriteriasearch)
-public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
-		implements ProgressActionCallback {
+public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 	/** The field list. */
 	private final List<MultiCriteriaSelectField> fieldList = new ArrayList<MultiCriteriaSelectField>();
 
 	/** The form bean. */
 	private final MultiCriteriaSearchFormBean formBean = new MultiCriteriaSearchFormBean();
-
-	/** The m loader. */
-	private ProgressActionHandlerThread mLoader;
 
 	/** The nb results text view. */
 	@ViewById(R.id.search_nb_results)
@@ -53,7 +47,8 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 			.getService(this);
 
 	/** The progress bar. */
-	private ProgressDialog progressBar;
+	@ViewById
+	ProgressBar pbarSearchMulti;
 
 	/** The reset form button. */
 	@ViewById(R.id.reset_form)
@@ -63,15 +58,15 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	@ViewById(R.id.search_show_results)
 	LinearLayout showResultsClickableArea;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.ornidroid.ui.multicriteriasearch.ProgressActionHandler.
-	 * ProgressActionCallback#doAction()
+	/**
+	 * Find matching birds from mcs.
 	 */
-	public void doAction() {
+	@Background
+	public void findMatchingBirdsFromMCS() {
 		this.ornidroidService
 				.getBirdMatchesFromMultiSearchCriteria(this.formBean);
+		openResultsActivity();
+		hideProgressBar();
 	}
 
 	/**
@@ -92,45 +87,23 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		return this.ornidroidService;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.ornidroid.ui.components.progressbar.ProgressActionHandler.
-	 * ProgressActionCallback
-	 * #onActionEnded(fr.ornidroid.ui.components.progressbar
-	 * .ProgressActionHandler,
-	 * fr.ornidroid.ui.components.progressbar.LoaderInfoMCS)
+	/**
+	 * Open results activity.
 	 */
-	public void onActionEnded(final ProgressActionHandler loader,
-			final ProgressActionLoaderInfo info) {
-		killLoader();
-		final Intent intent = new Intent(getApplicationContext(),
-				MainActivity_.class);
-		intent.putExtra(MainActivity_.SHOW_SEARCH_FIELD_INTENT_PRM, false);
-		startActivity(intent);
-
+	@UiThread
+	void openResultsActivity() {
+		MainActivity_.intent(this)
+				.extra(MainActivity_.SHOW_SEARCH_FIELD_INTENT_PRM, false)
+				.start();
 	}
 
 	/**
 	 * Onshow results clickable area click.
 	 */
 	@Click(R.id.search_show_results)
-	public void onshowResultsClickableAreaClick() {
-
-		if (this.mLoader == null) {
-			this.mLoader = new ProgressActionHandlerThread();
-			this.mLoader.start();
-		}
-
-		this.mLoader.startAction(this);
-		this.progressBar = new ProgressDialog(this);
-		this.progressBar.setCancelable(false);
-		this.progressBar.setMessage(this.getResources().getText(
-				R.string.search_please_wait));
-		this.progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-		this.progressBar.show();
-
+	public void onShowResultsClick() {
+		findMatchingBirdsFromMCS();
+		pbarSearchMulti.setVisibility(View.VISIBLE);
 	}
 
 	/**
@@ -138,7 +111,6 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	 */
 	@AfterViews
 	void afterViews() {
-
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
 		initSelectField(MultiCriteriaSearchFieldType.COUNTRY);
 		initSelectField(MultiCriteriaSearchFieldType.SIZE);
@@ -272,12 +244,11 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	}
 
 	/**
-	 * Kill loader.
+	 * Hide progress bar.
 	 */
-	private void killLoader() {
-		this.mLoader.quit();
-		this.mLoader = null;
-		this.progressBar.dismiss();
+	@UiThread
+	void hideProgressBar() {
+		pbarSearchMulti.setVisibility(View.GONE);
 	}
 
 	/**

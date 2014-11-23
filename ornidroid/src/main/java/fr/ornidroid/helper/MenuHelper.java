@@ -9,7 +9,7 @@ import fr.ornidroid.R;
 import fr.ornidroid.ui.activity.HelpActivity_;
 import fr.ornidroid.ui.activity.HomeActivity_;
 import fr.ornidroid.ui.activity.MainActivity_;
-import fr.ornidroid.ui.activity.MultiCriteriaSearchActivity;
+import fr.ornidroid.ui.activity.MultiCriteriaSearchActivity_;
 import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 
 /**
@@ -49,7 +49,7 @@ public class MenuHelper {
 			return true;
 		case R.id.search_multi:
 			activity.startActivity(new Intent(activity,
-					MultiCriteriaSearchActivity.class));
+					MultiCriteriaSearchActivity_.class));
 			return (true);
 		case R.id.preferences:
 			activity.startActivity(new Intent(activity,

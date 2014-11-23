@@ -75,7 +75,7 @@ public class HomeActivity extends AbstractOrnidroidActivity {
 	 */
 	@Click(R.id.menu_search_multi)
 	void clickSearchMultiLink() {
-		launchActivity(MultiCriteriaSearchActivity.class);
+		launchActivity(MultiCriteriaSearchActivity_.class);
 	}
 
 	/**

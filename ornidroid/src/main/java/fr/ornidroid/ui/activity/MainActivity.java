@@ -177,7 +177,7 @@ public class MainActivity extends ListActivity {
 	 */
 	@OptionsItem(R.id.search_multi)
 	void searchMultiMenuClicked() {
-		startActivity(new Intent(this, MultiCriteriaSearchActivity.class));
+		startActivity(new Intent(this, MultiCriteriaSearchActivity_.class));
 	}
 
 	/**

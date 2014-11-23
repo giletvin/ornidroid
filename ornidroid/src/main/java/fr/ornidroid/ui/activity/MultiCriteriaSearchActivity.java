@@ -3,11 +3,13 @@ package fr.ornidroid.ui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -30,40 +32,36 @@ import fr.ornidroid.ui.multicriteriasearch.OnSpinnersItemSelected;
 /**
  * The Class MultiCriteriaSearchActivity.
  */
+@EActivity(R.layout.multicriteriasearch)
 public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
-		implements OnClickListener, ProgressActionCallback {
+		implements ProgressActionCallback {
 	/** The field list. */
-	private final List<MultiCriteriaSelectField> fieldList;
+	private final List<MultiCriteriaSelectField> fieldList = new ArrayList<MultiCriteriaSelectField>();
 
 	/** The form bean. */
-	private final MultiCriteriaSearchFormBean formBean;
+	private final MultiCriteriaSearchFormBean formBean = new MultiCriteriaSearchFormBean();
 
 	/** The m loader. */
 	private ProgressActionHandlerThread mLoader;
+
 	/** The nb results text view. */
-	private TextView nbResultsTextView;
+	@ViewById(R.id.search_nb_results)
+	TextView nbResultsTextView;
 
 	/** The ornidroid service. */
-	private final IOrnidroidService ornidroidService;
+	private final IOrnidroidService ornidroidService = OrnidroidServiceFactory
+			.getService(this);
 
 	/** The progress bar. */
 	private ProgressDialog progressBar;
 
 	/** The reset form button. */
-	private ImageView resetFormButton;
+	@ViewById(R.id.reset_form)
+	ImageView resetFormButton;
 
 	/** The show results clickable area. */
-	private LinearLayout showResultsClickableArea;
-
-	/**
-	 * Instantiates a new multi criteria search activity.
-	 */
-	public MultiCriteriaSearchActivity() {
-		super();
-		this.ornidroidService = OrnidroidServiceFactory.getService(this);
-		this.formBean = new MultiCriteriaSearchFormBean();
-		this.fieldList = new ArrayList<MultiCriteriaSelectField>();
-	}
+	@ViewById(R.id.search_show_results)
+	LinearLayout showResultsClickableArea;
 
 	/*
 	 * (non-Javadoc)
@@ -113,52 +111,33 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	/**
+	 * Onshow results clickable area click.
 	 */
-	public void onClick(final View v) {
-		if (v == this.resetFormButton) {
-			resetForm();
-		} else {
-			if (v == this.showResultsClickableArea) {
+	@Click(R.id.search_show_results)
+	public void onshowResultsClickableAreaClick() {
 
-				if (this.mLoader == null) {
-					this.mLoader = new ProgressActionHandlerThread();
-					this.mLoader.start();
-				}
-
-				this.mLoader.startAction(this);
-				this.progressBar = new ProgressDialog(this);
-				this.progressBar.setCancelable(false);
-				this.progressBar.setMessage(this.getResources().getText(
-						R.string.search_please_wait));
-				this.progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-				this.progressBar.show();
-
-			}
+		if (this.mLoader == null) {
+			this.mLoader = new ProgressActionHandlerThread();
+			this.mLoader.start();
 		}
+
+		this.mLoader.startAction(this);
+		this.progressBar = new ProgressDialog(this);
+		this.progressBar.setCancelable(false);
+		this.progressBar.setMessage(this.getResources().getText(
+				R.string.search_please_wait));
+		this.progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+		this.progressBar.show();
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	/**
+	 * After views.
 	 */
-	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.multicriteriasearch);
-		setTitle(R.string.menu_search_multi);
-
-		this.nbResultsTextView = (TextView) findViewById(R.id.search_nb_results);
-		this.showResultsClickableArea = (LinearLayout) findViewById(R.id.search_show_results);
-		this.showResultsClickableArea.setOnClickListener(this);
-		this.resetFormButton = (ImageView) findViewById(R.id.reset_form);
-		this.resetFormButton.setOnClickListener(this);
+	@AfterViews
+	void afterViews() {
 
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
 		initSelectField(MultiCriteriaSearchFieldType.COUNTRY);
@@ -171,7 +150,6 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 		initSelectField(MultiCriteriaSearchFieldType.REMARKABLE_SIGN);
 		updateSearchCountResults(this.ornidroidService
 				.getMultiSearchCriteriaCountResults(this.formBean));
-
 	}
 
 	/**
@@ -305,7 +283,8 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity
 	/**
 	 * Reset all the select fields in the form.
 	 */
-	private void resetForm() {
+	@Click(R.id.reset_form)
+	void resetForm() {
 		for (final MultiCriteriaSelectField field : this.fieldList) {
 			field.reset();
 		}

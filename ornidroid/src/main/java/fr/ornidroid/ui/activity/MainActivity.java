@@ -7,6 +7,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.ViewById;
 
@@ -23,12 +25,15 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.NewBirdActivity;
 import fr.ornidroid.ui.adapter.SearchResultsAdapter;
 import fr.ornidroid.ui.components.OrnidroidAutoCompleteAdapter;
+import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchActivity;
+import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 
 /**
  * The main activity for the dictionary. Displays search results triggered by
  * the search dialog and handles actions from search suggestions.
  */
 @EActivity(R.layout.main)
+@OptionsMenu(R.menu.options_menu)
 public class MainActivity extends ListActivity {
 
 	/** The adapter. */
@@ -135,9 +140,6 @@ public class MainActivity extends ListActivity {
 
 	/**
 	 * Search field editor action. action when the user tapes Enter
-	 * 
-	 * @param hello
-	 *            the hello
 	 */
 	@EditorAction(R.id.home_search_field)
 	void searchFieldEditorAction() {
@@ -178,4 +180,43 @@ public class MainActivity extends ListActivity {
 		MainActivity.this.searchField.dismissDropDown();
 	}
 
+	/**
+	 * Search menu clicked.
+	 */
+	@OptionsItem(R.id.search)
+	void searchMenuClicked() {
+		startActivity(new Intent(this, MainActivity_.class));
+	}
+
+	/**
+	 * Search multi menu clicked.
+	 */
+	@OptionsItem(R.id.search_multi)
+	void searchMultiMenuClicked() {
+		startActivity(new Intent(this, MultiCriteriaSearchActivity.class));
+	}
+
+	/**
+	 * Preferences menu clicked.
+	 */
+	@OptionsItem(R.id.preferences)
+	void preferencesMenuClicked() {
+		startActivity(new Intent(this, OrnidroidPreferenceActivity.class));
+	}
+
+	/**
+	 * Home menu clicked.
+	 */
+	@OptionsItem(R.id.home)
+	void homeMenuClicked() {
+		startActivity(new Intent(this, HomeActivity_.class));
+	}
+
+	/**
+	 * Help menu clicked.
+	 */
+	@OptionsItem(R.id.help)
+	void helpMenuClicked() {
+		startActivity(new Intent(this, HelpActivity_.class));
+	}
 }

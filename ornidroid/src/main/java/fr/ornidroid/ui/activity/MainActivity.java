@@ -160,11 +160,9 @@ public class MainActivity extends ListActivity {
 	 * Print query results in the list view.
 	 */
 	private final void printQueryResults() {
-
 		setListAdapter(new SearchResultsAdapter(this, OrnidroidServiceFactory
 				.getService(this).getQueryResult()));
-
-		MainActivity.this.searchField.dismissDropDown();
+		searchField.dismissDropDown();
 	}
 
 	/**
@@ -172,7 +170,7 @@ public class MainActivity extends ListActivity {
 	 */
 	@OptionsItem(R.id.search)
 	void searchMenuClicked() {
-		startActivity(new Intent(this, MainActivity_.class));
+		MainActivity_.intent(this).start();
 	}
 
 	/**
@@ -196,7 +194,7 @@ public class MainActivity extends ListActivity {
 	 */
 	@OptionsItem(R.id.home)
 	void homeMenuClicked() {
-		startActivity(new Intent(this, HomeActivity_.class));
+		HomeActivity_.intent(this).start();
 	}
 
 	/**
@@ -204,6 +202,6 @@ public class MainActivity extends ListActivity {
 	 */
 	@OptionsItem(R.id.help)
 	void helpMenuClicked() {
-		startActivity(new Intent(this, HelpActivity_.class));
+		HelpActivity_.intent(this).start();
 	}
 }

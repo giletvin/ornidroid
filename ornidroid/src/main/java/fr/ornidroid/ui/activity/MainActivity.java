@@ -4,23 +4,18 @@ import java.util.List;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.ViewById;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.SimpleBird;
 import fr.ornidroid.service.IOrnidroidService;
@@ -35,6 +30,8 @@ import fr.ornidroid.ui.components.OrnidroidAutoCompleteAdapter;
  */
 @EActivity(R.layout.main)
 public class MainActivity extends ListActivity {
+
+	/** The adapter. */
 	SearchResultsAdapter adapter;
 	/**
 	 * The Constant SHOW_SEARCH_FIELD_INTENT_PRM to hide or show the search
@@ -48,8 +45,11 @@ public class MainActivity extends ListActivity {
 	/** The clicked position in the list. */
 	private int clickedPositionInTheList = 0;
 
+	/** The m list view. */
 	@ViewById(android.R.id.list)
 	ListView mListView;
+
+	/** The show text field. */
 	@Extra(SHOW_SEARCH_FIELD_INTENT_PRM)
 	boolean showTextField = true;
 	/** The ornidroid service. */
@@ -99,76 +99,49 @@ public class MainActivity extends ListActivity {
 	/**
 	 * Inits the auto complete field. Set up the suggest methods and the
 	 * behaviour to open the bird info activity
-	 * 
-	 * @param intent
-	 *            the intent
 	 */
 	@AfterViews
 	void initAutoCompleteField() {
 		if (!showTextField) {
 			this.searchField.setVisibility(View.GONE);
 		}
-
-		// add the listener so it will tries to suggest while the user types
-		searchField.addTextChangedListener(new TextWatcher() {
-			public void onTextChanged(CharSequence userInput, int start,
-					int before, int count) {
-				// query the database based on the user input
-				List<SimpleBird> queryResult = ornidroidService
-						.getMatchingBirds(userInput.toString());
-
-				// update the adapater
-				adapterAutocompleteTextView.notifyDataSetChanged();
-				adapterAutocompleteTextView = new OrnidroidAutoCompleteAdapter(
-						MainActivity.this,
-						android.R.layout.simple_dropdown_item_1line,
-						queryResult);
-
-				searchField.setAdapter(adapterAutocompleteTextView);
-
-			}
-
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-
-			public void afterTextChanged(Editable s) {
-			}
-		});
-
 		// set our adapter
 		adapterAutocompleteTextView = new ArrayAdapter<SimpleBird>(this,
 				android.R.layout.simple_dropdown_item_1line,
 				ornidroidService.getQueryResult());
 		searchField.setAdapter(adapterAutocompleteTextView);
+	}
 
-		// Set an OnItemClickListener, to open the BirdInfoActivity
-		this.searchField.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(final AdapterView<?> listView,
-					final View view, final int position, final long id) {
-				if (ornidroidService.getQueryResult().size() == 1) {
-					SimpleBird clickedBird = ornidroidService.getQueryResult()
-							.get(0);
-					printQueryResults();
-					startActivity(buildIntentBirdInfoActivity(clickedBird
-							.getId()));
-				}
-			}
-		});
+	/**
+	 * On text changes on search field.
+	 * 
+	 * @param userInput
+	 *            the user input
+	 */
+	@TextChange(R.id.home_search_field)
+	void onTextChangesOnSearchField(CharSequence userInput) {
+		// query the database based on the user input
+		List<SimpleBird> queryResult = ornidroidService
+				.getMatchingBirds(userInput.toString());
 
-		// action when the user tapes Enter : reopen the same activity with the
-		// search results displayed in the list
-		this.searchField
-				.setOnEditorActionListener(new OnEditorActionListener() {
-					public boolean onEditorAction(final TextView v,
-							final int actionId, final KeyEvent event) {
-						printQueryResults();
-						// #39 : just refresh the list instead of starting the
-						// activity
-						return true;
-					}
+		// update the adapater
+		adapterAutocompleteTextView.notifyDataSetChanged();
+		adapterAutocompleteTextView = new OrnidroidAutoCompleteAdapter(
+				MainActivity.this, android.R.layout.simple_dropdown_item_1line,
+				queryResult);
 
-				});
+		searchField.setAdapter(adapterAutocompleteTextView);
+	}
+
+	/**
+	 * Search field editor action. action when the user tapes Enter
+	 * 
+	 * @param hello
+	 *            the hello
+	 */
+	@EditorAction(R.id.home_search_field)
+	void searchFieldEditorAction() {
+		printQueryResults();
 	}
 
 	/**
@@ -180,6 +153,18 @@ public class MainActivity extends ListActivity {
 	@ItemClick(android.R.id.list)
 	void birdClicked(SimpleBird bird) {
 		startActivity(buildIntentBirdInfoActivity(bird.getId()));
+	}
+
+	/**
+	 * Autocomplete suggestion clicked.
+	 */
+	@ItemClick(R.id.home_search_field)
+	void autocompleteSuggestionClicked() {
+		if (ornidroidService.getQueryResult().size() == 1) {
+			SimpleBird clickedBird = ornidroidService.getQueryResult().get(0);
+			printQueryResults();
+			startActivity(buildIntentBirdInfoActivity(clickedBird.getId()));
+		}
 	}
 
 	/**

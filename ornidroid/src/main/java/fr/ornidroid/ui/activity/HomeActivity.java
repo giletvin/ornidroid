@@ -1,23 +1,27 @@
 package fr.ornidroid.ui.activity;
 
+import java.io.File;
+
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Environment;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.BasicConstants;
-import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
+import fr.ornidroid.ui.preferences.MyPrefs_;
 import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 
 /**
@@ -25,6 +29,10 @@ import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
  */
 @EActivity(R.layout.home)
 public class HomeActivity extends AbstractOrnidroidActivity {
+
+	/** The my prefs. */
+	@Pref
+	MyPrefs_ myPrefs;
 
 	/** The about link. */
 	@ViewById(R.id.menu_about)
@@ -134,8 +142,9 @@ public class HomeActivity extends AbstractOrnidroidActivity {
 	 */
 	private void checkOrnidroidHomeDirectory() {
 		try {
-			this.ornidroidIOService.checkOrnidroidHome(Constants
-					.getOrnidroidHome());
+			this.ornidroidIOService.checkOrnidroidHome(myPrefs.ornidroidHome()
+					.getOr(Environment.getExternalStorageDirectory()
+							.getAbsolutePath() + File.separator + "ornidroid"));
 
 			// check the ornidroid.sqlite file.
 			this.ornidroidService.createDbIfNecessary();

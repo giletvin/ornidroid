@@ -22,7 +22,6 @@ import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.preferences.MyPrefs_;
-import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 
 /**
  * The Class HomeActivity. Start screen of the application
@@ -107,7 +106,7 @@ public class HomeActivity extends AbstractOrnidroidActivity {
 	 */
 	@Click(R.id.menu_preferences)
 	void clickPreferencesLink() {
-		launchActivity(OrnidroidPreferenceActivity.class);
+		launchActivity(OrnidroidPreferenceActivity_.class);
 	}
 
 	/*

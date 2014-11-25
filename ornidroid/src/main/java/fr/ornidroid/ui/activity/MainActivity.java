@@ -24,7 +24,6 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.NewBirdActivity;
 import fr.ornidroid.ui.adapter.SearchResultsAdapter;
 import fr.ornidroid.ui.components.OrnidroidAutoCompleteAdapter;
-import fr.ornidroid.ui.preferences.OrnidroidPreferenceActivity;
 
 /**
  * The main activity for the dictionary. Displays search results triggered by
@@ -185,7 +184,7 @@ public class MainActivity extends ListActivity {
 	 */
 	@OptionsItem(R.id.preferences)
 	void preferencesMenuClicked() {
-		startActivity(new Intent(this, OrnidroidPreferenceActivity.class));
+		startActivity(new Intent(this, OrnidroidPreferenceActivity_.class));
 	}
 
 	/**

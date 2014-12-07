@@ -10,6 +10,7 @@ import java.util.List;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import android.app.AlertDialog;
@@ -41,13 +42,14 @@ import fr.ornidroid.ui.NewBirdActivity;
  */
 @EActivity(R.layout.add_custom_media)
 public class AddCustomMediaActivity extends ListActivity {
-	/** The Constant DIALOG_TEXT_ENTRY. */
-	private static final int DIALOG_TEXT_ENTRY = 7;
+
 	/** The bird directory. */
-	private String birdDirectory;
+	@Extra(Constants.BIRD_DIRECTORY_PARAMETER_NAME)
+	String birdDirectory;
 
 	/** The file type. */
-	private OrnidroidFileType fileType;
+	@Extra(OrnidroidFileType.FILE_TYPE_INTENT_PARAM_NAME)
+	OrnidroidFileType fileType;
 
 	/** The item. */
 	private List<String> item = null;
@@ -57,13 +59,13 @@ public class AddCustomMediaActivity extends ListActivity {
 	TextView myPath;
 
 	/** The ornidroid io service. */
-	private final IOrnidroidIOService ornidroidIOService;
+	private final IOrnidroidIOService ornidroidIOService = new OrnidroidIOServiceImpl();
 
 	/** The path. */
 	private List<String> path = null;
 
 	/** The root. */
-	private String root;
+	private String root = BasicConstants.SLASH_STRING;
 
 	/** The selected file. */
 	private File selectedFile;
@@ -94,14 +96,6 @@ public class AddCustomMediaActivity extends ListActivity {
 		}
 	};
 
-	/**
-	 * Instantiates a new file explorer.
-	 */
-	public AddCustomMediaActivity() {
-		super();
-		this.ornidroidIOService = new OrnidroidIOServiceImpl();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -112,26 +106,36 @@ public class AddCustomMediaActivity extends ListActivity {
 	 */
 	@AfterViews
 	public void afterViews() {
-		this.root = BasicConstants.SLASH_STRING;
-		this.fileType = (OrnidroidFileType) getIntent().getSerializableExtra(
-				OrnidroidFileType.FILE_TYPE_INTENT_PARAM_NAME);
-		this.birdDirectory = (String) getIntent().getSerializableExtra(
-				Constants.BIRD_DIRECTORY_PARAMETER_NAME);
 		getDir(Environment.getExternalStorageDirectory().getPath());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onCreateDialog(int)
+	 * @see android.app.ListActivity#onListItemClick(android.widget.ListView,
+	 * android.view.View, int, long)
 	 */
 	@Override
-	protected Dialog onCreateDialog(final int id) {
-		switch (id) {
-		case DIALOG_TEXT_ENTRY:
+	protected void onListItemClick(final ListView l, final View v,
+			final int position, final long id) {
+		final File file = new File(this.path.get(position));
 
+		if (file.isDirectory()) {
+			if (file.canRead()) {
+				getDir(this.path.get(position));
+			} else {
+				new AlertDialog.Builder(this)
+						.setIcon(R.drawable.ic_launcher)
+						.setTitle(
+								"[" + file.getName()
+										+ "] folder can't be read!")
+						.setPositiveButton(R.string.ok, null).show();
+			}
+		} else {
+			this.selectedFileName = file.getName();
+			this.selectedFile = file;
 			final EditText userComment = new EditText(this);
-			return new AlertDialog.Builder(this)
+			Dialog dialog = new AlertDialog.Builder(this)
 					.setView(userComment)
 					.setTitle(R.string.add_custom_media_title)
 					.setPositiveButton(R.string.ok,
@@ -171,38 +175,7 @@ public class AddCustomMediaActivity extends ListActivity {
 								}
 							}).setNegativeButton(R.string.cancel, null)
 					.create();
-
-		}
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.ListActivity#onListItemClick(android.widget.ListView,
-	 * android.view.View, int, long)
-	 */
-	@Override
-	protected void onListItemClick(final ListView l, final View v,
-			final int position, final long id) {
-		final File file = new File(this.path.get(position));
-
-		if (file.isDirectory()) {
-			if (file.canRead()) {
-				getDir(this.path.get(position));
-			} else {
-				new AlertDialog.Builder(this)
-						.setIcon(R.drawable.ic_launcher)
-						.setTitle(
-								"[" + file.getName()
-										+ "] folder can't be read!")
-						.setPositiveButton("OK", null).show();
-			}
-		} else {
-			this.selectedFileName = file.getName();
-			this.selectedFile = file;
-			showDialog(DIALOG_TEXT_ENTRY);
-
+			dialog.show();
 		}
 	}
 
@@ -248,7 +221,7 @@ public class AddCustomMediaActivity extends ListActivity {
 			if (!file.isHidden() && file.canRead()) {
 				this.path.add(file.getPath());
 				if (file.isDirectory()) {
-					this.item.add(file.getName() + "/");
+					this.item.add(file.getName() + BasicConstants.SLASH_STRING);
 				} else {
 					this.item.add(file.getName());
 				}

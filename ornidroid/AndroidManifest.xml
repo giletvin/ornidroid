@@ -64,7 +64,7 @@
 
         <!-- full size image activity -->
         <activity
-            android:name=".ui.ScrollableImageActivity"
+            android:name="fr.ornidroid.ui.activity.ScrollableImageActivity_"
             android:label="@string/bird_image_big"
             android:noHistory="true" />
       

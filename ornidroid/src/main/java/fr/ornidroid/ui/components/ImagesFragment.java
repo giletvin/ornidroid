@@ -21,8 +21,9 @@ import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidException;
-import fr.ornidroid.ui.ScrollableImageActivity;
 import fr.ornidroid.ui.activity.HomeActivity_;
+import fr.ornidroid.ui.activity.ScrollableImageActivity;
+import fr.ornidroid.ui.activity.ScrollableImageActivity_;
 import fr.ornidroid.ui.picture.PictureHelper;
 
 /**
@@ -302,7 +303,7 @@ public class ImagesFragment extends AbstractFragment implements OnClickListener 
 
 		if (v == this.zoomButton || v == this.mPicture) {
 			final Intent intentImageFullSize = new Intent(getActivity(),
-					ScrollableImageActivity.class);
+					ScrollableImageActivity_.class);
 			intentImageFullSize.putExtra(
 					ScrollableImageActivity.DISPLAYED_PICTURE_ID,
 					displayedPictureId);

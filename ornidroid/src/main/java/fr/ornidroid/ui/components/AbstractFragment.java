@@ -33,8 +33,8 @@ import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.AddCustomMediaActivity;
 import fr.ornidroid.ui.NewBirdActivity;
+import fr.ornidroid.ui.activity.AddCustomMediaActivity_;
 import fr.ornidroid.ui.components.progressbar.DoubleProgressBarDialog;
 import fr.ornidroid.ui.downloads.CheckForUpdateFilesLoaderInfo;
 import fr.ornidroid.ui.downloads.HandlerForCheckUpdateFilesThread;
@@ -314,7 +314,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 		if ((v == this.addCustomPictureButton)
 				|| (v == this.addCustomAudioButton)) {
 			final Intent intent = new Intent(getActivity(),
-					AddCustomMediaActivity.class);
+					AddCustomMediaActivity_.class);
 			intent.putExtra(OrnidroidFileType.FILE_TYPE_INTENT_PARAM_NAME,
 					getFileType());
 			intent.putExtra(Constants.BIRD_DIRECTORY_PARAMETER_NAME,

@@ -72,7 +72,7 @@
             android:name=".ui.activity.MultiCriteriaSearchActivity_"
             android:label="@string/menu_search_multi" />
         <activity
-            android:name=".ui.AddCustomMediaActivity"
+            android:name=".ui.activity.AddCustomMediaActivity_"
             android:label="@string/add_custom_media_title" />
     </application>
 

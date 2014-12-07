@@ -1,4 +1,4 @@
-package fr.ornidroid.ui;
+package fr.ornidroid.ui.activity;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -7,15 +7,18 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -28,6 +31,7 @@ import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
+import fr.ornidroid.ui.NewBirdActivity;
 
 /**
  * The Class AddCustomMediaActivity allows to add a custom mp3 or jpg file to
@@ -35,6 +39,7 @@ import fr.ornidroid.service.OrnidroidIOServiceImpl;
  * http://android-er.blogspot.fr/2012/07/example-of-file-
  * explorer-in-android.html
  */
+@EActivity(R.layout.add_custom_media)
 public class AddCustomMediaActivity extends ListActivity {
 	/** The Constant DIALOG_TEXT_ENTRY. */
 	private static final int DIALOG_TEXT_ENTRY = 7;
@@ -48,7 +53,8 @@ public class AddCustomMediaActivity extends ListActivity {
 	private List<String> item = null;
 
 	/** The my path. */
-	private TextView myPath;
+	@ViewById(R.id.path)
+	TextView myPath;
 
 	/** The ornidroid io service. */
 	private final IOrnidroidIOService ornidroidIOService;
@@ -101,23 +107,16 @@ public class AddCustomMediaActivity extends ListActivity {
 	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
-	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_custom_media);
-		this.myPath = (TextView) findViewById(R.id.path);
-
+	/**
+	 * After views.
+	 */
+	@AfterViews
+	public void afterViews() {
 		this.root = BasicConstants.SLASH_STRING;
 		this.fileType = (OrnidroidFileType) getIntent().getSerializableExtra(
 				OrnidroidFileType.FILE_TYPE_INTENT_PARAM_NAME);
 		this.birdDirectory = (String) getIntent().getSerializableExtra(
 				Constants.BIRD_DIRECTORY_PARAMETER_NAME);
-		findViewById(R.id.cancel_add_custom_media).setOnClickListener(
-				new OnClickListener() {
-					public void onClick(final View v) {
-						goBackToBirdActivity();
-					}
-				});
 		getDir(Environment.getExternalStorageDirectory().getPath());
 	}
 
@@ -264,7 +263,8 @@ public class AddCustomMediaActivity extends ListActivity {
 	/**
 	 * Go back to bird activity.
 	 */
-	private void goBackToBirdActivity() {
+	@Click(R.id.cancel_add_custom_media)
+	public void goBackToBirdActivity() {
 		final Intent intentBirdInfo = new Intent(getApplicationContext(),
 				NewBirdActivity.class);
 

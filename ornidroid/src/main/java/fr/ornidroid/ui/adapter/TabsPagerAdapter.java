@@ -1,5 +1,10 @@
-package fr.ornidroid.ui.components;
+package fr.ornidroid.ui.adapter;
 
+import fr.ornidroid.ui.fragment.AudioFragment;
+import fr.ornidroid.ui.fragment.DetailsFragment;
+import fr.ornidroid.ui.fragment.ImagesFragment;
+import fr.ornidroid.ui.fragment.NamesFragment;
+import fr.ornidroid.ui.fragment.WikipediaFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

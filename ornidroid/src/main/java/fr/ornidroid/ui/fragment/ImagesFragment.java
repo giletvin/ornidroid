@@ -1,4 +1,4 @@
-package fr.ornidroid.ui.components;
+package fr.ornidroid.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,6 +24,7 @@ import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.ui.activity.HomeActivity_;
 import fr.ornidroid.ui.activity.ScrollableImageActivity;
 import fr.ornidroid.ui.activity.ScrollableImageActivity_;
+import fr.ornidroid.ui.components.PictureInfoDialog;
 import fr.ornidroid.ui.picture.PictureHelper;
 
 /**

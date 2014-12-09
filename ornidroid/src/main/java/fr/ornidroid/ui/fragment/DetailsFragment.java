@@ -1,4 +1,4 @@
-package fr.ornidroid.ui.components;
+package fr.ornidroid.ui.fragment;
 
 import java.util.List;
 

@@ -18,7 +18,7 @@ import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.components.TabsPagerAdapter;
+import fr.ornidroid.ui.adapter.TabsPagerAdapter;
 
 /**
  * The Class NewBirdActivity.//FragmentActivity

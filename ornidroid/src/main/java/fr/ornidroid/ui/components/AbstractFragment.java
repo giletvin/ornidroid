@@ -35,6 +35,7 @@ import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.activity.AddCustomMediaActivity_;
 import fr.ornidroid.ui.activity.NewBirdActivity;
+import fr.ornidroid.ui.activity.NewBirdActivity_;
 import fr.ornidroid.ui.components.progressbar.DoubleProgressBarDialog;
 import fr.ornidroid.ui.downloads.CheckForUpdateFilesLoaderInfo;
 import fr.ornidroid.ui.downloads.HandlerForCheckUpdateFilesThread;
@@ -261,7 +262,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 			// now that the files have been downloaded, force a reopen of the
 			// same screen with an intent
 			final Intent intent = new Intent(getActivity(),
-					NewBirdActivity.class);
+					NewBirdActivity_.class);
 			// put the uri so that the BirdInfoActivity reloads correctly the
 			// bird
 			intent.setData(getActivity().getIntent().getData());
@@ -333,7 +334,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 								R.string.remove_custom_media_success),
 						Toast.LENGTH_LONG).show();
 				final Intent intent = new Intent(getActivity(),
-						NewBirdActivity.class);
+						NewBirdActivity_.class);
 				// put the uri so that the BirdInfoActivity reloads correctly
 				// the bird
 				intent.setData(getActivity().getIntent().getData());
@@ -586,7 +587,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	private void reloadActivity() {
 		if (this.getActivity() != null) {
 			final Intent intentBirdInfo = new Intent(this.getActivity(),
-					NewBirdActivity.class);
+					NewBirdActivity_.class);
 			intentBirdInfo.putExtra(NewBirdActivity.INTENT_TAB_TO_OPEN,
 					OrnidroidFileType.getCode(this.getFileType()));
 			startActivity(intentBirdInfo

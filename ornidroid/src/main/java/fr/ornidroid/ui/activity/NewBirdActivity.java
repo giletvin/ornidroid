@@ -1,18 +1,21 @@
 package fr.ornidroid.ui.activity;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.ViewById;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
-import fr.ornidroid.helper.MenuHelper;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.components.TabsPagerAdapter;
@@ -20,20 +23,29 @@ import fr.ornidroid.ui.components.TabsPagerAdapter;
 /**
  * The Class NewBirdActivity.//FragmentActivity
  */
+@EActivity(R.layout.new_bird_activity)
+@OptionsMenu(R.menu.options_menu)
 public class NewBirdActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
 	/** The Constant INTENT_ACTIVITY_TO_OPEN. */
 	public static final String INTENT_TAB_TO_OPEN = "intentTabToOpenParameter";
+
+	@Extra(INTENT_TAB_TO_OPEN)
+	int tabToOpen = 0;
+
 	/** The media player. */
 	private MediaPlayer mMediaPlayer;
 	/** The birdId. */
-	private int birdId;
+	@Extra(MainActivity.BIRD_ID_ITENT_PRM)
+	int birdId = 0;
 	/** The ornidroid service. */
-	private final IOrnidroidService ornidroidService;
+	private final IOrnidroidService ornidroidService = OrnidroidServiceFactory
+			.getService(this);
 
 	/** The view pager. */
-	private ViewPager viewPager;
+	@ViewById(R.id.pager)
+	ViewPager viewPager;
 
 	/** The m adapter. */
 	private TabsPagerAdapter mAdapter;
@@ -42,26 +54,12 @@ public class NewBirdActivity extends FragmentActivity implements
 	private ActionBar actionBar;
 
 	/**
-	 * Instantiates a new new bird activity.
+	 * After views.
 	 */
-	public NewBirdActivity() {
-		super();
-		this.ornidroidService = OrnidroidServiceFactory.getService(this);
+	@AfterViews
+	void afterViews() {
 		Constants.initializeConstants(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
-	 */
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.new_bird_activity);
-
 		// Initilization
-		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
@@ -97,12 +95,11 @@ public class NewBirdActivity extends FragmentActivity implements
 			}
 		});
 
-		int tabToOpen = getIntent().getIntExtra(INTENT_TAB_TO_OPEN, 0);
-
 		viewPager.setCurrentItem(tabToOpen);
-		this.loadBirdDetails();
+		if (0 != this.birdId) {
+			this.ornidroidService.loadBirdDetails(birdId);
+		}
 		this.ornidroidService.getCurrentBird();
-
 	}
 
 	/*
@@ -136,17 +133,6 @@ public class NewBirdActivity extends FragmentActivity implements
 	 * .Tab, android.app.FragmentTransaction)
 	 */
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-	}
-
-	/**
-	 * Load bird details, from bird Id contained in the intent.
-	 */
-	private void loadBirdDetails() {
-		this.birdId = getIntent()
-				.getIntExtra(MainActivity.BIRD_ID_ITENT_PRM, 0);
-		if (0 != this.birdId) {
-			this.ornidroidService.loadBirdDetails(birdId);
-		}
 	}
 
 	/**
@@ -189,24 +175,43 @@ public class NewBirdActivity extends FragmentActivity implements
 		return this.mMediaPlayer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	/**
+	 * Search menu clicked.
 	 */
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		final MenuInflater inflater = getMenuInflater();
-		return MenuHelper.onCreateOptionsMenu(inflater, menu);
+	@OptionsItem(R.id.search)
+	void searchMenuClicked() {
+		MainActivity_.intent(this).start();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	/**
+	 * Search multi menu clicked.
 	 */
-	@Override
-	public boolean onOptionsItemSelected(final MenuItem item) {
-		return MenuHelper.onOptionsItemSelected(this, item);
+	@OptionsItem(R.id.search_multi)
+	void searchMultiMenuClicked() {
+		startActivity(new Intent(this, MultiCriteriaSearchActivity_.class));
+	}
+
+	/**
+	 * Preferences menu clicked.
+	 */
+	@OptionsItem(R.id.preferences)
+	void preferencesMenuClicked() {
+		startActivity(new Intent(this, OrnidroidPreferenceActivity_.class));
+	}
+
+	/**
+	 * Home menu clicked.
+	 */
+	@OptionsItem(R.id.home)
+	void homeMenuClicked() {
+		HomeActivity_.intent(this).start();
+	}
+
+	/**
+	 * Help menu clicked.
+	 */
+	@OptionsItem(R.id.help)
+	void helpMenuClicked() {
+		HelpActivity_.intent(this).start();
 	}
 }

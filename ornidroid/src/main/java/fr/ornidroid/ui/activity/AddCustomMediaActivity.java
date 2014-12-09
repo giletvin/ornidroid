@@ -238,7 +238,7 @@ public class AddCustomMediaActivity extends ListActivity {
 	@Click(R.id.cancel_add_custom_media)
 	public void goBackToBirdActivity() {
 		final Intent intentBirdInfo = new Intent(getApplicationContext(),
-				NewBirdActivity.class);
+				NewBirdActivity_.class);
 
 		// put the uri so that the BirdInfoActivity
 		// reloads correctly the

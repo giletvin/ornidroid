@@ -79,7 +79,7 @@ public class MainActivity extends ListActivity {
 	 */
 	private Intent buildIntentBirdInfoActivity(final Integer birdId) {
 		final Intent birdIntent = new Intent(getApplicationContext(),
-				NewBirdActivity.class);
+				NewBirdActivity_.class);
 		birdIntent.putExtra(BIRD_ID_ITENT_PRM, birdId);
 		return birdIntent;
 	}

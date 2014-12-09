@@ -19,7 +19,7 @@
         android:text="@string/home_stars" />
 
     <ListView
-        android:id="@+id/names_list"
+        android:id="@+id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

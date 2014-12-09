@@ -1,13 +1,13 @@
 package fr.ornidroid.ui.adapter;
 
-import fr.ornidroid.ui.fragment.AudioFragment;
-import fr.ornidroid.ui.fragment.DetailsFragment;
-import fr.ornidroid.ui.fragment.ImagesFragment;
-import fr.ornidroid.ui.fragment.NamesFragment;
-import fr.ornidroid.ui.fragment.WikipediaFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import fr.ornidroid.ui.fragment.AudioFragment;
+import fr.ornidroid.ui.fragment.DetailsFragment;
+import fr.ornidroid.ui.fragment.ImagesFragment;
+import fr.ornidroid.ui.fragment.NamesFragment_;
+import fr.ornidroid.ui.fragment.WikipediaFragment;
 
 /**
  * The Class TabsPagerAdapter.
@@ -66,7 +66,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 			return wikipediaFragment;
 		case NAMES_TAB:
 			// Names
-			return new NamesFragment();
+			return new NamesFragment_();
 		}
 
 		return null;

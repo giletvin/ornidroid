@@ -2,13 +2,16 @@ package fr.ornidroid.ui.fragment;
 
 import java.util.List;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Taxon;
@@ -18,36 +21,39 @@ import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 
 /**
- * The Class DetailsFragment.
+ * The Class NamesFragment.
  */
-public class NamesFragment extends Fragment {
+@EFragment(R.layout.fragment_names)
+public class NamesFragment extends ListFragment {
 
 	/** The m ornidroid service. */
-	private IOrnidroidService mOrnidroidService;
-	/** The m list view. */
-	private ListView mListView;
+	private IOrnidroidService mOrnidroidService = OrnidroidServiceFactory
+			.getService(getActivity());
 
 	/** The scientific name. */
-	private TextView scientificName;
+	@ViewById(R.id.names_scientific_name)
+	TextView scientificName;
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-	 * android.view.ViewGroup, android.os.Bundle)
+	 * android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater
+	 * , android.view.ViewGroup, android.os.Bundle)
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mOrnidroidService = OrnidroidServiceFactory.getService(getActivity());
+		// Association du layout pour ce Fragment
+		return inflater.inflate(R.layout.fragment_names, container, false);
 
-		View rootView = inflater.inflate(R.layout.fragment_names, container,
-				false);
-		this.scientificName = (TextView) rootView
-				.findViewById(R.id.names_scientific_name);
-		this.mListView = (ListView) rootView.findViewById(R.id.names_list);
+	}
 
+	/**
+	 * After views.
+	 */
+	@AfterViews
+	void afterViews() {
 		if (null != mOrnidroidService.getCurrentBird()) {
 			final StringBuilder sb = new StringBuilder();
 			final String scientificName2 = StringHelper
@@ -63,7 +69,6 @@ public class NamesFragment extends Fragment {
 			this.scientificName.setText(sb.toString());
 			printBirdNames();
 		}
-		return rootView;
 	}
 
 	/**
@@ -81,9 +86,6 @@ public class NamesFragment extends Fragment {
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 				getActivity(), android.R.layout.simple_list_item_1,
 				android.R.id.text1, values);
-
-		// Assign adapter to ListView
-		this.mListView.setAdapter(adapter);
-
+		setListAdapter(adapter);
 	}
 }

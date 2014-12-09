@@ -26,7 +26,7 @@ import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidException;
-import fr.ornidroid.ui.NewBirdActivity;
+import fr.ornidroid.ui.activity.NewBirdActivity;
 
 /**
  * The Class AudioFragment.

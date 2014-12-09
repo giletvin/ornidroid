@@ -32,7 +32,6 @@ import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
-import fr.ornidroid.ui.NewBirdActivity;
 
 /**
  * The Class AddCustomMediaActivity allows to add a custom mp3 or jpg file to

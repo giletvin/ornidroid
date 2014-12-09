@@ -21,7 +21,6 @@ import android.widget.ListView;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.SimpleBird;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.NewBirdActivity;
 import fr.ornidroid.ui.adapter.SearchResultsAdapter;
 import fr.ornidroid.ui.components.OrnidroidAutoCompleteAdapter;
 

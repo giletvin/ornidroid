@@ -59,7 +59,7 @@
             android:name=".ui.activity.HelpActivity_"
             android:label="@string/help" />
         <activity
-            android:name=".ui.NewBirdActivity"
+            android:name="fr.ornidroid.ui.activity.NewBirdActivity"
             android:label="@string/bird_info" />
 
         <!-- full size image activity -->

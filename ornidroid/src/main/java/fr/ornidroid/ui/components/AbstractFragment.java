@@ -34,7 +34,7 @@ import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.activity.AddCustomMediaActivity_;
-import fr.ornidroid.ui.NewBirdActivity;
+import fr.ornidroid.ui.activity.NewBirdActivity;
 import fr.ornidroid.ui.components.progressbar.DoubleProgressBarDialog;
 import fr.ornidroid.ui.downloads.CheckForUpdateFilesLoaderInfo;
 import fr.ornidroid.ui.downloads.HandlerForCheckUpdateFilesThread;

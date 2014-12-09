@@ -1,4 +1,4 @@
-package fr.ornidroid.ui;
+package fr.ornidroid.ui.activity;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -15,7 +15,6 @@ import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.MenuHelper;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.activity.MainActivity;
 import fr.ornidroid.ui.components.TabsPagerAdapter;
 
 /**

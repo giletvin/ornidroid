@@ -1,15 +1,18 @@
 package fr.ornidroid.ui.activity;
 
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+
 import android.app.Activity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
-import fr.ornidroid.helper.MenuHelper;
 
 /**
  * The Class AbstractOrnidroidActivity. Extending this class enables the menu.
  */
+@EActivity
+@OptionsMenu(R.menu.options_menu)
 public abstract class AbstractOrnidroidActivity extends Activity {
 
 	/**
@@ -20,24 +23,43 @@ public abstract class AbstractOrnidroidActivity extends Activity {
 		Constants.initializeConstants(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	/**
+	 * Search menu clicked.
 	 */
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		final MenuInflater inflater = getMenuInflater();
-		return MenuHelper.onCreateOptionsMenu(inflater, menu);
+	@OptionsItem(R.id.search)
+	void searchMenuClicked() {
+		MainActivity_.intent(this).start();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	/**
+	 * Search multi menu clicked.
 	 */
-	@Override
-	public boolean onOptionsItemSelected(final MenuItem item) {
-		return MenuHelper.onOptionsItemSelected(this, item);
+	@OptionsItem(R.id.search_multi)
+	void searchMultiMenuClicked() {
+		MultiCriteriaSearchActivity_.intent(this).start();
+	}
+
+	/**
+	 * Preferences menu clicked.
+	 */
+	@OptionsItem(R.id.preferences)
+	void preferencesMenuClicked() {
+		OrnidroidPreferenceActivity_.intent(this).start();
+	}
+
+	/**
+	 * Home menu clicked.
+	 */
+	@OptionsItem(R.id.home)
+	void homeMenuClicked() {
+		HomeActivity_.intent(this).start();
+	}
+
+	/**
+	 * Help menu clicked.
+	 */
+	@OptionsItem(R.id.help)
+	void helpMenuClicked() {
+		HelpActivity_.intent(this).start();
 	}
 }

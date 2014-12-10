@@ -1,8 +1,11 @@
 package fr.ornidroid.ui.fragment;
 
 import java.io.File;
+import java.util.List;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -39,8 +42,6 @@ import fr.ornidroid.ui.activity.AddCustomMediaActivity_;
 import fr.ornidroid.ui.activity.NewBirdActivity;
 import fr.ornidroid.ui.activity.NewBirdActivity_;
 import fr.ornidroid.ui.components.progressbar.DoubleProgressBarDialog;
-import fr.ornidroid.ui.downloads.CheckForUpdateFilesLoaderInfo;
-import fr.ornidroid.ui.downloads.HandlerForCheckUpdateFilesThread;
 import fr.ornidroid.ui.downloads.HandlerForDownloadZipPackageThread;
 import fr.ornidroid.ui.threads.GenericTaskHandler;
 import fr.ornidroid.ui.threads.GenericTaskHandler.GenericTaskCallback;
@@ -59,8 +60,6 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 * if sound, the played mp3.
 	 */
 	private OrnidroidFile currentMediaFile;
-	/** The m loader. */
-	private HandlerGenericThread handlerThread;
 
 	/** The handler download zip thread. */
 	private HandlerGenericThread handlerDownloadZipThread;
@@ -440,14 +439,21 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 *            true if the user checks manually.
 	 * 
 	 */
-	public void checkForUpdates(final boolean manualCheck) {
-		if (this.handlerThread == null) {
-			this.handlerThread = new HandlerForCheckUpdateFilesThread(
-					ornidroidIOService, ornidroidService,
-					getMediaHomeDirectory(), getFileType(), manualCheck);
-			this.handlerThread.start();
+	@Background
+	void checkForUpdates(final boolean manualCheck) {
+		Exception exception = null;
+		boolean updatesToDo = false;
+		List<String> filesToDownload;
+		try {
+			filesToDownload = this.ornidroidIOService.filesToUpdate(
+					getMediaHomeDirectory(), ornidroidService.getCurrentBird(),
+					getFileType());
+			updatesToDo = (filesToDownload.size() > 0);
+
+		} catch (OrnidroidException e) {
+			exception = e;
 		}
-		this.handlerThread.genericTask(this);
+		onCheckUpdateTaskEnded(manualCheck, updatesToDo, exception);
 	}
 
 	/**
@@ -531,9 +537,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	public void onTaskEnded(GenericTaskHandler taskHandler,
 			LoaderInfo loaderInfo) {
 		switch (taskHandler.getThreadType()) {
-		case CHECK_UPDATE:
-			onCheckUpdateTaskEnded(loaderInfo);
-			break;
+
 		case DOWNLOAD_ZIP:
 			onDownloadZipPackageTaskEnded(loaderInfo);
 			break;
@@ -601,16 +605,21 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	/**
 	 * On check update task ended.
 	 * 
-	 * @param loaderInfo
-	 *            the loader info
+	 * @param manuelCheck
+	 *            the manuel check
+	 * @param updatesToDo
+	 *            the updates to do
+	 * @param exception
+	 *            the exception
 	 */
-	private void onCheckUpdateTaskEnded(LoaderInfo loaderInfo) {
-		if (loaderInfo.getException() != null) {
+	@UiThread
+	void onCheckUpdateTaskEnded(boolean manuelCheck, boolean updatesToDo,
+			Exception exception) {
+		if (exception != null) {
 			Toast.makeText(getActivity(), R.string.updates_check_error,
 					Toast.LENGTH_LONG).show();
 		} else {
-			CheckForUpdateFilesLoaderInfo info = (CheckForUpdateFilesLoaderInfo) loaderInfo;
-			if (info.isUpdatesAvailable()) {
+			if (updatesToDo) {
 				AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
 						.setIcon(android.R.drawable.ic_dialog_alert)
 						.setTitle(R.string.updates_available)
@@ -631,7 +640,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 								}).create();
 				dialog.show();
 			} else {
-				if (info.isManualCheck()) {
+				if (manuelCheck) {
 					Toast.makeText(getActivity(), R.string.updates_none,
 							Toast.LENGTH_LONG).show();
 				}

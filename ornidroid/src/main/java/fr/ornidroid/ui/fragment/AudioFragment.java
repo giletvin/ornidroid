@@ -2,6 +2,8 @@ package fr.ornidroid.ui.fragment;
 
 import java.io.IOException;
 
+import org.androidannotations.annotations.EFragment;
+
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,6 +33,7 @@ import fr.ornidroid.ui.activity.NewBirdActivity;
 /**
  * The Class AudioFragment.
  */
+@EFragment
 public class AudioFragment extends AbstractFragment implements OnClickListener {
 	/** The player paused. */
 	private boolean mPlayerPaused = false;

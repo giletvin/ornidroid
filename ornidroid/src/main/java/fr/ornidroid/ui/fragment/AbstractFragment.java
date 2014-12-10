@@ -2,6 +2,8 @@ package fr.ornidroid.ui.fragment;
 
 import java.io.File;
 
+import org.androidannotations.annotations.EFragment;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -48,6 +50,7 @@ import fr.ornidroid.ui.threads.LoaderInfo;
 /**
  * The Class AbstractFragment.
  */
+@EFragment
 public abstract class AbstractFragment extends Fragment implements Runnable,
 		OnClickListener, GenericTaskCallback {
 
@@ -170,8 +173,8 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 * android.view.ViewGroup, android.os.Bundle)
 	 */
 	@Override
-	public final View onCreateView(LayoutInflater inflater,
-			ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
 		this.ornidroidDownloadErrorCode = getActivity().getIntent()
 				.getIntExtra(DOWNLOAD_ERROR_INTENT_PARAM, 0);

@@ -1,5 +1,7 @@
 package fr.ornidroid.ui.fragment;
 
+import org.androidannotations.annotations.EFragment;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import fr.ornidroid.helper.OrnidroidException;
 /**
  * The Class WikipediaFragment.
  */
+@EFragment
 public class WikipediaFragment extends AbstractFragment {
 
 	/** The specific content layout. */

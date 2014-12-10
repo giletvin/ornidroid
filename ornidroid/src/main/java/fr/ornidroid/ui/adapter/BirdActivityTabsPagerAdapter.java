@@ -3,11 +3,11 @@ package fr.ornidroid.ui.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import fr.ornidroid.ui.fragment.AudioFragment;
+import fr.ornidroid.ui.fragment.AudioFragment_;
 import fr.ornidroid.ui.fragment.DetailsFragment_;
-import fr.ornidroid.ui.fragment.ImagesFragment;
+import fr.ornidroid.ui.fragment.ImagesFragment_;
 import fr.ornidroid.ui.fragment.NamesFragment_;
-import fr.ornidroid.ui.fragment.WikipediaFragment;
+import fr.ornidroid.ui.fragment.WikipediaFragment_;
 
 /**
  * The Class BirdActivityTabsPagerAdapter.
@@ -51,17 +51,16 @@ public class BirdActivityTabsPagerAdapter extends FragmentPagerAdapter {
 		switch (index) {
 		case PICTURE_TAB:
 			// images fragment
-			return new ImagesFragment();
+			return new ImagesFragment_();
 		case AUDIO_TAB:
 			// audio fragment
-			return new AudioFragment();
+			return new AudioFragment_();
 		case DETAILS_TAB:
 			// Details fragment activity
 			return new DetailsFragment_();
 		case WIKIPEDIA_TAB:
 			// Wikipedia Fragment
-			WikipediaFragment wikipediaFragment = new WikipediaFragment();
-			return wikipediaFragment;
+			return new WikipediaFragment_();
 		case NAMES_TAB:
 			// Names
 			return new NamesFragment_();

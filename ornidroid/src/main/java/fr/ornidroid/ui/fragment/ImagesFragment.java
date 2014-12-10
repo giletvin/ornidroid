@@ -1,5 +1,7 @@
 package fr.ornidroid.ui.fragment;
 
+import org.androidannotations.annotations.EFragment;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ import fr.ornidroid.ui.picture.PictureHelper;
 /**
  * The Class ImagesFragment.
  */
+@EFragment
 public class ImagesFragment extends AbstractFragment implements OnClickListener {
 
 	/** The picture layout. */

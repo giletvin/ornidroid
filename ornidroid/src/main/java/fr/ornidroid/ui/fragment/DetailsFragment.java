@@ -2,6 +2,10 @@ package fr.ornidroid.ui.fragment;
 
 import java.util.List;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -20,37 +24,48 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
 /**
  * The Class DetailsFragment.
  */
+@EFragment(R.layout.fragment_details)
 public class DetailsFragment extends Fragment {
 
 	/** The m ornidroid service. */
-	private IOrnidroidService mOrnidroidService;
+	private IOrnidroidService mOrnidroidService = OrnidroidServiceFactory
+			.getService(getActivity());
 
 	/** The category. */
-	private TextView category;
+	@ViewById(R.id.details_category)
+	TextView category;
 
 	/** The order and family. */
-	private TextView orderAndFamily;
+	@ViewById(R.id.details_order_family)
+	TextView orderAndFamily;
 
 	/** The size. */
-	private TextView size;
+	@ViewById(R.id.details_size)
+	TextView size;
 
 	/** The description. */
-	private TextView description;
+	@ViewById(R.id.details_description)
+	TextView description;
 
 	/** The distribution. */
-	private TextView distribution;
+	@ViewById(R.id.details_distribution)
+	TextView distribution;
 
 	/** The list countries. */
-	private TextView listCountries;
+	@ViewById(R.id.details_countries)
+	TextView listCountries;
 
 	/** The xeno canto map link. */
-	private TextView xenoCantoMapLink;
+	@ViewById(R.id.details_xeno_canto)
+	TextView xenoCantoMapLink;
 
 	/** The wikipedia link. */
-	private TextView wikipediaLink;
+	@ViewById(R.id.details_wikipedia)
+	TextView wikipediaLink;
 
 	/** The oiseaux net link. */
-	private TextView oiseauxNetLink;
+	@ViewById(R.id.details_oiseaux_net)
+	TextView oiseauxNetLink;
 
 	/*
 	 * (non-Javadoc)
@@ -62,28 +77,13 @@ public class DetailsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		// Association du layout pour ce Fragment
+		return inflater.inflate(R.layout.fragment_details, container, false);
 
-		View rootView = inflater.inflate(R.layout.fragment_details, container,
-				false);
+	}
 
-		this.category = (TextView) rootView.findViewById(R.id.details_category);
-		this.orderAndFamily = (TextView) rootView
-				.findViewById(R.id.details_order_family);
-		this.size = (TextView) rootView.findViewById(R.id.details_size);
-		this.description = (TextView) rootView
-				.findViewById(R.id.details_description);
-		this.distribution = (TextView) rootView
-				.findViewById(R.id.details_distribution);
-		this.listCountries = (TextView) rootView
-				.findViewById(R.id.details_countries);
-		this.xenoCantoMapLink = (TextView) rootView
-				.findViewById(R.id.details_xeno_canto);
-		this.wikipediaLink = (TextView) rootView
-				.findViewById(R.id.details_wikipedia);
-		this.oiseauxNetLink = (TextView) rootView
-				.findViewById(R.id.details_oiseaux_net);
-
-		mOrnidroidService = OrnidroidServiceFactory.getService(getActivity());
+	@AfterViews
+	public void afterViews() {
 		if (mOrnidroidService.getCurrentBird() != null) {
 			printBirdCategory(mOrnidroidService.getCurrentBird());
 			printBirdOrderAndFamily(mOrnidroidService.getCurrentBird());
@@ -95,7 +95,6 @@ public class DetailsFragment extends Fragment {
 			printHttpLinks();
 
 		}
-		return rootView;
 	}
 
 	/**

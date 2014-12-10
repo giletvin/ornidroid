@@ -4,15 +4,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import fr.ornidroid.ui.fragment.AudioFragment;
-import fr.ornidroid.ui.fragment.DetailsFragment;
+import fr.ornidroid.ui.fragment.DetailsFragment_;
 import fr.ornidroid.ui.fragment.ImagesFragment;
 import fr.ornidroid.ui.fragment.NamesFragment_;
 import fr.ornidroid.ui.fragment.WikipediaFragment;
 
 /**
- * The Class TabsPagerAdapter.
+ * The Class BirdActivityTabsPagerAdapter.
  */
-public class TabsPagerAdapter extends FragmentPagerAdapter {
+public class BirdActivityTabsPagerAdapter extends FragmentPagerAdapter {
 
 	/** The Constant PICTURE_TAB. */
 	public final static int PICTURE_TAB = 0;
@@ -34,10 +34,8 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 	 * 
 	 * @param fm
 	 *            the fm
-	 * @param pActivity
-	 *            the activity
 	 */
-	public TabsPagerAdapter(FragmentManager fm) {
+	public BirdActivityTabsPagerAdapter(FragmentManager fm) {
 		super(fm);
 
 	}
@@ -59,7 +57,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 			return new AudioFragment();
 		case DETAILS_TAB:
 			// Details fragment activity
-			return new DetailsFragment();
+			return new DetailsFragment_();
 		case WIKIPEDIA_TAB:
 			// Wikipedia Fragment
 			WikipediaFragment wikipediaFragment = new WikipediaFragment();

@@ -18,7 +18,7 @@ import fr.ornidroid.R;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
-import fr.ornidroid.ui.adapter.TabsPagerAdapter;
+import fr.ornidroid.ui.adapter.BirdActivityTabsPagerAdapter;
 
 /**
  * The Class NewBirdActivity.//FragmentActivity
@@ -48,7 +48,7 @@ public class NewBirdActivity extends FragmentActivity implements
 	ViewPager viewPager;
 
 	/** The m adapter. */
-	private TabsPagerAdapter mAdapter;
+	private BirdActivityTabsPagerAdapter mAdapter;
 
 	/** The action bar. */
 	private ActionBar actionBar;
@@ -61,7 +61,7 @@ public class NewBirdActivity extends FragmentActivity implements
 		Constants.initializeConstants(this);
 		// Initilization
 		actionBar = getActionBar();
-		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+		mAdapter = new BirdActivityTabsPagerAdapter(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);
 		// actionBar.setHomeButtonEnabled(false);

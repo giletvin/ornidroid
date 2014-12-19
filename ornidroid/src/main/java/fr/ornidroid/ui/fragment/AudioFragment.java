@@ -62,7 +62,7 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 	 * fr.ornidroid.ui.components.AbstractFragment#getOnCreateView(android.view
 	 * .LayoutInflater, android.view.ViewGroup, android.os.Bundle)
 	 */
-	@Override
+
 	public View getOnCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		if (this.ornidroidService.getCurrentBird() == null) {
@@ -325,7 +325,6 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 			}
 
 		}
-		super.onClick(v);
 	}
 
 	/**

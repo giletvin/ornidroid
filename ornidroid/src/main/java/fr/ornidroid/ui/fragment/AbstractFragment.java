@@ -4,31 +4,31 @@ import java.io.File;
 import java.util.List;
 
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.util.Linkify;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.greenrobot.event.EventBus;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
+import fr.ornidroid.event.DownloadZipEvent;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidError;
@@ -41,19 +41,15 @@ import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.activity.AddCustomMediaActivity_;
 import fr.ornidroid.ui.activity.NewBirdActivity;
 import fr.ornidroid.ui.activity.NewBirdActivity_;
-import fr.ornidroid.ui.components.progressbar.DoubleProgressBarDialog;
-import fr.ornidroid.ui.downloads.HandlerForDownloadZipPackageThread;
-import fr.ornidroid.ui.threads.GenericTaskHandler;
-import fr.ornidroid.ui.threads.GenericTaskHandler.GenericTaskCallback;
-import fr.ornidroid.ui.threads.HandlerGenericThread;
-import fr.ornidroid.ui.threads.LoaderInfo;
 
 /**
  * The Class AbstractFragment.
  */
 @EFragment
-public abstract class AbstractFragment extends Fragment implements Runnable,
-		OnClickListener, GenericTaskCallback {
+public abstract class AbstractFragment extends Fragment implements Runnable {
+
+	@InstanceState
+	boolean isDownloadAllRunning = false;
 
 	/**
 	 * Gets the current (selected) media file if picture : the displayed image,
@@ -61,19 +57,17 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 */
 	private OrnidroidFile currentMediaFile;
 
-	/** The handler download zip thread. */
-	private HandlerGenericThread handlerDownloadZipThread;
+	/** The progress bar1. */
+	private ProgressBar downloadAllProgressBar1;
+	/** The progress bar2. */
+	private ProgressBar downloadAllProgressBar2;
 
 	/** The progress bar. */
 	private ProgressDialog progressBar;
-	private DoubleProgressBarDialog progressBarDownloadPackage;
+
 	/** The download status. */
 	private int downloadStatus;
-	/** The download from internet button. */
-	private Button downloadFromInternetButton;
 
-	/** The download info text. */
-	private TextView downloadInfoText;
 	/** The ornidroid service. */
 	IOrnidroidService ornidroidService = OrnidroidServiceFactory
 			.getService(getActivity());
@@ -81,22 +75,36 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	/** The ornidroid io service. */
 	IOrnidroidIOService ornidroidIOService = new OrnidroidIOServiceImpl();
 	/** The ornidroid download error. */
-	private int ornidroidDownloadErrorCode;
+	int ornidroidDownloadErrorCode;
+
+	/** The picture layout. */
+	@ViewById(R.id.fragment_main_content)
+	LinearLayout fragmentMainContent;
+
+	@ViewById(R.id.download_banner)
+	View downloadBanner;
+	@ViewById(R.id.bt_download_only_for_bird)
+	Button btDownloadOnlyForBird;
+	@ViewById(R.id.bt_download_all)
+	Button btDownloadAll;
 	/** The remove custom picture button. */
+	@ViewById(R.id.iv_remove_custom_picture)
 	ImageView removeCustomPictureButton;
 	/** The remove custom picture button. */
 	ImageView removeCustomAudioButton;
 
+	@ViewById(R.id.tv_no_media_message)
+	TextView noMediaMessage;
 	/** The update files button. */
-	private ImageView updateFilesButton;
+	@ViewById(R.id.iv_update_files_button)
+	ImageView updateFilesButton;
 
 	/** The add custom picture button. */
-	private ImageView addCustomPictureButton;
+	@ViewById(R.id.iv_add_custom_picture)
+	ImageView addCustomPictureButton;
 	/** The add custom audio button. */
 	ImageView addCustomAudioButton;
 
-	/** The download all from internet button. */
-	private Button downloadAllFromInternetButton;
 	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
 	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
 
@@ -165,56 +173,6 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-	 * android.view.ViewGroup, android.os.Bundle)
-	 */
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-
-		this.ornidroidDownloadErrorCode = getActivity().getIntent()
-				.getIntExtra(DOWNLOAD_ERROR_INTENT_PARAM, 0);
-
-		this.addCustomPictureButton = new ImageView(getActivity());
-		this.addCustomPictureButton.setOnClickListener(this);
-		this.addCustomPictureButton.setImageResource(R.drawable.ic_add);
-		this.addCustomPictureButton.setPadding(20, 0, 20, 0);
-
-		this.removeCustomPictureButton = new ImageView(getActivity());
-		this.removeCustomPictureButton.setOnClickListener(this);
-		this.removeCustomPictureButton.setImageResource(R.drawable.ic_remove);
-		this.removeCustomPictureButton.setPadding(20, 0, 20, 0);
-		this.addCustomAudioButton = new ImageView(getActivity());
-		this.addCustomAudioButton.setOnClickListener(this);
-		this.addCustomAudioButton.setImageResource(R.drawable.ic_add);
-		this.addCustomAudioButton.setPadding(20, 0, 20, 0);
-
-		this.removeCustomAudioButton = new ImageView(getActivity());
-		this.removeCustomAudioButton.setOnClickListener(this);
-		this.removeCustomAudioButton.setImageResource(R.drawable.ic_remove);
-		this.removeCustomAudioButton.setPadding(20, 0, 20, 0);
-		return getOnCreateView(inflater, container, savedInstanceState);
-
-	}
-
-	/**
-	 * Gets the on create view.
-	 * 
-	 * @param inflater
-	 *            the inflater
-	 * @param container
-	 *            the container
-	 * @param savedInstanceState
-	 *            the saved instance state
-	 * @return the on create view
-	 */
-	public abstract View getOnCreateView(LayoutInflater inflater,
-			ViewGroup container, Bundle savedInstanceState);
-
-	/*
 	 * This thread handles the progress bar, and launches in an other thread the
 	 * download of the pictures. When the download is completed, show the 100 %
 	 * progress bar and forces a reopen of the activity.
@@ -280,84 +238,80 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.view.View.OnClickListener#onClick(android.view.View)
-	 */
-	public void onClick(final View v) {
+	@Click(R.id.bt_download_only_for_bird)
+	void downloadFromInternetButtonClicked() {
+		startDownload();
+	}
 
-		if (v == this.downloadFromInternetButton) {
-			startDownload();
-		}
-		if (v == this.downloadAllFromInternetButton) {
-			Dialog dialog = new AlertDialog.Builder(this.getActivity())
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setTitle(R.string.warning)
-					.setMessage(R.string.download_zip_package_warn_detail)
-					.setPositiveButton(R.string.ok,
-							new DialogInterface.OnClickListener() {
-								public void onClick(
-										final DialogInterface dialog,
-										final int whichButton) {
-									dialog.dismiss();
-									startDownloadAll();
-								}
-							})
-					.setNegativeButton(R.string.cancel,
-							new DialogInterface.OnClickListener() {
-								public void onClick(
-										final DialogInterface dialog,
-										final int whichButton) {
-									dialog.dismiss();
-								}
-							}).create();
-			dialog.show();
-		}
-		if ((v == this.addCustomPictureButton)
-				|| (v == this.addCustomAudioButton)) {
+	@Click(R.id.bt_download_all)
+	void downloadAllButtonClicked() {
+		Dialog dialog = new AlertDialog.Builder(this.getActivity())
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.warning)
+				.setMessage(R.string.download_zip_package_warn_detail)
+				.setPositiveButton(R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(final DialogInterface dialog,
+									final int whichButton) {
+								dialog.dismiss();
+								startDownloadAll();
+							}
+						})
+				.setNegativeButton(R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							public void onClick(final DialogInterface dialog,
+									final int whichButton) {
+								dialog.dismiss();
+							}
+						}).create();
+		dialog.show();
+	}
+
+	// TODO : faire un bouton commun aux sons et images
+	@Click(R.id.iv_add_custom_picture)
+	void addCustomPictureClicked() {
+		final Intent intent = new Intent(getActivity(),
+				AddCustomMediaActivity_.class);
+		intent.putExtra(OrnidroidFileType.FILE_TYPE_INTENT_PARAM_NAME,
+				getFileType());
+		intent.putExtra(Constants.BIRD_DIRECTORY_PARAMETER_NAME,
+				this.ornidroidService.getCurrentBird().getBirdDirectoryName());
+		startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+	}
+
+	@Click(R.id.iv_remove_custom_picture)
+	void removeCustomPictureClicked() {
+		try {
+			this.ornidroidIOService
+					.removeCustomMediaFile(this.currentMediaFile);
+			Toast.makeText(
+					getActivity(),
+					this.getResources().getString(
+							R.string.remove_custom_media_success),
+					Toast.LENGTH_LONG).show();
 			final Intent intent = new Intent(getActivity(),
-					AddCustomMediaActivity_.class);
-			intent.putExtra(OrnidroidFileType.FILE_TYPE_INTENT_PARAM_NAME,
-					getFileType());
-			intent.putExtra(Constants.BIRD_DIRECTORY_PARAMETER_NAME,
-					this.ornidroidService.getCurrentBird()
-							.getBirdDirectoryName());
-			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+					NewBirdActivity_.class);
+			// put the uri so that the BirdInfoActivity reloads correctly
+			// the bird
+			intent.setData(getActivity().getIntent().getData());
+			// put an extra info to let the BirdInfoActivity know which tab
+			// to open
+			intent.putExtra(NewBirdActivity.INTENT_TAB_TO_OPEN,
+					OrnidroidFileType.getCode(getFileType()));
+			startActivity(intent);
+			getActivity().finish();
+		} catch (final OrnidroidException e) {
+			Toast.makeText(
+					getActivity(),
+					this.getResources().getString(
+							R.string.add_custom_media_error)
+							+ e.getMessage(), Toast.LENGTH_LONG).show();
 		}
-		if ((v == this.removeCustomPictureButton)
-				|| (v == this.removeCustomAudioButton)) {
-			try {
-				this.ornidroidIOService
-						.removeCustomMediaFile(this.currentMediaFile);
-				Toast.makeText(
-						getActivity(),
-						this.getResources().getString(
-								R.string.remove_custom_media_success),
-						Toast.LENGTH_LONG).show();
-				final Intent intent = new Intent(getActivity(),
-						NewBirdActivity_.class);
-				// put the uri so that the BirdInfoActivity reloads correctly
-				// the bird
-				intent.setData(getActivity().getIntent().getData());
-				// put an extra info to let the BirdInfoActivity know which tab
-				// to open
-				intent.putExtra(NewBirdActivity.INTENT_TAB_TO_OPEN,
-						OrnidroidFileType.getCode(getFileType()));
-				startActivity(intent);
-				getActivity().finish();
-			} catch (final OrnidroidException e) {
-				Toast.makeText(
-						getActivity(),
-						this.getResources().getString(
-								R.string.add_custom_media_error)
-								+ e.getMessage(), Toast.LENGTH_LONG).show();
-			}
-		}
-		if (v == this.updateFilesButton) {
-			checkForUpdates(true);
-		}
+	}
 
+	@Click(R.id.iv_update_files_button)
+	void updateFilesButtonClicked() {
+		checkForUpdates(true);
 	}
 
 	/**
@@ -423,12 +377,11 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	/**
 	 * Reset screen before download.
 	 */
-	private void resetScreenBeforeDownload() {
-		getSpecificContentLayout().removeAllViews();
-		this.downloadInfoText = new TextView(getActivity());
-		this.downloadInfoText.setText(R.string.download_please_wait);
-		this.downloadInfoText.setPadding(5, 10, 5, 20);
-		getSpecificContentLayout().addView(this.downloadInfoText);
+	@UiThread
+	void resetScreenBeforeDownload() {
+		this.btDownloadOnlyForBird.setVisibility(View.GONE);
+		this.btDownloadAll.setVisibility(View.GONE);
+		this.noMediaMessage.setText(R.string.download_please_wait);
 	}
 
 	/**
@@ -456,65 +409,80 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 		onCheckUpdateTaskEnded(manualCheck, updatesToDo, exception);
 	}
 
+	@Background(delay = 2000)
+	void manageDownloadAllProgressBars() {
+
+		while (isDownloadAllRunning) {
+			updateDownloadAllProgressBars();
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+
+			}
+		}
+	}
+
+	@UiThread
+	void updateDownloadAllProgressBars() {
+		if (downloadAllProgressBar1 == null) {
+			downloadAllProgressBar1 = new ProgressBar(this.getActivity());
+			downloadAllProgressBar2 = new ProgressBar(this.getActivity());
+			this.downloadAllProgressBar2.setMax(BasicConstants
+					.getNbOfFilesInPackage(getFileType()));
+			getSpecificContentLayout().addView(downloadAllProgressBar1);
+			getSpecificContentLayout().addView(downloadAllProgressBar2);
+		}
+		downloadAllProgressBar1.setProgress(ornidroidIOService
+				.getZipDownloadProgressPercent(getFileType()));
+		downloadAllProgressBar1.setProgress(ornidroidIOService
+				.getInstallProgressPercent(getFileType()));
+	}
+
 	/**
 	 * Start download all.
 	 */
-	public void startDownloadAll() {
+	@Background
+	void startDownloadAll() {
+		if (!isDownloadAllRunning) {
 
-		resetScreenBeforeDownload();
-		if (this.ornidroidIOService.isEnoughFreeSpace(getFileType())) {
-			// lock the screen rotation to avoid onDestroy call
-			UIHelper.lockScreenOrientation(getActivity());
-			if (this.handlerDownloadZipThread == null) {
-				this.handlerDownloadZipThread = new HandlerForDownloadZipPackageThread(
-						ornidroidIOService, Constants.getOrnidroidHome(),
-						getFileType());
-				this.handlerDownloadZipThread.start();
-			}
-			this.handlerDownloadZipThread.genericTask(this);
-			this.progressBarDownloadPackage = new DoubleProgressBarDialog(
-					getActivity(), getFileType());
+			isDownloadAllRunning = true;
 
-			this.progressBarDownloadPackage.setCancelable(false);
+			resetScreenBeforeDownload();
+			if (this.ornidroidIOService.isEnoughFreeSpace(getFileType())) {
+				Exception exception = null;
+				try {
+					manageDownloadAllProgressBars();
 
-			this.progressBarDownloadPackage.show();
-
-			Runnable runnableUpdateProgressBar = new Runnable() {
-
-				public void run() {
-					while (progressBarDownloadPackage.isShowing()) {
-						progressBarDownloadPackage
-								.setProgressDownload(ornidroidIOService
-										.getZipDownloadProgressPercent(getFileType()));
-						progressBarDownloadPackage
-								.setProgressInstall(ornidroidIOService
-										.getInstallProgressPercent(getFileType()));
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-
-						}
+					String zipname = this.ornidroidIOService
+							.getZipname(getFileType());
+					try {
+						this.ornidroidIOService.downloadZipPackage(zipname,
+								Constants.getOrnidroidHome());
+					} catch (OrnidroidException e) {
+						exception = e;
 					}
+				} finally {
+					// post the event in the EventBus
+					EventBus.getDefault().post(new DownloadZipEvent(exception));
 				}
 
-			};
+			} else {
+				Dialog dialog = new AlertDialog.Builder(this.getActivity())
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setTitle(R.string.download_zip_package_error)
+						.setMessage(R.string.download_zip_not_enough_space)
+						.setPositiveButton(R.string.ok,
+								new DialogInterface.OnClickListener() {
+									public void onClick(
+											final DialogInterface dialog,
+											final int whichButton) {
+										dialog.dismiss();
+										reloadActivity();
+									}
+								}).create();
+				dialog.show();
+			}
 
-			new Thread(runnableUpdateProgressBar).start();
-		} else {
-			Dialog dialog = new AlertDialog.Builder(this.getActivity())
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setTitle(R.string.download_zip_package_error)
-					.setMessage(R.string.download_zip_not_enough_space)
-					.setPositiveButton(R.string.ok,
-							new DialogInterface.OnClickListener() {
-								public void onClick(
-										final DialogInterface dialog,
-										final int whichButton) {
-									dialog.dismiss();
-									reloadActivity();
-								}
-							}).create();
-			dialog.show();
 		}
 	}
 
@@ -526,66 +494,37 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 */
 	protected abstract LinearLayout getSpecificContentLayout();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.ornidroid.ui.threads.GenericTaskHandler.GenericTaskCallback#onTaskEnded
-	 * (fr.ornidroid.ui.threads.GenericTaskHandler,
-	 * fr.ornidroid.ui.threads.LoaderInfo)
-	 */
-	public void onTaskEnded(GenericTaskHandler taskHandler,
-			LoaderInfo loaderInfo) {
-		switch (taskHandler.getThreadType()) {
-
-		case DOWNLOAD_ZIP:
-			onDownloadZipPackageTaskEnded(loaderInfo);
-			break;
-		default:
-			break;
-		}
-
-	}
-
 	/**
 	 * On download zip package task ended.
 	 * 
 	 * @param loaderInfo
 	 *            the loader info
 	 */
-	private void onDownloadZipPackageTaskEnded(LoaderInfo loaderInfo) {
-		try {
-			progressBarDownloadPackage.dismiss();
-			// unlock screen orientation
-			UIHelper.unlockScreenOrientation(getActivity());
-			if (loaderInfo.getException() != null) {
-				String downloadErrorText = getActivity().getResources()
-						.getString(R.string.download_zip_package_error_detail)
-						+ BasicConstants.CARRIAGE_RETURN
-						+ loaderInfo.getException().toString();
-				Dialog dialog = new AlertDialog.Builder(this.getActivity())
-						.setIcon(android.R.drawable.ic_dialog_alert)
-						.setTitle(R.string.download_zip_package_error)
-						.setMessage(downloadErrorText)
-						.setPositiveButton(R.string.ok,
-								new DialogInterface.OnClickListener() {
-									public void onClick(
-											final DialogInterface dialog,
-											final int whichButton) {
-										dialog.dismiss();
-										reloadActivity();
-									}
-								}).create();
-				dialog.show();
-			} else {
-				reloadActivity();
-			}
-		} catch (java.lang.IllegalArgumentException e) {
-			// this should not occur since the screen is locked during the
-			// download thread
-			// if this happens, it means that the activity was destroyed earlier
+	@UiThread
+	void onEventMainThread(DownloadZipEvent event) {
+		isDownloadAllRunning = false;
+		if (event.exception != null) {
+			String downloadErrorText = getActivity().getResources().getString(
+					R.string.download_zip_package_error_detail)
+					+ BasicConstants.CARRIAGE_RETURN
+					+ event.exception.toString();
+			Dialog dialog = new AlertDialog.Builder(this.getActivity())
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setTitle(R.string.download_zip_package_error)
+					.setMessage(downloadErrorText)
+					.setPositiveButton(R.string.ok,
+							new DialogInterface.OnClickListener() {
+								public void onClick(
+										final DialogInterface dialog,
+										final int whichButton) {
+									dialog.dismiss();
+									reloadActivity();
+								}
+							}).create();
+			dialog.show();
+		} else {
+			reloadActivity();
 		}
-
 	}
 
 	/**
@@ -663,9 +602,11 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 * 
 	 * @return the update files button
 	 */
+	// TODO : a eliminer. Conservé uniquement pour la compilation du fragment
+	// audio
+	@Deprecated
 	public ImageView getUpdateFilesButton() {
 		this.updateFilesButton = new ImageView(getActivity());
-		this.updateFilesButton.setOnClickListener(this);
 		this.updateFilesButton
 				.setImageResource(R.drawable.ic_check_for_updates);
 		return this.updateFilesButton;
@@ -717,45 +658,9 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 	 * Prints the download button and info.
 	 */
 	public void printDownloadButtonAndInfo() {
-		getSpecificContentLayout().setOrientation(LinearLayout.VERTICAL);
-		getSpecificContentLayout().setGravity(Gravity.CENTER_HORIZONTAL);
-
-		final TextView noMediaMessage = new TextView(getActivity());
-		noMediaMessage.setPadding(5, 10, 5, 20);
-		noMediaMessage.setGravity(Gravity.CENTER_HORIZONTAL);
-
-		getSpecificContentLayout().addView(noMediaMessage);
-		this.downloadFromInternetButton = new Button(getActivity());
-		this.downloadFromInternetButton.setOnClickListener(this);
-
-		this.downloadFromInternetButton.setText(R.string.download_birds_file);
-		this.downloadFromInternetButton.setLayoutParams(new LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-		getSpecificContentLayout().addView(this.downloadFromInternetButton);
-
-		this.downloadAllFromInternetButton = new Button(getActivity());
-
-		this.downloadAllFromInternetButton.setOnClickListener(this);
-		this.downloadAllFromInternetButton
-				.setText(R.string.download_zip_package);
-		this.downloadAllFromInternetButton.setLayoutParams(new LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-		getSpecificContentLayout().addView(this.downloadAllFromInternetButton);
-
-		final TextView manualDownloadInfo = new TextView(getActivity());
-		manualDownloadInfo.setPadding(5, 10, 5, 20);
-		manualDownloadInfo.setGravity(Gravity.CENTER_HORIZONTAL);
-		manualDownloadInfo.setText(R.string.download_manual);
-		Linkify.addLinks(manualDownloadInfo, Linkify.ALL);
-		getSpecificContentLayout().addView(manualDownloadInfo);
-
 		final OrnidroidError ornidroidError = OrnidroidError
 				.getOrnidroidError(this.ornidroidDownloadErrorCode);
-
 		switch (ornidroidError) {
-
 		case ORNIDROID_CONNECTION_PROBLEM:
 			noMediaMessage.setText(R.string.dialog_alert_connection_problem);
 			break;
@@ -774,12 +679,23 @@ public abstract class AbstractFragment extends Fragment implements Runnable,
 				noMediaMessage.setText(R.string.no_wiki);
 				break;
 			}
-
 			break;
 		default:
 			noMediaMessage.setText(R.string.unknown_error);
 			break;
 		}
 
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		EventBus.getDefault().register(this);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		EventBus.getDefault().unregister(this);
 	}
 }

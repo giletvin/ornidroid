@@ -28,7 +28,6 @@ public class WikipediaFragment extends AbstractFragment {
 	 * fr.ornidroid.ui.components.AbstractFragment#getOnCreateView(android.view
 	 * .LayoutInflater, android.view.ViewGroup, android.os.Bundle)
 	 */
-	@Override
 	public View getOnCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		if (this.ornidroidService.getCurrentBird() == null) {

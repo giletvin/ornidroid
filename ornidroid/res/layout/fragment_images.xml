@@ -1,62 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/download_banner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/tv_no_media_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="10sp"
+            android:text="@string/no_pictures" />
+
+        <Button
+            android:id="@+id/bt_download_only_for_bird"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_no_media_message"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="10sp"
+            android:text="@string/download_birds_file" />
+
+        <Button
+            android:id="@+id/bt_download_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bt_download_only_for_bird"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="10sp"
+            android:text="@string/download_zip_package" />
+
+        <TextView
+            android:id="@+id/tv_manual_download_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bt_download_all"
+            android:autoLink="all"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="10sp"
+            android:text="@string/download_manual" />
+    </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/images_header"
+        android:id="@+id/fragment_main_content"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/images_header"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/layout_taxon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tv_taxon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10sp"
+                    android:paddingLeft="10sp"
+                    android:paddingTop="10sp"
+                    android:text="Taxon" />
+
+                <TextView
+                    android:id="@+id/tv_nb_pictures"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10sp"
+                    android:paddingLeft="10sp"
+                    android:paddingTop="10sp"
+                    android:text="nbPictures" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/layout_taxon"
+                android:gravity="right"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/iv_add_custom_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/add_custom_media_title"
+                    android:src="@drawable/ic_add" />
+
+                <ImageView
+                    android:id="@+id/iv_remove_custom_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/add_custom_media_title"
+                    android:src="@drawable/ic_remove" />
+
+                <ImageView
+                    android:id="@+id/iv_update_files_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/home_stars"
+                    android:src="@drawable/ic_check_for_updates" />
+
+                <ImageView
+                    android:id="@+id/iv_info_button_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/home_stars"
+                    android:src="@drawable/ic_info" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/images_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/images_header"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/picture_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10sp"
+                android:paddingLeft="10sp"
+                android:paddingTop="10sp"
+                android:text="picture description" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="10sp"
+                android:paddingTop="10sp" >
+
+                <ImageView
+                    android:id="@+id/previous_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/bird_image"
+                    android:src="@drawable/ic_previous" />
+
+                <ImageView
+                    android:id="@+id/zoom_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/bird_image"
+                    android:src="@drawable/ic_zoom" />
+
+                <ImageView
+                    android:id="@+id/next_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/bird_image"
+                    android:src="@drawable/ic_next" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/picture"
+                android:layout_width="fill_parent"
+                android:layout_height="300sp"
+                android:contentDescription="@string/bird_image"
+                android:scaleType="fitCenter"
+                android:src="@drawable/oiseauweb" />
+        </LinearLayout>
     </LinearLayout>
-	<TextView
-	    android:paddingBottom="10sp"
-	    android:paddingTop="10sp"
-	    android:paddingLeft="10sp"
-        android:id="@+id/picture_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/home_stars" />
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="10sp"
-        android:paddingTop="10sp" >
 
-        <ImageView
-            android:id="@+id/previous_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="@string/bird_image"
-            android:src="@drawable/ic_previous" />
-
-        <ImageView
-            android:id="@+id/zoom_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="@string/bird_image"
-            android:src="@drawable/ic_zoom" />
-
-        <ImageView
-            android:id="@+id/next_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="@string/bird_image"
-            android:src="@drawable/ic_next" />
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/picture"
-        android:layout_width="fill_parent"
-        android:layout_height="300sp"
-        android:contentDescription="@string/bird_image"
-        android:scaleType="fitCenter"
-        android:src="@drawable/oiseauweb" />
-
-</LinearLayout>
+</RelativeLayout>

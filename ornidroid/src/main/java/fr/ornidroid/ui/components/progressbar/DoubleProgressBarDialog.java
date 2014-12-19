@@ -11,6 +11,7 @@ import fr.ornidroid.helper.BasicConstants;
 /**
  * The Class DoubleProgressBarDialog.
  */
+@Deprecated
 public class DoubleProgressBarDialog extends Dialog {
 
 	/** The progress bar1. */

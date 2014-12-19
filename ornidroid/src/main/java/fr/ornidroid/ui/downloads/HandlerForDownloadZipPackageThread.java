@@ -10,6 +10,7 @@ import fr.ornidroid.ui.threads.ThreadEnum;
 /**
  * The Class HandlerForCheckUpdateFilesThread.
  */
+@Deprecated
 public class HandlerForDownloadZipPackageThread extends HandlerGenericThread {
 
 	/** The ornidroid io service. */

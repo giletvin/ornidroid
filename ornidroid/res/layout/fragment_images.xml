@@ -98,6 +98,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/add_custom_media_title"
+                    android:paddingBottom="10sp"
+                    android:paddingLeft="10sp"
+                    android:paddingTop="10sp"
                     android:src="@drawable/ic_add" />
 
                 <ImageView
@@ -105,6 +108,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/add_custom_media_title"
+                    android:paddingBottom="10sp"
+                    android:paddingLeft="10sp"
+                    android:paddingTop="10sp"
                     android:src="@drawable/ic_remove" />
 
                 <ImageView
@@ -112,6 +118,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/home_stars"
+                    android:paddingBottom="10sp"
+                    android:paddingLeft="10sp"
+                    android:paddingTop="10sp"
                     android:src="@drawable/ic_check_for_updates" />
 
                 <ImageView
@@ -119,6 +128,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/home_stars"
+                    android:paddingBottom="10sp"
+                    android:paddingLeft="10sp"
+                    android:paddingTop="10sp"
                     android:src="@drawable/ic_info" />
             </LinearLayout>
         </RelativeLayout>

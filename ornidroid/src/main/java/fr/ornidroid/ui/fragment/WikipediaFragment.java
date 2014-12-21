@@ -52,7 +52,6 @@ public class WikipediaFragment extends AbstractFragment {
 			specificContentLayout.addView(wikipediaWebView);
 		} else {
 			specificContentLayout.removeAllViews();
-			printDownloadButtonAndInfo();
 		}
 
 		return specificContentLayout;

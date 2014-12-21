@@ -114,9 +114,6 @@ public class ImagesFragment extends AbstractFragment {
 	@AfterViews
 	void afterViews() {
 
-		// TODO : ATTENTION : a mutualiser dans Abstract
-		ornidroidDownloadErrorCode = getActivity().getIntent().getIntExtra(
-				DOWNLOAD_ERROR_INTENT_PARAM, 0);
 		if (this.ornidroidService.getCurrentBird() == null) {
 			// Github : #118
 			final Intent intent = new Intent(getActivity(), HomeActivity_.class);
@@ -138,7 +135,6 @@ public class ImagesFragment extends AbstractFragment {
 			if (ornidroidService.getCurrentBird().getNumberOfPictures() == 0) {
 				fragmentMainContent.setVisibility(View.GONE);
 				downloadBanner.setVisibility(View.VISIBLE);
-				printDownloadButtonAndInfo();
 			} else {
 				fragmentMainContent.setVisibility(View.VISIBLE);
 				downloadBanner.setVisibility(View.GONE);

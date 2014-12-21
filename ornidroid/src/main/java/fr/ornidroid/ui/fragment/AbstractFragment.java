@@ -13,7 +13,6 @@ import org.androidannotations.annotations.ViewById;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -28,12 +27,12 @@ import de.greenrobot.event.EventBus;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
+import fr.ornidroid.event.DownloadOnlyOneBirdEvent;
 import fr.ornidroid.event.DownloadZipEvent;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidError;
 import fr.ornidroid.helper.OrnidroidException;
-import fr.ornidroid.helper.UIHelper;
 import fr.ornidroid.service.IOrnidroidIOService;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
@@ -46,10 +45,10 @@ import fr.ornidroid.ui.activity.NewBirdActivity_;
  * The Class AbstractFragment.
  */
 @EFragment
-public abstract class AbstractFragment extends Fragment implements Runnable {
+public abstract class AbstractFragment extends Fragment {
 
 	@InstanceState
-	boolean isDownloadAllRunning = false;
+	boolean isDownloadInProgress = false;
 
 	/**
 	 * Gets the current (selected) media file if picture : the displayed image,
@@ -62,11 +61,8 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 	/** The progress bar2. */
 	private ProgressBar downloadAllProgressBar2;
 
-	/** The progress bar. */
-	private ProgressDialog progressBar;
-
-	/** The download status. */
-	private int downloadStatus;
+	@ViewById(R.id.pb_download_in_progress)
+	ProgressBar pbDownloadInProgress;
 
 	/** The ornidroid service. */
 	IOrnidroidService ornidroidService = OrnidroidServiceFactory
@@ -74,8 +70,6 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 
 	/** The ornidroid io service. */
 	IOrnidroidIOService ornidroidIOService = new OrnidroidIOServiceImpl();
-	/** The ornidroid download error. */
-	int ornidroidDownloadErrorCode;
 
 	/** The picture layout. */
 	@ViewById(R.id.fragment_main_content)
@@ -111,20 +105,11 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 	/** The Constant DIALOG_PICTURE_INFO_ID. */
 	protected static final int DIALOG_PICTURE_INFO_ID = 0;
 
-	/** The Constant DOWNLOAD_FINISHED. */
-	protected static final int DOWNLOAD_FINISHED = 2;
-
-	/** The Constant DOWNLOAD_STARTED. */
-	protected static final int DOWNLOAD_STARTED = 0;
-
 	/** The Constant PROBLEM_DIRECTORY_ID. */
 	protected static final int PROBLEM_DIRECTORY_ID = 2;
 
 	/** The Constant PROBLEM_DOWNLOAD_ID. */
 	protected static final int PROBLEM_DOWNLOAD_ID = 1;
-
-	/** The Constant DOWNLOAD_NOT_STARTED. */
-	private static final int DOWNLOAD_NOT_STARTED = 1;
 
 	/**
 	 * Gets the file type.
@@ -172,69 +157,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 		}
 	}
 
-	/*
-	 * This thread handles the progress bar, and launches in an other thread the
-	 * download of the pictures. When the download is completed, show the 100 %
-	 * progress bar and forces a reopen of the activity.
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
-	public void run() {
-
-		while (this.downloadStatus != DOWNLOAD_FINISHED) {
-
-			startDownloadThreadAndComputeDownloadProgress();
-
-			// your computer is too fast, sleep 1 second
-			try {
-
-				Thread.sleep(1000);
-
-			} catch (final InterruptedException e) {
-				// Log.e(Constants.LOG_TAG,
-				// "Exception in the progress bar thread " + e);
-
-			}
-
-		}
-
-		// ok, file is downloaded,
-		if (this.downloadStatus == DOWNLOAD_FINISHED) {
-
-			// sleep 2 seconds, so that you can see the 100%
-			try {
-				Thread.sleep(2000);
-			} catch (final InterruptedException e) {
-				// Log.e(Constants.LOG_TAG,
-				// "Exception in the completed progress bar thread " + e);
-
-			}
-
-			// close the progress bar dialog
-			this.progressBar.dismiss();
-
-			UIHelper.unlockScreenOrientation(getActivity());
-			// now that the files have been downloaded, force a reopen of the
-			// same screen with an intent
-			final Intent intent = new Intent(getActivity(),
-					NewBirdActivity_.class);
-			// put the uri so that the BirdInfoActivity reloads correctly the
-			// bird
-			intent.setData(getActivity().getIntent().getData());
-			// put an extra info to let the BirdInfoActivity know which tab to
-			// open.
-			intent.putExtra(NewBirdActivity.INTENT_TAB_TO_OPEN,
-					OrnidroidFileType.getCode(getFileType()));
-			intent.putExtra(DOWNLOAD_ERROR_INTENT_PARAM,
-					this.ornidroidDownloadErrorCode);
-			startActivity(intent);
-			getActivity().finish();
-		}
+	void downloadTask() {
 
 	}
 
@@ -315,63 +238,29 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 	}
 
 	/**
-	 * Start download thread and compute download progress.
-	 * 
-	 * @return this method is periodically called by the progress bar thread.
-	 *         When the download is finished, the return is true.
-	 */
-	private void startDownloadThreadAndComputeDownloadProgress() {
-		if (this.downloadStatus == DOWNLOAD_NOT_STARTED) {
-			// if download is not started, start it in a new thread
-			this.downloadStatus = DOWNLOAD_STARTED;
-			new Thread(new Runnable() {
-				public void run() {
-
-					try {
-						AbstractFragment.this.ornidroidIOService
-								.downloadMediaFiles(getMediaHomeDirectory(),
-										AbstractFragment.this.ornidroidService
-												.getCurrentBird(),
-										getFileType());
-
-					} catch (final OrnidroidException e) {
-						// Log.e(Constants.LOG_TAG,
-						// "Download pb " + e.getErrorType() + " "
-						// + e.getSourceException());
-						// keep it in the field, to get it back when the
-						// activity is reloaded.
-						AbstractFragment.this.ornidroidDownloadErrorCode = OrnidroidError
-								.getErrorCode(e.getErrorType());
-
-					} finally {
-						AbstractFragment.this.downloadStatus = DOWNLOAD_FINISHED;
-					}
-
-				}
-			}).start();
-		}
-
-	}
-
-	/**
 	 * Start download.
 	 */
-	protected void startDownload() {
-		resetScreenBeforeDownload();
-		this.downloadStatus = DOWNLOAD_NOT_STARTED;
-		// prepare for a progress bar dialog
-		this.progressBar = new ProgressDialog(getActivity());
-		this.progressBar.setCancelable(true);
-		this.progressBar.setMessage(this.getResources().getText(
-				R.string.download_in_progress));
-		this.progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		UIHelper.lockScreenOrientation(getActivity());
-		this.progressBar.show();
+	@Background
+	void startDownload() {
+		if (!isDownloadInProgress) {
+			resetScreenBeforeDownload();
+			// TODO : faire apparaître une progress bar !! A mettre dans le
+			// layout du fragment.
+			Exception exception = null;
+			try {
+				AbstractFragment.this.ornidroidIOService
+						.downloadMediaFiles(getMediaHomeDirectory(),
+								AbstractFragment.this.ornidroidService
+										.getCurrentBird(), getFileType());
+			} catch (final OrnidroidException e) {
+				exception = e;
+			} finally {
+				// post the event in the EventBus
+				EventBus.getDefault().post(
+						new DownloadOnlyOneBirdEvent(exception));
+			}
 
-		// reset download status
-		this.downloadStatus = DOWNLOAD_NOT_STARTED;
-
-		new Thread(this).start();
+		}
 	}
 
 	/**
@@ -379,6 +268,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 	 */
 	@UiThread
 	void resetScreenBeforeDownload() {
+		pbDownloadInProgress.setVisibility(View.VISIBLE);
 		this.btDownloadOnlyForBird.setVisibility(View.GONE);
 		this.btDownloadAll.setVisibility(View.GONE);
 		this.noMediaMessage.setText(R.string.download_please_wait);
@@ -412,7 +302,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 	@Background(delay = 2000)
 	void manageDownloadAllProgressBars() {
 
-		while (isDownloadAllRunning) {
+		while (isDownloadInProgress) {
 			updateDownloadAllProgressBars();
 			try {
 				Thread.sleep(2000);
@@ -443,10 +333,8 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 	 */
 	@Background
 	void startDownloadAll() {
-		if (!isDownloadAllRunning) {
-
-			isDownloadAllRunning = true;
-
+		if (!isDownloadInProgress) {
+			isDownloadInProgress = true;
 			resetScreenBeforeDownload();
 			if (this.ornidroidIOService.isEnoughFreeSpace(getFileType())) {
 				Exception exception = null;
@@ -465,25 +353,27 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 					// post the event in the EventBus
 					EventBus.getDefault().post(new DownloadZipEvent(exception));
 				}
-
 			} else {
-				Dialog dialog = new AlertDialog.Builder(this.getActivity())
-						.setIcon(android.R.drawable.ic_dialog_alert)
-						.setTitle(R.string.download_zip_package_error)
-						.setMessage(R.string.download_zip_not_enough_space)
-						.setPositiveButton(R.string.ok,
-								new DialogInterface.OnClickListener() {
-									public void onClick(
-											final DialogInterface dialog,
-											final int whichButton) {
-										dialog.dismiss();
-										reloadActivity();
-									}
-								}).create();
-				dialog.show();
+				notEnoughFreeSpaceForPackageDownload();
 			}
-
 		}
+	}
+
+	@UiThread
+	void notEnoughFreeSpaceForPackageDownload() {
+		Dialog dialog = new AlertDialog.Builder(this.getActivity())
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.download_zip_package_error)
+				.setMessage(R.string.download_zip_not_enough_space)
+				.setPositiveButton(R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(final DialogInterface dialog,
+									final int whichButton) {
+								dialog.dismiss();
+								reloadActivity();
+							}
+						}).create();
+		dialog.show();
 	}
 
 	/**
@@ -502,7 +392,7 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 	 */
 	@UiThread
 	void onEventMainThread(DownloadZipEvent event) {
-		isDownloadAllRunning = false;
+		isDownloadInProgress = false;
 		if (event.exception != null) {
 			String downloadErrorText = getActivity().getResources().getString(
 					R.string.download_zip_package_error_detail)
@@ -511,6 +401,37 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 			Dialog dialog = new AlertDialog.Builder(this.getActivity())
 					.setIcon(android.R.drawable.ic_dialog_alert)
 					.setTitle(R.string.download_zip_package_error)
+					.setMessage(downloadErrorText)
+					.setPositiveButton(R.string.ok,
+							new DialogInterface.OnClickListener() {
+								public void onClick(
+										final DialogInterface dialog,
+										final int whichButton) {
+									dialog.dismiss();
+									reloadActivity();
+								}
+							}).create();
+			dialog.show();
+		} else {
+			reloadActivity();
+		}
+	}
+
+	/**
+	 * On download only for one bird ended.
+	 * 
+	 * @param event
+	 *            the event
+	 */
+	@UiThread
+	void onEventMainThread(DownloadOnlyOneBirdEvent event) {
+		isDownloadInProgress = false;
+		if (event.exception != null) {
+			String downloadErrorText = getErrorMessage((OrnidroidException) event.exception);
+
+			Dialog dialog = new AlertDialog.Builder(this.getActivity())
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setTitle(R.string.download_birds_file)
 					.setMessage(downloadErrorText)
 					.setPositiveButton(R.string.ok,
 							new DialogInterface.OnClickListener() {
@@ -657,33 +578,43 @@ public abstract class AbstractFragment extends Fragment implements Runnable {
 	/**
 	 * Prints the download button and info.
 	 */
-	public void printDownloadButtonAndInfo() {
-		final OrnidroidError ornidroidError = OrnidroidError
-				.getOrnidroidError(this.ornidroidDownloadErrorCode);
+	public String getErrorMessage(OrnidroidException ornidroidException) {
+		OrnidroidError ornidroidError = ornidroidException.getErrorType();
+		String msg = null;
 		switch (ornidroidError) {
 		case ORNIDROID_CONNECTION_PROBLEM:
-			noMediaMessage.setText(R.string.dialog_alert_connection_problem);
+			msg = getActivity().getResources().getString(
+					R.string.dialog_alert_connection_problem);
 			break;
 		case ORNIDROID_DOWNLOAD_ERROR_MEDIA_DOES_NOT_EXIST:
-			noMediaMessage.setText(R.string.no_resources_online);
+			msg = getActivity().getResources().getString(
+					R.string.no_resources_online);
+
 			break;
 		case NO_ERROR:
 			switch (getFileType()) {
 			case AUDIO:
-				noMediaMessage.setText(R.string.no_records);
+				msg = getActivity().getResources().getString(
+						R.string.no_records);
+
 				break;
 			case PICTURE:
-				noMediaMessage.setText(R.string.no_pictures);
+				msg = getActivity().getResources().getString(
+						R.string.no_pictures);
+
 				break;
 			case WIKIPEDIA_PAGE:
-				noMediaMessage.setText(R.string.no_wiki);
+				msg = getActivity().getResources().getString(R.string.no_wiki);
+
 				break;
 			}
 			break;
 		default:
-			noMediaMessage.setText(R.string.unknown_error);
+			msg = getActivity().getResources()
+					.getString(R.string.unknown_error);
 			break;
 		}
+		return msg;
 
 	}
 

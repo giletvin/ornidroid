@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/download_banner"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ProgressBar
+            android:id="@+id/pb_download_in_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="10sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_no_media_message"
@@ -21,7 +33,6 @@
             android:id="@+id/bt_download_only_for_bird"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_no_media_message"
             android:paddingBottom="10sp"
             android:paddingLeft="10sp"
             android:paddingTop="10sp"
@@ -31,7 +42,6 @@
             android:id="@+id/bt_download_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/bt_download_only_for_bird"
             android:paddingBottom="10sp"
             android:paddingLeft="10sp"
             android:paddingTop="10sp"
@@ -41,13 +51,12 @@
             android:id="@+id/tv_manual_download_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/bt_download_all"
             android:autoLink="all"
             android:paddingBottom="10sp"
             android:paddingLeft="10sp"
             android:paddingTop="10sp"
             android:text="@string/download_manual" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/fragment_main_content"
@@ -194,4 +203,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

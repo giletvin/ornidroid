@@ -103,7 +103,6 @@ public class AudioFragment extends AbstractFragment implements OnClickListener {
 						});
 			} else {
 				mAudioLayout.removeAllViews();
-				printDownloadButtonAndInfo();
 			}
 
 		} catch (final OrnidroidException e) {

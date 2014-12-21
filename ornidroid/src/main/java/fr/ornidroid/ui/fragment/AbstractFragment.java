@@ -71,10 +71,9 @@ public abstract class AbstractFragment extends Fragment {
 	/** The ornidroid io service. */
 	IOrnidroidIOService ornidroidIOService = new OrnidroidIOServiceImpl();
 
-	/** The picture layout. */
+	/** Layouts */
 	@ViewById(R.id.fragment_main_content)
 	LinearLayout fragmentMainContent;
-
 	@ViewById(R.id.download_banner)
 	View downloadBanner;
 	@ViewById(R.id.bt_download_only_for_bird)
@@ -82,22 +81,19 @@ public abstract class AbstractFragment extends Fragment {
 	@ViewById(R.id.bt_download_all)
 	Button btDownloadAll;
 	/** The remove custom picture button. */
+	// TODO : refactoring removeCustomMediabutton
 	@ViewById(R.id.iv_remove_custom_picture)
 	ImageView removeCustomPictureButton;
-	/** The remove custom picture button. */
-	ImageView removeCustomAudioButton;
 
 	@ViewById(R.id.tv_no_media_message)
 	TextView noMediaMessage;
 	/** The update files button. */
 	@ViewById(R.id.iv_update_files_button)
 	ImageView updateFilesButton;
-
 	/** The add custom picture button. */
+	// TODO : refactoring removeCustomMediabutton
 	@ViewById(R.id.iv_add_custom_picture)
 	ImageView addCustomPictureButton;
-	/** The add custom audio button. */
-	ImageView addCustomAudioButton;
 
 	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
 	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
@@ -244,8 +240,7 @@ public abstract class AbstractFragment extends Fragment {
 	void startDownload() {
 		if (!isDownloadInProgress) {
 			resetScreenBeforeDownload();
-			// TODO : faire apparaître une progress bar !! A mettre dans le
-			// layout du fragment.
+
 			Exception exception = null;
 			try {
 				AbstractFragment.this.ornidroidIOService
@@ -268,6 +263,8 @@ public abstract class AbstractFragment extends Fragment {
 	 */
 	@UiThread
 	void resetScreenBeforeDownload() {
+		// TODO : attention à la gestion du download All : afficher les progress
+		// bars
 		pbDownloadInProgress.setVisibility(View.VISIBLE);
 		this.btDownloadOnlyForBird.setVisibility(View.GONE);
 		this.btDownloadAll.setVisibility(View.GONE);
@@ -314,6 +311,7 @@ public abstract class AbstractFragment extends Fragment {
 
 	@UiThread
 	void updateDownloadAllProgressBars() {
+		// TODO : à revoir
 		if (downloadAllProgressBar1 == null) {
 			downloadAllProgressBar1 = new ProgressBar(this.getActivity());
 			downloadAllProgressBar2 = new ProgressBar(this.getActivity());
@@ -354,13 +352,13 @@ public abstract class AbstractFragment extends Fragment {
 					EventBus.getDefault().post(new DownloadZipEvent(exception));
 				}
 			} else {
-				notEnoughFreeSpaceForPackageDownload();
+				notEnoughFreeSpaceForPackageDownloadDialog();
 			}
 		}
 	}
 
 	@UiThread
-	void notEnoughFreeSpaceForPackageDownload() {
+	void notEnoughFreeSpaceForPackageDownloadDialog() {
 		Dialog dialog = new AlertDialog.Builder(this.getActivity())
 				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setTitle(R.string.download_zip_package_error)
@@ -382,6 +380,8 @@ public abstract class AbstractFragment extends Fragment {
 	 * 
 	 * @return the specific content layout
 	 */
+	// TODO : à virer
+	@Deprecated
 	protected abstract LinearLayout getSpecificContentLayout();
 
 	/**
@@ -543,25 +543,12 @@ public abstract class AbstractFragment extends Fragment {
 	public void setCurrentMediaFile(final OrnidroidFile selectedFile) {
 		this.currentMediaFile = selectedFile;
 		if (this.currentMediaFile != null) {
-			ImageView removeButton = null;
-			switch (selectedFile.getType()) {
-			case AUDIO:
-				removeButton = this.removeCustomAudioButton;
-				break;
-			case PICTURE:
-				removeButton = this.removeCustomPictureButton;
-				break;
-			case WIKIPEDIA_PAGE:
-				// do nothing
-				break;
-			}
 			if (this.currentMediaFile.isCustomMediaFile()) {
-				removeButton.setVisibility(View.VISIBLE);
+				removeCustomPictureButton.setVisibility(View.VISIBLE);
 			} else {
-				removeButton.setVisibility(View.GONE);
+				removeCustomPictureButton.setVisibility(View.GONE);
 			}
 		} else {
-			this.removeCustomAudioButton.setVisibility(View.GONE);
 			this.removeCustomPictureButton.setVisibility(View.GONE);
 		}
 	}

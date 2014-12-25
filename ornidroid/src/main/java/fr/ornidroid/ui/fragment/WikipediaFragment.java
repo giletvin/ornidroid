@@ -1,60 +1,59 @@
 package fr.ornidroid.ui.fragment;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.content.Intent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
+import android.widget.Toast;
+import fr.ornidroid.R;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.helper.OrnidroidException;
+import fr.ornidroid.ui.activity.HomeActivity_;
 
 /**
  * The Class WikipediaFragment.
  */
-@EFragment
+@EFragment(R.layout.fragment_wikipedia)
 public class WikipediaFragment extends AbstractFragment {
 
-	/** The specific content layout. */
-	private LinearLayout specificContentLayout;
+	@ViewById(R.id.wikipiedia_webview)
+	WebView wikipediaWebView;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.ornidroid.ui.components.AbstractFragment#getOnCreateView(android.view
-	 * .LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-	 */
-	public View getOnCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	@AfterViews
+	void afterViews() {
 		if (this.ornidroidService.getCurrentBird() == null) {
-			return null;
+			// Github : #118
+			final Intent intent = new Intent(getActivity(), HomeActivity_.class);
+			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 		}
-		this.specificContentLayout = new LinearLayout(getActivity());
-		this.specificContentLayout.setOrientation(LinearLayout.VERTICAL);
-		WebView wikipediaWebView = new WebView(getActivity());
+
 		try {
 			loadMediaFilesLocally();
+			OrnidroidFile wikipediaPage = ornidroidService.getCurrentBird()
+					.getWikipediaPage();
+
+			if (wikipediaPage != null) {
+				fragmentMainContent.setVisibility(View.VISIBLE);
+				downloadBanner.setVisibility(View.GONE);
+				wikipediaWebView.loadUrl("file:///" + wikipediaPage.getPath());
+
+			} else {
+				fragmentMainContent.setVisibility(View.GONE);
+				downloadBanner.setVisibility(View.VISIBLE);
+			}
+
 		} catch (final OrnidroidException e) {
-			// Log.e(Constants.LOG_TAG, "Error reading media files of bird "
-			// + this.bird.getTaxon() + " e");
+			Toast.makeText(
+					getActivity(),
+					"Error reading media files of bird "
+							+ this.ornidroidService.getCurrentBird().getTaxon()
+							+ " e", Toast.LENGTH_LONG).show();
 		}
 
-		OrnidroidFile wikipediaPage = ornidroidService.getCurrentBird()
-				.getWikipediaPage();
-
-		if (wikipediaPage != null) {
-
-			wikipediaWebView.loadUrl("file:///" + wikipediaPage.getPath());
-			specificContentLayout.addView(wikipediaWebView);
-		} else {
-			specificContentLayout.removeAllViews();
-		}
-
-		return specificContentLayout;
 	}
 
 	/*
@@ -65,17 +64,6 @@ public class WikipediaFragment extends AbstractFragment {
 	@Override
 	public OrnidroidFileType getFileType() {
 		return OrnidroidFileType.WIKIPEDIA_PAGE;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.ornidroid.ui.components.AbstractFragment#getSpecificContentLayout()
-	 */
-	@Override
-	protected LinearLayout getSpecificContentLayout() {
-		return this.specificContentLayout;
 	}
 
 }

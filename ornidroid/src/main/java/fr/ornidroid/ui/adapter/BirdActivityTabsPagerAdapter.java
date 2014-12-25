@@ -7,6 +7,7 @@ import fr.ornidroid.ui.fragment.AudioFragment_;
 import fr.ornidroid.ui.fragment.DetailsFragment_;
 import fr.ornidroid.ui.fragment.ImagesFragment_;
 import fr.ornidroid.ui.fragment.NamesFragment_;
+import fr.ornidroid.ui.fragment.WikipediaFragment_;
 
 /**
  * The Class BirdActivityTabsPagerAdapter.
@@ -59,8 +60,7 @@ public class BirdActivityTabsPagerAdapter extends FragmentPagerAdapter {
 			return new DetailsFragment_();
 		case WIKIPEDIA_TAB:
 			// Wikipedia Fragment
-			// TODO : return new WikipediaFragment_();
-			return new ImagesFragment_();
+			return new WikipediaFragment_();
 		case NAMES_TAB:
 			// Names
 			return new NamesFragment_();

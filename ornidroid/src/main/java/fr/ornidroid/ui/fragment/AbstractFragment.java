@@ -317,8 +317,7 @@ public abstract class AbstractFragment extends Fragment {
 			downloadAllProgressBar2 = new ProgressBar(this.getActivity());
 			this.downloadAllProgressBar2.setMax(BasicConstants
 					.getNbOfFilesInPackage(getFileType()));
-			getSpecificContentLayout().addView(downloadAllProgressBar1);
-			getSpecificContentLayout().addView(downloadAllProgressBar2);
+
 		}
 		downloadAllProgressBar1.setProgress(ornidroidIOService
 				.getZipDownloadProgressPercent(getFileType()));
@@ -373,16 +372,6 @@ public abstract class AbstractFragment extends Fragment {
 						}).create();
 		dialog.show();
 	}
-
-	/**
-	 * 
-	 * Gets the specific content layout.
-	 * 
-	 * @return the specific content layout
-	 */
-	// TODO : à virer
-	@Deprecated
-	protected abstract LinearLayout getSpecificContentLayout();
 
 	/**
 	 * On download zip package task ended.

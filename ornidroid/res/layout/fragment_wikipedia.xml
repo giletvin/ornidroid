@@ -1,16 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    >
-    
-    <WebView android:layout_width="fill_parent"
+    android:orientation="vertical" >
+
+    <!-- LL download banner and LL fragment_main_content to implement AbstractFragment -->
+
+    <LinearLayout
+        android:id="@+id/download_banner"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:id="@+id/wikipiedia_webview"
+        android:orientation="vertical" >
 
-        android:layout_centerInParent="true"/>
-    
+        <ProgressBar
+            android:id="@+id/pb_download_in_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="10sp"
+            android:visibility="gone" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_no_media_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="10sp"
+            android:text="@string/no_wiki" />
+
+        <Button
+            android:id="@+id/bt_download_only_for_bird"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="10sp"
+            android:text="@string/download_birds_file" />
+
+        <Button
+            android:id="@+id/bt_download_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="10sp"
+            android:text="@string/download_zip_package" />
+
+        <TextView
+            android:id="@+id/tv_manual_download_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="10sp"
+            android:text="@string/download_manual" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fragment_main_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <WebView
+            android:id="@+id/wikipiedia_webview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" />
+    </LinearLayout>
+
+</LinearLayout>

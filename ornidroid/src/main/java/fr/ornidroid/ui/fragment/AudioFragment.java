@@ -14,7 +14,6 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
@@ -104,6 +103,7 @@ public class AudioFragment extends AbstractFragment {
 
 	@Touch(R.id.SeekBar01)
 	void seekBarTouched() {
+		// TODO : tester la seek bar.
 		getMediaPlayer().seekTo(seekBar.getProgress());
 	}
 
@@ -133,20 +133,6 @@ public class AudioFragment extends AbstractFragment {
 	@Override
 	public OrnidroidFileType getFileType() {
 		return OrnidroidFileType.AUDIO;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.ornidroid.ui.components.AbstractFragment#getSpecificContentLayout()
-	 */
-	@Deprecated
-	@Override
-	protected LinearLayout getSpecificContentLayout() {
-
-		// TODO à virer
-		return null;
 	}
 
 	/**

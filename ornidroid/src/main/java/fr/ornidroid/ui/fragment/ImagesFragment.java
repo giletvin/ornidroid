@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.ornidroid.R;
@@ -164,18 +163,6 @@ public class ImagesFragment extends AbstractFragment {
 
 		this.numberOfPicturesTextView.setText(sb.toString());
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.ornidroid.ui.components.AbstractFragment#getSpecificContentLayout()
-	 */
-	@Override
-	protected LinearLayout getSpecificContentLayout() {
-		// TODO : à virer
-		return null;// this.pictureLayout;
 	}
 
 	/**

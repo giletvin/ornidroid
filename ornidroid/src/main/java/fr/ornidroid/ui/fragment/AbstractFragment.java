@@ -575,7 +575,8 @@ public abstract class AbstractFragment extends Fragment {
 			final Intent intent = new Intent(getActivity(), HomeActivity_.class);
 			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 		}
-		if (Constants.getAutomaticUpdateCheckPreference()) {
+		if (Constants.getAutomaticUpdateCheckPreference()
+				&& updateFilesButton != null) {
 			updateFilesButton.setVisibility(View.GONE);
 			checkForUpdates(false);
 		}

@@ -9,7 +9,6 @@ import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.Touch;
 import org.androidannotations.annotations.ViewById;
 
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.View;
@@ -17,14 +16,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.AudioOrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
-import fr.ornidroid.helper.Constants;
-import fr.ornidroid.helper.OrnidroidException;
-import fr.ornidroid.ui.activity.HomeActivity_;
 import fr.ornidroid.ui.activity.NewBirdActivity;
 
 /**
@@ -55,50 +50,18 @@ public class AudioFragment extends AbstractFragment {
 	/** The handler. */
 	private final Handler seekBarHandler = new Handler();
 
-	// TODO : faire un AfterViews Commun à tous les fragments ?
 	@AfterViews
 	void afterViews() {
-		if (this.ornidroidService.getCurrentBird() == null) {
-			// Github : #118
-			final Intent intent = new Intent(getActivity(), HomeActivity_.class);
-			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+		if (commonAfterViews()) {
+			final SimpleAdapter adapter = new SimpleAdapter(this.getActivity(),
+					this.ornidroidService.getCurrentBird().getListAudioFiles(),
+					R.layout.audio_list, new String[] {
+							AudioOrnidroidFile.LINE_1,
+							AudioOrnidroidFile.LINE_2 }, new int[] {
+							R.id.audio_line1, R.id.audio_line2 });
+			this.mListView.setAdapter(adapter);
+			this.mListView.setTextFilterEnabled(true);
 		}
-		// TODO : à mutualiser avec la même chose côté ImageFragement?
-		if (Constants.getAutomaticUpdateCheckPreference()) {
-			updateFilesButton.setVisibility(View.GONE);
-			checkForUpdates(false);
-		}
-		try {
-
-			// TODO : à mutualiser avec la même chose côté ImageFragement?
-			loadMediaFilesLocally();
-			if (ornidroidService.getCurrentBird().getNumberOfSounds() > 0) {
-				fragmentMainContent.setVisibility(View.VISIBLE);
-				downloadBanner.setVisibility(View.GONE);
-				final SimpleAdapter adapter = new SimpleAdapter(
-						this.getActivity(), this.ornidroidService
-								.getCurrentBird().getListAudioFiles(),
-						R.layout.audio_list, new String[] {
-								AudioOrnidroidFile.LINE_1,
-								AudioOrnidroidFile.LINE_2 }, new int[] {
-								R.id.audio_line1, R.id.audio_line2 });
-				this.mListView.setAdapter(adapter);
-				this.mListView.setTextFilterEnabled(true);
-
-			} else {
-				fragmentMainContent.setVisibility(View.GONE);
-				downloadBanner.setVisibility(View.VISIBLE);
-			}
-			// TODO: tester un oiseau qui n'a pas de son.
-
-		} catch (final OrnidroidException e) {
-			Toast.makeText(
-					getActivity(),
-					"Error reading media files of bird "
-							+ this.ornidroidService.getCurrentBird().getTaxon()
-							+ " e", Toast.LENGTH_LONG).show();
-		}
-
 	}
 
 	@Touch(R.id.SeekBar01)

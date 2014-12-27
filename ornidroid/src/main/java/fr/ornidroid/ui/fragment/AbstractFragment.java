@@ -38,6 +38,7 @@ import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidIOServiceImpl;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.activity.AddCustomMediaActivity_;
+import fr.ornidroid.ui.activity.HomeActivity_;
 import fr.ornidroid.ui.activity.NewBirdActivity;
 import fr.ornidroid.ui.activity.NewBirdActivity_;
 
@@ -95,18 +96,6 @@ public abstract class AbstractFragment extends Fragment {
 	@ViewById(R.id.iv_add_custom_picture)
 	ImageView addCustomPictureButton;
 
-	/** The Constant DOWNLOAD_ERROR_INTENT_PARAM. */
-	public static final String DOWNLOAD_ERROR_INTENT_PARAM = "DOWNLOAD_ERROR_INTENT_PARAM";
-
-	/** The Constant DIALOG_PICTURE_INFO_ID. */
-	protected static final int DIALOG_PICTURE_INFO_ID = 0;
-
-	/** The Constant PROBLEM_DIRECTORY_ID. */
-	protected static final int PROBLEM_DIRECTORY_ID = 2;
-
-	/** The Constant PROBLEM_DOWNLOAD_ID. */
-	protected static final int PROBLEM_DOWNLOAD_ID = 1;
-
 	/**
 	 * Gets the file type.
 	 * 
@@ -151,10 +140,6 @@ public abstract class AbstractFragment extends Fragment {
 			this.ornidroidIOService.loadMediaFiles(getMediaHomeDirectory(),
 					this.ornidroidService.getCurrentBird(), getFileType());
 		}
-	}
-
-	void downloadTask() {
-
 	}
 
 	@Click(R.id.bt_download_only_for_bird)
@@ -498,31 +483,6 @@ public abstract class AbstractFragment extends Fragment {
 	}
 
 	/**
-	 * Gets the add the custom picture button.
-	 * 
-	 * @return the adds the custom picture button
-	 */
-	public ImageView getAddCustomPictureButton() {
-
-		return this.addCustomPictureButton;
-	}
-
-	/**
-	 * Gets the update files button.
-	 * 
-	 * @return the update files button
-	 */
-	// TODO : a eliminer. Conservé uniquement pour la compilation du fragment
-	// audio
-	@Deprecated
-	public ImageView getUpdateFilesButton() {
-		this.updateFilesButton = new ImageView(getActivity());
-		this.updateFilesButton
-				.setImageResource(R.drawable.ic_check_for_updates);
-		return this.updateFilesButton;
-	}
-
-	/**
 	 * Sets the currently selected media file and makes the remove media button
 	 * appear or disappear accordingly.
 	 * 
@@ -604,5 +564,59 @@ public abstract class AbstractFragment extends Fragment {
 	public void onDestroy() {
 		super.onDestroy();
 		EventBus.getDefault().unregister(this);
+	}
+
+	/**
+	 * Common after views.
+	 * 
+	 * @return true, if successful and media are available. False in case of pb
+	 *         or no media to display. Download banner is automatically
+	 *         displayed
+	 */
+	boolean commonAfterViews() {
+		boolean success = true;
+		if (this.ornidroidService.getCurrentBird() == null) {
+			// Github : #118
+			final Intent intent = new Intent(getActivity(), HomeActivity_.class);
+			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+		}
+		if (Constants.getAutomaticUpdateCheckPreference()) {
+			updateFilesButton.setVisibility(View.GONE);
+			checkForUpdates(false);
+		}
+		try {
+			loadMediaFilesLocally();
+
+			switch (getFileType()) {
+			case PICTURE:
+				success = (ornidroidService.getCurrentBird()
+						.getNumberOfPictures() > 0);
+				break;
+			case AUDIO:
+				success = (ornidroidService.getCurrentBird()
+						.getNumberOfSounds() > 0);
+				break;
+			case WIKIPEDIA_PAGE:
+				success = (ornidroidService.getCurrentBird().getWikipediaPage() != null);
+				break;
+			}
+
+			if (!success) {
+				fragmentMainContent.setVisibility(View.GONE);
+				downloadBanner.setVisibility(View.VISIBLE);
+			} else {
+				fragmentMainContent.setVisibility(View.VISIBLE);
+				downloadBanner.setVisibility(View.GONE);
+
+			}
+		} catch (final OrnidroidException e) {
+			success = false;
+			Toast.makeText(
+					getActivity(),
+					"Error reading media files of bird "
+							+ this.ornidroidService.getCurrentBird().getTaxon()
+							+ " e", Toast.LENGTH_LONG).show();
+		}
+		return success;
 	}
 }

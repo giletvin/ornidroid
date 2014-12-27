@@ -11,15 +11,11 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.bo.PictureOrnidroidFile;
 import fr.ornidroid.helper.BasicConstants;
-import fr.ornidroid.helper.Constants;
-import fr.ornidroid.helper.OrnidroidException;
-import fr.ornidroid.ui.activity.HomeActivity_;
 import fr.ornidroid.ui.activity.ScrollableImageActivity;
 import fr.ornidroid.ui.activity.ScrollableImageActivity_;
 import fr.ornidroid.ui.components.PictureInfoDialog;
@@ -30,9 +26,6 @@ import fr.ornidroid.ui.picture.PictureHelper;
  */
 @EFragment(R.layout.fragment_images)
 public class ImagesFragment extends AbstractFragment {
-
-	/** The Constant DISPLAYED_PICTURE_ID. */
-	public static final String DISPLAYED_PICTURE_ID = "DISPLAYED_PICTURE_ID";
 
 	/** The displayed picture id. */
 	private int displayedPictureId;
@@ -112,41 +105,10 @@ public class ImagesFragment extends AbstractFragment {
 
 	@AfterViews
 	void afterViews() {
-
-		if (this.ornidroidService.getCurrentBird() == null) {
-			// Github : #118
-			final Intent intent = new Intent(getActivity(), HomeActivity_.class);
-			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+		if (commonAfterViews()) {
+			loadImage(0);
 		}
-		if (Constants.getAutomaticUpdateCheckPreference()) {
-			updateFilesButton.setVisibility(View.GONE);
-			checkForUpdates(false);
-		}
-		try {
-			loadMediaFilesLocally();
-			// retrieve the displayed picture (when coming back from the
-			// zoom)
-			this.displayedPictureId = getActivity().getIntent().getIntExtra(
-					DISPLAYED_PICTURE_ID, 0);
-
-			this.taxon.setText(ornidroidService.getCurrentBird().getTaxon());
-
-			if (ornidroidService.getCurrentBird().getNumberOfPictures() == 0) {
-				fragmentMainContent.setVisibility(View.GONE);
-				downloadBanner.setVisibility(View.VISIBLE);
-			} else {
-				fragmentMainContent.setVisibility(View.VISIBLE);
-				downloadBanner.setVisibility(View.GONE);
-				loadImage(0);
-			}
-		} catch (final OrnidroidException e) {
-			Toast.makeText(
-					getActivity(),
-					"Error reading media files of bird "
-							+ this.ornidroidService.getCurrentBird().getTaxon()
-							+ " e", Toast.LENGTH_LONG).show();
-		}
-
+		this.taxon.setText(ornidroidService.getCurrentBird().getTaxon());
 	}
 
 	/**

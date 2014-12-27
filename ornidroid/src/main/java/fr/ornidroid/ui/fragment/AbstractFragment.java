@@ -81,20 +81,16 @@ public abstract class AbstractFragment extends Fragment {
 	Button btDownloadOnlyForBird;
 	@ViewById(R.id.bt_download_all)
 	Button btDownloadAll;
-	/** The remove custom picture button. */
-	// TODO : refactoring removeCustomMediabutton
-	@ViewById(R.id.iv_remove_custom_picture)
-	ImageView removeCustomPictureButton;
 
 	@ViewById(R.id.tv_no_media_message)
 	TextView noMediaMessage;
 	/** The update files button. */
 	@ViewById(R.id.iv_update_files_button)
 	ImageView updateFilesButton;
-	/** The add custom picture button. */
-	// TODO : refactoring removeCustomMediabutton
-	@ViewById(R.id.iv_add_custom_picture)
-	ImageView addCustomPictureButton;
+	@ViewById(R.id.iv_add_custom_media)
+	ImageView addCustomMediaButton;
+	@ViewById(R.id.iv_remove_custom_media)
+	ImageView removeCustomMediaButton;
 
 	/**
 	 * Gets the file type.
@@ -171,8 +167,7 @@ public abstract class AbstractFragment extends Fragment {
 		dialog.show();
 	}
 
-	// TODO : faire un bouton commun aux sons et images
-	@Click(R.id.iv_add_custom_picture)
+	@Click(R.id.iv_add_custom_media)
 	void addCustomPictureClicked() {
 		final Intent intent = new Intent(getActivity(),
 				AddCustomMediaActivity_.class);
@@ -183,7 +178,7 @@ public abstract class AbstractFragment extends Fragment {
 		startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 	}
 
-	@Click(R.id.iv_remove_custom_picture)
+	@Click(R.id.iv_remove_custom_media)
 	void removeCustomPictureClicked() {
 		try {
 			this.ornidroidIOService
@@ -493,12 +488,12 @@ public abstract class AbstractFragment extends Fragment {
 		this.currentMediaFile = selectedFile;
 		if (this.currentMediaFile != null) {
 			if (this.currentMediaFile.isCustomMediaFile()) {
-				removeCustomPictureButton.setVisibility(View.VISIBLE);
+				removeCustomMediaButton.setVisibility(View.VISIBLE);
 			} else {
-				removeCustomPictureButton.setVisibility(View.GONE);
+				removeCustomMediaButton.setVisibility(View.GONE);
 			}
 		} else {
-			this.removeCustomPictureButton.setVisibility(View.GONE);
+			this.removeCustomMediaButton.setVisibility(View.GONE);
 		}
 	}
 

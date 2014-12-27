@@ -103,7 +103,7 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    android:id="@+id/iv_add_custom_picture"
+                    android:id="@+id/iv_add_custom_media"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/add_custom_media_title"
@@ -113,7 +113,7 @@
                     android:src="@drawable/ic_add" />
 
                 <ImageView
-                    android:id="@+id/iv_remove_custom_picture"
+                    android:id="@+id/iv_remove_custom_media"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/add_custom_media_title"

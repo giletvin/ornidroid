@@ -57,13 +57,11 @@ public abstract class AbstractFragment extends Fragment {
 	 */
 	private OrnidroidFile currentMediaFile;
 
-	/** The progress bar1. */
-	private ProgressBar downloadAllProgressBar1;
-	/** The progress bar2. */
-	private ProgressBar downloadAllProgressBar2;
-
 	@ViewById(R.id.pb_download_in_progress)
 	ProgressBar pbDownloadInProgress;
+
+	@ViewById(R.id.pb_download_all_in_progress)
+	ProgressBar pbDownloadAllInProgress;
 
 	/** The ornidroid service. */
 	IOrnidroidService ornidroidService = OrnidroidServiceFactory
@@ -219,7 +217,7 @@ public abstract class AbstractFragment extends Fragment {
 	@Background
 	void startDownload() {
 		if (!isDownloadInProgress) {
-			resetScreenBeforeDownload();
+			resetScreenBeforeDownloadForOneBird();
 
 			Exception exception = null;
 			try {
@@ -242,13 +240,22 @@ public abstract class AbstractFragment extends Fragment {
 	 * Reset screen before download.
 	 */
 	@UiThread
-	void resetScreenBeforeDownload() {
-		// TODO : attention à la gestion du download All : afficher les progress
-		// bars
+	void resetScreenBeforeDownloadForOneBird() {
+
 		pbDownloadInProgress.setVisibility(View.VISIBLE);
 		this.btDownloadOnlyForBird.setVisibility(View.GONE);
 		this.btDownloadAll.setVisibility(View.GONE);
 		this.noMediaMessage.setText(R.string.download_please_wait);
+	}
+
+	/**
+	 * Reset screen before download.
+	 */
+	@UiThread
+	void resetScreenBeforeDownloadZip() {
+		pbDownloadAllInProgress.setVisibility(View.VISIBLE);
+		this.btDownloadOnlyForBird.setVisibility(View.GONE);
+		this.btDownloadAll.setVisibility(View.GONE);
 	}
 
 	/**
@@ -278,7 +285,6 @@ public abstract class AbstractFragment extends Fragment {
 
 	@Background(delay = 2000)
 	void manageDownloadAllProgressBars() {
-
 		while (isDownloadInProgress) {
 			updateDownloadAllProgressBars();
 			try {
@@ -291,18 +297,17 @@ public abstract class AbstractFragment extends Fragment {
 
 	@UiThread
 	void updateDownloadAllProgressBars() {
-		// TODO : à revoir
-		if (downloadAllProgressBar1 == null) {
-			downloadAllProgressBar1 = new ProgressBar(this.getActivity());
-			downloadAllProgressBar2 = new ProgressBar(this.getActivity());
-			this.downloadAllProgressBar2.setMax(BasicConstants
+		if (ornidroidIOService.getZipDownloadProgressPercent(getFileType()) < 100) {
+			noMediaMessage.setText(R.string.download_package_in_progress);
+			pbDownloadAllInProgress.setProgress(ornidroidIOService
+					.getZipDownloadProgressPercent(getFileType()));
+		} else {
+			noMediaMessage.setText(R.string.install_package_in_progress);
+			pbDownloadAllInProgress.setMax(BasicConstants
 					.getNbOfFilesInPackage(getFileType()));
-
+			pbDownloadAllInProgress.setProgress(ornidroidIOService
+					.getInstallProgressPercent(getFileType()));
 		}
-		downloadAllProgressBar1.setProgress(ornidroidIOService
-				.getZipDownloadProgressPercent(getFileType()));
-		downloadAllProgressBar1.setProgress(ornidroidIOService
-				.getInstallProgressPercent(getFileType()));
 	}
 
 	/**
@@ -312,7 +317,7 @@ public abstract class AbstractFragment extends Fragment {
 	void startDownloadAll() {
 		if (!isDownloadInProgress) {
 			isDownloadInProgress = true;
-			resetScreenBeforeDownload();
+			resetScreenBeforeDownloadZip();
 			if (this.ornidroidIOService.isEnoughFreeSpace(getFileType())) {
 				Exception exception = null;
 				try {

@@ -48,8 +48,9 @@ import fr.ornidroid.ui.activity.NewBirdActivity_;
 @EFragment
 public abstract class AbstractFragment extends Fragment {
 
+	/** The download in progress type. */
 	@InstanceState
-	boolean isDownloadInProgress = false;
+	DownloadType downloadInProgressType = DownloadType.NO_DOWNLOAD;
 
 	/**
 	 * Gets the current (selected) media file if picture : the displayed image,
@@ -57,9 +58,11 @@ public abstract class AbstractFragment extends Fragment {
 	 */
 	private OrnidroidFile currentMediaFile;
 
+	/** The pb download in progress. */
 	@ViewById(R.id.pb_download_in_progress)
 	ProgressBar pbDownloadInProgress;
 
+	/** The pb download all in progress. */
 	@ViewById(R.id.pb_download_all_in_progress)
 	ProgressBar pbDownloadAllInProgress;
 
@@ -70,23 +73,34 @@ public abstract class AbstractFragment extends Fragment {
 	/** The ornidroid io service. */
 	IOrnidroidIOService ornidroidIOService = new OrnidroidIOServiceImpl();
 
-	/** Layouts */
+	/** Layouts. */
 	@ViewById(R.id.fragment_main_content)
 	LinearLayout fragmentMainContent;
+
+	/** The download banner. */
 	@ViewById(R.id.download_banner)
 	View downloadBanner;
+
+	/** The bt download only for bird. */
 	@ViewById(R.id.bt_download_only_for_bird)
 	Button btDownloadOnlyForBird;
+
+	/** The bt download all. */
 	@ViewById(R.id.bt_download_all)
 	Button btDownloadAll;
 
+	/** The no media message. */
 	@ViewById(R.id.tv_no_media_message)
 	TextView noMediaMessage;
 	/** The update files button. */
 	@ViewById(R.id.iv_update_files_button)
 	ImageView updateFilesButton;
+
+	/** The add custom media button. */
 	@ViewById(R.id.iv_add_custom_media)
 	ImageView addCustomMediaButton;
+
+	/** The remove custom media button. */
 	@ViewById(R.id.iv_remove_custom_media)
 	ImageView removeCustomMediaButton;
 
@@ -136,11 +150,17 @@ public abstract class AbstractFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Download from internet button clicked.
+	 */
 	@Click(R.id.bt_download_only_for_bird)
 	void downloadFromInternetButtonClicked() {
 		startDownload();
 	}
 
+	/**
+	 * Download all button clicked.
+	 */
 	@Click(R.id.bt_download_all)
 	void downloadAllButtonClicked() {
 		Dialog dialog = new AlertDialog.Builder(this.getActivity())
@@ -165,6 +185,9 @@ public abstract class AbstractFragment extends Fragment {
 		dialog.show();
 	}
 
+	/**
+	 * Adds the custom picture clicked.
+	 */
 	@Click(R.id.iv_add_custom_media)
 	void addCustomPictureClicked() {
 		final Intent intent = new Intent(getActivity(),
@@ -176,6 +199,9 @@ public abstract class AbstractFragment extends Fragment {
 		startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 	}
 
+	/**
+	 * Removes the custom picture clicked.
+	 */
 	@Click(R.id.iv_remove_custom_media)
 	void removeCustomPictureClicked() {
 		try {
@@ -206,6 +232,9 @@ public abstract class AbstractFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Update files button clicked.
+	 */
 	@Click(R.id.iv_update_files_button)
 	void updateFilesButtonClicked() {
 		checkForUpdates(true);
@@ -216,8 +245,9 @@ public abstract class AbstractFragment extends Fragment {
 	 */
 	@Background
 	void startDownload() {
-		if (!isDownloadInProgress) {
-			resetScreenBeforeDownloadForOneBird();
+		if (downloadInProgressType == DownloadType.NO_DOWNLOAD) {
+			downloadInProgressType = DownloadType.DOWNLOAD_ONE;
+			resetScreenBeforeDownload();
 
 			Exception exception = null;
 			try {
@@ -240,22 +270,21 @@ public abstract class AbstractFragment extends Fragment {
 	 * Reset screen before download.
 	 */
 	@UiThread
-	void resetScreenBeforeDownloadForOneBird() {
-
-		pbDownloadInProgress.setVisibility(View.VISIBLE);
+	void resetScreenBeforeDownload() {
 		this.btDownloadOnlyForBird.setVisibility(View.GONE);
 		this.btDownloadAll.setVisibility(View.GONE);
-		this.noMediaMessage.setText(R.string.download_please_wait);
-	}
+		switch (downloadInProgressType) {
+		case DOWNLOAD_ALL:
+			pbDownloadAllInProgress.setVisibility(View.VISIBLE);
+			break;
+		case DOWNLOAD_ONE:
+			pbDownloadInProgress.setVisibility(View.VISIBLE);
 
-	/**
-	 * Reset screen before download.
-	 */
-	@UiThread
-	void resetScreenBeforeDownloadZip() {
-		pbDownloadAllInProgress.setVisibility(View.VISIBLE);
-		this.btDownloadOnlyForBird.setVisibility(View.GONE);
-		this.btDownloadAll.setVisibility(View.GONE);
+			this.noMediaMessage.setText(R.string.download_please_wait);
+			break;
+		default:
+			break;
+		}
 	}
 
 	/**
@@ -283,10 +312,14 @@ public abstract class AbstractFragment extends Fragment {
 		onCheckUpdateTaskEnded(manualCheck, updatesToDo, exception);
 	}
 
+	/**
+	 * updates periodically the progress bar when a download or installation of
+	 * zip package is running.
+	 */
 	@Background(delay = 2000)
-	void manageDownloadAllProgressBars() {
-		while (isDownloadInProgress) {
-			updateDownloadAllProgressBars();
+	void manageDownloadProgressBar() {
+		while (downloadInProgressType == DownloadType.DOWNLOAD_ALL) {
+			updateDownloadAllProgressBar();
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
@@ -295,8 +328,13 @@ public abstract class AbstractFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Update download progress bar in UIThread
+	 */
 	@UiThread
-	void updateDownloadAllProgressBars() {
+	void updateDownloadAllProgressBar() {
+		// TODO : il pourrait y avoir des NPE ici après un retournement
+		// d'écran ??
 		if (ornidroidIOService.getZipDownloadProgressPercent(getFileType()) < 100) {
 			noMediaMessage.setText(R.string.download_package_in_progress);
 			pbDownloadAllInProgress.setProgress(ornidroidIOService
@@ -311,17 +349,17 @@ public abstract class AbstractFragment extends Fragment {
 	}
 
 	/**
-	 * Start download all.
+	 * Start download a zip package.
 	 */
 	@Background
 	void startDownloadAll() {
-		if (!isDownloadInProgress) {
-			isDownloadInProgress = true;
-			resetScreenBeforeDownloadZip();
+		if (downloadInProgressType == DownloadType.NO_DOWNLOAD) {
+			downloadInProgressType = DownloadType.DOWNLOAD_ALL;
+			resetScreenBeforeDownload();
 			if (this.ornidroidIOService.isEnoughFreeSpace(getFileType())) {
 				Exception exception = null;
 				try {
-					manageDownloadAllProgressBars();
+					manageDownloadProgressBar();
 
 					String zipname = this.ornidroidIOService
 							.getZipname(getFileType());
@@ -341,6 +379,10 @@ public abstract class AbstractFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Show a dialog box when there's not enough free space for package download
+	 * and installation.
+	 */
 	@UiThread
 	void notEnoughFreeSpaceForPackageDownloadDialog() {
 		Dialog dialog = new AlertDialog.Builder(this.getActivity())
@@ -361,12 +403,12 @@ public abstract class AbstractFragment extends Fragment {
 	/**
 	 * On download zip package task ended.
 	 * 
-	 * @param loaderInfo
-	 *            the loader info
+	 * @param event
+	 *            the event
 	 */
 	@UiThread
 	void onEventMainThread(DownloadZipEvent event) {
-		isDownloadInProgress = false;
+		downloadInProgressType = DownloadType.NO_DOWNLOAD;
 		if (event.exception != null) {
 			String downloadErrorText = getActivity().getResources().getString(
 					R.string.download_zip_package_error_detail)
@@ -399,7 +441,7 @@ public abstract class AbstractFragment extends Fragment {
 	 */
 	@UiThread
 	void onEventMainThread(DownloadOnlyOneBirdEvent event) {
-		isDownloadInProgress = false;
+		downloadInProgressType = DownloadType.NO_DOWNLOAD;
 		if (event.exception != null) {
 			String downloadErrorText = getErrorMessage((OrnidroidException) event.exception);
 
@@ -513,6 +555,10 @@ public abstract class AbstractFragment extends Fragment {
 
 	/**
 	 * Prints the download button and info.
+	 * 
+	 * @param ornidroidException
+	 *            the ornidroid exception
+	 * @return the error message
 	 */
 	public String getErrorMessage(OrnidroidException ornidroidException) {
 		OrnidroidError ornidroidError = ornidroidException.getErrorType();
@@ -554,12 +600,22 @@ public abstract class AbstractFragment extends Fragment {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
+	 */
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		EventBus.getDefault().register(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.Fragment#onDestroy()
+	 */
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -574,50 +630,77 @@ public abstract class AbstractFragment extends Fragment {
 	 *         displayed
 	 */
 	boolean commonAfterViews() {
-		boolean success = true;
-		if (this.ornidroidService.getCurrentBird() == null) {
-			// Github : #118
-			final Intent intent = new Intent(getActivity(), HomeActivity_.class);
-			startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-		}
-		if (Constants.getAutomaticUpdateCheckPreference()
-				&& updateFilesButton != null) {
-			updateFilesButton.setVisibility(View.GONE);
-			checkForUpdates(false);
-		}
-		try {
-			loadMediaFilesLocally();
+		if (downloadInProgressType != DownloadType.NO_DOWNLOAD) {
+			// show download banner
+			fragmentMainContent.setVisibility(View.GONE);
+			downloadBanner.setVisibility(View.VISIBLE);
+			resetScreenBeforeDownload();
+			manageDownloadProgressBar();
 
-			switch (getFileType()) {
-			case PICTURE:
-				success = (ornidroidService.getCurrentBird()
-						.getNumberOfPictures() > 0);
-				break;
-			case AUDIO:
-				success = (ornidroidService.getCurrentBird()
-						.getNumberOfSounds() > 0);
-				break;
-			case WIKIPEDIA_PAGE:
-				success = (ornidroidService.getCurrentBird().getWikipediaPage() != null);
-				break;
+			return false;
+		} else {
+
+			boolean success = true;
+			if (this.ornidroidService.getCurrentBird() == null) {
+				// Github : #118
+				final Intent intent = new Intent(getActivity(),
+						HomeActivity_.class);
+				startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 			}
-
-			if (!success) {
-				fragmentMainContent.setVisibility(View.GONE);
-				downloadBanner.setVisibility(View.VISIBLE);
-			} else {
-				fragmentMainContent.setVisibility(View.VISIBLE);
-				downloadBanner.setVisibility(View.GONE);
-
+			if (Constants.getAutomaticUpdateCheckPreference()
+					&& updateFilesButton != null) {
+				updateFilesButton.setVisibility(View.GONE);
+				checkForUpdates(false);
 			}
-		} catch (final OrnidroidException e) {
-			success = false;
-			Toast.makeText(
-					getActivity(),
-					"Error reading media files of bird "
-							+ this.ornidroidService.getCurrentBird().getTaxon()
-							+ " e", Toast.LENGTH_LONG).show();
+			try {
+				loadMediaFilesLocally();
+
+				switch (getFileType()) {
+				case PICTURE:
+					success = (ornidroidService.getCurrentBird()
+							.getNumberOfPictures() > 0);
+					break;
+				case AUDIO:
+					success = (ornidroidService.getCurrentBird()
+							.getNumberOfSounds() > 0);
+					break;
+				case WIKIPEDIA_PAGE:
+					success = (ornidroidService.getCurrentBird()
+							.getWikipediaPage() != null);
+					break;
+				}
+
+				if (!success) {
+					fragmentMainContent.setVisibility(View.GONE);
+					downloadBanner.setVisibility(View.VISIBLE);
+				} else {
+					fragmentMainContent.setVisibility(View.VISIBLE);
+					downloadBanner.setVisibility(View.GONE);
+
+				}
+			} catch (final OrnidroidException e) {
+				success = false;
+				Toast.makeText(
+						getActivity(),
+						"Error reading media files of bird "
+								+ this.ornidroidService.getCurrentBird()
+										.getTaxon() + " e", Toast.LENGTH_LONG)
+						.show();
+			}
+			return success;
 		}
-		return success;
+	}
+
+	/**
+	 * The Enum DownloadType.
+	 */
+	enum DownloadType {
+
+		/** The no download. */
+		NO_DOWNLOAD,
+		/** The download one. */
+		DOWNLOAD_ONE,
+		/** The download all. */
+		DOWNLOAD_ALL;
 	}
 }

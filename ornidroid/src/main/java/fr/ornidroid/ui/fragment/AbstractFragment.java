@@ -27,8 +27,8 @@ import de.greenrobot.event.EventBus;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
-import fr.ornidroid.event.DownloadOnlyOneBirdEvent;
-import fr.ornidroid.event.DownloadZipEvent;
+import fr.ornidroid.event.EventType;
+import fr.ornidroid.event.GenericEvent;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidError;
@@ -260,7 +260,7 @@ public abstract class AbstractFragment extends Fragment {
 			} finally {
 				// post the event in the EventBus
 				EventBus.getDefault().post(
-						new DownloadOnlyOneBirdEvent(exception));
+						new GenericEvent(EventType.DOWNLOAD_ONE, exception));
 			}
 
 		}
@@ -371,7 +371,9 @@ public abstract class AbstractFragment extends Fragment {
 					}
 				} finally {
 					// post the event in the EventBus
-					EventBus.getDefault().post(new DownloadZipEvent(exception));
+					EventBus.getDefault()
+							.post(new GenericEvent(EventType.DOWNLOAD_ZIP,
+									exception));
 				}
 			} else {
 				notEnoughFreeSpaceForPackageDownloadDialog();
@@ -407,61 +409,60 @@ public abstract class AbstractFragment extends Fragment {
 	 *            the event
 	 */
 	@UiThread
-	void onEventMainThread(DownloadZipEvent event) {
+	void onEventMainThread(GenericEvent event) {
 		downloadInProgressType = DownloadType.NO_DOWNLOAD;
-		if (event.exception != null) {
-			String downloadErrorText = getActivity().getResources().getString(
-					R.string.download_zip_package_error_detail)
-					+ BasicConstants.CARRIAGE_RETURN
-					+ event.exception.toString();
-			Dialog dialog = new AlertDialog.Builder(this.getActivity())
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setTitle(R.string.download_zip_package_error)
-					.setMessage(downloadErrorText)
-					.setPositiveButton(R.string.ok,
-							new DialogInterface.OnClickListener() {
-								public void onClick(
-										final DialogInterface dialog,
-										final int whichButton) {
-									dialog.dismiss();
-									reloadActivity();
-								}
-							}).create();
-			dialog.show();
-		} else {
+		if (event.exception == null) {
 			reloadActivity();
+		} else {
+			switch (event.eventType) {
+			case DOWNLOAD_ONE:
+				errorDialogDownloadOne(event.exception);
+				break;
+			case DOWNLOAD_ZIP:
+				errorDialogDownloadZip(event.exception);
+				break;
+			default:
+				break;
+			}
 		}
+
 	}
 
-	/**
-	 * On download only for one bird ended.
-	 * 
-	 * @param event
-	 *            the event
-	 */
-	@UiThread
-	void onEventMainThread(DownloadOnlyOneBirdEvent event) {
-		downloadInProgressType = DownloadType.NO_DOWNLOAD;
-		if (event.exception != null) {
-			String downloadErrorText = getErrorMessage((OrnidroidException) event.exception);
+	void errorDialogDownloadZip(Exception exception) {
+		String downloadErrorText = getActivity().getResources().getString(
+				R.string.download_zip_package_error_detail)
+				+ BasicConstants.CARRIAGE_RETURN + exception.toString();
+		Dialog dialog = new AlertDialog.Builder(this.getActivity())
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.download_zip_package_error)
+				.setMessage(downloadErrorText)
+				.setPositiveButton(R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(final DialogInterface dialog,
+									final int whichButton) {
+								dialog.dismiss();
+								reloadActivity();
+							}
+						}).create();
+		dialog.show();
+	}
 
-			Dialog dialog = new AlertDialog.Builder(this.getActivity())
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setTitle(R.string.download_birds_file)
-					.setMessage(downloadErrorText)
-					.setPositiveButton(R.string.ok,
-							new DialogInterface.OnClickListener() {
-								public void onClick(
-										final DialogInterface dialog,
-										final int whichButton) {
-									dialog.dismiss();
-									reloadActivity();
-								}
-							}).create();
-			dialog.show();
-		} else {
-			reloadActivity();
-		}
+	void errorDialogDownloadOne(Exception exception) {
+		String downloadErrorText = getErrorMessage((OrnidroidException) exception);
+		Dialog dialog = new AlertDialog.Builder(this.getActivity())
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.download_birds_file)
+				.setMessage(downloadErrorText)
+				.setPositiveButton(R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(final DialogInterface dialog,
+									final int whichButton) {
+								dialog.dismiss();
+								reloadActivity();
+							}
+						}).create();
+		dialog.show();
+
 	}
 
 	/**

@@ -23,7 +23,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import de.greenrobot.event.EventBus;
 import fr.ornidroid.R;
-import fr.ornidroid.event.OrnidroidHomeChangedEvent;
+import fr.ornidroid.event.GenericEvent;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.FileHelper;
 import fr.ornidroid.ui.components.HelpDialog;
@@ -125,8 +125,7 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 			} finally {
 
 				// post the OrnidroidHomeChangedEvent event in the EventBus
-				EventBus.getDefault().post(
-						new OrnidroidHomeChangedEvent(caughtException));
+				EventBus.getDefault().post(new GenericEvent(caughtException));
 
 			}
 		}
@@ -139,7 +138,7 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	 * @param event
 	 *            the event
 	 */
-	public void onEventMainThread(OrnidroidHomeChangedEvent event) {
+	public void onEventMainThread(GenericEvent event) {
 		isChangingOrnidroidHome = false;
 		if (null != progressBar && progressBar.isShowing()) {
 			progressBar.hide();

@@ -1,4 +1,4 @@
-package fr.ornidroid.ui.multicriteriasearch;
+package fr.ornidroid.ui.adapter;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.ui.activity.MultiCriteriaSearchActivity;
+import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType;
+import fr.ornidroid.ui.multicriteriasearch.SpinnerIconSelector;
 
 /**
  * The Class MyCustomAdapter. This class allows to print icons and text in a

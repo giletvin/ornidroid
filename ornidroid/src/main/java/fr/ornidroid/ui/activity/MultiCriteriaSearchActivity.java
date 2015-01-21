@@ -7,6 +7,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
@@ -17,14 +18,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import de.greenrobot.event.EventBus;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
+import fr.ornidroid.event.MultiCriteriaSearchEvent;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
+import fr.ornidroid.ui.adapter.MyCustomAdapter;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField;
-import fr.ornidroid.ui.multicriteriasearch.MyCustomAdapter;
 import fr.ornidroid.ui.multicriteriasearch.OnSpinnersItemSelected;
 
 /**
@@ -45,6 +48,8 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 	/** The ornidroid service. */
 	private final IOrnidroidService ornidroidService = OrnidroidServiceFactory
 			.getService(this);
+	@InstanceState
+	boolean queryRunning = false;
 
 	/** The progress bar. */
 	@ViewById
@@ -65,8 +70,28 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 	public void findMatchingBirdsFromMCS() {
 		this.ornidroidService
 				.getBirdMatchesFromMultiSearchCriteria(this.formBean);
-		openResultsActivity();
-		hideProgressBar();
+		// post the event in the EventBus
+		EventBus.getDefault().post(new MultiCriteriaSearchEvent());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onStart()
+	 */
+	public void onStart() {
+		super.onStart();
+		EventBus.getDefault().register(this);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onStop()
+	 */
+	public void onStop() {
+		super.onStop();
+		EventBus.getDefault().unregister(this);
 	}
 
 	/**
@@ -102,8 +127,18 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 	 */
 	@Click(R.id.search_show_results)
 	public void onShowResultsClick() {
-		findMatchingBirdsFromMCS();
-		pbarSearchMulti.setVisibility(View.VISIBLE);
+		if (!queryRunning) {
+			queryRunning = true;
+			findMatchingBirdsFromMCS();
+			pbarSearchMulti.setVisibility(View.VISIBLE);
+		}
+	}
+
+	@UiThread
+	public void onEventMainThread(MultiCriteriaSearchEvent event) {
+		queryRunning = false;
+		openResultsActivity();
+		pbarSearchMulti.setVisibility(View.GONE);
 	}
 
 	/**
@@ -111,6 +146,9 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 	 */
 	@AfterViews
 	void afterViews() {
+		if (queryRunning) {
+			pbarSearchMulti.setVisibility(View.VISIBLE);
+		}
 		initSelectField(MultiCriteriaSearchFieldType.CATEGORY);
 		initSelectField(MultiCriteriaSearchFieldType.COUNTRY);
 		initSelectField(MultiCriteriaSearchFieldType.SIZE);
@@ -120,8 +158,10 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 		initSelectField(MultiCriteriaSearchFieldType.HABITAT);
 		initSelectField(MultiCriteriaSearchFieldType.BEAK_FORM);
 		initSelectField(MultiCriteriaSearchFieldType.REMARKABLE_SIGN);
-		updateSearchCountResults(this.ornidroidService
-				.getMultiSearchCriteriaCountResults(this.formBean));
+		/*
+		 * updateSearchCountResults(this.ornidroidService
+		 * .getMultiSearchCriteriaCountResults(this.formBean));
+		 */
 	}
 
 	/**
@@ -241,14 +281,6 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 				new OnSpinnersItemSelected(this));
 		this.fieldList.add(field);
 
-	}
-
-	/**
-	 * Hide progress bar.
-	 */
-	@UiThread
-	void hideProgressBar() {
-		pbarSearchMulti.setVisibility(View.GONE);
 	}
 
 	/**

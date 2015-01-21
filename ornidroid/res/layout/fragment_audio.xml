@@ -104,6 +104,7 @@
                 android:paddingBottom="10sp"
                 android:paddingLeft="10sp"
                 android:paddingTop="10sp"
+                android:visibility="gone"
                 android:src="@drawable/ic_remove" />
             <!-- LL download banner and LL fragment_main_content to implement AbstractFragment -->
 

@@ -110,8 +110,15 @@ insert into application_info(id,key,value,date,comments) VALUES(7,"ornidroid_ver
 create table release_notes(id integer,version_code integer,date,comments_de,comments_en,comments_fr,read integer);
 
 -- release 10.0.0 version 19
-insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(4,19,"15/10/2014","","","",0);
-update release_notes set comments_fr=" * Version 10.0.0 (15/10/2014)
+insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(5,21,"23/01/2015","","","",0);
+update release_notes set comments_fr=" * Version 11.0.0 (23/01/2015)
+
+Evolutions : 
+ - ajout de la base de données en Serbe
+Corrections de bugs :
+ - réécriture complète de l''application : gestion de la rotation de l''écran, meilleure gestion des téléchargements ...
+
+ * Version 10.0.0 (15/10/2014)
 
 Evolutions : 
  - améliorations du lecteur de sons (barre de progression, surlignage du fichier écouté)
@@ -147,9 +154,17 @@ Corrections de bugs:
  - image zoomée déformée sur certains appareils
  - anomalies sur la recherche par nom
  - crashs aléatoires
-" where version_code=19;
+" where version_code=21;
 
-update release_notes set comments_en=" * Version 10.0.0 (10/15/2014)
+update release_notes set comments_en=" * Version 11.0.0 (01/23/2015)
+
+New features : 
+ - database in serb
+
+Bug fixes :
+ - Complete code refactoring : better handling of download processes, better handling of screen rotations, ... 
+
+ * Version 10.0.0 (10/15/2014)
 
 New features : 
  - enhancements on the mp3 player : progress bar, played item is now highlighted
@@ -186,14 +201,23 @@ Bug fixes :
  - distorsion on zoomed images
  - bugs in the search by name
  - random crashes
-" where version_code=19;
+" where version_code=21;
 
-update release_notes set comments_de=" * Version 10.0.0 (10/15/2014)
+update release_notes set comments_de=" * Version 11.0.0 (01/23/2015)
+
+New features : 
+ - database in serb
+
+Bug fixes :
+ - Complete code refactoring : better handling of download processes, better handling of screen rotations, ... 
+
+ * Version 10.0.0 (10/15/2014)
 
 New features : 
  - enhancements on the mp3 player : progress bar, played item is now highlighted
 
 + bug fixes.
+
 
  * Version 9.1.1 (10/04/2014) 
 
@@ -224,5 +248,5 @@ Bug fixes :
  - distorsion on zoomed images
  - bugs in the search by name
  - random crashes
-" where version_code=19;
+" where version_code=21;
 

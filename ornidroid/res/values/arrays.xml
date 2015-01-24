@@ -4,30 +4,31 @@
 <resources>
 
 	<string-array name="lang_labels">
-	    <item>bg - Български</item>
-		<item>cz - Čeština</item>
-		<item>de - Deutsch</item>
-		<item>dk - Dansk</item>
+	    <item>bg - Bulgarian - Български</item>
+		<item>cz - Czech - Čeština</item>
+		<item>de - German - Deutsch</item>
+		<item>dk - Danish - Dansk</item>
 		<item>en - English</item>
-		<item>es - Español</item>
-		<item>fi - Suomi</item>
-		<item>fr - Français</item>
-		<item>gr - ελληνικά</item>
-		<item>hu - Magyar</item>
-		<item>is - Íslenska</item>
-		<item>it - Italiano</item>
-		<item>jp - 日本語</item>
+		<item>es - Spanish - Español</item>
+		<item>fi - Finnish - Suomi</item>
+		<item>fr - French - Français</item>
+		<item>gr - Greek - ελληνικά</item>
+		<item>hu - Hungarian - Magyar</item>
+		<item>is - Icelandic - Íslenska</item>
+		<item>it - Italian - Italiano</item>
+		<item>jp - Japanisch - 日本語</item>
 		<item>la - Latin</item>
-		<item>nl - Nederlands</item>
-		<item>no - Norsk</item>
-		<item>po - Polski</item>
-		<item>pt - Português</item>
-		<item>ro - Română</item>
-		<item>ru - Русский</item>
-		<item>se - Svenska</item>
-		<item>sk - Slovenčina</item>
-		<item>tr - Türkçe</item>
-		<item>zh - 普通话</item>
+		<item>nl - Dutch - Nederlands</item>
+		<item>no - Norwegian - Norsk</item>
+		<item>po - Polish - Polski</item>
+		<item>pt - Portuguese - Português</item>
+		<item>ro - Romanian - Română</item>
+		<item>ru - Russian - Русский</item>
+		<item>se - Swedish - Svenska</item>
+		<item>sr - Serbian - Srpski</item>
+		<item>sk - Slovaque - Slovenčina</item>
+		<item>tr - Turkish - Türkçe</item>
+		<item>zh - Chinese Mandarin - 普通话</item>
 	</string-array>
 
 	<string-array name="lang_values">
@@ -52,6 +53,7 @@
 		<item>ro</item>
 		<item>ru</item>
 		<item>se</item>
+		<item>sr</item>
 		<item>sk</item>
 		<item>tr</item>
 		<item>zh</item>

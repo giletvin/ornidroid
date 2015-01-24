@@ -41,7 +41,7 @@
     <!-- labels used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
     <string name="preferences_lang_title">Langues utilisées pour la recherche</string>
-    <string name="preferences_lang_summary">24 langues disponibles. Recherche sur plusieurs langues différentes possible.</string>
+    <string name="preferences_lang_summary">25 langues disponibles. Recherche sur plusieurs langues différentes possible.</string>
     <string name="preferences_ornidroid_home_key">OrnidroidHome</string>
     <string name="preferences_ornidroid_home_title">Répertoire des données d\'Ornidroid</string>
     <string name="preferences_ornidroid_home_summary">Choisir le répertoire où Ornidroid doit placer ses données. Pour les utilisateurs avertis seulement !</string>

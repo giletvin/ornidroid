@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources>
+
+	<string-array name="lang_labels">
+	    <item>bg - Bulgare - Български</item>
+		<item>cz - Tchèque - Čeština</item>
+		<item>de - Allemand - Deutsch</item>
+		<item>dk - Danois - Dansk</item>
+		<item>en - Anglais - English</item>
+		<item>es - Espagnol - Español</item>
+		<item>fi - Finnois - Suomi</item>
+		<item>fr - Français</item>
+		<item>gr - Grec - ελληνικά</item>
+		<item>hu - Hongrois - Magyar</item>
+		<item>is - Islandais - Íslenska</item>
+		<item>it - Italien - Italiano</item>
+		<item>jp - Japonais - 日本語</item>
+		<item>la - Latin</item>
+		<item>nl - Néerlandais - Nederlands</item>
+		<item>no - Norvégien - Norsk</item>
+		<item>po - Polonais - Polski</item>
+		<item>pt - Portugais - Português</item>
+		<item>ro - Roumain - Română</item>
+		<item>ru - Russe - Русский</item>
+		<item>se - Suédois - Svenska</item>
+		<item>sr - Serbe - Srpski</item>
+		<item>sk - Slovaque - Slovenčina</item>
+		<item>tr - Turc - Türkçe</item>
+		<item>zh - Chinois (Mandarin) - 普通话</item>
+	</string-array>
+
+	<string-array name="lang_values">
+	    <item>bg</item>
+		<item>cz</item>
+		<item>de</item>
+		<item>dk</item>
+		<item>en</item>
+		<item>es</item>
+		<item>fi</item>
+		<item>fr</item>
+		<item>gr</item>
+		<item>hu</item>
+		<item>is</item>
+		<item>it</item>
+		<item>jp</item>
+		<item>la</item>
+		<item>nl</item>
+		<item>no</item>
+		<item>po</item>
+		<item>pt</item>
+		<item>ro</item>
+		<item>ru</item>
+		<item>se</item>
+		<item>sr</item>
+		<item>sk</item>
+		<item>tr</item>
+		<item>zh</item>
+	</string-array>
+
+
+</resources>

@@ -159,7 +159,7 @@ Corrections de bugs:
 update release_notes set comments_en=" * Version 11.0.0 (01/23/2015)
 
 New features : 
- - database in serb
+ - database in serbian and slovenian
 
 Bug fixes :
  - Complete code refactoring : better handling of download processes, better handling of screen rotations, ... 
@@ -206,7 +206,7 @@ Bug fixes :
 update release_notes set comments_de=" * Version 11.0.0 (01/23/2015)
 
 New features : 
- - database in serb
+ - database in serbian and slovenian
 
 Bug fixes :
  - Complete code refactoring : better handling of download processes, better handling of screen rotations, ... 

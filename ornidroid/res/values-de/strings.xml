@@ -42,7 +42,7 @@
     <!-- labes used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>
     <string name="preferences_lang_title">Suchsprache</string>
-    <string name="preferences_lang_summary">25 Sprachen</string>
+    <string name="preferences_lang_summary">26 Sprachen</string>
     <string name="preferences_ornidroid_home_key">OrnidroidHome</string>
     <string name="preferences_ornidroid_home_title">Ornidroid Data Folder</string>
     <string name="preferences_ornidroid_home_summary">Choose the location where Ornidroid should put its data.</string>

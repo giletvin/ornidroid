@@ -198,6 +198,7 @@ $ro_code='ro';
 $tr_code='tr';
 $hu_code='hu';
 $sr_code='sr';
+$sl_code='sl';
 
 $latin_index_in_greek_file=1;
 $greek_index_in_greek_file=2;
@@ -211,6 +212,8 @@ $latin_index_in_hungarian_file=1;
 $hungarian_index_in_hungarian_file=2;
 $latin_index_in_serb_file=0;
 $serb_index_in_serb_file=1;
+$latin_index_in_slovenian_file=0;
+$slovenian_index_in_slovenian_file=1;
 try {
 	$sqliteFile = "ornidroid.jpg";
 	$dbh = new PDO('sqlite:'.$sqliteFile); // success
@@ -406,6 +409,28 @@ try {
 			}
 			else {
 				echo "serb : nom latin non référencé : " . $data[$latin_index_in_serb_file]."\n";
+			}
+		}
+	    }
+	    fclose($handle);
+	}
+	//Slovene
+	if (($handle = fopen("traductions_slovene.csv", "r")) !== FALSE) {
+	    while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
+		//si latin non vide et 2 colonnes = un oiseau !
+		if (""!=$data[$latin_index_in_slovenian_file]&&count($data)==2){
+			$findBirdIdQuery = "select id from bird where scientific_name='".trim($data[$latin_index_in_slovenian_file])."' or scientific_name2='".trim($data[$latin_index_in_slovenian_file])."'";
+			echo $findBirdIdQuery."\n";
+			$birdId=-1;
+			foreach ($dbh->query($findBirdIdQuery) as $row){
+				$birdId = $row["id"];
+			}
+			if ($birdId>=1){
+				echo "######insertion du slovenian pour : " . $data[$latin_index_in_slovenian_file]."\n";
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,trim($data[$slovenian_index_in_slovenian_file]),$sl_code));
+			}
+			else {
+				echo "slovenian : nom latin non référencé : " . $data[$latin_index_in_slovenian_file]."\n";
 			}
 		}
 	    }

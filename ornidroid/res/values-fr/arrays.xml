@@ -25,8 +25,9 @@
 		<item>ro - Roumain - Română</item>
 		<item>ru - Russe - Русский</item>
 		<item>se - Suédois - Svenska</item>
-		<item>sr - Serbe - Srpski</item>
 		<item>sk - Slovaque - Slovenčina</item>
+		<item>sl - Slovène - Slovenščina</item>
+		<item>sr - Serbe - Srpski</item>
 		<item>tr - Turc - Türkçe</item>
 		<item>zh - Chinois (Mandarin) - 普通话</item>
 	</string-array>
@@ -53,8 +54,9 @@
 		<item>ro</item>
 		<item>ru</item>
 		<item>se</item>
-		<item>sr</item>
 		<item>sk</item>
+		<item>sl</item>
+		<item>sr</item>
 		<item>tr</item>
 		<item>zh</item>
 	</string-array>

@@ -114,7 +114,7 @@ insert into release_notes(id,version_code,date,comments_en,comments_de,comments_
 update release_notes set comments_fr=" * Version 11.0.0 (23/01/2015)
 
 Evolutions : 
- - ajout de la base de données en Serbe
+ - ajout de la base de données en Serbe et Slovène
 Corrections de bugs :
  - réécriture complète de l''application : gestion de la rotation de l''écran, meilleure gestion des téléchargements ...
 

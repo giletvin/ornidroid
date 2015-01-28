@@ -27,8 +27,8 @@ import de.greenrobot.event.EventBus;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
+import fr.ornidroid.event.DownloadEvent;
 import fr.ornidroid.event.EventType;
-import fr.ornidroid.event.GenericEvent;
 import fr.ornidroid.helper.BasicConstants;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.OrnidroidError;
@@ -260,7 +260,8 @@ public abstract class AbstractFragment extends Fragment {
 			} finally {
 				// post the event in the EventBus
 				EventBus.getDefault().post(
-						new GenericEvent(EventType.DOWNLOAD_ONE, exception));
+						new DownloadEvent(EventType.DOWNLOAD_ONE, exception,
+								getFileType()));
 			}
 
 		}
@@ -371,9 +372,9 @@ public abstract class AbstractFragment extends Fragment {
 					}
 				} finally {
 					// post the event in the EventBus
-					EventBus.getDefault()
-							.post(new GenericEvent(EventType.DOWNLOAD_ZIP,
-									exception));
+					EventBus.getDefault().post(
+							new DownloadEvent(EventType.DOWNLOAD_ZIP,
+									exception, getFileType()));
 				}
 			} else {
 				notEnoughFreeSpaceForPackageDownloadDialog();
@@ -409,25 +410,29 @@ public abstract class AbstractFragment extends Fragment {
 	 *            the event
 	 */
 	@UiThread
-	void onEventMainThread(GenericEvent event) {
-		downloadInProgressType = DownloadType.NO_DOWNLOAD;
-		if (event.exception == null) {
-			reloadActivity();
-		} else {
-			if (event.eventType != null) {
-				switch (event.eventType) {
-				case DOWNLOAD_ONE:
-					errorDialogDownloadOne(event.exception);
-					break;
-				case DOWNLOAD_ZIP:
-					errorDialogDownloadZip(event.exception);
-					break;
-				default:
-					errorDialogUnknowReason(event.exception);
-					break;
-				}
+	void onEventMainThread(DownloadEvent event) {
+		// #126 : check we are in the fragment that should really do something
+		// with this event
+		if (getFileType().equals(event.fileType)) {
+			downloadInProgressType = DownloadType.NO_DOWNLOAD;
+			if (event.exception == null) {
+				reloadActivity();
 			} else {
-				errorDialogUnknowReason(event.exception);
+				if (event.eventType != null) {
+					switch (event.eventType) {
+					case DOWNLOAD_ONE:
+						errorDialogDownloadOne(event.exception);
+						break;
+					case DOWNLOAD_ZIP:
+						errorDialogDownloadZip(event.exception);
+						break;
+					default:
+						errorDialogUnknowReason(event.exception);
+						break;
+					}
+				} else {
+					errorDialogUnknowReason(event.exception);
+				}
 			}
 		}
 

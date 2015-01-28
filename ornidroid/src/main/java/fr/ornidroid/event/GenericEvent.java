@@ -15,13 +15,4 @@ public class GenericEvent {
 		this.eventType = eventType;
 	}
 
-	public GenericEvent(Exception pException) {
-		this.exception = pException;
-		this.eventType = null;
-	}
-
-	public GenericEvent() {
-		this.exception = null;
-		this.eventType = null;
-	}
 }

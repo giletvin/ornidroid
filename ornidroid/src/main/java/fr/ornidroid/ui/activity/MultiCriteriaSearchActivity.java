@@ -21,6 +21,7 @@ import android.widget.TextView;
 import de.greenrobot.event.EventBus;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
+import fr.ornidroid.event.EventType;
 import fr.ornidroid.event.GenericEvent;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
@@ -71,7 +72,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 		this.ornidroidService
 				.getBirdMatchesFromMultiSearchCriteria(this.formBean);
 		// post the event in the EventBus
-		EventBus.getDefault().post(new GenericEvent());
+		EventBus.getDefault().post(new GenericEvent(EventType.MC_SEARCH));
 	}
 
 	/*
@@ -136,9 +137,11 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 
 	@UiThread
 	public void onEventMainThread(GenericEvent event) {
-		queryRunning = false;
-		openResultsActivity();
-		pbarSearchMulti.setVisibility(View.GONE);
+		if (event.eventType.equals(EventType.MC_SEARCH)) {
+			queryRunning = false;
+			openResultsActivity();
+			pbarSearchMulti.setVisibility(View.GONE);
+		}
 	}
 
 	/**

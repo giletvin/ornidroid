@@ -23,6 +23,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import de.greenrobot.event.EventBus;
 import fr.ornidroid.R;
+import fr.ornidroid.event.EventType;
 import fr.ornidroid.event.GenericEvent;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.FileHelper;
@@ -125,7 +126,9 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 			} finally {
 
 				// post the OrnidroidHomeChangedEvent event in the EventBus
-				EventBus.getDefault().post(new GenericEvent(caughtException));
+				EventBus.getDefault().post(
+						new GenericEvent(EventType.ORNIDROID_HOME_CHANGED,
+								caughtException));
 
 			}
 		}
@@ -139,20 +142,24 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	 *            the event
 	 */
 	public void onEventMainThread(GenericEvent event) {
-		isChangingOrnidroidHome = false;
-		if (null != progressBar && progressBar.isShowing()) {
-			progressBar.hide();
-		}
-		if (null != event.exception) {
-			// print a dialog box to show the error.
-			HelpDialog.showInfoDialog(this,
-					this.getString(R.string.help_change_ornidroid_home_title),
-					event.exception.getMessage());
-		} else {
-			// everything is fine.
-			HelpDialog.showInfoDialog(this,
-					this.getString(R.string.help_change_ornidroid_home_title),
-					this.getString(R.string.preferences_ornidroid_home_saved));
+		if (EventType.ORNIDROID_HOME_CHANGED.equals(event.eventType)) {
+			isChangingOrnidroidHome = false;
+			if (null != progressBar && progressBar.isShowing()) {
+				progressBar.hide();
+			}
+			if (null != event.exception) {
+				// print a dialog box to show the error.
+				HelpDialog.showInfoDialog(this, this
+						.getString(R.string.help_change_ornidroid_home_title),
+						event.exception.getMessage());
+			} else {
+				// everything is fine.
+				HelpDialog
+						.showInfoDialog(
+								this,
+								this.getString(R.string.help_change_ornidroid_home_title),
+								this.getString(R.string.preferences_ornidroid_home_saved));
+			}
 		}
 	}
 

@@ -414,18 +414,42 @@ public abstract class AbstractFragment extends Fragment {
 		if (event.exception == null) {
 			reloadActivity();
 		} else {
-			switch (event.eventType) {
-			case DOWNLOAD_ONE:
-				errorDialogDownloadOne(event.exception);
-				break;
-			case DOWNLOAD_ZIP:
-				errorDialogDownloadZip(event.exception);
-				break;
-			default:
-				break;
+			if (event.eventType != null) {
+				switch (event.eventType) {
+				case DOWNLOAD_ONE:
+					errorDialogDownloadOne(event.exception);
+					break;
+				case DOWNLOAD_ZIP:
+					errorDialogDownloadZip(event.exception);
+					break;
+				default:
+					errorDialogUnknowReason(event.exception);
+					break;
+				}
+			} else {
+				errorDialogUnknowReason(event.exception);
 			}
 		}
 
+	}
+
+	void errorDialogUnknowReason(Exception exception) {
+		String downloadErrorText = getActivity().getResources().getString(
+				R.string.unknown_error)
+				+ BasicConstants.CARRIAGE_RETURN + exception.toString();
+		Dialog dialog = new AlertDialog.Builder(this.getActivity())
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle(R.string.warning)
+				.setMessage(downloadErrorText)
+				.setPositiveButton(R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(final DialogInterface dialog,
+									final int whichButton) {
+								dialog.dismiss();
+								reloadActivity();
+							}
+						}).create();
+		dialog.show();
 	}
 
 	void errorDialogDownloadZip(Exception exception) {

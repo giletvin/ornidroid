@@ -415,33 +415,33 @@ public abstract class AbstractFragment extends Fragment {
 		// with this event
 		if (getFileType().equals(event.fileType)) {
 			downloadInProgressType = DownloadType.NO_DOWNLOAD;
-			if (event.exception == null) {
+			if (event.getException() == null) {
 				reloadActivity();
 			} else {
 				if (event.eventType != null) {
 					switch (event.eventType) {
 					case DOWNLOAD_ONE:
-						errorDialogDownloadOne(event.exception);
+						errorDialogDownloadOne(event.getException());
 						break;
 					case DOWNLOAD_ZIP:
-						errorDialogDownloadZip(event.exception);
+						errorDialogDownloadZip(event.getExceptionMessage());
 						break;
 					default:
-						errorDialogUnknowReason(event.exception);
+						errorDialogUnknowReason(event.getExceptionMessage());
 						break;
 					}
 				} else {
-					errorDialogUnknowReason(event.exception);
+					errorDialogUnknowReason(event.getExceptionMessage());
 				}
 			}
 		}
 
 	}
 
-	void errorDialogUnknowReason(Exception exception) {
+	void errorDialogUnknowReason(String exceptionMessage) {
 		String downloadErrorText = getActivity().getResources().getString(
 				R.string.unknown_error)
-				+ BasicConstants.CARRIAGE_RETURN + exception.toString();
+				+ BasicConstants.CARRIAGE_RETURN + exceptionMessage;
 		Dialog dialog = new AlertDialog.Builder(this.getActivity())
 				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setTitle(R.string.warning)
@@ -457,10 +457,10 @@ public abstract class AbstractFragment extends Fragment {
 		dialog.show();
 	}
 
-	void errorDialogDownloadZip(Exception exception) {
+	void errorDialogDownloadZip(String exceptionMessage) {
 		String downloadErrorText = getActivity().getResources().getString(
 				R.string.download_zip_package_error_detail)
-				+ BasicConstants.CARRIAGE_RETURN + exception.toString();
+				+ BasicConstants.CARRIAGE_RETURN + exceptionMessage;
 		Dialog dialog = new AlertDialog.Builder(this.getActivity())
 				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setTitle(R.string.download_zip_package_error)

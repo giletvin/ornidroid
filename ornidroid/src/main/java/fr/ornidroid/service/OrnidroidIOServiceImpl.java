@@ -559,6 +559,15 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		File zipPackageFile = downloadHelper.downloadFile(
 				DownloadConstants.getOrnidroidWebSite(), zipname,
 				mediaHomeDirectory);
+		if (zipPackageFile == null) {
+			RuntimeException runtimeException = new RuntimeException(
+					"no media file downloaded with parameters : " + zipname
+							+ BasicConstants.BLANK_STRING + mediaHomeDirectory);
+			Log.e(BasicConstants.LOG_TAG, runtimeException.getMessage(),
+					runtimeException);
+			throw new OrnidroidException(
+					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, runtimeException);
+		}
 		boolean success = FileHelper.unzipFile(zipPackageFile.getName(),
 				mediaHomeDirectory);
 

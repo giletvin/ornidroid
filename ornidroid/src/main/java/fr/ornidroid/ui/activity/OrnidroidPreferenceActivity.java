@@ -147,11 +147,11 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 			if (null != progressBar && progressBar.isShowing()) {
 				progressBar.hide();
 			}
-			if (null != event.exception) {
+			if (null != event.getException()) {
 				// print a dialog box to show the error.
 				HelpDialog.showInfoDialog(this, this
 						.getString(R.string.help_change_ornidroid_home_title),
-						event.exception.getMessage());
+						event.getExceptionMessage());
 			} else {
 				// everything is fine.
 				HelpDialog

@@ -357,28 +357,40 @@ public abstract class AbstractFragment extends Fragment {
 		if (downloadInProgressType == DownloadType.NO_DOWNLOAD) {
 			downloadInProgressType = DownloadType.DOWNLOAD_ALL;
 			resetScreenBeforeDownload();
-			if (this.ornidroidIOService.isEnoughFreeSpace(getFileType())) {
-				Exception exception = null;
-				try {
-					manageDownloadProgressBar();
-
-					String zipname = this.ornidroidIOService
-							.getZipname(getFileType());
+			boolean isEnoughFreeSpace = true;
+			try {
+				isEnoughFreeSpace = this.ornidroidIOService
+						.isEnoughFreeSpace(getFileType());
+				if (isEnoughFreeSpace) {
+					Exception exception = null;
 					try {
-						this.ornidroidIOService.downloadZipPackage(zipname,
-								Constants.getOrnidroidHome());
-					} catch (OrnidroidException e) {
-						exception = e;
+						manageDownloadProgressBar();
+
+						String zipname = this.ornidroidIOService
+								.getZipname(getFileType());
+						try {
+							this.ornidroidIOService.downloadZipPackage(zipname,
+									Constants.getOrnidroidHome());
+						} catch (OrnidroidException e) {
+							exception = e;
+						}
+					} finally {
+						// post the event in the EventBus
+						EventBus.getDefault().post(
+								new DownloadEvent(EventType.DOWNLOAD_ZIP,
+										exception, getFileType()));
 					}
-				} finally {
-					// post the event in the EventBus
-					EventBus.getDefault().post(
-							new DownloadEvent(EventType.DOWNLOAD_ZIP,
-									exception, getFileType()));
+				} else {
+					notEnoughFreeSpaceForPackageDownloadDialog();
 				}
-			} else {
-				notEnoughFreeSpaceForPackageDownloadDialog();
+			} catch (IllegalArgumentException e) {
+				// Fix #128
+				// post the event in the EventBus
+				EventBus.getDefault().post(
+						new DownloadEvent(EventType.DOWNLOAD_ZIP, e,
+								getFileType()));
 			}
+
 		}
 	}
 

@@ -81,16 +81,19 @@ public class ImagesFragment extends AbstractFragment {
 		}
 		OrnidroidFile pictureFile = ornidroidService.getCurrentBird()
 				.getPicture(imagePosition);
-		this.mPictureDescription.setText(pictureFile
-				.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
+		if (pictureFile != null) {
+			this.mPictureDescription
+					.setText(pictureFile
+							.getProperty(PictureOrnidroidFile.IMAGE_DESCRIPTION_PROPERTY));
 
-		Bitmap bMap = PictureHelper.loadBitmap(pictureFile, getActivity()
-				.getResources());
-		if (bMap != null) {
-			this.mPicture.setImageBitmap(bMap);
+			Bitmap bMap = PictureHelper.loadBitmap(pictureFile, getActivity()
+					.getResources());
+			if (bMap != null) {
+				this.mPicture.setImageBitmap(bMap);
 
+			}
+			setCurrentMediaFilePosition(imagePosition);
 		}
-		setCurrentMediaFilePosition(imagePosition);
 	}
 
 	/*

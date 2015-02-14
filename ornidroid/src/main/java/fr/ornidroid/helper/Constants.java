@@ -22,6 +22,8 @@ import fr.ornidroid.ui.preferences.ListPreferenceMultiSelect;
  * are placed in BasicConstants. <br>
  */
 public class Constants extends BasicConstants {
+	/** Ornidroid home change in progress */
+	public static boolean ORNIDROID_HOME_CHANGING = false;
 
 	/** The Constant ORNIDROID_DIRECTORY_NAME. */
 	public static final String ORNIDROID_DIRECTORY_NAME = "ornidroid";

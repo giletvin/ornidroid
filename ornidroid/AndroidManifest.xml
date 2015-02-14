@@ -3,7 +3,7 @@
     package="fr.ornidroid"
     android:installLocation="auto"
     android:versionCode="24"
-    android:versionName="11.0.3-SNAPSHOT" >
+    android:versionName="11.0.3" >
     <!-- ANDROID DEBUGGABLE !! -->
     <uses-sdk
         android:minSdkVersion="11"

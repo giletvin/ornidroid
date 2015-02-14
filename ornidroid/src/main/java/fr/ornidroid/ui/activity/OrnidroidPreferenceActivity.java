@@ -9,9 +9,9 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -21,6 +21,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Window;
 import de.greenrobot.event.EventBus;
 import fr.ornidroid.R;
 import fr.ornidroid.event.EventType;
@@ -50,9 +51,6 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	/** The ornidroid home dialog preference. */
 	private OrnidroidHomeDialogPreference ornidroidHomeDialogPreference;
 
-	/** The progress bar. */
-	private ProgressDialog progressBar;
-
 	/**
 	 * Instantiates a new ornidroid preference activity.
 	 */
@@ -70,13 +68,18 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	 * @return true, if successful
 	 */
 	public boolean onPreferenceClick(final Preference arg0) {
-		HelpDialog.showInfoDialog(
-				this,
-				this.getResources().getString(
-						R.string.help_change_ornidroid_home_title),
-				this.getResources().getString(
-						R.string.help_change_ornidroid_home_content));
-		return true;
+		if (!isChangingOrnidroidHome) {
+			HelpDialog.showInfoDialog(
+					this,
+					this.getResources().getString(
+							R.string.help_change_ornidroid_home_title),
+					this.getResources().getString(
+							R.string.help_change_ornidroid_home_content));
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	/*
@@ -91,13 +94,10 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 
 		if (getResources().getString(R.string.preferences_ornidroid_home_key)
 				.equals(key)) {
-
 			doChangeOrnidroidHome(
 					OrnidroidPreferenceActivity.this.ornidroidHomeDialogPreference
 							.getOldOrnidroidHome(), Constants
 							.getOrnidroidHome());
-			showProgressBar();
-
 		}
 
 	}
@@ -113,7 +113,10 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	@Background
 	void doChangeOrnidroidHome(String oldOrnidroidHome, String ornidroidHome) {
 		if (!isChangingOrnidroidHome) {
+			showProgressBar(true);
+			Constants.ORNIDROID_HOME_CHANGING = true;
 			isChangingOrnidroidHome = true;
+
 			Exception caughtException = null;
 			try {
 				final File srcDir = new File(oldOrnidroidHome);
@@ -124,12 +127,11 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 				Log.e(Constants.LOG_TAG, e.toString());
 				caughtException = e;
 			} finally {
-
+				Constants.ORNIDROID_HOME_CHANGING = false;
 				// post the OrnidroidHomeChangedEvent event in the EventBus
 				EventBus.getDefault().post(
 						new GenericEvent(EventType.ORNIDROID_HOME_CHANGED,
 								caughtException));
-
 			}
 		}
 	}
@@ -144,9 +146,7 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	public void onEventMainThread(GenericEvent event) {
 		if (EventType.ORNIDROID_HOME_CHANGED.equals(event.eventType)) {
 			isChangingOrnidroidHome = false;
-			if (null != progressBar && progressBar.isShowing()) {
-				progressBar.hide();
-			}
+			showProgressBar(false);
 			if (null != event.getException()) {
 				// print a dialog box to show the error.
 				HelpDialog.showInfoDialog(this, this
@@ -166,16 +166,10 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	/**
 	 * Show progress bar.
 	 */
-	void showProgressBar() {
-		if (progressBar == null) {
-			progressBar = new ProgressDialog(this);
-			progressBar.setCancelable(false);
-			progressBar.setMessage(this.getResources().getText(
-					R.string.preferences_ornidroid_home_copying_files));
-			progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		}
-		progressBar.show();
-
+	@UiThread
+	void showProgressBar(boolean show) {
+		setProgressBarIndeterminateVisibility(show);
+		setProgressBarVisibility(show);
 	}
 
 	/*
@@ -185,6 +179,8 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	 */
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		requestWindowFeature(Window.FEATURE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		EventBus.getDefault().register(this);
 		addPreferencesFromResource(R.xml.ornidroid_preferences);
@@ -202,8 +198,10 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	 */
 	@AfterViews
 	void afterViews() {
-		if (isChangingOrnidroidHome) {
-			showProgressBar();
+
+		if (Constants.ORNIDROID_HOME_CHANGING) {
+			isChangingOrnidroidHome = true;
+			showProgressBar(true);
 		}
 	}
 
@@ -215,10 +213,7 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (progressBar != null) {
-			progressBar.hide();
-			progressBar = null;
-		}
+
 		EventBus.getDefault().unregister(this);
 	}
 

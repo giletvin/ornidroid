@@ -11,16 +11,23 @@
         android:persistent="true"
         android:summary="@string/preferences_lang_summary"
         android:title="@string/preferences_lang_title" />
-
+<!-- 
     <fr.ornidroid.ui.components.OrnidroidHomeDialogPreference
         android:key="@string/preferences_ornidroid_home_key"
         android:summary="@string/preferences_ornidroid_home_summary"
         android:title="@string/preferences_ornidroid_home_title" />
-
+-->
     <CheckBoxPreference
         android:key="@string/preferences_automatic_update_check_key"
         android:persistent="true"
         android:summary="@string/preferences_automatic_update_check_summary"
         android:title="@string/preferences_automatic_update_check_title" />
+
+    <ListPreference
+        android:entries="@array/ornidroid_home_options"
+        android:entryValues="@array/ornidroid_home_values"
+        android:key="@string/preferences_ornidroid_home_key"
+        android:summary="@string/preferences_ornidroid_home_summary"
+        android:title="@string/preferences_ornidroid_home_title" />
 
 </PreferenceScreen>

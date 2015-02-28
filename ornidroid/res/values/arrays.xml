@@ -61,5 +61,13 @@
 		<item>zh</item>
 	</string-array>
 
+	<string-array name="ornidroid_home_options">
+	    <item>Default - internal storage</item>
+	    <item>External storage (SD Card)</item>
+	</string-array>
+	<string-array name="ornidroid_home_values">
+	    <item>I</item>
+	    <item>E</item>
+	</string-array>
 
 </resources>

@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
@@ -29,7 +30,6 @@ import fr.ornidroid.event.GenericEvent;
 import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.FileHelper;
 import fr.ornidroid.ui.components.HelpDialog;
-import fr.ornidroid.ui.components.OrnidroidHomeDialogPreference;
 import fr.ornidroid.ui.preferences.MyPrefs_;
 
 /**
@@ -44,12 +44,11 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	@InstanceState
 	boolean isChangingOrnidroidHome = false;
 
+	String oldOrnidroidHomeValue;
+
 	/** The my prefs. */
 	@Pref
 	MyPrefs_ myPrefs;
-
-	/** The ornidroid home dialog preference. */
-	private OrnidroidHomeDialogPreference ornidroidHomeDialogPreference;
 
 	/**
 	 * Instantiates a new ornidroid preference activity.
@@ -68,13 +67,18 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 	 * @return true, if successful
 	 */
 	public boolean onPreferenceClick(final Preference arg0) {
+		oldOrnidroidHomeValue = arg0.getSharedPreferences().getString(
+				this.getResources().getString(
+						R.string.preferences_ornidroid_home_key), "I");
 		if (!isChangingOrnidroidHome) {
 			HelpDialog.showInfoDialog(
 					this,
 					this.getResources().getString(
 							R.string.help_change_ornidroid_home_title),
 					this.getResources().getString(
-							R.string.help_change_ornidroid_home_content));
+							R.string.help_change_ornidroid_home_content,
+							Constants.getOrnidroidHomeDefaultValue(),
+							Constants.getOrnidroidHomeExternalValue()));
 			return true;
 		} else {
 			return false;
@@ -95,9 +99,8 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 		if (getResources().getString(R.string.preferences_ornidroid_home_key)
 				.equals(key)) {
 			doChangeOrnidroidHome(
-					OrnidroidPreferenceActivity.this.ornidroidHomeDialogPreference
-							.getOldOrnidroidHome(), Constants
-							.getOrnidroidHome());
+					Constants.getOrnidroidHome(oldOrnidroidHomeValue),
+					Constants.getOrnidroidHome(arg0.getString(key, "I")));
 		}
 
 	}
@@ -187,10 +190,10 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 		final SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
-		this.ornidroidHomeDialogPreference = (OrnidroidHomeDialogPreference) findPreference(this
+		ListPreference ornidroidHomePreference = (ListPreference) findPreference(this
 				.getResources()
 				.getText(R.string.preferences_ornidroid_home_key));
-		this.ornidroidHomeDialogPreference.setOnPreferenceClickListener(this);
+		ornidroidHomePreference.setOnPreferenceClickListener(this);
 	}
 
 	/**

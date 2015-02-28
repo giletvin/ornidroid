@@ -51,7 +51,7 @@
     <string name="preferences_automatic_update_check_title">Vérification automatique de mise à jour</string>
     <string name="preferences_automatic_update_check_summary">Effectuer une vérification automatique pour savoir si de nouvelles images ou sons sont disponibles.</string>
     <string name="help_change_ornidroid_home_title">Modification du répertoire de données</string>
-    <string name="help_change_ornidroid_home_content">Un répertoire \"ornidroid\" sera créé à l\'emplacement que vous choisissez.\nToutes les données de l\'ancien répertoire vont être déplacées dans le nouveau et l\'ancien répertoire sera ensuite supprimé. Cette opération peut prendre environ 10 minutes.</string>
+    <string name="help_change_ornidroid_home_content">A partir d\'Android 4.4, l\'accès à la mémoire est strictement limité à certains répertoires.\nStockage interne par défaut :\n%1$s\n\nStockage externe (SD CARD) :\n %2$s\n\nSi vous modifiez ce paramètre, toutes les données de l\'ancien répertoire vont être déplacées dans le nouveau et l\'ancien répertoire sera ensuite supprimé. Cette opération peut prendre environ 10 minutes.</string>
 
     <!-- labels for add custom media -->
     <string name="add_custom_media_error">L\'opération a échoué</string>

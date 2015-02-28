@@ -22,6 +22,10 @@ import fr.ornidroid.ui.preferences.ListPreferenceMultiSelect;
  * are placed in BasicConstants. <br>
  */
 public class Constants extends BasicConstants {
+
+	private static final String ORNIDROID_HOME_INTERNAL_STORAGE = "I";
+	private static final String ORNIDROID_HOME_EXTERNAL_STORAGE = "E";
+
 	/** Ornidroid home change in progress */
 	public static boolean ORNIDROID_HOME_CHANGING = false;
 
@@ -30,9 +34,6 @@ public class Constants extends BasicConstants {
 
 	/** The CONTEXT. */
 	private static Context CONTEXT;
-
-	/** The ornidroid home default value. */
-	private static String ORNIDROID_HOME_DEFAULT_VALUE;
 
 	/** The Constant ORNIDROID_PREFERENCES_FILE_NAME. */
 	private static final String ORNIDROID_PREFERENCES_FILE_NAME = "fr.ornidroid_preferences";
@@ -97,37 +98,30 @@ public class Constants extends BasicConstants {
 	 * @return the ornidroid home
 	 */
 	public static final String getOrnidroidHome() {
-		return Constants
+		String flagOrnidroidHome = Constants
 				.getOrnidroidPreferences()
 				.getString(
 						getStringFromXmlResource(R.string.preferences_ornidroid_home_key),
-						Constants.getOrnidroidHomeDefaultValue());
+						ORNIDROID_HOME_INTERNAL_STORAGE);
+		return getOrnidroidHome(flagOrnidroidHome);
 	}
 
 	/**
-	 * Gets the ornidroid home.
+	 * Returns the path of ornidroidHome
 	 * 
-	 * 
-	 * @return the ornidroid home default value : directory "ornidroid" on the
-	 *         external storage
+	 * @param flagOrnidroidHome
+	 *            : value of the shared pref OrnidroidHome : E, I or a complete
+	 *            path
+	 * @return the path of ornidroidHome
 	 */
-	public static final String getOrnidroidHome__() {
-		if (StringHelper.isBlank(ORNIDROID_HOME_DEFAULT_VALUE)) {
-			if (isExternalStorageWritable()) {
-				ORNIDROID_HOME_DEFAULT_VALUE = Environment
-						.getExternalStorageDirectory().getAbsolutePath()
-						+ File.separator + ORNIDROID_DIRECTORY_NAME;
-			} else {
-				// external storage not available. Try on the data directory of
-				// the app
-				// something like /data/data/fr.ornidroid/files/
-				ORNIDROID_HOME_DEFAULT_VALUE = CONTEXT.getFilesDir()
-						.getAbsolutePath()
-						+ File.separator
-						+ ORNIDROID_DIRECTORY_NAME;
-			}
+	public static final String getOrnidroidHome(String flagOrnidroidHome) {
+		if (ORNIDROID_HOME_INTERNAL_STORAGE.equals(flagOrnidroidHome)) {
+			return Constants.getOrnidroidHomeDefaultValue();
 		}
-		return ORNIDROID_HOME_DEFAULT_VALUE;
+		if (ORNIDROID_HOME_EXTERNAL_STORAGE.equals(flagOrnidroidHome)) {
+			return Constants.getOrnidroidHomeExternalValue();
+		}
+		return flagOrnidroidHome;
 	}
 
 	/**
@@ -237,38 +231,42 @@ public class Constants extends BasicConstants {
 
 	/**
 	 * Gets the ornidroid home default value if the OrnidroidHomePreference is
-	 * not set by the user.
+	 * not set by the user. Internal memory.
 	 * 
 	 * @return the ornidroid home default value : directory "ornidroid" on the
 	 *         external storage
 	 */
-	private static final String getOrnidroidHomeDefaultValue() {
+	public static final String getOrnidroidHomeDefaultValue() {
 		return Environment.getExternalStorageDirectory().getAbsolutePath()
 				+ File.separator + ORNIDROID_DIRECTORY_NAME;
 	}
 
 	/**
-	 * Checks if is external storage writable.
+	 * Gets the ornidroid home external value if the OrnidroidHomePreference is
+	 * set to 'E'. External path to SD CARD Android/data/fr.ornidroid/
+	 * https://source.android.com/devices/storage/index.html
 	 * 
-	 * @return true, if is external storage writable
+	 * @return the ornidroid home default value : directory "ornidroid" on the
+	 *         external storage. In the end, to avoid NPE, return the default
+	 *         internal value if everything fails.
 	 */
-	private static final boolean isExternalStorageWritable() {
-		boolean mExternalStorageWriteable;
-		final String state = Environment.getExternalStorageState();
+	public static final String getOrnidroidHomeExternalValue() {
+		File[] externalFilesDirs = CONTEXT.getExternalFilesDirs(null);
 
-		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			// We can read and write the media
-			mExternalStorageWriteable = true;
-		} else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-			// We can only read the media
-			mExternalStorageWriteable = false;
-		} else {
-			// Something else is wrong. It may be one of many other states, but
-			// all we need
-			// to know is we can neither read nor write
-			mExternalStorageWriteable = false;
+		if (externalFilesDirs != null) {
+			if (externalFilesDirs.length > 1) {
+				if (externalFilesDirs[1] != null) {
+					// http://stackoverflow.com/questions/26816909/number-of-locations-returned-by-getexternalfilesdirs
+					// http://stackoverflow.com/questions/23205389/using-getexternalfilesdir-with-multi-sdcards-galaxy-s3
+					return externalFilesDirs[1].getAbsolutePath();
+				}
+			}
 		}
-		return mExternalStorageWriteable;
+		if (null != CONTEXT.getExternalFilesDir(null)) {
+			return CONTEXT.getExternalFilesDir(null).getAbsolutePath();
+		} else {
+			return getOrnidroidHomeDefaultValue();
+		}
 	}
 
 	/**

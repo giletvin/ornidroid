@@ -1,7 +1,6 @@
 package fr.ornidroid.ui.activity;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -126,7 +125,7 @@ public class OrnidroidPreferenceActivity extends PreferenceActivity implements
 				final File destDir = new File(ornidroidHome);
 				FileHelper.moveDirectory(srcDir, destDir);
 				myPrefs.edit().ornidroidHome().put(ornidroidHome);
-			} catch (final IOException e) {
+			} catch (final Exception e) {
 				Log.e(Constants.LOG_TAG, e.toString());
 				caughtException = e;
 			} finally {

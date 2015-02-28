@@ -11,6 +11,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.OrnidroidFileType;
@@ -251,7 +252,8 @@ public class Constants extends BasicConstants {
 	 *         internal value if everything fails.
 	 */
 	public static final String getOrnidroidHomeExternalValue() {
-		File[] externalFilesDirs = CONTEXT.getExternalFilesDirs(null);
+		File[] externalFilesDirs = ContextCompat.getExternalFilesDirs(CONTEXT,
+				null);
 
 		if (externalFilesDirs != null) {
 			if (externalFilesDirs.length > 1) {

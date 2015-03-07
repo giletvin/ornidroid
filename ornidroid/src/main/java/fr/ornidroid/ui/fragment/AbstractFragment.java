@@ -27,6 +27,7 @@ import de.greenrobot.event.EventBus;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
+import fr.ornidroid.event.CheckForUpdateEvent;
 import fr.ornidroid.event.DownloadEvent;
 import fr.ornidroid.event.EventType;
 import fr.ornidroid.helper.BasicConstants;
@@ -52,6 +53,8 @@ public abstract class AbstractFragment extends Fragment {
 	@InstanceState
 	DownloadType downloadInProgressType = DownloadType.NO_DOWNLOAD;
 
+	@InstanceState
+	boolean checkForUpdatesInProgress = false;
 	/**
 	 * Gets the current (selected) media file if picture : the displayed image,
 	 * if sound, the played mp3.
@@ -298,19 +301,28 @@ public abstract class AbstractFragment extends Fragment {
 	 */
 	@Background
 	void checkForUpdates(final boolean manualCheck) {
-		Exception exception = null;
-		boolean updatesToDo = false;
-		List<String> filesToDownload;
-		try {
-			filesToDownload = this.ornidroidIOService.filesToUpdate(
-					getMediaHomeDirectory(), ornidroidService.getCurrentBird(),
-					getFileType());
-			updatesToDo = (filesToDownload.size() > 0);
+		if (!checkForUpdatesInProgress) {
+			checkForUpdatesInProgress = true;
+			Exception exception = null;
+			boolean updatesToDo = false;
+			List<String> filesToDownload;
+			try {
+				filesToDownload = this.ornidroidIOService.filesToUpdate(
+						getMediaHomeDirectory(),
+						ornidroidService.getCurrentBird(), getFileType());
+				updatesToDo = (filesToDownload.size() > 0);
 
-		} catch (OrnidroidException e) {
-			exception = e;
+			} catch (Exception e) {
+				exception = e;
+			} finally {
+				EventBus.getDefault().post(
+						new CheckForUpdateEvent(exception, updatesToDo,
+								manualCheck, getFileType()));
+				checkForUpdatesInProgress = false;
+				// onCheckUpdateTaskEnded(manualCheck, updatesToDo, exception);
+			}
 		}
-		onCheckUpdateTaskEnded(manualCheck, updatesToDo, exception);
+
 	}
 
 	/**
@@ -415,6 +427,45 @@ public abstract class AbstractFragment extends Fragment {
 		dialog.show();
 	}
 
+	@UiThread
+	void onEventMainThread(CheckForUpdateEvent event) {
+		if (getFileType().equals(event.fileType)) {
+			if (event.getException() != null) {
+				Toast.makeText(getActivity(), R.string.updates_check_error,
+						Toast.LENGTH_LONG).show();
+			} else {
+				if (event.updatesAvailable) {
+					AlertDialog dialog = new AlertDialog.Builder(
+							this.getActivity())
+							.setIcon(android.R.drawable.ic_dialog_alert)
+							.setTitle(R.string.updates_available)
+							.setNegativeButton(R.string.cancel,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												final DialogInterface dialog,
+												final int whichButton) {
+										}
+									})
+							.setPositiveButton(R.string.ok,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												final DialogInterface dialog,
+												final int whichButton) {
+											startDownload();
+										}
+									}).create();
+					dialog.show();
+				} else {
+					if (event.manualCheck) {
+						Toast.makeText(getActivity(), R.string.updates_none,
+								Toast.LENGTH_LONG).show();
+					}
+				}
+			}
+		}
+
+	}
+
 	/**
 	 * On download zip package task ended.
 	 * 
@@ -517,52 +568,6 @@ public abstract class AbstractFragment extends Fragment {
 					OrnidroidFileType.getCode(this.getFileType()));
 			startActivity(intentBirdInfo
 					.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-		}
-	}
-
-	/**
-	 * On check update task ended.
-	 * 
-	 * @param manuelCheck
-	 *            the manuel check
-	 * @param updatesToDo
-	 *            the updates to do
-	 * @param exception
-	 *            the exception
-	 */
-	@UiThread
-	void onCheckUpdateTaskEnded(boolean manuelCheck, boolean updatesToDo,
-			Exception exception) {
-		if (exception != null) {
-			Toast.makeText(getActivity(), R.string.updates_check_error,
-					Toast.LENGTH_LONG).show();
-		} else {
-			if (updatesToDo) {
-				AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
-						.setIcon(android.R.drawable.ic_dialog_alert)
-						.setTitle(R.string.updates_available)
-						.setNegativeButton(R.string.cancel,
-								new DialogInterface.OnClickListener() {
-									public void onClick(
-											final DialogInterface dialog,
-											final int whichButton) {
-									}
-								})
-						.setPositiveButton(R.string.ok,
-								new DialogInterface.OnClickListener() {
-									public void onClick(
-											final DialogInterface dialog,
-											final int whichButton) {
-										startDownload();
-									}
-								}).create();
-				dialog.show();
-			} else {
-				if (manuelCheck) {
-					Toast.makeText(getActivity(), R.string.updates_none,
-							Toast.LENGTH_LONG).show();
-				}
-			}
 		}
 	}
 

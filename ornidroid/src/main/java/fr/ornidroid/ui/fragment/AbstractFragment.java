@@ -693,48 +693,50 @@ public abstract class AbstractFragment extends Fragment {
 				final Intent intent = new Intent(getActivity(),
 						HomeActivity_.class);
 				startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-			}
-			if (Constants.getAutomaticUpdateCheckPreference()
-					&& updateFilesButton != null) {
-				updateFilesButton.setVisibility(View.GONE);
-				checkForUpdates(false);
-			}
-			try {
-				loadMediaFilesLocally();
-
-				switch (getFileType()) {
-				case PICTURE:
-					success = (ornidroidService.getCurrentBird()
-							.getNumberOfPictures() > 0);
-					break;
-				case AUDIO:
-					success = (ornidroidService.getCurrentBird()
-							.getNumberOfSounds() > 0);
-					break;
-				case WIKIPEDIA_PAGE:
-					success = (ornidroidService.getCurrentBird()
-							.getWikipediaPage() != null);
-					break;
+			} else {
+				if (Constants.getAutomaticUpdateCheckPreference()
+						&& updateFilesButton != null) {
+					updateFilesButton.setVisibility(View.GONE);
+					checkForUpdates(false);
 				}
+				try {
+					loadMediaFilesLocally();
 
-				if (!success) {
-					fragmentMainContent.setVisibility(View.GONE);
-					downloadBanner.setVisibility(View.VISIBLE);
-				} else {
-					fragmentMainContent.setVisibility(View.VISIBLE);
-					downloadBanner.setVisibility(View.GONE);
+					switch (getFileType()) {
+					case PICTURE:
+						success = (ornidroidService.getCurrentBird()
+								.getNumberOfPictures() > 0);
+						break;
+					case AUDIO:
+						success = (ornidroidService.getCurrentBird()
+								.getNumberOfSounds() > 0);
+						break;
+					case WIKIPEDIA_PAGE:
+						success = (ornidroidService.getCurrentBird()
+								.getWikipediaPage() != null);
+						break;
+					}
 
+					if (!success) {
+						fragmentMainContent.setVisibility(View.GONE);
+						downloadBanner.setVisibility(View.VISIBLE);
+					} else {
+						fragmentMainContent.setVisibility(View.VISIBLE);
+						downloadBanner.setVisibility(View.GONE);
+
+					}
+				} catch (final OrnidroidException e) {
+					success = false;
+					Toast.makeText(
+							getActivity(),
+							"Error reading media files of bird "
+									+ this.ornidroidService.getCurrentBird()
+											.getTaxon() + " e",
+							Toast.LENGTH_LONG).show();
 				}
-			} catch (final OrnidroidException e) {
-				success = false;
-				Toast.makeText(
-						getActivity(),
-						"Error reading media files of bird "
-								+ this.ornidroidService.getCurrentBird()
-										.getTaxon() + " e", Toast.LENGTH_LONG)
-						.show();
 			}
 			return success;
+
 		}
 	}
 

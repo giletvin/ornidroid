@@ -36,7 +36,7 @@
     <string name="bird_image">Pictures</string>
     <string name="bird_image_big">Zoomed picture</string>
     <string name="bird_names">Taxonomy</string>
-    <string name="add_custom_media_title">Add custom files</string>
+    <string name="add_custom_media_title">Add custom file</string>
 
     <!-- labels used in preferences -->
     <string name="preferences_lang_key">OrnidroidSearchLang</string>

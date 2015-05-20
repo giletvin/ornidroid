@@ -92,6 +92,9 @@ public abstract class AbstractFragment extends Fragment {
 	@ViewById(R.id.bt_download_all)
 	Button btDownloadAll;
 
+	@ViewById(R.id.bt_add_custom_media)
+	Button btAddCustomMedia;
+
 	/** The no media message. */
 	@ViewById(R.id.tv_no_media_message)
 	TextView noMediaMessage;
@@ -191,7 +194,7 @@ public abstract class AbstractFragment extends Fragment {
 	/**
 	 * Adds the custom picture clicked.
 	 */
-	@Click(R.id.iv_add_custom_media)
+	@Click({ R.id.iv_add_custom_media, R.id.bt_add_custom_media })
 	void addCustomPictureClicked() {
 		final Intent intent = new Intent(getActivity(),
 				AddCustomMediaActivity_.class);

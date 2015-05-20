@@ -66,6 +66,15 @@
             android:paddingLeft="10sp"
             android:paddingTop="10sp"
             android:text="@string/download_manual" />
+        
+        <Button
+            android:id="@+id/bt_add_custom_media"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="10sp"
+            android:text="@string/add_custom_media_title" />
     </LinearLayout>
 
     <ScrollView

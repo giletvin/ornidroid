@@ -68,149 +68,150 @@
             android:text="@string/download_manual" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/fragment_main_content"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-        <RelativeLayout
-            android:id="@+id/images_header"
+        <LinearLayout
+            android:id="@+id/fragment_main_content"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+            <RelativeLayout
+                android:id="@+id/images_header"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/layout_taxon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_taxon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="10sp"
+                        android:paddingLeft="10sp"
+                        android:paddingTop="10sp" />
+
+                    <TextView
+                        android:id="@+id/tv_nb_pictures"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="10sp"
+                        android:paddingLeft="10sp"
+                        android:paddingTop="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/layout_taxon"
+                    android:gravity="right"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:id="@+id/iv_add_custom_media"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/add_custom_media_title"
+                        android:paddingBottom="10sp"
+                        android:paddingLeft="10sp"
+                        android:paddingTop="10sp"
+                        android:src="@drawable/ic_add" />
+
+                    <ImageView
+                        android:id="@+id/iv_remove_custom_media"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/add_custom_media_title"
+                        android:paddingBottom="10sp"
+                        android:paddingLeft="10sp"
+                        android:paddingTop="10sp"
+                        android:src="@drawable/ic_remove" />
+
+                    <ImageView
+                        android:id="@+id/iv_update_files_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/home_stars"
+                        android:paddingBottom="10sp"
+                        android:paddingLeft="10sp"
+                        android:paddingTop="10sp"
+                        android:src="@drawable/ic_check_for_updates" />
+
+                    <ImageView
+                        android:id="@+id/iv_info_button_picture"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/home_stars"
+                        android:paddingBottom="10sp"
+                        android:paddingLeft="10sp"
+                        android:paddingTop="10sp"
+                        android:src="@drawable/ic_info" />
+                </LinearLayout>
+            </RelativeLayout>
+
             <LinearLayout
-                android:id="@+id/layout_taxon"
-                android:layout_width="wrap_content"
+                android:id="@+id/images_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/tv_taxon"
+                    android:id="@+id/picture_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10sp"
                     android:paddingLeft="10sp"
-                    android:paddingTop="10sp"
-                    android:text="Taxon" />
+                    android:paddingTop="10sp" />
 
-                <TextView
-                    android:id="@+id/tv_nb_pictures"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="10sp"
-                    android:paddingLeft="10sp"
-                    android:paddingTop="10sp"
-                    android:text="nbPictures" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/layout_taxon"
-                android:gravity="right"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:id="@+id/iv_add_custom_media"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/add_custom_media_title"
-                    android:paddingBottom="10sp"
-                    android:paddingLeft="10sp"
-                    android:paddingTop="10sp"
-                    android:src="@drawable/ic_add" />
-
-                <ImageView
-                    android:id="@+id/iv_remove_custom_media"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/add_custom_media_title"
-                    android:paddingBottom="10sp"
-                    android:paddingLeft="10sp"
-                    android:paddingTop="10sp"
-                    android:src="@drawable/ic_remove" />
-
-                <ImageView
-                    android:id="@+id/iv_update_files_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/home_stars"
-                    android:paddingBottom="10sp"
-                    android:paddingLeft="10sp"
-                    android:paddingTop="10sp"
-                    android:src="@drawable/ic_check_for_updates" />
-
-                <ImageView
-                    android:id="@+id/iv_info_button_picture"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/home_stars"
-                    android:paddingBottom="10sp"
-                    android:paddingLeft="10sp"
-                    android:paddingTop="10sp"
-                    android:src="@drawable/ic_info" />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/images_content"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/images_header"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/picture_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10sp"
-                android:paddingLeft="10sp"
-                android:paddingTop="10sp"
-                android:text="picture description" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingBottom="10sp"
-                android:paddingTop="10sp" >
-
-                <ImageView
-                    android:id="@+id/previous_button"
+                <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/bird_image"
-                    android:src="@drawable/ic_previous" />
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10sp"
+                    android:paddingTop="10sp" >
+
+                    <ImageView
+                        android:id="@+id/previous_button"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/bird_image"
+                        android:src="@drawable/ic_previous" />
+
+                    <ImageView
+                        android:id="@+id/zoom_button"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/bird_image"
+                        android:src="@drawable/ic_zoom" />
+
+                    <ImageView
+                        android:id="@+id/next_button"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/bird_image"
+                        android:src="@drawable/ic_next" />
+                </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/zoom_button"
+                    android:id="@+id/picture"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="300sp"
                     android:contentDescription="@string/bird_image"
-                    android:src="@drawable/ic_zoom" />
-
-                <ImageView
-                    android:id="@+id/next_button"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/bird_image"
-                    android:src="@drawable/ic_next" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/oiseauweb" />
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/picture"
-                android:layout_width="fill_parent"
-                android:layout_height="300sp"
-                android:contentDescription="@string/bird_image"
-                android:scaleType="fitCenter"
-                android:src="@drawable/oiseauweb" />
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

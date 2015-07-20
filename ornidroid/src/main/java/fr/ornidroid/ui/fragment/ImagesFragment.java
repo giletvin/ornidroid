@@ -110,8 +110,13 @@ public class ImagesFragment extends AbstractFragment {
 	void afterViews() {
 		if (commonAfterViews()) {
 			loadImage(0);
+			if (this.ornidroidService.getCurrentBird().getNumberOfPictures() == 1) {
+				this.nextButton.setVisibility(View.GONE);
+				this.previousButton.setVisibility(View.GONE);
+			}
 		}
 		this.taxon.setText(ornidroidService.getCurrentBird().getTaxon());
+
 	}
 
 	/**

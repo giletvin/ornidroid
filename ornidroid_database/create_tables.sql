@@ -109,9 +109,15 @@ insert into application_info(id,key,value,date,comments) VALUES(7,"ornidroid_ver
 
 create table release_notes(id integer,version_code integer,date,comments_de,comments_en,comments_fr,read integer);
 
--- release 10.0.0 version 19
-insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(5,21,"23/01/2015","","","",0);
-update release_notes set comments_fr=" * Version 11.0.0 (23/01/2015)
+-- release 11.1.0 version 26
+insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(5,27,"20/07/2015","","","",0);
+update release_notes set comments_fr=" * Version 11.1.0 (20/07/2015)
+Evolutions :
+ - amélioration de l''écran de zoom de photo
+ - qques corrections dans la base de données
+ - amélioration de la recherche multicritères
+
+ * Version 11.0.0 (23/01/2015)
 
 Evolutions : 
  - ajout de la base de données en Serbe et Slovène
@@ -123,22 +129,10 @@ Corrections de bugs :
 Evolutions : 
  - améliorations du lecteur de sons (barre de progression, surlignage du fichier écouté)
 
-+ quelques corrections de bugs.
-
- * Version 9.1.1 (04/10/2014)
-
-Corrections de bugs:
-
- - crashs après le téléchargement de packages de photos, sons ou pages wikipedia
-
  * Version 9.1.0 (23/09/2014)
 
 Evolutions : 
  - ajout de la base de données en turc
-
-Corrections de bugs:
-
- - crashs aléatoires de l''appli au redémarrage
 
  * Version 9.0.0 (09/09/2014)
 
@@ -148,62 +142,15 @@ Evolutions :
  - téléchargement des packages complets d''images, sons et pages wikipedia depuis l''application
  - améliorations de la base de données de sons : ajout de nombreux fichiers mp3
  - notification sur les nouveautés lors de mises à jour (cet écran !)
+" where version_code=27;
 
-Corrections de bugs:
+update release_notes set comments_en=" * Version 11.1.0 (07/20/2015)
+New features:
+ - enhancements on the zoomed images screen
+ - few fixes in the database
+ - enhancements in the multi criteria search
 
- - image zoomée déformée sur certains appareils
- - anomalies sur la recherche par nom
- - crashs aléatoires
-" where version_code=21;
-
-update release_notes set comments_en=" * Version 11.0.0 (01/23/2015)
-
-New features : 
- - database in serbian and slovenian
-
-Bug fixes :
- - Complete code refactoring : better handling of download processes, better handling of screen rotations, ... 
-
- * Version 10.0.0 (10/15/2014)
-
-New features : 
- - enhancements on the mp3 player : progress bar, played item is now highlighted
-
-+ bug fixes.
-
-
- * Version 9.1.1 (10/04/2014) 
-
-Bug fixes :
-
- - crashes after downloading and installing zip packages
-
- * Version 9.1.0 (09/23/2014)
-
-New features : 
- - database in turkish
-
-Bug fixes :
-
- - random crashes when restarting app
-
- * Version 9.0.0 (09/09/2014)
-
-New features : 
- - Wikipedia files embedded in the app
- - redesign of the main screen
- - download of full packages of images, sounds or wikipedia files from the app
- - More mp3 files from Xeno Canto available
- - Release notes screen
-
-Bug fixes :
-
- - distorsion on zoomed images
- - bugs in the search by name
- - random crashes
-" where version_code=21;
-
-update release_notes set comments_de=" * Version 11.0.0 (01/23/2015)
+ * Version 11.0.0 (01/23/2015)
 
 New features : 
  - database in serbian and slovenian
@@ -216,23 +163,10 @@ Bug fixes :
 New features : 
  - enhancements on the mp3 player : progress bar, played item is now highlighted
 
-+ bug fixes.
-
-
- * Version 9.1.1 (10/04/2014) 
-
-Bug fixes :
-
- - crashes after downloading and installing zip packages
-
  * Version 9.1.0 (09/23/2014)
 
 New features : 
  - database in turkish
-
-Bug fixes :
-
- - random crashes when restarting app
 
  * Version 9.0.0 (09/09/2014)
 
@@ -243,10 +177,39 @@ New features :
  - More mp3 files from Xeno Canto available
  - Release notes screen
 
+" where version_code=27;
+
+update release_notes set comments_de=" * Version 11.1.0 (07/20/2015)
+New features:
+ - enhancements on the zoomed images screen
+ - few fixes in the database
+ - enhancements in the multi criteria search
+
+ * Version 11.0.0 (01/23/2015)
+
+New features : 
+ - database in serbian and slovenian
+
 Bug fixes :
+ - Complete code refactoring : better handling of download processes, better handling of screen rotations, ... 
 
- - distorsion on zoomed images
- - bugs in the search by name
- - random crashes
-" where version_code=21;
+ * Version 10.0.0 (10/15/2014)
 
+New features : 
+ - enhancements on the mp3 player : progress bar, played item is now highlighted
+
+ * Version 9.1.0 (09/23/2014)
+
+New features : 
+ - database in turkish
+
+ * Version 9.0.0 (09/09/2014)
+
+New features : 
+ - Wikipedia files embedded in the app
+ - redesign of the main screen
+ - download of full packages of images, sounds or wikipedia files from the app
+ - More mp3 files from Xeno Canto available
+ - Release notes screen
+
+" where version_code=27;

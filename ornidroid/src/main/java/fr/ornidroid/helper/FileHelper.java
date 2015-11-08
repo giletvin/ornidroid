@@ -47,6 +47,29 @@ public class FileHelper {
 	}
 
 	/**
+	 * Get the directory size
+	 * 
+	 * @param directory
+	 * @param recursive
+	 * @return
+	 */
+	public static int folderSize(File directory, boolean recursive) {
+
+		long length = 0;
+		for (File file : directory.listFiles()) {
+			if (file.isFile()) {
+				length += file.length();
+			} else {
+				if (recursive) {
+					length += folderSize(file, recursive);
+				}
+			}
+		}
+		long directorzySize = length / (1024 * 1024);
+		return (int) directorzySize;
+	}
+
+	/**
 	 * Internal copy file method.
 	 * 
 	 * @param srcFile
@@ -516,18 +539,21 @@ public class FileHelper {
 					File fmd = new File(destDir + File.separator + filename);
 					fmd.mkdirs();
 					continue;
+				} else {
+					File ff = new File(destDir + File.separator + filename);
+					if (!ff.getParentFile().exists()) {
+						ff.getParentFile().mkdirs();
+					}
+					FileOutputStream fout = new FileOutputStream(ff);
+
+					// cteni zipu a zapis
+					while ((count = zis.read(buffer)) != -1) {
+						fout.write(buffer, 0, count);
+					}
+
+					fout.close();
+					zis.closeEntry();
 				}
-
-				FileOutputStream fout = new FileOutputStream(destDir
-						+ File.separator + filename);
-
-				// cteni zipu a zapis
-				while ((count = zis.read(buffer)) != -1) {
-					fout.write(buffer, 0, count);
-				}
-
-				fout.close();
-				zis.closeEntry();
 			}
 
 			zis.close();
@@ -565,9 +591,11 @@ public class FileHelper {
 		int count = 0;
 		if (fileToCheck != null && fileToCheck.isDirectory()) {
 			File[] listOfFiles = fileToCheck.listFiles();
-			count = listOfFiles.length;
-			for (int i = 0; i < listOfFiles.length; i++) {
-				count += getCountFiles(listOfFiles[i]);
+			if (listOfFiles != null) {
+				count = listOfFiles.length;
+				for (int i = 0; i < listOfFiles.length; i++) {
+					count += getCountFiles(listOfFiles[i]);
+				}
 			}
 		}
 		return count;

@@ -22,15 +22,50 @@
             android:paddingTop="10sp"
             android:visibility="gone" />
 
-        <ProgressBar
-            android:id="@+id/pb_download_all_in_progress"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
+          <LinearLayout
+            android:id="@+id/download_all_progress_block"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50sp"
-            android:layout_marginRight="50sp"
-            android:paddingTop="10sp"
-            android:visibility="gone" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:id="@+id/pb_download_all_in_progress"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50sp"
+                android:layout_marginRight="50sp"
+                android:paddingTop="10sp" />
+
+            <TextView
+                android:id="@+id/tv_download_all_in_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10sp"
+                android:paddingLeft="10sp"
+                android:paddingTop="10sp"
+                android:text="@string/download_package_in_progress" />
+
+            <ProgressBar
+                android:id="@+id/pb_download_all_installation_in_progress"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50sp"
+                android:layout_marginRight="50sp"
+                android:paddingTop="10sp" />
+
+            <TextView
+                android:id="@+id/tv_download_all_installation_in_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10sp"
+                android:paddingLeft="10sp"
+                android:paddingTop="10sp"
+                android:text="@string/install_package_in_progress" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_no_media_message"
@@ -73,13 +108,13 @@
     <LinearLayout
         android:id="@+id/fragment_main_content"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical" >
 
         <WebView
             android:id="@+id/wikipiedia_webview"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center" />
     </LinearLayout>
 

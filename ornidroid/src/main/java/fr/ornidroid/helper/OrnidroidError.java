@@ -64,6 +64,9 @@ public enum OrnidroidError {
 		case ADD_CUSTOM_MEDIA_ERROR:
 			code = 7;
 			break;
+		case UNZIP_PACKAGE:
+			code = 8;
+			break;
 		}
 		return code;
 	}
@@ -101,6 +104,9 @@ public enum OrnidroidError {
 			break;
 		case 7:
 			error = ADD_CUSTOM_MEDIA_ERROR;
+			break;
+		case 8:
+			error = UNZIP_PACKAGE;
 			break;
 		}
 		return error;

@@ -27,6 +27,7 @@ import de.greenrobot.event.EventBus;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
+import fr.ornidroid.bo.ZipPackage;
 import fr.ornidroid.event.CheckForUpdateEvent;
 import fr.ornidroid.event.DownloadEvent;
 import fr.ornidroid.event.EventType;
@@ -52,7 +53,8 @@ public abstract class AbstractFragment extends Fragment {
 	/** The download in progress type. */
 	@InstanceState
 	DownloadType downloadInProgressType = DownloadType.NO_DOWNLOAD;
-
+	@InstanceState
+	int ornidroidHomeFolderSizeBeforeDownload;
 	@InstanceState
 	boolean checkForUpdatesInProgress = false;
 	/**
@@ -61,15 +63,19 @@ public abstract class AbstractFragment extends Fragment {
 	 */
 	private OrnidroidFile currentMediaFile;
 
+	@ViewById(R.id.download_all_progress_block)
+	View vDownloadAllProgressBlock;
+
 	/** The pb download in progress. */
 	@ViewById(R.id.pb_download_in_progress)
 	ProgressBar pbDownloadInProgress;
 
-	/** The pb download all in progress. */
 	@ViewById(R.id.pb_download_all_in_progress)
 	ProgressBar pbDownloadAllInProgress;
 
-	/** The ornidroid service. */
+	@ViewById(R.id.pb_download_all_installation_in_progress)
+	ProgressBar pbDownloadAllInstallationInProgress;
+
 	IOrnidroidService ornidroidService = OrnidroidServiceFactory
 			.getService(getActivity());
 
@@ -282,7 +288,10 @@ public abstract class AbstractFragment extends Fragment {
 		this.btDownloadAll.setVisibility(View.GONE);
 		switch (downloadInProgressType) {
 		case DOWNLOAD_ALL:
-			pbDownloadAllInProgress.setVisibility(View.VISIBLE);
+			vDownloadAllProgressBlock.setVisibility(View.VISIBLE);
+			pbDownloadAllInstallationInProgress.setMax(BasicConstants
+					.getNbOfFilesInPackage(getFileType()));
+			noMediaMessage.setVisibility(View.GONE);
 			break;
 		case DOWNLOAD_ONE:
 			pbDownloadInProgress.setVisibility(View.VISIBLE);
@@ -349,19 +358,12 @@ public abstract class AbstractFragment extends Fragment {
 	 */
 	@UiThread
 	void updateDownloadAllProgressBar() {
-		// TODO : il pourrait y avoir des NPE ici après un retournement
-		// d'écran ??
-		if (ornidroidIOService.getZipDownloadProgressPercent(getFileType()) < 100) {
-			noMediaMessage.setText(R.string.download_package_in_progress);
-			pbDownloadAllInProgress.setProgress(ornidroidIOService
-					.getZipDownloadProgressPercent(getFileType()));
-		} else {
-			noMediaMessage.setText(R.string.install_package_in_progress);
-			pbDownloadAllInProgress.setMax(BasicConstants
-					.getNbOfFilesInPackage(getFileType()));
-			pbDownloadAllInProgress.setProgress(ornidroidIOService
-					.getInstallProgressPercent(getFileType()));
-		}
+		pbDownloadAllInProgress.setProgress(ornidroidIOService
+				.getZipDownloadProgressPercent(getFileType(),
+						ornidroidHomeFolderSizeBeforeDownload));
+
+		pbDownloadAllInstallationInProgress.setProgress(ornidroidIOService
+				.getInstallProgressPercent(getFileType()));
 	}
 
 	/**
@@ -381,13 +383,19 @@ public abstract class AbstractFragment extends Fragment {
 					try {
 						manageDownloadProgressBar();
 
-						String zipname = this.ornidroidIOService
+						ZipPackage zipPackage = this.ornidroidIOService
 								.getZipname(getFileType());
-						try {
-							this.ornidroidIOService.downloadZipPackage(zipname,
-									Constants.getOrnidroidHome());
-						} catch (OrnidroidException e) {
-							exception = e;
+
+						int nbOfZipFiles = zipPackage.getNbOfFilesToDownload();
+
+						for (int i = 1; i <= nbOfZipFiles; i++) {
+							try {
+								this.ornidroidIOService.downloadZipPackage(
+										zipPackage.getZipFileToDownload(i),
+										Constants.getOrnidroidHome());
+							} catch (OrnidroidException e) {
+								exception = e;
+							}
 						}
 					} finally {
 						// post the event in the EventBus

@@ -6,6 +6,7 @@ import java.util.List;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileType;
+import fr.ornidroid.bo.ZipPackage;
 import fr.ornidroid.helper.OrnidroidException;
 
 /**
@@ -140,16 +141,19 @@ public interface IOrnidroidIOService {
 	 * 
 	 * @param fileType
 	 *            the file type
-	 * @return the zipname (audio.zip, images.zip or wikipedia.zip)
+	 * @return the zipname
 	 */
-	public String getZipname(OrnidroidFileType fileType);
+	public ZipPackage getZipname(OrnidroidFileType fileType);
 
 	/**
 	 * Gets the download progress in percent of the zip package downloading.
 	 * 
+	 * @param fileType
+	 * @param folderSizeBeforeDownload
 	 * @return the zip download progress percent
 	 */
-	public int getZipDownloadProgressPercent(OrnidroidFileType fileType);
+	public int getZipDownloadProgressPercent(OrnidroidFileType fileType,
+			int folderSizeBeforeDownload);
 
 	/**
 	 * Gets the install progress percent.

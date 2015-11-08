@@ -17,7 +17,7 @@
             android:contentDescription="@string/app_name"
             android:scaleType="fitCenter"
             android:padding="@dimen/padding"
-            android:src="@drawable/oiseauweb" />
+            android:src="@drawable/image_accueil" />
 
         <TextView
             android:id="@+id/menu_search"

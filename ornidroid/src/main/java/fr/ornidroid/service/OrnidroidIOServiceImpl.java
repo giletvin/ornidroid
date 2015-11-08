@@ -15,6 +15,7 @@ import fr.ornidroid.bo.OrnidroidFile;
 import fr.ornidroid.bo.OrnidroidFileFactoryImpl;
 import fr.ornidroid.bo.OrnidroidFileType;
 import fr.ornidroid.bo.PictureOrnidroidFile;
+import fr.ornidroid.bo.ZipPackage;
 import fr.ornidroid.download.DefaultDownloadable;
 import fr.ornidroid.download.DownloadConstants;
 import fr.ornidroid.download.DownloadHelperImpl;
@@ -41,6 +42,15 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 
 	/** The Constant MIN_SPACE_TO_DOWNLOAD_WIKIPEDIA_PACKAGE. */
 	private static final int MIN_SPACE_TO_DOWNLOAD_WIKIPEDIA_PACKAGE = 40;
+
+	private static final int WIKIPEDIA_PACKAGE_SIZE = 15;
+	private static final int WIKIPEDIA_PACKAGE_NUMBER_OF_FILES = 1;
+
+	private static final int IMAGES_PACKAGE_NUMBER_OF_FILES = 6;
+	private static final int IMAGE_PACKAGE_SIZE = 51;
+
+	private static final int AUDIO_PACKAGE_NUMBER_OF_FILES = 33;
+	private static final int AUDIO_PACKAGE_SIZE = 330;
 
 	/**
 	 * The Class OrnidroidFileFilter.
@@ -568,8 +578,18 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 			throw new OrnidroidException(
 					OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, runtimeException);
 		}
-		boolean success = FileHelper.unzipFile(zipPackageFile.getName(),
-				mediaHomeDirectory);
+
+		int tentative = 0;
+		boolean success = false;
+		while (!success && tentative < 10) {
+			success = FileHelper.unzipFile(zipPackageFile.getName(),
+					mediaHomeDirectory);
+			if (!success) {
+				Log.e(BasicConstants.LOG_TAG, "unzip failed " + tentative + " "
+						+ zipPackageFile.getName());
+			}
+			tentative++;
+		}
 
 		try {
 			FileHelper.forceDelete(zipPackageFile);
@@ -663,26 +683,44 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		return requiredSpace;
 	}
 
+	private int getPackageSize(OrnidroidFileType fileType) {
+		int requiredSpace = 0;
+		switch (fileType) {
+		case WIKIPEDIA_PAGE:
+			requiredSpace = WIKIPEDIA_PACKAGE_SIZE;
+			break;
+		case AUDIO:
+			requiredSpace = AUDIO_PACKAGE_SIZE;
+			break;
+		case PICTURE:
+			requiredSpace = IMAGE_PACKAGE_SIZE;
+			break;
+		}
+		return requiredSpace;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see fr.ornidroid.service.IOrnidroidIOService#getZipname(fr.ornidroid.bo.
 	 * OrnidroidFileType)
 	 */
-	public String getZipname(OrnidroidFileType fileType) {
-		String zipname = null;
+	public ZipPackage getZipname(OrnidroidFileType fileType) {
+		ZipPackage zipPackage = null;
 		switch (fileType) {
-		case AUDIO:
-			zipname = "audio.zip";
-			break;
 		case PICTURE:
-			zipname = "images.zip";
+			zipPackage = new ZipPackage(IMAGES_PACKAGE_NUMBER_OF_FILES,
+					"images");
+			break;
+		case AUDIO:
+			zipPackage = new ZipPackage(AUDIO_PACKAGE_NUMBER_OF_FILES, "audio");
 			break;
 		case WIKIPEDIA_PAGE:
-			zipname = "wikipedia.zip";
+			zipPackage = new ZipPackage(WIKIPEDIA_PACKAGE_NUMBER_OF_FILES,
+					"wikipedia");
 			break;
 		}
-		return zipname;
+		return zipPackage;
 
 	}
 
@@ -693,24 +731,14 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	 *            the file type
 	 * @return the zip download progress percent
 	 */
-	public int getZipDownloadProgressPercent(OrnidroidFileType fileType) {
-		File downloadedFile = new File(Constants.getOrnidroidHome()
-				+ File.separator + getZipname(fileType)
-				+ DefaultDownloadable.SUFFIX_DOWNLOAD);
-		if (downloadedFile.exists()) {
-			int megaBytesDownloaded = FileHelper
-					.getFileSizeInMb(downloadedFile);
-			int result = ((megaBytesDownloaded * 200) / getRequiredSpaceToDownloadZip(fileType));
-			return result;
-		} else {
-			downloadedFile = new File(Constants.getOrnidroidHome()
-					+ File.separator + getZipname(fileType));
-			if (downloadedFile.exists()) {
-				return 100;
-			} else {
-				return 0;
-			}
-		}
+	public int getZipDownloadProgressPercent(OrnidroidFileType fileType,
+			int folderSizeBeforeDownload) {
+		File ornidroidHome = new File(Constants.getOrnidroidHome());
+		int currentFolderSize = FileHelper.folderSize(ornidroidHome, false);
+		int megaBytesDownloaded = currentFolderSize - folderSizeBeforeDownload;
+		int result = ((megaBytesDownloaded * 200) / getPackageSize(fileType));
+		return result;
+
 	}
 
 	/*

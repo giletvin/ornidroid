@@ -5,13 +5,16 @@
 
 	<string-array name="lang_labels">
 	    <item>bg - Bulgare - Български</item>
+	    <item>ca - Catalan - Català</item>
 		<item>cz - Tchèque - Čeština</item>
 		<item>de - Allemand - Deutsch</item>
 		<item>dk - Danois - Dansk</item>
 		<item>en - Anglais - English</item>
 		<item>es - Espagnol - Español</item>
+		<item>eu - Basque - Euskara</item>
 		<item>fi - Finnois - Suomi</item>
 		<item>fr - Français</item>
+		<item>gl - Galicien - Galego</item>
 		<item>gr - Grec - ελληνικά</item>
 		<item>hu - Hongrois - Magyar</item>
 		<item>is - Islandais - Íslenska</item>
@@ -34,13 +37,16 @@
 
 	<string-array name="lang_values">
 	    <item>bg</item>
+	    <item>ca</item>
 		<item>cz</item>
 		<item>de</item>
 		<item>dk</item>
 		<item>en</item>
 		<item>es</item>
+		<item>eu</item>
 		<item>fi</item>
 		<item>fr</item>
+		<item>gl</item>
 		<item>gr</item>
 		<item>hu</item>
 		<item>is</item>

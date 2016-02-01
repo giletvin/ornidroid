@@ -199,6 +199,10 @@ $tr_code='tr';
 $hu_code='hu';
 $sr_code='sr';
 $sl_code='sl';
+//catalan, basque, galicien
+$ca_code='ca';
+$eu_code='eu';
+$gl_code='gl';
 
 $latin_index_in_greek_file=1;
 $greek_index_in_greek_file=2;
@@ -214,6 +218,12 @@ $latin_index_in_serb_file=0;
 $serb_index_in_serb_file=1;
 $latin_index_in_slovenian_file=0;
 $slovenian_index_in_slovenian_file=1;
+$latin_index_in_catalan_basque_galician_file=0;
+$catalan_index_in_catalan_basque_galician_file=1;
+$basque_index_in_catalan_basque_galician_file=3;
+$galician_index_in_catalan_basque_galician_file=2;
+
+
 try {
 	$sqliteFile = "ornidroid.jpg";
 	$dbh = new PDO('sqlite:'.$sqliteFile); // success
@@ -432,6 +442,36 @@ try {
 			else {
 				echo "slovenian : nom latin non référencé : " . $data[$latin_index_in_slovenian_file]."\n";
 			}
+		}
+	    }
+	    fclose($handle);
+	}
+
+	//Catalan, basque et galicien
+	if (($handle = fopen("traductions_catalan_basque_galicien.csv", "r")) !== FALSE) {
+	    while (($data = fgetcsv($handle, 1000, "|")) !== FALSE) {
+		$findBirdIdQuery = "select id from bird where scientific_name='".trim($data[$latin_index_in_catalan_basque_galician_file])."' or scientific_name2='".trim($data[$latin_index_in_catalan_basque_galician_file])."'";
+		echo $findBirdIdQuery."\n";
+		$birdId=-1;
+		foreach ($dbh->query($findBirdIdQuery) as $row){
+			$birdId = $row["id"];
+		}
+		if ($birdId>=1){
+			if (""!=trim($data[$catalan_index_in_catalan_basque_galician_file])){
+				echo "######insertion du catalan pour : " . $data[$latin_index_in_catalan_basque_galician_file]."\n";
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,trim($data[$catalan_index_in_catalan_basque_galician_file]),$ca_code));
+			}
+			if (""!=trim($data[$galician_index_in_catalan_basque_galician_file])){
+				echo "######insertion du galicien pour : " . $data[$latin_index_in_catalan_basque_galician_file]."\n";
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,trim($data[$galician_index_in_catalan_basque_galician_file]),$gl_code));
+			}
+			if (""!=trim($data[$basque_index_in_catalan_basque_galician_file])){
+				echo "######insertion du basque pour : " . $data[$latin_index_in_catalan_basque_galician_file]."\n";
+				fwrite($handlerFileInsertTraductions,insertTraduction($dbh,$birdId,trim($data[$basque_index_in_catalan_basque_galician_file]),$eu_code));
+			}
+		}
+		else {
+			echo "catalan, galicien, basque : nom latin non référencé : " . $data[$latin_index_in_catalan_basque_galician_file]."\n";
 		}
 	    }
 	    fclose($handle);

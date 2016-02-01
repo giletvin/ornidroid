@@ -106,12 +106,16 @@ insert into application_info(id,key,value,date,comments) VALUES(6,"ornidroid_ver
 insert into application_info(id,key,value,date,comments) VALUES(7,"ornidroid_version","6.0.0","29/11/2013","roumain, bulgare, hongrois");
 
 
-
 create table release_notes(id integer,version_code integer,date,comments_de,comments_en,comments_fr,read integer);
 
--- release 11.1.0 version 26
-insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(5,27,"20/07/2015","","","",0);
-update release_notes set comments_fr=" * Version 11.1.0 (20/07/2015)
+-- release 11.2.0 version 29
+insert into release_notes(id,version_code,date,comments_en,comments_de,comments_fr,read) VALUES(5,29,"31/01/2016","","","",0);
+
+update release_notes set comments_fr=" * Version 11.2.0 (31/01/2016)
+Evolutions : 
+ - ajout des traductions en catalan, basque et galicien. Merci à Maria pour son aide !
+
+ * Version 11.1.0 (20/07/2015)
 Evolutions :
  - amélioration de l''écran de zoom de photo
  - qques corrections dans la base de données
@@ -141,10 +145,13 @@ Evolutions :
  - refonte de l''écran de détail des oiseaux
  - téléchargement des packages complets d''images, sons et pages wikipedia depuis l''application
  - améliorations de la base de données de sons : ajout de nombreux fichiers mp3
- - notification sur les nouveautés lors de mises à jour (cet écran !)
-" where version_code=27;
+" where version_code=29;
 
-update release_notes set comments_en=" * Version 11.1.0 (07/20/2015)
+update release_notes set comments_en=" * Version 11.2.0 (01/31/2016)
+New features:
+ - database in catalan, basque and galician, thanks to Maria !
+
+ * Version 11.1.0 (07/20/2015)
 New features:
  - enhancements on the zoomed images screen
  - few fixes in the database
@@ -177,9 +184,13 @@ New features :
  - More mp3 files from Xeno Canto available
  - Release notes screen
 
-" where version_code=27;
+" where version_code=29;
 
-update release_notes set comments_de=" * Version 11.1.0 (07/20/2015)
+update release_notes set comments_de=" * Version 11.2.0 (01/31/2016)
+New features:
+ - database in catalan, basque and galician, thanks to Maria !
+
+ * Version 11.1.0 (07/20/2015)
 New features:
  - enhancements on the zoomed images screen
  - few fixes in the database

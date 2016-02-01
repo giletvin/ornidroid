@@ -4,14 +4,17 @@
 <resources>
 
 	<string-array name="lang_labels">
-	    <item>bg - Bulgare - Български</item>
+	    <item>bg - Bulgarisch - Български</item>
+	    <item>ca - Katalanisch - Català</item>
 		<item>cz - Tschechische - Čeština</item>
 		<item>de - Deutsch</item>
 		<item>dk - Dänisch - Dansk</item>
 		<item>en - English</item>
 		<item>es - Spanisch - Español</item>
+		<item>eu - Baskisch - Euskara</item>
 		<item>fi - Finnisch - Suomi</item>
 		<item>fr - Französisch - Français</item>
+		<item>gl - Galicisch - Galego</item>		
 		<item>gr - Griechisch  - ελληνικά</item>
 		<item>hu - Ungarisch - Magyar</item>
 		<item>is - Isländisch - Íslenska</item>
@@ -34,13 +37,16 @@
 
 	<string-array name="lang_values">
 	    <item>bg</item>
+	    <item>ca</item>
 		<item>cz</item>
 		<item>de</item>
 		<item>dk</item>
 		<item>en</item>
 		<item>es</item>
+		<item>eu</item>
 		<item>fi</item>
 		<item>fr</item>
+		<item>gl</item>
 		<item>gr</item>
 		<item>hu</item>
 		<item>is</item>

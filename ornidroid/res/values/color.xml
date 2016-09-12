@@ -3,7 +3,7 @@
     <color name="mcs_text_background">#eeeeee</color>
     <color name="mcs_spinner_items_text_dropdown_list">#eeeeee</color>
     <color name="mcs_custom_spinner_items_dropdown_background">#302f30</color>
-    <color name="mcs_spinner_text_selected">#ff0000</color>
+    <color name="mcs_spinner_text_selected">#FFFFFF</color>
     <!--  2fb4e5 166b89 -->
     <color name="audio_player_selected_file">#166b89</color>
 

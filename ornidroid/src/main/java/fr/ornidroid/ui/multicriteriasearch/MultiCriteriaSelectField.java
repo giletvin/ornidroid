@@ -60,8 +60,7 @@ public class MultiCriteriaSelectField extends LinearLayout implements
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		spinnerLayoutParams.setMargins(30, 10, 30, 0);
 		this.spinner.setLayoutParams(spinnerLayoutParams);
-		this.spinner.setBackgroundDrawable(context.getResources().getDrawable(
-				R.drawable.custom_spinner));
+
 		this.addView(layoutTextIcon);
 		this.addView(this.spinner);
 

@@ -8,8 +8,8 @@
 
 	<ImageView android:id="@+id/bird_icon" android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:src="@drawable/ic_delete" android:scaleType="fitCenter" android:padding="5dp" />
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:src="@drawable/ic_cancel" android:scaleType="fitCenter" android:padding="5dp" />
+	<LinearLayout 
 		android:orientation="vertical" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:padding="5dp">
 		<TextView android:id="@+id/taxon" style="@android:style/TextAppearance.Large"

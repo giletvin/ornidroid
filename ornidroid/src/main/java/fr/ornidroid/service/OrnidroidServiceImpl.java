@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.database.Cursor;
 import android.provider.BaseColumns;
+import android.util.Log;
 import fr.ornidroid.R;
 import fr.ornidroid.bo.Bird;
 import fr.ornidroid.bo.BirdFactoryImpl;
@@ -24,6 +25,8 @@ import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.OrnidroidException;
 import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.helper.SupportedLanguage;
+import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSeachMenuItem;
+import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType;
 import fr.ornidroid.ui.picture.PictureHelper;
 
 /**
@@ -112,24 +115,24 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	private final Activity activity;
 
 	/** The beak forms list. */
-	private List<String> beakFormsList;
+	private List<MultiCriteriaSeachMenuItem> beakFormsList;
 	/** The beak forms maps. */
 	private Map<String, Integer> beakFormsMaps;
 
 	/** The categories list. */
-	private List<String> categoriesList;
+	private List<MultiCriteriaSeachMenuItem> categoriesList;
 
 	/** The categories map. */
 	private Map<String, Integer> categoriesMap;
 
 	/** The colours list. */
-	private List<String> coloursList;
+	private List<MultiCriteriaSeachMenuItem> coloursList;
 
 	/** The colours map. */
 	private Map<String, Integer> coloursMap;
 
 	/** The countries list. */
-	private List<String> countriesList;
+	private List<MultiCriteriaSeachMenuItem> countriesList;
 
 	/** The countries map. France --> FRA */
 	private Map<String, String> countriesMap;
@@ -141,7 +144,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	private final OrnidroidDatabaseOpenHelper dataBaseOpenHelper;
 
 	/** The habitats list. */
-	private List<String> habitatsList;
+	private List<MultiCriteriaSeachMenuItem> habitatsList;
 
 	/** The habitats map. */
 	private Map<String, Integer> habitatsMap;
@@ -150,13 +153,13 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	private final IOrnidroidDAO ornidroidDAO;
 
 	/** The remarkable signs list. */
-	private List<String> remarkableSignsList;
+	private List<MultiCriteriaSeachMenuItem> remarkableSignsList;
 
 	/** The remarkable signs map. */
 	private Map<String, Integer> remarkableSignsMap;
 
 	/** The sizes list. */
-	private List<String> sizesList;
+	private List<MultiCriteriaSeachMenuItem> sizesList;
 
 	/** The sizes map. */
 	private Map<String, Integer> sizesMap;
@@ -192,9 +195,9 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * @see
 	 * fr.ornidroid.service.IOrnidroidService#getBeakFormId(java.lang.String)
 	 */
-	public Integer getBeakFormId(final String beakFormName) {
-		return this.beakFormsMaps != null ? this.beakFormsMaps
-				.get(beakFormName) : 0;
+	public Integer getBeakFormId(final MultiCriteriaSeachMenuItem beakFormName) {
+		return this.beakFormsMaps != null ? this.beakFormsMaps.get(beakFormName
+				.getLabel()) : 0;
 	}
 
 	/*
@@ -202,14 +205,15 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * 
 	 * @see fr.ornidroid.service.IOrnidroidService#getBeakForms()
 	 */
-	public List<String> getBeakForms() {
+	public List<MultiCriteriaSeachMenuItem> getBeakForms() {
 		if (this.beakFormsMaps == null) {
 			// Find the names of the beak forms in the selected language
 			final Cursor cursorQueryHabitats = this.ornidroidDAO.getBeakForms();
 			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
 					cursorQueryHabitats, true);
 			this.beakFormsMaps = sfv.getMapNameId();
-			this.beakFormsList = sfv.getFieldsValues();
+			this.beakFormsList = MultiCriteriaSeachMenuItem.initList(sfv
+					.getFieldsValues());
 
 		}
 		return this.beakFormsList;
@@ -234,14 +238,15 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * 
 	 * @see fr.ornidroid.service.IOrnidroidService#getCategories()
 	 */
-	public List<String> getCategories() {
+	public List<MultiCriteriaSeachMenuItem> getCategories() {
 		if (this.categoriesMap == null) {
 			final Cursor cursorQueryHabitats = this.ornidroidDAO
 					.getCategories();
 			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
 					cursorQueryHabitats, true);
 			this.categoriesMap = sfv.getMapNameId();
-			this.categoriesList = sfv.getFieldsValues();
+			this.categoriesList = MultiCriteriaSeachMenuItem.initList(sfv
+					.getFieldsValues());
 
 		}
 		return this.categoriesList;
@@ -253,9 +258,10 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * @see
 	 * fr.ornidroid.service.IOrnidroidService#getCategoryId(java.lang.String)
 	 */
-	public Integer getCategoryId(final String categoryName) {
-		return this.categoriesMap != null ? this.categoriesMap
-				.get(categoryName) : 0;
+	public Integer getCategoryId(final MultiCriteriaSeachMenuItem categoryName) {
+
+		return this.categoriesMap != null ? this.categoriesMap.get(categoryName
+				.getLabel()) : 0;
 	}
 
 	/*
@@ -263,8 +269,9 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * 
 	 * @see fr.ornidroid.service.IOrnidroidService#getColourId(java.lang.String)
 	 */
-	public Integer getColourId(final String colourName) {
-		return this.coloursMap != null ? this.coloursMap.get(colourName) : 0;
+	public Integer getColourId(final MultiCriteriaSeachMenuItem colourName) {
+		return this.coloursMap != null ? this.coloursMap.get(colourName
+				.getLabel()) : 0;
 	}
 
 	/*
@@ -272,13 +279,14 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * 
 	 * @see fr.ornidroid.service.IOrnidroidService#getColours()
 	 */
-	public List<String> getColours() {
+	public List<MultiCriteriaSeachMenuItem> getColours() {
 		if (this.coloursMap == null) {
 			final Cursor cursorQueryColours = this.ornidroidDAO.getColours();
 			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
 					cursorQueryColours, true);
 			this.coloursMap = sfv.getMapNameId();
-			this.coloursList = sfv.getFieldsValues();
+			this.coloursList = MultiCriteriaSeachMenuItem.initList(sfv
+					.getFieldsValues());
 
 		}
 		return this.coloursList;
@@ -289,13 +297,14 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * 
 	 * @see fr.ornidroid.service.IOrnidroidService#getCountries()
 	 */
-	public List<String> getCountries() {
+	public List<MultiCriteriaSeachMenuItem> getCountries() {
 		if (this.countriesMap == null) {
 			final Cursor cursorCountries = this.ornidroidDAO.getCountries();
 			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
 					cursorCountries, false);
 			this.countriesMap = sfv.getMapNameCode();
-			this.countriesList = sfv.getFieldsValues();
+			this.countriesList = MultiCriteriaSeachMenuItem.initList(sfv
+					.getFieldsValues());
 
 		}
 		return this.countriesList;
@@ -307,9 +316,9 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * @see
 	 * fr.ornidroid.service.IOrnidroidService#getCountryCode(java.lang.String)
 	 */
-	public String getCountryCode(final String countryName) {
-		return this.countriesMap != null ? this.countriesMap.get(countryName)
-				: BasicConstants.EMPTY_STRING;
+	public String getCountryCode(final MultiCriteriaSeachMenuItem countryName) {
+		return this.countriesMap != null ? this.countriesMap.get(countryName
+				.getLabel()) : BasicConstants.EMPTY_STRING;
 	}
 
 	/*
@@ -327,8 +336,9 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * @see
 	 * fr.ornidroid.service.IOrnidroidService#getHabitatId(java.lang.String)
 	 */
-	public Integer getHabitatId(final String habitatName) {
-		return this.habitatsMap != null ? this.habitatsMap.get(habitatName) : 0;
+	public Integer getHabitatId(final MultiCriteriaSeachMenuItem habitatName) {
+		return this.habitatsMap != null ? this.habitatsMap.get(habitatName
+				.getLabel()) : 0;
 	}
 
 	/*
@@ -336,13 +346,14 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * 
 	 * @see fr.ornidroid.service.IOrnidroidService#getHabitats()
 	 */
-	public List<String> getHabitats() {
+	public List<MultiCriteriaSeachMenuItem> getHabitats() {
 		if (this.habitatsMap == null) {
 			final Cursor cursorQueryHabitats = this.ornidroidDAO.getHabitats();
 			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
 					cursorQueryHabitats, true);
 			this.habitatsMap = sfv.getMapNameId();
-			this.habitatsList = sfv.getFieldsValues();
+			this.habitatsList = MultiCriteriaSeachMenuItem.initList(sfv
+					.getFieldsValues());
 
 		}
 		return this.habitatsList;
@@ -415,9 +426,10 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * fr.ornidroid.service.IOrnidroidService#getRemarkableSignId(java.lang.
 	 * String)
 	 */
-	public Integer getRemarkableSignId(final String remarkableSignName) {
+	public Integer getRemarkableSignId(
+			final MultiCriteriaSeachMenuItem remarkableSignName) {
 		return this.remarkableSignsMap != null ? this.remarkableSignsMap
-				.get(remarkableSignName) : 0;
+				.get(remarkableSignName.getLabel()) : 0;
 	}
 
 	/*
@@ -425,14 +437,15 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * 
 	 * @see fr.ornidroid.service.IOrnidroidService#getRemarkableSigns()
 	 */
-	public List<String> getRemarkableSigns() {
+	public List<MultiCriteriaSeachMenuItem> getRemarkableSigns() {
 		if (this.remarkableSignsMap == null) {
 			final Cursor cursorQueryHabitats = this.ornidroidDAO
 					.getRemarkableSigns();
 			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
 					cursorQueryHabitats, true);
 			this.remarkableSignsMap = sfv.getMapNameId();
-			this.remarkableSignsList = sfv.getFieldsValues();
+			this.remarkableSignsList = MultiCriteriaSeachMenuItem.initList(sfv
+					.getFieldsValues());
 
 		}
 		return this.remarkableSignsList;
@@ -443,8 +456,9 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * 
 	 * @see fr.ornidroid.service.IOrnidroidService#getSizeId(java.lang.String)
 	 */
-	public Integer getSizeId(final String sizeName) {
-		return this.sizesMap != null ? this.sizesMap.get(sizeName) : 0;
+	public Integer getSizeId(final MultiCriteriaSeachMenuItem sizeName) {
+		return this.sizesMap != null ? this.sizesMap.get(sizeName.getLabel())
+				: 0;
 	}
 
 	/*
@@ -452,13 +466,14 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 * 
 	 * @see fr.ornidroid.service.IOrnidroidService#getSizes()
 	 */
-	public List<String> getSizes() {
+	public List<MultiCriteriaSeachMenuItem> getSizes() {
 		if (this.sizesMap == null) {
 			final Cursor cursorQuerySizes = this.ornidroidDAO.getSizes();
 			final SelectFieldsValue sfv = loadSelectFieldsFromCursor(
 					cursorQuerySizes, true);
 			this.sizesMap = sfv.getMapNameId();
-			this.sizesList = sfv.getFieldsValues();
+			this.sizesList = MultiCriteriaSeachMenuItem.initList(sfv
+					.getFieldsValues());
 
 		}
 		return this.sizesList;
@@ -720,5 +735,60 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 	 */
 	public String getReleaseNotes() {
 		return ornidroidDAO.getReleaseNotes();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.service.IOrnidroidService#updateSpinnerItemsCounts(fr.ornidroid
+	 * .bo.MultiCriteriaSearchFormBean,
+	 * fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType)
+	 */
+	@Override
+	public void updateSpinnerItemsCounts(
+			final MultiCriteriaSearchFormBean formBean,
+			MultiCriteriaSearchFieldType fieldType) {
+		Cursor cursor = this.ornidroidDAO.updateSpinnerItemsCounts(formBean,
+				fieldType);
+		List<MultiCriteriaSeachMenuItem> itemsWithCounts = new ArrayList<MultiCriteriaSeachMenuItem>();
+		// first item of the list : ALL
+		MultiCriteriaSeachMenuItem itemAll = new MultiCriteriaSeachMenuItem();
+		itemAll.setLabel(this.activity.getString(R.string.search_all));
+		itemAll.setCount(this.ornidroidDAO
+				.getMultiSearchCriteriaCountResults(formBean));
+		itemsWithCounts.add(itemAll);
+
+		if (cursor != null) {
+			final int nbResults = cursor.getCount();
+
+			for (int i = 0; i < nbResults; i++) {
+				cursor.moveToPosition(i);
+				MultiCriteriaSeachMenuItem item = new MultiCriteriaSeachMenuItem();
+				String label = cursor.getString(0);
+				item.setLabel(label);
+				item.setCount(cursor.getInt(1));
+				Log.i(BasicConstants.LOG_TAG, label
+						+ BasicConstants.BLANK_STRING + cursor.getInt(1));
+				itemsWithCounts.add(item);
+			}
+			cursor.close();
+		}
+		List<MultiCriteriaSeachMenuItem> listToUpdate = null;
+
+		// TODO : a modifier pour la prise en compte des autres fields
+		switch (fieldType) {
+		case CATEGORY:
+			listToUpdate = this.categoriesList;
+			break;
+		case COUNTRY:
+			listToUpdate = this.countriesList;
+			break;
+		default:
+			break;
+		}
+		listToUpdate.clear();
+		listToUpdate.addAll(itemsWithCounts);
+
 	}
 }

@@ -18,6 +18,7 @@ import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.helper.SupportedLanguage;
+import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType;
 
 /**
  * Contains sql queries to search for birds in the database.
@@ -113,6 +114,8 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 
 	/** The Constant WHERE. */
 	private static final String WHERE = " where ";
+
+	private static final String GROUP_BY = " GROUP BY ";
 
 	/**
 	 * Gets the single instance of OrnidroidDAOImpl.
@@ -840,6 +843,102 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		} finally {
 			this.dataBaseOpenHelper.close();
 		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.ornidroid.data.IOrnidroidDAO#updateSpinnerItemsCounts(fr.ornidroid
+	 * .bo.MultiCriteriaSearchFormBean,
+	 * fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType)
+	 */
+	@Override
+	public Cursor updateSpinnerItemsCounts(
+			MultiCriteriaSearchFormBean formBean,
+			MultiCriteriaSearchFieldType fieldType) {
+		Cursor cursor = null;
+
+		final StringBuilder countQuery = new StringBuilder();
+		MultiCriteriaSearchFormBean clonedFormBean = formBean.clone();
+		SqlDynamicFragments sqlFragments;
+		switch (fieldType) {
+		case CATEGORY:
+			clonedFormBean.setCategoryId(null);
+			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
+			// select bird.category_fk, count(*) from bird group by category_fk;
+			// select category.name, count(*) from bird inner join category on
+			// category.id = bird.category_fk where category.lang='fr' group by
+			// category.name order by category.name;
+			countQuery.append(SELECT).append(NAME_COLUMN_NAME)
+					.append(BasicConstants.COMMA_STRING).append(COUNT_STAR)
+					.append(FROM).append(BIRD_TABLE)
+
+					.append(sqlFragments.getFromClause())
+					.append(BasicConstants.COMMA_STRING)
+					.append(CATEGORY_TABLE_NAME)
+					.append(" on category.id=bird.category_fk ")
+					.append(sqlFragments.getWhereClause())
+					.append(" and category.lang=\"")
+					.append(I18nHelper.getLang().getCode()).append("\"")
+					.append(GROUP_BY).append(CATEGORY_COLUMN).append("_fk");
+
+			break;
+		case COUNTRY:
+			// select country.name_fr,count(*) from bird inner join bird_country
+			// on bird_country.bird_fk = bird.id inner join country on
+			// country.code=bird_country.country_code
+			// group by country.name_fr order by country.name_fr asc;
+			clonedFormBean.setCountryCode(null);
+			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
+			countQuery
+					.append(SELECT)
+					.append(NAME_COLUMN_NAME)
+					.append(BasicConstants.UNDERSCORE_STRING)
+					.append(I18nHelper.getLang().getCode())
+					.append(BasicConstants.COMMA_STRING)
+					.append(COUNT_STAR)
+					.append(FROM)
+					.append(BIRD_TABLE)
+					.append(sqlFragments.getFromClause())
+					// inner join country on
+					// country.code=bird_country.country_code
+					.append(INNER_JOIN)
+					.append(COUNTRY_TABLE)
+					.append(" on country.code=bird_country.country_code")
+					// inner join bird_country on bird_country.bird_fk = bird.id
+					.append(INNER_JOIN)
+					.append(" bird_country on bird_country.bird_fk = bird.id")
+					.append(sqlFragments.getWhereClause()).append(GROUP_BY)
+					.append(NAME_COLUMN_NAME)
+					.append(BasicConstants.UNDERSCORE_STRING)
+					.append(I18nHelper.getLang().getCode());
+			break;
+		default:
+			break;
+		}
+		final SQLiteDatabase db = this.dataBaseOpenHelper.getReadableDatabase();
+		try {
+			cursor = db.rawQuery(countQuery.toString(), null);
+			if (cursor == null) {
+				return null;
+			} else if (!cursor.moveToFirst()) {
+				cursor.close();
+				return null;
+			}
+		} catch (final SQLException e) {
+			Log.e(Constants.LOG_TAG, "Exception sql " + e);
+			if (cursor != null) {
+				cursor.close();
+			}
+			cursor = null;
+
+		} finally {
+			this.dataBaseOpenHelper.close();
+		}
+
+		return cursor;
 
 	}
 }

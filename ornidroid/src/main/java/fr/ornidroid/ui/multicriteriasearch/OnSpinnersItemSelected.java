@@ -1,9 +1,10 @@
 package fr.ornidroid.ui.multicriteriasearch;
 
-import fr.ornidroid.ui.activity.MultiCriteriaSearchActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import fr.ornidroid.ui.activity.MultiCriteriaSearchActivity;
 
 /**
  * This class handles the clicks on the spinners items in the
@@ -39,47 +40,56 @@ public class OnSpinnersItemSelected implements OnItemSelectedListener {
 		case CATEGORY:
 			this.activity.getFormBean().setCategoryId(
 					this.activity.getOrnidroidService().getCategoryId(
-							parent.getItemAtPosition(pos).toString()));
+							(MultiCriteriaSeachMenuItem) parent
+									.getItemAtPosition(pos)));
 			break;
 		case COUNTRY:
 			this.activity.getFormBean().setCountryCode(
 					this.activity.getOrnidroidService().getCountryCode(
-							parent.getItemAtPosition(pos).toString()));
+							(MultiCriteriaSeachMenuItem) parent
+									.getItemAtPosition(pos)));
 			break;
 		case HABITAT:
 			this.activity.getFormBean().setHabitatId(
 					this.activity.getOrnidroidService().getHabitatId(
-							parent.getItemAtPosition(pos).toString()));
+							(MultiCriteriaSeachMenuItem) parent
+									.getItemAtPosition(pos)));
 			break;
 		case BEAK_FORM:
 			this.activity.getFormBean().setBeakFormId(
 					this.activity.getOrnidroidService().getBeakFormId(
-							parent.getItemAtPosition(pos).toString()));
+							(MultiCriteriaSeachMenuItem) parent
+									.getItemAtPosition(pos)));
 			break;
 		case SIZE:
 			this.activity.getFormBean().setSizeId(
 					this.activity.getOrnidroidService().getSizeId(
-							parent.getItemAtPosition(pos).toString()));
+							(MultiCriteriaSeachMenuItem) parent
+									.getItemAtPosition(pos)));
 			break;
 		case FEATHER_COLOUR:
 			this.activity.getFormBean().setFeatherColourId(
 					this.activity.getOrnidroidService().getColourId(
-							parent.getItemAtPosition(pos).toString()));
+							(MultiCriteriaSeachMenuItem) parent
+									.getItemAtPosition(pos)));
 			break;
 		case BEAK_COLOUR:
 			this.activity.getFormBean().setBeakColourId(
 					this.activity.getOrnidroidService().getColourId(
-							parent.getItemAtPosition(pos).toString()));
+							(MultiCriteriaSeachMenuItem) parent
+									.getItemAtPosition(pos)));
 			break;
 		case FEET_COLOUR:
 			this.activity.getFormBean().setPawColourId(
 					this.activity.getOrnidroidService().getColourId(
-							parent.getItemAtPosition(pos).toString()));
+							(MultiCriteriaSeachMenuItem) parent
+									.getItemAtPosition(pos)));
 			break;
 		case REMARKABLE_SIGN:
 			this.activity.getFormBean().setRemarkableSignId(
 					this.activity.getOrnidroidService().getRemarkableSignId(
-							parent.getItemAtPosition(pos).toString()));
+							(MultiCriteriaSeachMenuItem) parent
+									.getItemAtPosition(pos)));
 			break;
 
 		}
@@ -88,6 +98,44 @@ public class OnSpinnersItemSelected implements OnItemSelectedListener {
 				.getOrnidroidService().getMultiSearchCriteriaCountResults(
 						this.activity.getFormBean()));
 
+		updateSpinnerItemsCounts(selectType);
+
+	}
+
+	/**
+	 * update the spinner items counts
+	 * 
+	 * @param selectType
+	 *            : the field which fired the update. Dont compute the counts
+	 *            for this field
+	 */
+	private void updateSpinnerItemsCounts(
+			MultiCriteriaSearchFieldType selectType) {
+		for (MultiCriteriaSelectField field : this.activity.getFieldList()) {
+			boolean updateCountSupported = false;
+			switch (field.getFieldType()) {
+			case CATEGORY:
+				updateCountSupported = true;
+				break;
+			case COUNTRY:
+				updateCountSupported = true;
+				break;
+			default:
+				break;
+			}
+			// update computed only if supported, and not on the field which
+			// fired the event
+			if (updateCountSupported
+					&& !field.getFieldType().equals(selectType)) {
+				this.activity.getOrnidroidService().updateSpinnerItemsCounts(
+						this.activity.getFormBean(), field.getFieldType());
+				@SuppressWarnings("unchecked")
+				ArrayAdapter<MultiCriteriaSeachMenuItem> dataAdapter = (ArrayAdapter<MultiCriteriaSeachMenuItem>) field
+						.getSpinner().getAdapter();
+				dataAdapter.notifyDataSetChanged();
+
+			}
+		}
 	}
 
 	/*
@@ -99,4 +147,5 @@ public class OnSpinnersItemSelected implements OnItemSelectedListener {
 	public void onNothingSelected(final AdapterView<?> arg0) {
 		// not implemented
 	}
+
 }

@@ -6,7 +6,7 @@ import fr.ornidroid.helper.BasicConstants;
  * The Class MultiCriteriaSearchFormBean. This class handles the values selected
  * by the user in the multi criteria search screen.
  */
-public class MultiCriteriaSearchFormBean {
+public class MultiCriteriaSearchFormBean implements Cloneable {
 
 	/** The beak colour id. */
 	private Integer beakColourId;
@@ -211,6 +211,18 @@ public class MultiCriteriaSearchFormBean {
 	 */
 	public void setSizeId(final Integer sizeId) {
 		this.sizeId = sizeId;
+	}
+
+	@Override
+	public MultiCriteriaSearchFormBean clone() {
+		// used in the count query
+		MultiCriteriaSearchFormBean foo;
+		try {
+			foo = (MultiCriteriaSearchFormBean) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new Error();
+		}
+		return foo;
 	}
 
 }

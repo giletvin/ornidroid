@@ -5,6 +5,7 @@ import java.util.List;
 import android.database.Cursor;
 import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.bo.SimpleBird;
+import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType;
 
 /**
  * The Interface IOrnidroidDAO.
@@ -193,5 +194,15 @@ public interface IOrnidroidDAO {
 	 * @return the release notes
 	 */
 	String getReleaseNotes();
+
+	/**
+	 * update the spinner items counts for the given field type
+	 * 
+	 * @param multiCriteriaSearchFormBean
+	 * @param fieldType
+	 * @return Cursor of the list of items with their counts for the field type
+	 */
+	Cursor updateSpinnerItemsCounts(MultiCriteriaSearchFormBean formBean,
+			MultiCriteriaSearchFieldType fieldType);
 
 }

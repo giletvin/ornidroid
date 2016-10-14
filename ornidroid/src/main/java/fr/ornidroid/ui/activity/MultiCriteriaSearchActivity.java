@@ -27,6 +27,7 @@ import fr.ornidroid.helper.Constants;
 import fr.ornidroid.service.IOrnidroidService;
 import fr.ornidroid.service.OrnidroidServiceFactory;
 import fr.ornidroid.ui.adapter.MyCustomAdapter;
+import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSeachMenuItem;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSelectField;
 import fr.ornidroid.ui.multicriteriasearch.OnSpinnersItemSelected;
@@ -39,8 +40,12 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 	/** The field list. */
 	private final List<MultiCriteriaSelectField> fieldList = new ArrayList<MultiCriteriaSelectField>();
 
+	public List<MultiCriteriaSelectField> getFieldList() {
+		return fieldList;
+	}
+
 	/** The form bean. */
-	private final MultiCriteriaSearchFormBean formBean = new MultiCriteriaSearchFormBean();
+	private MultiCriteriaSearchFormBean formBean = new MultiCriteriaSearchFormBean();
 
 	/** The nb results text view. */
 	@ViewById(R.id.search_nb_results)
@@ -204,13 +209,13 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 	 */
 	private void initSelectField(
 			final MultiCriteriaSearchFieldType selectFieldType) {
-		ArrayAdapter<String> dataAdapter = null;
+		ArrayAdapter<MultiCriteriaSeachMenuItem> dataAdapter = null;
 		MultiCriteriaSelectField field = null;
 		switch (selectFieldType) {
 		case CATEGORY:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_category_field);
 			field.setIconResource(R.drawable.ic_categories);
-			dataAdapter = new ArrayAdapter<String>(this,
+			dataAdapter = new ArrayAdapter<MultiCriteriaSeachMenuItem>(this,
 					R.layout.row_spinner_without_icons,
 					this.ornidroidService.getCategories());
 
@@ -228,7 +233,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 		case SIZE:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_size_field);
 			field.setIconResource(R.drawable.ic_size);
-			dataAdapter = new ArrayAdapter<String>(this,
+			dataAdapter = new ArrayAdapter<MultiCriteriaSeachMenuItem>(this,
 					R.layout.row_spinner_without_icons,
 					this.ornidroidService.getSizes());
 			break;
@@ -236,7 +241,7 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 		case HABITAT:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_habitat_field);
 			field.setIconResource(R.drawable.ic_habitat);
-			dataAdapter = new ArrayAdapter<String>(this,
+			dataAdapter = new ArrayAdapter<MultiCriteriaSeachMenuItem>(this,
 					R.layout.row_spinner_without_icons,
 					this.ornidroidService.getHabitats());
 			break;
@@ -249,28 +254,28 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 		case FEATHER_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_feather_colour_field);
 			field.setIconResource(R.drawable.ic_feather_colour);
-			dataAdapter = new ArrayAdapter<String>(this,
+			dataAdapter = new ArrayAdapter<MultiCriteriaSeachMenuItem>(this,
 					R.layout.row_spinner_without_icons,
 					this.ornidroidService.getColours());
 			break;
 		case BEAK_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_beak_colour_field);
 			field.setIconResource(R.drawable.ic_beak_colour);
-			dataAdapter = new ArrayAdapter<String>(this,
+			dataAdapter = new ArrayAdapter<MultiCriteriaSeachMenuItem>(this,
 					R.layout.row_spinner_without_icons,
 					this.ornidroidService.getColours());
 			break;
 		case FEET_COLOUR:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_paw_colour_field);
 			field.setIconResource(R.drawable.ic_feet_colour);
-			dataAdapter = new ArrayAdapter<String>(this,
+			dataAdapter = new ArrayAdapter<MultiCriteriaSeachMenuItem>(this,
 					R.layout.row_spinner_without_icons,
 					this.ornidroidService.getColours());
 			break;
 		case REMARKABLE_SIGN:
 			field = (MultiCriteriaSelectField) findViewById(R.id.search_remarkable_sign_field);
 			field.setIconResource(R.drawable.ic_remarkable_sign);
-			dataAdapter = new ArrayAdapter<String>(this,
+			dataAdapter = new ArrayAdapter<MultiCriteriaSeachMenuItem>(this,
 					R.layout.row_spinner_without_icons,
 					this.ornidroidService.getRemarkableSigns());
 			break;
@@ -294,5 +299,9 @@ public class MultiCriteriaSearchActivity extends AbstractOrnidroidActivity {
 		for (final MultiCriteriaSelectField field : this.fieldList) {
 			field.reset();
 		}
+		formBean = new MultiCriteriaSearchFormBean();
+		updateSearchCountResults(getOrnidroidService()
+				.getMultiSearchCriteriaCountResults(formBean));
+
 	}
 }

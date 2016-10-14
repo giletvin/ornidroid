@@ -124,6 +124,12 @@ public class OnSpinnersItemSelected implements OnItemSelectedListener {
 			case REMARKABLE_SIGN:
 				updateCountSupported = true;
 				break;
+			case BEAK_FORM:
+				updateCountSupported = true;
+				break;
+			case SIZE:
+				updateCountSupported = true;
+				break;
 			default:
 				break;
 			}

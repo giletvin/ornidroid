@@ -786,6 +786,13 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 			break;
 		case REMARKABLE_SIGN:
 			listToUpdate = this.remarkableSignsList;
+			break;
+		case BEAK_FORM:
+			listToUpdate = this.beakFormsList;
+			break;
+		case SIZE:
+			listToUpdate = this.sizesList;
+			break;
 		default:
 			break;
 		}

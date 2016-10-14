@@ -941,6 +941,35 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 					.append(GROUP_BY).append(REMARKABLE_SIGN_TABLE)
 					.append("_fk");
 			break;
+		case BEAK_FORM:
+			clonedFormBean.setBeakColourId(null);
+			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
+			countQuery.append(SELECT).append(NAME_COLUMN_NAME)
+					.append(BasicConstants.COMMA_STRING).append(COUNT_STAR)
+					.append(FROM).append(BIRD_TABLE)
+					.append(sqlFragments.getFromClause())
+					.append(BasicConstants.COMMA_STRING)
+					.append(BEAK_FORM_TABLE)
+					.append(" on beak_form.id = bird.beak_form_fk ")
+					.append(sqlFragments.getWhereClause())
+					.append(" and beak_form.lang=\"")
+					.append(I18nHelper.getLang().getCode()).append("\"")
+					.append(GROUP_BY).append(BEAK_FORM_TABLE).append("_fk");
+			break;
+		case SIZE:
+			clonedFormBean.setSizeId(null);
+			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
+			countQuery.append(SELECT).append(NAME_COLUMN_NAME)
+					.append(BasicConstants.COMMA_STRING).append(COUNT_STAR)
+					.append(FROM).append(BIRD_TABLE)
+					.append(sqlFragments.getFromClause())
+					.append(BasicConstants.COMMA_STRING).append(SIZE_TABLE)
+					.append(" on size_table.id = bird.size_fk ")
+					.append(sqlFragments.getWhereClause())
+					.append(" and size_table.lang=\"")
+					.append(I18nHelper.getLang().getCode()).append("\"")
+					.append(GROUP_BY).append("size_fk");
+			break;
 		default:
 			break;
 		}

@@ -114,10 +114,14 @@ public class OnSpinnersItemSelected implements OnItemSelectedListener {
 		for (MultiCriteriaSelectField field : this.activity.getFieldList()) {
 			boolean updateCountSupported = false;
 			switch (field.getFieldType()) {
+			// TODO #150
 			case CATEGORY:
 				updateCountSupported = true;
 				break;
 			case COUNTRY:
+				updateCountSupported = true;
+				break;
+			case REMARKABLE_SIGN:
 				updateCountSupported = true;
 				break;
 			default:

@@ -864,6 +864,7 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		MultiCriteriaSearchFormBean clonedFormBean = formBean.clone();
 		SqlDynamicFragments sqlFragments;
 		switch (fieldType) {
+		// TODO #150
 		case CATEGORY:
 			clonedFormBean.setCategoryId(null);
 			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
@@ -914,6 +915,31 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 					.append(NAME_COLUMN_NAME)
 					.append(BasicConstants.UNDERSCORE_STRING)
 					.append(I18nHelper.getLang().getCode());
+			break;
+		case REMARKABLE_SIGN:
+			clonedFormBean.setRemarkableSignId(null);
+			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
+			// select remarkable_sign.name, count(*) from bird inner join
+			// remarkable_sign on
+			// remarkable_sign.id = bird.remarkable_sign_fk where
+			// remarkable_sign.lang='fr' group by
+			// remarkable_sign.name order by remarkable_sign.name;
+			countQuery
+					.append(SELECT)
+					.append(NAME_COLUMN_NAME)
+					.append(BasicConstants.COMMA_STRING)
+					.append(COUNT_STAR)
+					.append(FROM)
+					.append(BIRD_TABLE)
+					.append(sqlFragments.getFromClause())
+					.append(BasicConstants.COMMA_STRING)
+					.append(REMARKABLE_SIGN_TABLE)
+					.append(" on remarkable_sign.id = bird.remarkable_sign_fk ")
+					.append(sqlFragments.getWhereClause())
+					.append(" and remarkable_sign.lang=\"")
+					.append(I18nHelper.getLang().getCode()).append("\"")
+					.append(GROUP_BY).append(REMARKABLE_SIGN_TABLE)
+					.append("_fk");
 			break;
 		default:
 			break;

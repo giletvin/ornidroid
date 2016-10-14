@@ -776,7 +776,7 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		}
 		List<MultiCriteriaSeachMenuItem> listToUpdate = null;
 
-		// TODO : a modifier pour la prise en compte des autres fields
+		// TODO #150
 		switch (fieldType) {
 		case CATEGORY:
 			listToUpdate = this.categoriesList;
@@ -784,6 +784,8 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		case COUNTRY:
 			listToUpdate = this.countriesList;
 			break;
+		case REMARKABLE_SIGN:
+			listToUpdate = this.remarkableSignsList;
 		default:
 			break;
 		}

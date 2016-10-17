@@ -793,6 +793,9 @@ public class OrnidroidServiceImpl implements IOrnidroidService {
 		case SIZE:
 			listToUpdate = this.sizesList;
 			break;
+		case HABITAT:
+			listToUpdate = this.habitatsList;
+			break;
 		default:
 			break;
 		}

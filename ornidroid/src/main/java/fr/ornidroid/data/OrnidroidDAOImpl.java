@@ -969,6 +969,31 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 					.append(" and size_table.lang=\"")
 					.append(I18nHelper.getLang().getCode()).append("\"")
 					.append(GROUP_BY).append("size_fk");
+		case HABITAT:
+			// select h1.name, count(*) from bird, habitat h1 where
+			// (h1.id = bird.habitat1_fk or
+			// h1.id = bird.habitat2_fk)
+			// and
+			// h1.lang='fr' group by
+			// h1.name order by h1.name;
+			clonedFormBean.setHabitatId(null);
+			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
+			countQuery
+					.append(SELECT)
+					.append(NAME_COLUMN_NAME)
+					.append(BasicConstants.COMMA_STRING)
+					.append(COUNT_STAR)
+					.append(FROM)
+					.append(BIRD_TABLE)
+					.append(", habitat")
+					.append(sqlFragments.getFromClause())
+
+					.append(sqlFragments.getWhereClause())
+					.append(" and (habitat.id = bird.habitat1_fk or habitat.id=bird.habitat2_fk)")
+					.append(" and habitat.lang=\"")
+					.append(I18nHelper.getLang().getCode()).append("\"")
+					.append(GROUP_BY).append("name");
+
 			break;
 		default:
 			break;

@@ -130,6 +130,9 @@ public class OnSpinnersItemSelected implements OnItemSelectedListener {
 			case SIZE:
 				updateCountSupported = true;
 				break;
+			case HABITAT:
+				updateCountSupported = true;
+				break;
 			default:
 				break;
 			}

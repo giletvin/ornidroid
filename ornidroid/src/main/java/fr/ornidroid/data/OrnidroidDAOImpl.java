@@ -18,7 +18,6 @@ import fr.ornidroid.helper.Constants;
 import fr.ornidroid.helper.I18nHelper;
 import fr.ornidroid.helper.StringHelper;
 import fr.ornidroid.helper.SupportedLanguage;
-import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType;
 
 /**
  * Contains sql queries to search for birds in the database.
@@ -114,8 +113,6 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 
 	/** The Constant WHERE. */
 	private static final String WHERE = " where ";
-
-	private static final String GROUP_BY = " GROUP BY ";
 
 	/**
 	 * Gets the single instance of OrnidroidDAOImpl.
@@ -843,182 +840,6 @@ public class OrnidroidDAOImpl implements IOrnidroidDAO {
 		} finally {
 			this.dataBaseOpenHelper.close();
 		}
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.ornidroid.data.IOrnidroidDAO#updateSpinnerItemsCounts(fr.ornidroid
-	 * .bo.MultiCriteriaSearchFormBean,
-	 * fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType)
-	 */
-	@Override
-	public Cursor updateSpinnerItemsCounts(
-			MultiCriteriaSearchFormBean formBean,
-			MultiCriteriaSearchFieldType fieldType) {
-		Cursor cursor = null;
-
-		final StringBuilder countQuery = new StringBuilder();
-		MultiCriteriaSearchFormBean clonedFormBean = formBean.clone();
-		SqlDynamicFragments sqlFragments;
-		switch (fieldType) {
-		// TODO #150
-		case CATEGORY:
-			clonedFormBean.setCategoryId(null);
-			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
-			// select bird.category_fk, count(*) from bird group by category_fk;
-			// select category.name, count(*) from bird inner join category on
-			// category.id = bird.category_fk where category.lang='fr' group by
-			// category.name order by category.name;
-			countQuery.append(SELECT).append(NAME_COLUMN_NAME)
-					.append(BasicConstants.COMMA_STRING).append(COUNT_STAR)
-					.append(FROM).append(BIRD_TABLE)
-
-					.append(sqlFragments.getFromClause())
-					.append(BasicConstants.COMMA_STRING)
-					.append(CATEGORY_TABLE_NAME)
-					.append(" on category.id=bird.category_fk ")
-					.append(sqlFragments.getWhereClause())
-					.append(" and category.lang=\"")
-					.append(I18nHelper.getLang().getCode()).append("\"")
-					.append(GROUP_BY).append(CATEGORY_COLUMN).append("_fk");
-
-			break;
-		case COUNTRY:
-			// select country.name_fr,count(*) from bird inner join bird_country
-			// on bird_country.bird_fk = bird.id inner join country on
-			// country.code=bird_country.country_code
-			// group by country.name_fr order by country.name_fr asc;
-			clonedFormBean.setCountryCode(null);
-			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
-			countQuery
-					.append(SELECT)
-					.append(NAME_COLUMN_NAME)
-					.append(BasicConstants.UNDERSCORE_STRING)
-					.append(I18nHelper.getLang().getCode())
-					.append(BasicConstants.COMMA_STRING)
-					.append(COUNT_STAR)
-					.append(FROM)
-					.append(BIRD_TABLE)
-					.append(sqlFragments.getFromClause())
-					// inner join country on
-					// country.code=bird_country.country_code
-					.append(INNER_JOIN)
-					.append(COUNTRY_TABLE)
-					.append(" on country.code=bird_country.country_code")
-					// inner join bird_country on bird_country.bird_fk = bird.id
-					.append(INNER_JOIN)
-					.append(" bird_country on bird_country.bird_fk = bird.id")
-					.append(sqlFragments.getWhereClause()).append(GROUP_BY)
-					.append(NAME_COLUMN_NAME)
-					.append(BasicConstants.UNDERSCORE_STRING)
-					.append(I18nHelper.getLang().getCode());
-			break;
-		case REMARKABLE_SIGN:
-			clonedFormBean.setRemarkableSignId(null);
-			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
-			// select remarkable_sign.name, count(*) from bird inner join
-			// remarkable_sign on
-			// remarkable_sign.id = bird.remarkable_sign_fk where
-			// remarkable_sign.lang='fr' group by
-			// remarkable_sign.name order by remarkable_sign.name;
-			countQuery
-					.append(SELECT)
-					.append(NAME_COLUMN_NAME)
-					.append(BasicConstants.COMMA_STRING)
-					.append(COUNT_STAR)
-					.append(FROM)
-					.append(BIRD_TABLE)
-					.append(sqlFragments.getFromClause())
-					.append(BasicConstants.COMMA_STRING)
-					.append(REMARKABLE_SIGN_TABLE)
-					.append(" on remarkable_sign.id = bird.remarkable_sign_fk ")
-					.append(sqlFragments.getWhereClause())
-					.append(" and remarkable_sign.lang=\"")
-					.append(I18nHelper.getLang().getCode()).append("\"")
-					.append(GROUP_BY).append(REMARKABLE_SIGN_TABLE)
-					.append("_fk");
-			break;
-		case BEAK_FORM:
-			clonedFormBean.setBeakColourId(null);
-			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
-			countQuery.append(SELECT).append(NAME_COLUMN_NAME)
-					.append(BasicConstants.COMMA_STRING).append(COUNT_STAR)
-					.append(FROM).append(BIRD_TABLE)
-					.append(sqlFragments.getFromClause())
-					.append(BasicConstants.COMMA_STRING)
-					.append(BEAK_FORM_TABLE)
-					.append(" on beak_form.id = bird.beak_form_fk ")
-					.append(sqlFragments.getWhereClause())
-					.append(" and beak_form.lang=\"")
-					.append(I18nHelper.getLang().getCode()).append("\"")
-					.append(GROUP_BY).append(BEAK_FORM_TABLE).append("_fk");
-			break;
-		case SIZE:
-			clonedFormBean.setSizeId(null);
-			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
-			countQuery.append(SELECT).append(NAME_COLUMN_NAME)
-					.append(BasicConstants.COMMA_STRING).append(COUNT_STAR)
-					.append(FROM).append(BIRD_TABLE)
-					.append(sqlFragments.getFromClause())
-					.append(BasicConstants.COMMA_STRING).append(SIZE_TABLE)
-					.append(" on size_table.id = bird.size_fk ")
-					.append(sqlFragments.getWhereClause())
-					.append(" and size_table.lang=\"")
-					.append(I18nHelper.getLang().getCode()).append("\"")
-					.append(GROUP_BY).append("size_fk");
-		case HABITAT:
-			// select h1.name, count(*) from bird, habitat h1 where
-			// (h1.id = bird.habitat1_fk or
-			// h1.id = bird.habitat2_fk)
-			// and
-			// h1.lang='fr' group by
-			// h1.name order by h1.name;
-			clonedFormBean.setHabitatId(null);
-			sqlFragments = getSqlDynamicFragments(clonedFormBean, false);
-			countQuery
-					.append(SELECT)
-					.append(NAME_COLUMN_NAME)
-					.append(BasicConstants.COMMA_STRING)
-					.append(COUNT_STAR)
-					.append(FROM)
-					.append(BIRD_TABLE)
-					.append(", habitat")
-					.append(sqlFragments.getFromClause())
-
-					.append(sqlFragments.getWhereClause())
-					.append(" and (habitat.id = bird.habitat1_fk or habitat.id=bird.habitat2_fk)")
-					.append(" and habitat.lang=\"")
-					.append(I18nHelper.getLang().getCode()).append("\"")
-					.append(GROUP_BY).append("name");
-
-			break;
-		default:
-			break;
-		}
-		final SQLiteDatabase db = this.dataBaseOpenHelper.getReadableDatabase();
-		try {
-			cursor = db.rawQuery(countQuery.toString(), null);
-			if (cursor == null) {
-				return null;
-			} else if (!cursor.moveToFirst()) {
-				cursor.close();
-				return null;
-			}
-		} catch (final SQLException e) {
-			Log.e(Constants.LOG_TAG, "Exception sql " + e);
-			if (cursor != null) {
-				cursor.close();
-			}
-			cursor = null;
-
-		} finally {
-			this.dataBaseOpenHelper.close();
-		}
-
-		return cursor;
 
 	}
 }

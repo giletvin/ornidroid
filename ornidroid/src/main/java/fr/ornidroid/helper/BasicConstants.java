@@ -68,7 +68,6 @@ public class BasicConstants {
 
 	/** The Constant STAR_STRING. */
 	public static final String STAR_STRING = "*";
-	public static final String SEPARATOR = " (";
 
 	/**
 	 * The junit context. Always false, except when running junit tests. This is

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import fr.ornidroid.R;
 import fr.ornidroid.ui.activity.MultiCriteriaSearchActivity;
 import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType;
-import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSeachMenuItem;
 import fr.ornidroid.ui.multicriteriasearch.SpinnerIconSelector;
 
 /**
@@ -22,12 +21,12 @@ import fr.ornidroid.ui.multicriteriasearch.SpinnerIconSelector;
  *      ://android-er.blogspot.fr/2010/12/custom-arrayadapter-for-spinner-with
  *      .html
  */
-public class MyCustomAdapter extends ArrayAdapter<MultiCriteriaSeachMenuItem> {
+public class MyCustomAdapter extends ArrayAdapter<String> {
 
 	/** The activity. */
 	private final MultiCriteriaSearchActivity activity;
 	/** The items list. */
-	private final List<MultiCriteriaSeachMenuItem> itemsList;
+	private final List<String> itemsList;
 
 	private final MultiCriteriaSearchFieldType selectFieldType;
 
@@ -44,8 +43,7 @@ public class MyCustomAdapter extends ArrayAdapter<MultiCriteriaSeachMenuItem> {
 	 *            the select field type
 	 */
 	public MyCustomAdapter(final MultiCriteriaSearchActivity pActivity,
-			final int textViewResourceId,
-			final List<MultiCriteriaSeachMenuItem> pItemsList,
+			final int textViewResourceId, final List<String> pItemsList,
 			final MultiCriteriaSearchFieldType pSelectFieldType) {
 		super(pActivity, textViewResourceId, pItemsList);
 		this.activity = pActivity;
@@ -76,7 +74,7 @@ public class MyCustomAdapter extends ArrayAdapter<MultiCriteriaSeachMenuItem> {
 					parent, false);
 			final TextView label = (TextView) row
 					.findViewById(R.id.spinner_text_dropdown_list);
-			label.setText(this.itemsList.get(position).toString());
+			label.setText(this.itemsList.get(position));
 
 			icon = (ImageView) row
 					.findViewById(R.id.spinner_icon_dropdown_list);
@@ -84,7 +82,7 @@ public class MyCustomAdapter extends ArrayAdapter<MultiCriteriaSeachMenuItem> {
 			row = inflater.inflate(R.layout.row_spinner_icons, parent, false);
 			final TextView label = (TextView) row
 					.findViewById(R.id.spinner_text);
-			label.setText(this.itemsList.get(position).toString());
+			label.setText(this.itemsList.get(position));
 
 			icon = (ImageView) row.findViewById(R.id.spinner_icon);
 		}

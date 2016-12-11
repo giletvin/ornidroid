@@ -7,8 +7,6 @@ import fr.ornidroid.bo.MultiCriteriaSearchFormBean;
 import fr.ornidroid.bo.SimpleBird;
 import fr.ornidroid.bo.Taxon;
 import fr.ornidroid.helper.OrnidroidException;
-import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSeachMenuItem;
-import fr.ornidroid.ui.multicriteriasearch.MultiCriteriaSearchFieldType;
 
 /**
  * The Interface IOrnidroidService.
@@ -30,14 +28,14 @@ public interface IOrnidroidService {
 	 *            the string
 	 * @return the beak form id
 	 */
-	Integer getBeakFormId(MultiCriteriaSeachMenuItem string);
+	Integer getBeakFormId(String string);
 
 	/**
 	 * Gets the beak forms.
 	 * 
 	 * @return the beak forms
 	 */
-	List<MultiCriteriaSeachMenuItem> getBeakForms();
+	List<String> getBeakForms();
 
 	/**
 	 * Gets the matching birds and store the results in the history result
@@ -64,7 +62,7 @@ public interface IOrnidroidService {
 	 * 
 	 * @return the categories
 	 */
-	List<MultiCriteriaSeachMenuItem> getCategories();
+	List<String> getCategories();
 
 	/**
 	 * Gets the category id.
@@ -73,7 +71,7 @@ public interface IOrnidroidService {
 	 *            the category name
 	 * @return the category id
 	 */
-	Integer getCategoryId(MultiCriteriaSeachMenuItem categoryName);
+	Integer getCategoryId(String categoryName);
 
 	/**
 	 * Gets the colour id.
@@ -82,21 +80,21 @@ public interface IOrnidroidService {
 	 *            the colour name
 	 * @return the feather colour id
 	 */
-	Integer getColourId(MultiCriteriaSeachMenuItem colourName);
+	Integer getColourId(String colourName);
 
 	/**
 	 * Gets the colours.
 	 * 
 	 * @return the colours
 	 */
-	List<MultiCriteriaSeachMenuItem> getColours();
+	List<String> getColours();
 
 	/**
 	 * Gets the countries.
 	 * 
 	 * @return the countries
 	 */
-	List<MultiCriteriaSeachMenuItem> getCountries();
+	List<String> getCountries();
 
 	/**
 	 * Gets the country code.
@@ -105,7 +103,7 @@ public interface IOrnidroidService {
 	 *            the country name
 	 * @return the country code
 	 */
-	String getCountryCode(MultiCriteriaSeachMenuItem countryName);
+	String getCountryCode(String countryName);
 
 	/**
 	 * Gets the current bird. If a previous call to show bird detail was already
@@ -122,14 +120,14 @@ public interface IOrnidroidService {
 	 *            the habitatName
 	 * @return the habitat id
 	 */
-	Integer getHabitatId(MultiCriteriaSeachMenuItem habitatName);
+	Integer getHabitatId(String habitatName);
 
 	/**
 	 * Gets the habitats.
 	 * 
 	 * @return the habitats
 	 */
-	List<MultiCriteriaSeachMenuItem> getHabitats();
+	List<String> getHabitats();
 
 	/**
 	 * Gets the multi search criteria count results.
@@ -174,14 +172,14 @@ public interface IOrnidroidService {
 	 *            the remarkable sign name
 	 * @return the remarkable sign id
 	 */
-	Integer getRemarkableSignId(MultiCriteriaSeachMenuItem remarkableSignName);
+	Integer getRemarkableSignId(String remarkableSignName);
 
 	/**
 	 * Gets the remarkable signs.
 	 * 
 	 * @return the remarkable signs
 	 */
-	List<MultiCriteriaSeachMenuItem> getRemarkableSigns();
+	List<String> getRemarkableSigns();
 
 	/**
 	 * Gets the size id.
@@ -190,14 +188,14 @@ public interface IOrnidroidService {
 	 *            the size name
 	 * @return the size id
 	 */
-	Integer getSizeId(MultiCriteriaSeachMenuItem sizeName);
+	Integer getSizeId(String sizeName);
 
 	/**
 	 * Gets the sizes.
 	 * 
 	 * @return the sizes
 	 */
-	List<MultiCriteriaSeachMenuItem> getSizes();
+	List<String> getSizes();
 
 	/**
 	 * Gets the wikipedia link of the bird, using the gui language en, fr or de
@@ -247,18 +245,5 @@ public interface IOrnidroidService {
 	 * @return the release notes
 	 */
 	String getReleaseNotes();
-
-	/**
-	 * update the spinner items counts for the given field type.<br>
-	 * s Modifies the lists of items stored in the service
-	 * 
-	 * @param multiCriteriaSearchFormBean
-	 *            formBean
-	 * @param fieldType
-	 *            field type to update
-	 */
-	void updateSpinnerItemsCounts(
-			MultiCriteriaSearchFormBean multiCriteriaSearchFormBean,
-			MultiCriteriaSearchFieldType fieldType);
 
 }

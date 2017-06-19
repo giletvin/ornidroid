@@ -1,0 +1,215 @@
+
+            <!doctype html>
+            <html>
+            <head>
+            <title>xeno-canto :: Sharing bird sounds from around the world</title>
+
+            <meta charset='utf-8'>
+            <meta name='robots' content='index,follow'>
+            <meta name='keywords' content='bird songs, bird sounds, birds, bird sound recordings, bird song recordings, bird song archive, bird sound archive, creative commons, xeno-canto'>
+
+            <link rel='icon' type='image/png' href='/static/img/favicon.png'>
+            <link rel='apple-touch-icon' type='image/png' href='/static/img/favicon-60.png'>
+            <link rel='apple-touch-icon' type='image/png' href='/static/img/favicon-76.png' sizes='76x76'>
+            <link rel='apple-touch-icon' type='image/png' href='/static/img/favicon-120.png' sizes='120x120'>
+            <link rel='apple-touch-icon' type='image/png' href='/static/img/favicon-152.png' sizes='152x152'>
+
+            <link rel='stylesheet' href='/static/js/jquery.fancybox.css' type='text/css'></link>
+<link rel='stylesheet' href='/static/js/jquery.qtip.min.css' type='text/css'></link>
+<link rel='stylesheet' href='/static/js/jplayer/xcplayer.css' type='text/css'></link>
+<link rel='stylesheet' href='/static/css/xeno-canto.css' type='text/css'></link>
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Condensed' type='text/css'></link>
+
+
+            <!-- this needs to be in the header -->
+            <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js'></script>
+
+<!--[if lt IE 9]>
+<script>
+document.createElement('header');
+document.createElement('nav');
+document.createElement('section');
+document.createElement('article');
+document.createElement('aside');
+document.createElement('footer');
+document.createElement('hgroup');
+document.createElement('figure');
+document.createElement('figcaption');
+        </script>
+        <![endif]-->
+
+        
+            
+    </head>
+    <body id=''>
+    <header>
+    <div id='banner'>
+    <hgroup id='logo'>
+    <h1><a href='/'>xeno-canto</a></h1>
+    <h2>Sharing bird sounds from around the world</h2>
+    </hgroup>
+<script type='text/javascript'>
+function showSpeciesNr(value, data)
+{
+    jQuery('#species_nr').val(data.species_nr);
+    jQuery('#quick-search-bar > form').submit();
+    }
+    </script>
+    <div id='quick-search-bar'>
+        <form action='/explore' class='species-completion' method='post' autocomplete='off'>
+            <input type='hidden' id='species_nr' name='species_nr' value=''/>
+            <div class='search-box'>
+              <input id='quick-search-input' class='species-input' data-onselect='showSpeciesNr' type='text' name='query' value='' placeholder='Search recordings...' />
+              <input type='submit' value='Search'/>
+            </div>
+          </form>
+          <div class='search-help'>
+          <ul class='simple'>
+          <li>
+          <a href='/search'>Advanced Search</a>
+          </li>
+          <li>
+          <a
+          href='/help/search'
+            class='tooltip'
+            data-qtip-header='Quick Search Reference'
+            data-qtip-content='&lt;table class=&#039;key-value&#039;&gt;
+            &lt;tr&gt;&lt;td&gt;gen:&lt;/td&gt;&lt;td&gt;Genus&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;rec:&lt;/td&gt;&lt;td&gt;Recordist&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;loc:&lt;/td&gt;&lt;td&gt;Location&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;cnt:&lt;/td&gt;&lt;td&gt;Country&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;rmk:&lt;/td&gt;&lt;td&gt;Remarks&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;also:&lt;/td&gt;&lt;td&gt;Background species&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;nr:&lt;/td&gt;&lt;td&gt;Cat.nr.&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;type:&lt;/td&gt;&lt;td&gt;Type&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;q:,q&amp;lt;,q&amp;gt;&lt;/td&gt;&lt;td&gt;Quality&lt;/td&gt;&lt;/tr&gt;
+            &lt;/table&gt;'>Tips</a>
+          </li>
+          </div>
+        </div>
+      </div>
+      <nav id='main-menu'>
+      <table>
+      <tr>
+      <td>
+      <ul class='sf-menu'>
+        <li>About<img class='icon' height='14' width='14' src='/static/img/down.png'/>
+        <ul>
+        <li><a href='/about/xeno-canto'>About xeno-canto</a></li>
+        <li><a href='/collection/'>Collection Details</a></li>
+        <li><a href='/contributors'>Meet the Members</a></li>
+        <li><a href='/help/FAQ'>Frequently Asked Questions</a></li>
+        <li><a href='/about/terms'>Terms of Use</a></li>
+        <li><a href='/about/credits'>Credits & Colofon</a></li> 
+        </ul>
+        </li>
+        <li>Explore<img class='icon' height='14' width='14' src='/static/img/down.png'/>
+        <ul>
+          <li><a href='/explore/region'>By Region</a></li>
+          <li><a href='/explore/taxonomy'>By Taxonomy</a></li>
+          <li><a href='/explore?dir=0&order=xc'>All Recordings</a></li>
+          <li><a href='/explore/random'>Random Recordings</a></li>
+        </ul>
+        </li>
+        <li><a href='/upload'>Upload Sounds</a></li>
+        <li><a href='/forum/'>Forum</a></li>
+        <li><a href='/mysteries'>Mysteries</a></li>
+        <li><a href='/articles'>Articles</a></li>
+      </ul>
+      </td>
+      <td style='white-space: nowrap; text-align: right'>
+            <ul class='sf-menu right'>
+            <li>
+            <a href='/auth/login'>Log in / Register</a>
+            </li>
+            </ul>
+        </td>
+        </tr>
+        </table>
+        </nav>
+        </header>
+        
+        <div id='content-area'>
+        <noscript>
+        <div class='warning'><b>Note</b>: Many features of this site will not work without javascript</div>
+        </noscript>
+        <h1>Download disabled for this species</h1>
+            <p>We apologize for the inconvenience, but recordings of this
+            species are currently restricted due to conservation concerns.
+            If you would like access to this recording, you may contact the 
+            recordist directly.
+            <a href='/help/FAQ#restricted'>Explain this.</a></p>
+        </div>
+            <footer>
+            <div>
+            <table>
+            <tr>
+            <td>
+            <p>The Xeno-canto Foundation receives generous financial support from Naturalis Biodiversity Center
+            </p>
+            <p>
+            <a href='http://www.naturalis.nl/' target='_blank'><img width='71' height='106' src='/static/img/naturalis_logo_bw.png' alt=
+            'Naturalis Biodiversity Center'></a>
+            </p>
+            <p>
+            Website &copy; 2005-2014 <b>Xeno-canto Foundation</b>
+            </p>
+            <p id='license'>Recordings &copy; the recordist. See recording details for license information.
+            </p>
+            <p id='license'>Sonogram images &copy; <b>Xeno-canto Foundation</b>. Sonogram images share the same license terms as the recording they depict.
+            </p>
+            <p><a href='/about/terms'>Terms of use</a></p>
+            <p><a href='/about/credits'>Credits</a></p>
+            </td>
+            <td>
+            <ul class='simple'>
+            <li><a href='http://www.facebook.com/xenocanto'><img class='icon' width='24' height='24' src='/static/img/facebook.png'> Like us on Facebook</a></li>
+            <li><a href='http://www.twitter.com/xenocanto'><img class='icon' width='24' height='24' src='/static/img/twitter.png'> Follow us on Twitter</a></li>
+            <li><a href='https://www.youtube.com/channel/UC8At4qJ5678S3IX8_n7mstg'><img class='icon' width='24' height='24' src='/static/img/youtube.png'> Find us on YouTube</a></li>
+            <li><a href='mailto:contact_at_xeno-canto.org?subject=Mail%20via%20xeno-canto%20website'><img class='icon' width='24' height='24' src='/static/img/mail-24.png'> Contact us via email</a></li>
+            </ul>
+            </td>
+            <td>
+            <ul id='languages'>
+            <li ><a rel='nofollow' href='/lang/cs'>Česky</a>*</li><li ><a rel='nofollow' href='/lang/da'>Dansk</a></li><li ><a rel='nofollow' href='/lang/de'>Deutsch</a></li><li ><a rel='nofollow' href='/lang/et'>Eesti</a>*</li><li ><a rel='nofollow' href='/lang/en'>English</a></li><li ><a rel='nofollow' href='/lang/es'>Español</a></li><li ><a rel='nofollow' href='/lang/fr'>Français</a></li><li ><a rel='nofollow' href='/lang/hu'>Magyar</a>*</li><li ><a rel='nofollow' href='/lang/it'>Italiano</a>*</li><li ><a rel='nofollow' href='/lang/ko'>한국어</a></li><li ><a rel='nofollow' href='/lang/nl'>Nederlands</a></li><li ><a rel='nofollow' href='/lang/no'>Norsk</a></li><li ><a rel='nofollow' href='/lang/pl'>Polski</a></li><li ><a rel='nofollow' href='/lang/pt'>Português</a></li><li ><a rel='nofollow' href='/lang/ru'>Русский</a>*</li><li ><a rel='nofollow' href='/lang/sk'>Slovenčina</a>*</li><li ><a rel='nofollow' href='/lang/fi'>Suomi</a>*</li><li ><a rel='nofollow' href='/lang/sv'>Svenska</a></li><li ><a rel='nofollow' href='/lang/ja'>日本語</a>*</li><li ><a rel='nofollow' href='/lang/zh'>中文</a></li>
+            </ul>
+            <p>* Only species names are translated</p>
+            </td>
+            </tr>
+            </table>
+            </div>
+            </footer>
+<script type='text/javascript'>
+jQuery(document).ready(function() {
+    // set up collapsible 'read more' sections
+    jQuery('.readmore').expander({slicePoint:40, expandText:'more&nbsp;&raquo;', userCollapseText: '&laquo;&nbsp;less', widow: 2 });
+    });
+</script>
+<script type='text/javascript'>
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-324458-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+        <script type='text/javascript' src='/static/js/jplayer/jquery.jplayer.min.js'></script>
+        <script type='text/javascript' src='/static/js/jplayer/xcplayer.js?1'></script>
+        <script type='text/javascript' src='/static/js/jquery.autocomplete-min.js'></script>
+        <script type='text/javascript' src='/static/js/jquery.placeholder.min.js'></script>
+        <script type='text/javascript' src='/static/js/jquery.expander.min.js'></script>
+        <script type='text/javascript' src='/static/js/jquery.fancybox.pack.js'></script>
+        <script type='text/javascript' src='/static/js/jquery.qtip.min.js'></script>
+        <script type='text/javascript' src='/static/js/rate-recording.js'></script>
+        <script type='text/javascript' src='/static/js/hoverIntent.js'></script>
+        <script type='text/javascript' src='/static/js/superfish.js'></script>
+        <script type='text/javascript' src='/static/js/xc-generic.js'></script>
+        </body>
+        </html>
+        

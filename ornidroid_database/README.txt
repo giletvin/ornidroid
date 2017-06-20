@@ -32,6 +32,7 @@ Ornidroid_bdd:
 Génération de la base de données sqlite
 ---------------------------------------
 Script creation_bdd.sh
+Prerequis : sqlite3, php, php-sqlite3, php-dom
 Input : fichier oiseaux_europe_avibase_ss_rares.csv
 Output : génération du fichier SQLITE "ornidroid.jpg" (extension JPG pour la gestion des assets dans le sdk) et ornidroid.jpg.size (et de fichiers .sql temporaires qu'on peut effacer).
 Suite à la génération, poser le fichier ornidroid.jpg  dans le répertoire assets du projet Android

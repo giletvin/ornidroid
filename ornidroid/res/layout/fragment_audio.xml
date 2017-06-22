@@ -174,7 +174,7 @@
                 android:paddingBottom="10sp"
                 android:paddingLeft="10sp"
                 android:paddingTop="10sp"
-                android:src="@drawable/ic_sound_play" />
+                android:src="@drawable/ic_play_circle_outline_white_24dp" />
 
             <ImageView
                 android:id="@+id/iv_pause_button"
@@ -184,7 +184,7 @@
                 android:paddingBottom="10sp"
                 android:paddingLeft="10sp"
                 android:paddingTop="10sp"
-                android:src="@drawable/ic_sound_pause"
+                android:src="@drawable/ic_pause_circle_outline_white_24dp"
                 android:visibility="gone" />
 
             <ImageView
@@ -195,7 +195,7 @@
                 android:paddingBottom="10sp"
                 android:paddingLeft="10sp"
                 android:paddingTop="10sp"
-                android:src="@drawable/ic_sound_stop" />
+                android:src="@drawable/ic_stop_white_24dp" />
         </LinearLayout>
 
         <SeekBar

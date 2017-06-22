@@ -35,7 +35,7 @@ import fr.ornidroid.helper.SupportedLanguage;
 public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 
 	/** The Constant MIN_SIZE_REQUIRED_TO_DOWNLOAD_ZIP_PACKAGES. */
-	private static final int MIN_SPACE_TO_DOWNLOAD_IMAGE_PACKAGE = 120;
+	private static final int MIN_SPACE_TO_DOWNLOAD_IMAGE_PACKAGE = 200;
 
 	/** The Constant MIN_SPACE_TO_DOWNLOAD_AUDIO_PACKAGE. */
 	private static final int MIN_SPACE_TO_DOWNLOAD_AUDIO_PACKAGE = 700;
@@ -47,7 +47,7 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 	private static final int WIKIPEDIA_PACKAGE_NUMBER_OF_FILES = 1;
 
 	private static final int IMAGES_PACKAGE_NUMBER_OF_FILES = 6;
-	private static final int IMAGE_PACKAGE_SIZE = 51;
+	private static final int IMAGE_PACKAGE_SIZE = 100;
 
 	private static final int AUDIO_PACKAGE_NUMBER_OF_FILES = 33;
 	private static final int AUDIO_PACKAGE_SIZE = 330;

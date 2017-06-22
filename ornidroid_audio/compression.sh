@@ -31,11 +31,9 @@ do
 	do
 		echo "### " "$soundfile"
 		# compression du fichier si necessaire
-		kbps=`file $soundfile | cut -d "," -f 5 | cut -d " " -f 2`
-		#si le fichier a un encoding < 100, il faut faire un cut different pour recupering le bitrate
-		if [ "$kbps" == "" ]; then
-			kbps=`file $soundfile | cut -d "," -f 5 | cut -d " " -f 3`
-		fi
+		kbps=`exiftool $soundfile -AudioBitrate | cut -d ":" -f 2 | cut -d " " -f 2`
+
+		echo 'bitrate:'$kbps
 		if [ "$kbps" -gt "$MAX_BIT_RATE" ]; then
 			echo "compression!"
 			avconv -i $soundfile -acodec libmp3lame -ab ${MAX_BIT_RATE}k ${soundfile}_new.mp3 2>&1 

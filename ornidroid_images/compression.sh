@@ -45,8 +45,8 @@ do
 	do
 		echo "### " "$picturefile"
 		#3 compression du fichier si necessaire
-		hauteur=`exiv2 $picturefile 2>/dev/null | grep "Taille de l'image" | cut -d "x" -f 2 | tr -d " "`
-		largeur=`exiv2 $picturefile 2>/dev/null | grep "Taille de l'image" | cut -d "x" -f 1 | cut -d ":" -f 2 | tr -d " "`
+		hauteur=`exiv2 $picturefile 2>/dev/null | grep "Image size" | cut -d "x" -f 2 | tr -d " "`
+		largeur=`exiv2 $picturefile 2>/dev/null | grep "Image size" | cut -d "x" -f 1 | cut -d ":" -f 2 | tr -d " "`
 		if [[ "$hauteur" -gt "$MAX_RESOLUTION"  ||  "$largeur" -gt "$MAX_RESOLUTION" ]]; then
 			echo "compression et reduction de resolution!"
 			mogrify -resize ${MAX_RESOLUTION}x${MAX_RESOLUTION} $picturefile

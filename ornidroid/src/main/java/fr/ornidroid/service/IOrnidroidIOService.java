@@ -164,4 +164,14 @@ public interface IOrnidroidIOService {
 	 */
 	public int getInstallProgressPercent(OrnidroidFileType fileType);
 
+	/**
+	 * reset the content of a directory, except the custom files added by the
+	 * user
+	 * 
+	 * @param directoryToReset
+	 * @throws OrnidroidException
+	 */
+	void resetExistingDirectory(File directoryToReset)
+			throws OrnidroidException;
+
 }

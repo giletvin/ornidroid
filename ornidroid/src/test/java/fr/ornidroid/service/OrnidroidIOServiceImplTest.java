@@ -472,4 +472,38 @@ public class OrnidroidIOServiceImplTest extends AbstractTest {
 		this.ornidroidIOService.downloadZipPackage("audio.zip", TEST_DIRECTORY);
 
 	}
+
+	/**
+	 * testResetExistingDirectory
+	 * 
+	 * @throws OrnidroidException
+	 * @throws IOException
+	 */
+	@Test
+	public void testResetExistingDirectory() throws OrnidroidException,
+			IOException {
+		final File srcDir = buildOrnidroidHomeTest(TEST_DIRECTORY + "/srcDir");
+		final File imagesDir = new File(srcDir.getAbsolutePath()
+				+ File.separator + Constants.IMAGES_DIRECTORY);
+		// --fichier custom
+		FileHelper.createEmptyFile(new File(imagesDir.getAbsolutePath()
+				+ File.separator + BasicConstants.CUSTOM_MEDIA_FILE_PREFIX
+				+ "file1.jpg"));
+		FileHelper.createEmptyFile(new File(imagesDir.getAbsolutePath()
+				+ File.separator + BasicConstants.CUSTOM_MEDIA_FILE_PREFIX
+				+ "file1.jpg.properties"));
+		// -- fichier standard
+		FileHelper.createEmptyFile(new File(imagesDir.getAbsolutePath()
+				+ File.separator + "file1.jpg"));
+		FileHelper.createEmptyFile(new File(imagesDir.getAbsolutePath()
+				+ File.separator + "file1.jpg.properties"));
+
+		Assert.assertEquals(
+				"precondition : there should be 4 files in the test directory : file1.jpg and custom_file1 and their properties files",
+				4, imagesDir.list().length);
+		this.ornidroidIOService.resetExistingDirectory(imagesDir);
+		Assert.assertEquals(
+				"there should be 2 files in the test directory : file1.jpg, its properties files",
+				2, imagesDir.list().length);
+	}
 }

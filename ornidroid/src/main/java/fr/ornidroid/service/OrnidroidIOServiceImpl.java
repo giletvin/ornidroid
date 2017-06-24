@@ -85,6 +85,42 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 		}
 	}
 
+	/**
+	 * Filter to get the "official" ornidroid files (not the custom files the
+	 * users can add)
+	 * 
+	 * @author hamlet
+	 * 
+	 */
+	private class OrnidroidOfficialFileFilter implements FileFilter {
+
+		private boolean onlyOfficialFiles;
+
+		/**
+		 * 
+		 * @param onlyOfficialFiles
+		 *            : if true, only official files, if false, only custom
+		 *            files
+		 */
+		OrnidroidOfficialFileFilter(boolean onlyOfficialFiles) {
+			this.onlyOfficialFiles = onlyOfficialFiles;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.io.FileFilter#accept(java.io.File)
+		 */
+		public boolean accept(final File pathname) {
+
+			if (pathname.getAbsolutePath().contains(
+					BasicConstants.CUSTOM_MEDIA_FILE_PREFIX)) {
+				return onlyOfficialFiles == false ? true : false;
+			}
+			return onlyOfficialFiles == false ? false : true;
+		}
+	}
+
 	/** The download helper. */
 	private final DownloadHelperInterface downloadHelper;
 
@@ -500,6 +536,8 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 						.listFiles(new OrnidroidFileFilter(fileType)));
 				// Try to download from internet
 				if (downloadFromInternet) {
+					// reset existing directory
+					resetExistingDirectory(filesDirectory);
 					filesList = this.downloadHelper.downloadFiles(
 							ornidroidMediaHome, directoryName, fileType);
 				}
@@ -534,6 +572,30 @@ public class OrnidroidIOServiceImpl implements IOrnidroidIOService {
 			}
 		}
 		return files;
+	}
+
+	/**
+	 * Remove all files from directory, except the custom files the user
+	 * previously added
+	 * 
+	 * @param directoryToReset
+	 * @throws OrnidroidException
+	 */
+	@Override
+	public void resetExistingDirectory(File directoryToReset)
+			throws OrnidroidException {
+
+		List<File> filesList = Arrays.asList(directoryToReset
+				.listFiles(new OrnidroidOfficialFileFilter(true)));
+		for (File fileToDelete : filesList) {
+			try {
+				FileHelper.forceDelete(fileToDelete);
+			} catch (IOException e) {
+				throw new OrnidroidException(
+						OrnidroidError.ORNIDROID_DOWNLOAD_ERROR, e);
+			}
+		}
+
 	}
 
 	/**
